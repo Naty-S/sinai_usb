@@ -1,2 +1,9 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+  const page_title = 'Welcome to SvelteKit';
+</script>
+
+<svelte:head>
+  <title>{page_title}</title>
+</svelte:head>
+
+<h1>{page_title}</h1>
