@@ -1,0 +1,75 @@
+// Learn more about this file in the docs: https://pris.ly/d/prisma-schema
+datasource db {
+  provider = "postgresql"
+  // url = env("DATABASE_URL")
+  // url = "postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA"
+  url = "postgresql://postgres:postgres@localhost:5432/test_prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+
+model usuarios { // se usaba para ... (nuevo uso: verificar el rol de quien se logea)
+  login   String  @id
+  pass    String
+  padded  Int? // relleno
+}
+
+
+enum profesores_categoria_enum {
+  Agregado
+  Asistente
+  Asociado
+  Instructor
+  Titular
+}
+enum profesores_diploma_enum {
+  Lic @map("Lic.")
+  PhD @map("Ph.D.")
+  Doctor
+  Magister
+  Ing @map("Ing.")
+}
+enum profesores_dedicacion_enum {
+  DE
+  TI
+  TC
+}
+enum profesores_condicion_enum {
+  Contratado
+  Ordinario
+  Jubilado
+}
+// mantener id anterior
+model profesores {
+  id                    Int @id @default(autoincrement())
+  correo                String @unique
+  nombre1               String                          
+  nombre2               String?
+  apellido1             String
+  apellido2             String?
+  sexo                  Int
+  cedula                Int //@unique
+  activo                Boolean @default(false)
+  categoria             profesores_categoria_enum?
+  codigo                Int? @unique
+  condicion             profesores_condicion_enum?
+  confirmado            Boolean @default(false)
+  dedicacion            profesores_dedicacion_enum?
+  diploma               profesores_diploma_enum?
+  dpto                  Int
+  extension             Int?
+  fecha_contrato        DateTime? @db.Date
+  fecha_ingreso         DateTime? @db.Date
+  lineas_investigacion  String[]
+  perfil                String
+  universidad           String?
+  url                   String?
+}
+// agregar campos de research gate, linkedln, ORCID
+// Ref profesores_correo_fkey: usuarios.login < profesores.correo [update: cascade, delete: cascade]
+
+
