@@ -1,6 +1,15 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { api } from "../_api";
+import PrismaClient from "$lib/prisma";
 
-export const get: RequestHandler = ({request}) => {
-  return api(request);
+const prisma = new PrismaClient();
+
+export const get: RequestHandler = async ({request}) => {
+  let body = {};
+  let status = 500;
+
+
+  return {
+    status,
+    body
+  }
 }
