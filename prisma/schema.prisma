@@ -327,7 +327,7 @@ model convocatoria_pei {
 
   // Postgres relations
   Profesor profesor @relation(fields: [profesor], references: [id], onDelete: NoAction, onUpdate: Cascade)
-  
+
   @@index([profesor])
 }
 
@@ -502,27 +502,27 @@ model actividad {
   Validado_por  profesor? @relation(fields: [validado_por], references: [correo], onDelete: NoAction, onUpdate: Cascade)
 
   // Prisma relations
-  actividades_grupos      actividad_grupo_investigacion[]
-  autores_externos        autor_externo[]
-  autores_usb             autor_usb[]
-  articulos_revistas      articulo_revista[]
-  capitulos_libros        capitulo_libro[]
-  composiciones           composicion[]
-  documentos              documento[]
-  eventos                 evento[]
-  exposiciones            exposicion[]
-  grabaciones             grabacion[]
-  informes_tecnicos       informe_tecnico[]
-  libros                  libro[]
+  actividades_grupos           actividad_grupo_investigacion[]
+  autores_externos             autor_externo[]
+  autores_usb                  autor_usb[]
+  articulos_revistas           articulo_revista?
+  capitulos_libros             capitulo_libro?
+  composiciones                composicion?
+  documentos                   documento[]
+  eventos                      evento?
+  exposiciones                 exposicion?
+  grabaciones                  grabacion?
+  informes_tecnicos            informe_tecnico?
+  libros                       libro?
   logs_operaciones_actividades log_operacion_actividad[]
-  memorias                memoria[]
-  partituras              partitura[]
-  patentes                patente[]
-  premios                 premio[]
-  premios_bienales        premio_bienal[]
-  proyectos_grado         proyecto_grado[]
-  proyectos_investigacion proyecto_investigacion[]
-  recitales               recital[]
+  memorias                     memoria?
+  partituras                   partitura?
+  patentes                     patente?
+  premios                      premio?
+  premios_bienales             premio_bienal?
+  proyectos_grado              proyecto_grado?
+  proyectos_investigacion      proyecto_investigacion?
+  recitales                    recital?
 
   @@index([creada_por])
   @@index([validado_por])
@@ -603,7 +603,7 @@ model autor_usb {
   @@index([profesor_id])
 }
 
-// Artículos en revistas
+// Articulos en Revistas
 model articulo_revista {
   actividad         Int                          @id
   articulo_invitado Boolean                      @default(false)
@@ -639,7 +639,7 @@ model capitulo_libro {
   Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
-// Composiciones solicitadas por Orquestas Sinfónicas o Agrupaciones reconocidas
+// Composiciones solicitadas por Orquestas Sinfonicas o Agrupaciones reconocidas
 model composicion {
   actividad      Int                        @id
   categoria      composicion_categoria_enum
