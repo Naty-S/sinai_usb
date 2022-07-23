@@ -35,8 +35,6 @@
   ISBN: {activity.isbn}.
   {activity.articulo_invitado ? "Articulo Invitado." : ''}
 
-  <!-- {activity.aceptado ? "Aceptado para publicacion" : "Publicado"} -->
-  
 {:else if kind === "composiciones"}
 
   <u>Nombre del Evento: {activity.nombre_evento}</u>.
@@ -54,8 +52,6 @@
   {format_date(activity.fecha)}.
   {activity.institucion ? "Financiamiento: " + activity.institucion + '.' : ''}
   
-  <!-- {activity.internacional ? "Internacional." : "Nacional"} -->
-
 {:else if kind === "exposiciones"}
   
   <u>Nombre del Evento: {activity.nombre_evento}</u>.
@@ -91,8 +87,6 @@
   {format_date(activity.fecha)}. <!-- old: anio -->
   ISBN: {activity.isbn}.
   <!-- Segun el codigo viejo deberia de decir si es un articulo invitado, pero en el esquema de la DB no aparece -->
-
-  <!-- Aceptado: {activity.aceptado}. -->
 
 {:else if kind === "memorias"}
 
@@ -165,5 +159,5 @@
   Financiado por: {activity.financiado_por}.
 
 {:else}
-  ERROR
+  ERROR kind: {kind}
 {/if}

@@ -1,5 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { Prisma } from "@prisma/client";
+
 import PrismaClient from "$lib/prisma";
 
 import type { Actividad, ActivityKind, YearActivities } from "$types/db/actividades";
@@ -7,9 +8,13 @@ import type { Actividad, ActivityKind, YearActivities } from "$types/db/activida
 const prisma = new PrismaClient();
 
 /**
+ * This function its called when the '/actividades' page its loaded
+ * (see 'load' function in 'routes/actividades/index.svelte')
  * 
- * @param param0 
- * @returns {Object<number, YearActivities[]>}
+ * Manages the load of the data for the activites to be displayed for the profesor
+ * 
+ * @param param0 - 
+ * @returns {Object<number, YearActivities[]>} The status code and the activities grouped by year and kind
  */
 export const get: RequestHandler = async ({ request, params }) => {
 
@@ -79,10 +84,12 @@ export const get: RequestHandler = async ({ request, params }) => {
     });
 
     /**
+     * Groups activities by the given prop.
+     * Used to group by year or kind
      * 
-     * @param objectArray 
-     * @param prop 
-     * @returns 
+     * @param {Actividad[]} objectArray - The activities to group
+     * @param {string} prop - The prop to group by
+     * @returns {Record<string, Actividad[]>} The activities grouped by the given prop
      */
     const group_by: (objectArray: Actividad[] | any, prop: string) => Record<string, Actividad[]> =
       (objectArray: Actividad[] | any, prop: string) => {
