@@ -1,3 +1,10 @@
 <!-- Apply code to all `routes` files -->
+<script>
+  import Menu from '$components/menu.svelte';
+</script>
 
-<slot />
+<main>
+  <Menu />
+  <slot />
+</main>
+
