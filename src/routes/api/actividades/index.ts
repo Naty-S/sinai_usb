@@ -1,15 +1,15 @@
-import type { RequestHandler } from "@sveltejs/kit";
-import PrismaClient from "$lib/prisma";
+import type { Request } from "@sveltejs/kit";
 
-const prisma = new PrismaClient();
-
-export const get: RequestHandler = async ({request}) => {
+export const get: RequestHandler = async ({ request, params }) => {
+  console.log(params)
   let body = {};
   let status = 500;
 
-
+  // Redirect
   return {
-    status,
-    body
+    status: 303,
+    headers: {
+      location: "/actividades"
+    }
   }
 }
