@@ -1,14 +1,20 @@
 import type { RequestHandler } from "@sveltejs/kit";
+import { Prisma } from "@prisma/client";
 import PrismaClient from "$lib/prisma";
 
-import type { Actividad } from "src/types/actividades";
+import type { Actividad, ActivityKind, YearActivities } from "$types/db/actividades";
 
 const prisma = new PrismaClient();
 
+/**
+ * 
+ * @param param0 
+ * @returns {Object<number, YearActivities[]>}
+ */
 export const get: RequestHandler = async ({ request, params }) => {
-  
-  let body   = {};
-  let status = 500;  
+
+  let body = {};
+  let status = 500;
 
   // select * from actividades inner join (especializaciones) where creada_por=<correo profesor>
 
@@ -18,8 +24,8 @@ export const get: RequestHandler = async ({ request, params }) => {
       where: {
         creada_por: params.profesor
       }
-    });      
-    
+    });
+
     // Find activities kind
     const _act_kind = await prisma.actividad.findMany({
       where: {
@@ -45,50 +51,62 @@ export const get: RequestHandler = async ({ request, params }) => {
         recitales: true
       }
     });
-  
+
     // Join activities with the info of the kind
     const acts: Actividad[] = _acts.map(a => {
-      
+
       const k = _act_kind.find(k => k.id === a.id);
-      let _k  = Object.entries(k);
-      _k.shift();
-      let _kind_name = '';
-      let _kind_info = null;
+      // // Remove id prop
+      delete k.id;
+      // _k.shift();
       
+      let _k = Object.entries(k);
+      let _kind_name = '';
+      let _kind_info: ActivityKind = undefined;
+
       for (const [k_name, k_info] of _k) {
         if (k_info) {
           _kind_name = k_name,
           _kind_info = k_info
         }
       }
-  
+
       return {
         ...a,
         kind_name: _kind_name,
         kind_info: _kind_info
       }
     });
-  
-    const group_by = (objectArray: Actividad[] | any, prop: string) => {
-      
-      return objectArray.reduce((acc: Actividad, obj: Actividad) => {
-        let key = prop === "fecha_creacion" ? obj[prop].getFullYear() : obj[prop]
-        
-        if (!acc[key]) {
-          acc[key] = []
-        }
-        
-        acc[key].push(obj)
-        
-        return acc
-      }, {})
-    };
-  
-    // Group by year
-    const acts_by_year =
+
+    /**
+     * 
+     * @param objectArray 
+     * @param prop 
+     * @returns 
+     */
+    const group_by: (objectArray: Actividad[] | any, prop: string) => Record<string, Actividad[]> =
+      (objectArray: Actividad[] | any, prop: string) => {
+
+        return objectArray.reduce((acc: Actividad, obj: Actividad) => {
+          let key = prop === "fecha_creacion" ? obj[prop].getFullYear() : obj[prop]
+
+          if (!acc[key]) {
+            acc[key] = []
+          }
+
+          acc[key].push(obj)
+
+          return acc
+        }, {})
+      };
+
+    // Group by year-kind
+    const acts_by_year: YearActivities[] =
       Object.entries(group_by(acts, "fecha_creacion"))
-        .map(([_year, _acts]) => { return { year: _year, acts: group_by(_acts, "kind_name") } });
-    
+        .map(([_year, _acts]) => {
+          return { year: _year, acts: group_by(_acts, "kind_name") }
+        });
+
     status = 200;
     body = acts_by_year;
 
