@@ -46,9 +46,12 @@
   </div>
 
   <div class="inline field">
-    <label for="">Categoría</label>
-    <!-- TODO: change to dropdown -->
-    <input type="text" bind:value={act_data.titulo}>
+    <label for="cat">Categoría</label>
+    <select id="cat" class="ui selection dropdown">
+      <option value="Composicion">Composicion</option>
+      <option value="Arreglo">Arreglo</option>
+      <option value="Ejecucion">Ejecucion</option>
+    </select>
   </div>
 
   <div class="two inline fields">
