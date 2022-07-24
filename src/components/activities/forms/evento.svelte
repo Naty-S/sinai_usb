@@ -49,15 +49,20 @@
     </div>
   </div>
 
-  <div class="inline field">
-    <label for="">Modalidad</label>
-    <!-- TODO: change to dropdown -->
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
-  <div class="field">
-    <label for="">Institución que financia o patrocina</label>
-    <input type="text" bind:value={act_data.titulo}>
+  <div class="two inline fields">
+    <div class="six wide field">
+      <label for="modalidad">Modalidad</label>
+      <select id="modalidad" class="ui selection dropdown">
+        <option value="Cartel">Cartel</option>
+        <option value="Oral">Oral</option>
+        <option value="Invitada">Invitada</option>
+      </select>
+    </div>
+  
+    <div class="ten wide field">
+      <label for="">Institución que financia o patrocina</label>
+      <input type="text" bind:value={act_data.titulo}>
+    </div>
   </div>
 
   <Groups grupo = {act_data.grupo} />
