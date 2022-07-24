@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Authors from './authors.svelte';
 	import Groups from './groups.svelte';
   // import { onMount } from 'svelte';
   // import jQuery  from 'jquery';
@@ -125,6 +126,7 @@
   </div>
 
   <Groups grupo = {act_data.grupo} />
+  <Authors />
   <Observaciones observaciones = {act_data.observaciones} />
 
 </div>

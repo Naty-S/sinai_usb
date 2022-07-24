@@ -1,4 +1,5 @@
 <script>
+  import Authors from "./authors.svelte";
 
   const act_data =
   { titulo: undefined
@@ -61,5 +62,7 @@
       <input type="text" bind:value={act_data.titulo}>
     </div>
   </div>
+
+  <Authors />
 
 </div>

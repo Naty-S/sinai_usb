@@ -1,4 +1,5 @@
 <script>
+  import Authors from "./authors.svelte";
 	import Observaciones from './observaciones.svelte';
 
   const act_data =
@@ -35,6 +36,7 @@
     </div>
   </div>
 
+  <Authors />
   <Observaciones observaciones = {act_data.observaciones} />
 
 </div>

@@ -1,4 +1,5 @@
 <script>
+  import Authors from "./authors.svelte";
   import Groups from "./groups.svelte";
   import Observaciones from "./observaciones.svelte";
 
@@ -61,6 +62,7 @@
   </div>
 
   <Groups grupo = {act_data.grupo} />
+  <Authors />
   <Observaciones observaciones = {act_data.observaciones} />
 
 </div>
