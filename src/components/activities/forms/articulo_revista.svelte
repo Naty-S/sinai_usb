@@ -1,6 +1,9 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+	import Groups from './groups.svelte';
+  // import { onMount } from 'svelte';
   // import jQuery  from 'jquery';
+  
+  import Observaciones from './observaciones.svelte';
 
   // onMount(() => {
   //   window = jQuery;
@@ -15,6 +18,8 @@
 
   const act_data =
   { titulo: undefined
+  , observaciones: undefined
+  , grupo: undefined
   , articulo_invitado: undefined
   , con_estudiantes: undefined
   , estado: undefined
@@ -25,7 +30,7 @@
   , paginas: undefined
   , revista: undefined
   , volumen: undefined
-  }
+  };
 
 </script>
 
@@ -119,6 +124,7 @@
     </div>
   </div>
 
-  <!-- TODO: Grupo -->
+  <Groups grupo = {act_data.grupo} />
+  <Observaciones observaciones = {act_data.observaciones} />
 
 </div>

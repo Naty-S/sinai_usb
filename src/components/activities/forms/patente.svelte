@@ -1,7 +1,9 @@
 <script>
+  import Observaciones from "./observaciones.svelte";
 
   const act_data =
   { titulo: undefined
+  , observaciones: undefined
   , 
   }
 </script>
@@ -54,9 +56,6 @@
     </div>
   </div>
   
-  <div class="field">
-    <label for="">Observaciones</label>
-    <textarea rows="4" bind:value={act_data.titulo} />
-  </div>
+  <Observaciones observaciones = {act_data.observaciones} />
 
 </div>

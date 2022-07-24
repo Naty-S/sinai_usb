@@ -1,7 +1,11 @@
 <script>
+  import Groups from "./groups.svelte";
+  import Observaciones from "./observaciones.svelte";
 
   const act_data =
   { titulo: undefined
+  , observaciones: undefined
+  , grupo: undefined
   , 
   }
 </script>
@@ -102,6 +106,7 @@
     </div>
   </div>
   
-  <!-- TODO: Grupo -->
+  <Groups grupo = {act_data.grupo} />
+  <Observaciones observaciones = {act_data.observaciones} />
 
 </div>
