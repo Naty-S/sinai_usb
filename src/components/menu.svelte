@@ -1,9 +1,9 @@
 <nav class="uk-navbar-container" uk-navbar>
   <div class="uk-navbar-center">
     <div class="">SINAI - DID</div>
-    <!-- TODO: change name if is coord, dpto, division -->
-    <div class="">nombre prof</div>
-    <!-- TODO: add href's -->
+    <!-- TODO: #19 -->
+    <div class="">nombre prof (dpto name)</div>
+    <!-- TODO: #18 -->
     <ul class="uk-navbar-nav">
       <li>
         <a href="#" class="uk-active">Actividades <span uk-navbar-parent-icon></span></a>
