@@ -1,7 +1,8 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import PrismaClient from "$lib/prisma";
+import { Prisma } from "@prisma/client";
 
-import type { Actividad } from "src/types/actividades";
+import type { Actividad, ActivityKind, YearActivities } from "$types/db/actividades";
+import PrismaClient from "$lib/prisma";
 
 const prisma = new PrismaClient();
 
@@ -9,8 +10,6 @@ export const get: RequestHandler = async ({ request, params }) => {
   
   let body   = {};
   let status = 500;  
-
-  // select * from actividades inner join (especializaciones) where creada_por=<correo profesor>
 
   try {
     // Find profesor's activities
@@ -48,51 +47,74 @@ export const get: RequestHandler = async ({ request, params }) => {
   
     // Join activities with the info of the kind
     const acts: Actividad[] = _acts.map(a => {
-      
+
       const k = _act_kind.find(k => k.id === a.id);
-      let _k  = Object.entries(k);
-      _k.shift();
-      let _kind_name = '';
-      let _kind_info = null;
-      
-      for (const [k_name, k_info] of _k) {
-        if (k_info) {
-          _kind_name = k_name,
-          _kind_info = k_info
-        }
-      }
+
+      if (k) {
+        // TODO: tell typescript k is not undefined
+        // Remove id prop
+        delete k.id;
+        // _k.shift();
+        
+        let _k = Object.entries(k);
+        let _kind_name: string;
+        let _kind_info: ActivityKind;
   
-      return {
-        ...a,
-        kind_name: _kind_name,
-        kind_info: _kind_info
+        for (const [k_name, k_info] of _k) {
+          if (k_info) {
+            _kind_name = k_name,
+            _kind_info = k_info // TODO: tell typescript id its not in _k
+          }
+        }
+  
+        return {
+          ...a,
+          kind_name: _kind_name, // TODO: tell typescript its assigned
+          kind_info: _kind_info
+        }
+      } else {
+        // This shouldn't happen
+        throw new Error("Couldn't find activity kind. This activity doesn't have kind info");
       }
     });
-  
-    const group_by = (objectArray: Actividad[] | any, prop: string) => {
-      
-      return objectArray.reduce((acc: Actividad, obj: Actividad) => {
-        let key = prop === "fecha_creacion" ? obj[prop].getFullYear() : obj[prop]
-        
-        if (!acc[key]) {
-          acc[key] = []
-        }
-        
-        acc[key].push(obj)
-        
-        return acc
-      }, {})
-    };
-  
-    // Group by year
-    const acts_by_year =
+
+    /**
+     * Groups activities by the given prop.
+     * Used to group by year or kind
+     * 
+     * @param {Actividad[]} objectArray - The activities to group
+     * @param {string} prop - The prop to group by
+     * @returns {Record<string, Actividad[]>} The activities grouped by the given prop
+     */
+    const group_by = (objectArray: Actividad[] | any, prop: PropertyKey): Record<string, Actividad[] | Record<string, Actividad[]>> => {
+
+        return objectArray.reduce((acc: Actividad, obj: Actividad) => {
+          let key = prop === "fecha_creacion" ? obj[prop].getFullYear() : obj[prop]
+
+          if (!acc[key]) {
+            acc[key] = []
+          }
+
+          acc[key].push(obj)
+
+          return acc
+        }, {})
+      };
+
+    // Group by year-kind
+    const acts_by_year: YearActivities[] =
       Object.entries(group_by(acts, "fecha_creacion"))
-        .map(([_year, _acts]) => { return { year: _year, acts: group_by(_acts, "kind_name") } });
-    
+        .map(([_year, _acts]) => {
+          return { year: _year, acts: group_by(_acts, "kind_name") }
+        });
+    console.log(group_by(acts, "fecha_creacion"));
+        
+console.log(acts_by_year);
     status = 200;
     body = acts_by_year;
 
   } catch (e) {
+    // TODO: 
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       // The .code property can be accessed in a type-safe manner
       // https://www.prisma.io/docs/reference/api-reference/error-reference
