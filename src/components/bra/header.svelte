@@ -2,7 +2,7 @@
   Sistema de Información de Actividades de Investigación - SINAI
 </h1>
 
-<div class="ui divider"></div>
+<div class="ui divider" />
 
 <div class="ui centered grid container">
   <div class="three column row">
@@ -23,7 +23,7 @@
   </div>
 </div>
 
-<div class="ui divider"></div>
+<div class="ui divider" />
 
 <div class="ui centered grid container">
   <div class="two column row">
