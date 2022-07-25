@@ -1,63 +1,64 @@
-<div class="uk-navbar-container" uk-navbar>
+<nav class="uk-navbar-container" uk-navbar>
   <div class="uk-navbar-center">
-    <a href="/" class="uk-navbar-item uk-logo">DI</a>
+    <div class="">SINAI - DID</div>
+    <!-- TODO: change name if is coord, dpto, division -->
+    <div class="">nombre prof</div>
+    <!-- TODO: add href's -->
     <ul class="uk-navbar-nav">
       <li>
-        item 1
-      </li>
-    </ul>
-    <div class="uk-navbar-item">item 2</div>
-  </div>
-  <!-- <div class="uk-navbar-right">
-    <ul class="uk-navbar-nav">
-      <li>
-        <a href="">Parent</a>
+        <a href="#" class="uk-active">Actividades <span uk-navbar-parent-icon></span></a>
         <div class="uk-navbar-dropdown">
           <ul class="uk-nav uk-navbar-dropdown-nav">
-            
-            <li class="uk-nav-header uk-inline">
-              <button class="uk-button uk-button-primary" type="button">Actividades</button>
-              <div class="uk-flex-inline" uk-dropdown="mode: click">
-                <li><a href="#">Ingresar Nueva Actividad</a></li>
-                <li><a href="#">Revisar Mis Actividades</a></li>
-              </div>
-            </li>
-            
-            <li class="uk-nav-divider"></li>
-
-            <li class="uk-nav-header uk-inline">
-              <button class="uk-button uk-button-primary" type="button">Vistas</button>
-              <div class="uk-inline" uk-dropdown="mode: click">
-                <li><a href="#">Certificación PEII</a></li>
-                <li><a href="#">Constancias Grupos</a></li>
-                <li><a href="#">Constancias Proyectos</a></li>
-                <li><a href="#">Evaluación GID</a></li>
-                <li><a href="#">Evaluación S2</a></li>
-                <li><a href="#">Evaluación S2 prueba</a></li>
-                <li><a href="#">Vista BRA</a></li>
-                <li><a href="#">Vista Coordinación</a></li>
-                <li><a href="#">Vista Departamento</a></li>
-                <li><a href="#">Vista Grupos</a></li>
-                <li><a href="#">GID- ?></a></li>
-                <li><a href="#">GID-</a></li>
-                <li><a href="#">Vista Personal</a></li>
-                <li><a href="#">Vista Referencias Puras</a></li>
-              </div>
-            </li>
-            
-            <li class="uk-nav-divider"></li>
-
-            <li class="uk-nav-header uk-inline">
-              <button class="uk-button uk-button-primary" type="button">Opciones</button>
-              <div class="uk-inline" uk-dropdown="mode: click">
-                <li><a href="#">Cambiar Contraseña</a></li>
-                <li><a href="#">Cambiar Perfil</a></li>
-              </div>
-            </li>
-            
+            <li><a href="#">Resumen</a></li>
+            <li><a href="#">Ingresar</a></li>
           </ul>
         </div>
       </li>
+      <li>
+        <a href="#">Consultas <span uk-navbar-parent-icon></span></a>
+        <div class="uk-navbar-dropdown">
+          <ul class="uk-nav uk-navbar-dropdown-nav">
+            <li><a href="#">Públicas</a></li>
+            <li><a href="#">Predeterminadas</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a href="#">Vistas <span uk-navbar-parent-icon></span></a>
+        <div class="uk-navbar-dropdown">
+          <ul class="uk-nav uk-navbar-dropdown-nav">
+            <li><a href="#">BRA</a></li>
+            <li><a href="#">Personal</a></li>
+            <li><a href="#">Coordinacion</a></li>
+            <li><a href="#">Departamento</a></li>
+            <li><a href="#">Referencias Puras</a></li>
+            <li><a href="#">Certificación PEII</a></li>
+            <li class="uk-nav-divider"></li>
+            <li class="uk-nav-header">Constancias</li>
+            <li><a href="#">Proyectos</a></li>
+            <li><a href="#">Grupos</a></li>
+            <li class="uk-nav-divider"></li>
+            <li class="uk-nav-header">Evaluaciones</li>
+            <li><a href="#">S2 Prueba</a></li>
+            <li><a href="#">S2</a></li>
+            <li><a href="#">GID</a></li>
+            <li class="uk-nav-divider"></li>
+            <li class="uk-nav-header">Grupos</li>
+            <li><a href="#">GID</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a href="#">Opciones <span uk-navbar-parent-icon></span></a>
+        <div class="uk-navbar-dropdown">
+          <ul class="uk-nav uk-navbar-dropdown-nav">
+            <li><a href="#">Cambiar Contraseña</a></li>
+            <li><a href="#">Cambiar Perfil</a></li>
+          </ul>
+        </div>
+      </li>
+      <li><a href="#">Ayuda</a></li>
+      <li><a href="#">Salir</a></li>
     </ul>
-  </div> -->
-</div>
+  </div>
+</nav>
