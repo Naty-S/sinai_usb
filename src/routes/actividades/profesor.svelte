@@ -36,44 +36,25 @@
 
 <!-- Display activities resume table -->
 <!-- TODO: 'sortable' not work -->
+<!-- TODO: #20 -->
 <table class="ui celled table uk-table-small">
   <thead>
     <tr class="center aligned">
       <th class="uk-table-expand">Actividades</th>
-      {#each prof_activities as act}
-        <th>
-          <a href="/">{act.year} <span class="uk-badge">{count_acts(act.acts)}</span></a>
-        </th>
-      {/each}
-      <!-- <th>Anios</th> -->
+      <th>Anios</th>
       <th><i>Total</i></th>
     </tr>
   </thead>
   <tbody>
-    {#each prof_activities as act}
-      <tr>
-        {#each Object.entries(act.acts) as [kind, acts]}
-          <!-- {#each acts as a}
-            
-          {/each} -->
-          <td class="uk-table-expand">
-            <a href="#">{kind}</a>
-          </td>
-          <td class="center aligned uk-table-expand">
-            <a href="#">{acts.length}</a>
-          </td>
-        {/each}
-      </tr>
-    {/each}
-    <!-- <tr>
+    <tr>
       <td class="uk-table-expand">
-        <a href="#">activity kind name</a>
+        <a href="#">activity kind title</a>
       </td>
       <td class="center aligned uk-table-expand">
         <a href="#">activity kind count</a>
       </td>
       <td class="center aligned">row activities count</td>
-    </tr> -->
+    </tr>
     <tr>
       <td class="grey"><i>Total</i></td>
       <td class="center aligned">column total count</td>
