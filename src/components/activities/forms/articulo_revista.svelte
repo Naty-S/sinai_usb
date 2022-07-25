@@ -19,15 +19,16 @@
   , volumen: undefined
   };
 
+  const is_err = false;
 </script>
 
 <h2 class="uk-text-center">
   ARTÍCULOS EN REVISTAS
 </h2>
 
-<div class="ui large form error">
+<div class="ui large form" class:error="{is_err}">
 
-  <div class="required field error">
+  <div class="required field" class:error="{is_err}">
     <label for="">Título del Artículo</label>
     <input type="text" bind:value={act_data.titulo}>
   </div>
@@ -36,10 +37,10 @@
     <!-- <p>Introduzca un titulo</p> -->
   </div>
 
-  <div class="inline fields">
+  <div class="two inline fields">
     <label class="required" for="">Nombre de la Revista Arbitrada</label>
-    <div class="twelve wide field">
-      <!-- TODO: boton para buscar revista si esta indexada en (SCI, SSCI, etc) -->
+    <div class="ten wide field">
+      <!-- TODO: #9 -->
       <input type="text">
     </div>
   </div>

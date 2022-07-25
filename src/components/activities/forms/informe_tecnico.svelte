@@ -36,7 +36,7 @@
 
   <div class="required field">
     <label for="">Evaluadores</label>
-    <!-- TODO: change to add one by one -->
+    <!-- TODO: #8 -->
     <input type="text" bind:value={act_data.titulo}>
   </div>
 

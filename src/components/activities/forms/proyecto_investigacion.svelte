@@ -30,21 +30,37 @@
   
     <div class="twelve wide field">
       <label for="">Institución que financia o patrocina</label>
-      <!-- TODO: dropdown Fonacit, Otro, si es otro show text input -->
-      <input type="text" bind:value={act_data.titulo}>
+      <!-- TODO: #12 -->
+      <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+        <label>
+          <input class="uk-radio" type="radio" name="radio2" checked>
+          Fonacit
+        </label>
+        <label>
+          <input class="uk-radio" type="radio" name="radio2">
+          Otro
+        </label>
+      </div>
     </div>
   </div>
 
-  <div class="two inline fields">
-    <div class="required field">
+  <div class="two required inline fields">
+    <div class="field">
       <label for="">Duración estimada (meses)</label>
       <input type="number" min="1" bind:value={act_data.titulo}>
     </div>
   
-    <div class="inline field">
-      <label for="">Monto Financiado</label>
-      <input type="number">
-      <!-- TODO: add currency dropdown -->
+    <div class="three inline field fields">
+      <label for="" class="required">Monto Financiado</label>
+      <div class="six wide field">
+        <input type="number">
+      </div>
+      <div class="four wide field">
+        <!-- TODO: #13 -->
+        <select name="" id="">
+          <option>Bs.</option>
+        </select>
+      </div>
     </div>
   </div>
 
