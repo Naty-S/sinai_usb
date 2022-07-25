@@ -11,11 +11,17 @@
 		"strict": true,
 		"baseUrl": ".",
 		"paths": {
+			"$assets": ["src/assets"],
 			"$assets/*": ["src/assets/*"],
+			"$components": ["src/components"],
 			"$components/*": ["src/components/*"],
+			"$lib": ["src/lib"],
 			"$lib/*": ["src/lib/*"],
+			"$types": ["src/types"],
 			"$types/*": ["src/types/*"],
+			"$utils": ["src/utils"],
 			"$utils/*": ["src/utils/*"],
+			"$stores": ["src/stores"],
 			"$stores/*": ["src/stores/*"],
 		}
 	}

@@ -20,7 +20,7 @@
   {activity.articulo_invitado ? "Articulo Invitado." : ''}
   <span class="uk-text-emphasis">Vol.</span> {activity.volumen}, pp. {activity.pag_inicial} - {activity.pag_final}.
   
-  <!-- Estado: {activity.estado}.
+  <!--
   {activity.con_estudiantes ? "Con estudiantes." : ''}
   {activity.paginas ? "Paginas: " + activity.paginas + '.' : ''} -->
 

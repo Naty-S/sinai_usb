@@ -7,6 +7,7 @@ import type { ActivityKind } from "$types/db/actividades";
  * @returns {string} The formated date in 'Month year'
  */
 export const format_date = (date: Date | string): string => {
+
   const _date = typeof date === "string" ? new Date(date) : date;
   const month = _date.toLocaleDateString('es', { month: "long" });
   const year = _date.getFullYear();
@@ -25,6 +26,7 @@ export const format_date = (date: Date | string): string => {
 export const match_kind_to_title = (kind: string, act_kind: ActivityKind): string => {
 
   // 'act_info' can't be 'undefined' because its verified in the parent
+  // TODO: make typescript know that's not 'undefined'
 
   switch (kind) {
     case "articulos_revistas":
