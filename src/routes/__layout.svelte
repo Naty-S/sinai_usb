@@ -5,6 +5,8 @@
 
 <main>
   <Menu />
-  <slot />
+  <div class="ui container">
+    <slot />
+  </div>
 </main>
 

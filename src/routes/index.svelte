@@ -2,5 +2,5 @@
 </script>
 
 <main>
-  <a class="uk-button uk-button-default" href="/actividades">Get activities prof</a>
+  <a class="uk-button" href="/actividades/profesor">Get activities Prof</a>
 </main>
