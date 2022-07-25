@@ -1,4 +1,6 @@
 <script>
+  import { proyecto_grado_nivel_academico_enum } from "@prisma/client";
+
   import Authors from "./authors.svelte";
   import Groups from "./groups.svelte";
   import Observaciones from "./observaciones.svelte";
@@ -36,9 +38,12 @@
 
   <div class="two inline fields">
     <div class="inline field">
-      <label for="">Nivel Académico</label>
-      <!-- TODO: change to dropdown -->
-      <input type="text" bind:value={act_data.titulo}>
+      <label for="nivel_academico">Nivel Académico</label>
+      <select name="" id="nivel_academico" class="ui selection dropdown">
+        {#each Object.entries(proyecto_grado_nivel_academico_enum) as [_, cat]}
+          <option value={cat}>{cat.replace('_', ' ')}</option>
+        {/each}
+      </select>
     </div>
 
     <div class="required field">

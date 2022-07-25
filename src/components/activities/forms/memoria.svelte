@@ -1,4 +1,6 @@
 <script>
+  import { memoria_formato_enum, memoria_tipo_congreso_enum } from "@prisma/client";
+
   import Authors from "./authors.svelte";
   import CountryStates from "./country_states.svelte";
   import Groups from "./groups.svelte";
@@ -48,8 +50,11 @@
 
     <div class="inline field">
       <label for="">Formato</label>
-      <!-- TODO: change to dropdown -->
-      <input type="text" bind:value={act_data.titulo}>
+      <select id="formato" class="ui selection dropdown">
+        {#each Object.entries(memoria_formato_enum) as [_, f]}
+          <option value={f}>{f}</option>
+        {/each}
+      </select>
     </div>
   </div>
 
@@ -85,8 +90,11 @@
   <div class="two inline fields">
     <div class="inline field">
       <label for="">Tipo de Congreso</label>
-      <!-- TODO: change to dropdown -->
-      <input type="text" bind:value={act_data.titulo}>
+      <select id="tipo_congreso" class="ui selection dropdown">
+        {#each Object.entries(memoria_tipo_congreso_enum) as [_, tipo]}
+          <option value={tipo}>{tipo}</option>
+        {/each}
+      </select>
     </div>
 
     <div class="inline field">

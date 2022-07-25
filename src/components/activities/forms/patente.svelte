@@ -1,12 +1,16 @@
 <script>
+  import { getCountries }  from 'cs-list';
+
   import Authors from "./authors.svelte";
   import Observaciones from "./observaciones.svelte";
 
+  const countries = getCountries();
   const act_data =
   { titulo: undefined
   , observaciones: undefined
   , 
-  }
+  };
+
 </script>
 
 <h2 class="uk-text-center">
@@ -35,15 +39,18 @@
   </div>
 
   <div class="two required inline fields">
-    <div class="field">
+    <div class="seven wide field">
       <label for="">Número</label>
       <input type="text">
     </div>
     
-    <div class="field">
+    <div class="ten wide field">
       <label for="">País que otorga</label>
-      <!-- TODO: change to dropdown -->
-      <input type="text">
+      <select name="" id="pais" class="ui selection dropdown">
+        {#each countries as country}
+          <option value={country.code}>{country.name}</option>
+        {/each}
+      </select>
     </div>
   </div>
   

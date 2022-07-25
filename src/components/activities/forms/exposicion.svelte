@@ -35,7 +35,6 @@
 
   <div class="inline field">
     <label for="">Categoría</label>
-    <!-- TODO: change to dropdown -->
     <input type="text" bind:value={act_data.titulo}>
   </div>
 

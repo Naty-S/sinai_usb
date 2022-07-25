@@ -1,4 +1,6 @@
 <script>
+  import { composicion_categoria_enum } from "@prisma/client";
+
   import Authors from "./authors.svelte";
   import CountryStates from "./country_states.svelte";
 
@@ -35,10 +37,10 @@
 
   <div class="inline field">
     <label for="categoria">Categoría</label>
-    <select id="categoria" class="ui selection dropdown">
-      <option value="Composicion">Composicion</option>
-      <option value="Arreglo">Arreglo</option>
-      <option value="Ejecucion">Ejecucion</option>
+    <select name="" id="categoria" class="ui selection dropdown">
+      {#each Object.entries(composicion_categoria_enum) as [_, comp]}
+        <option value={comp}>{comp}</option>
+      {/each}
     </select>
   </div>
 

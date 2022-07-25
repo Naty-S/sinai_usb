@@ -1,4 +1,6 @@
 <script>
+  import { grabacion_categoria_enum } from "@prisma/client";
+
   import Authors from "./authors.svelte";
 
   const act_data =
@@ -37,8 +39,11 @@
 
   <div class="inline field">
     <label for="">Categoría</label>
-    <!-- TODO: change to dropdown -->
-    <input type="text" bind:value={act_data.titulo}>
+    <select name="" id="categoria" class="ui selection dropdown">
+      {#each Object.entries(grabacion_categoria_enum) as [_, cat]}
+        <option value={cat}>{cat.replaceAll('_', ' ')}</option>
+      {/each}
+    </select>
   </div>
 
   <div class="field">

@@ -1,4 +1,6 @@
 <script>
+  import { evento_modalidad_enum } from "@prisma/client";
+
   import Authors from "./authors.svelte";
   import CountryStates from "./country_states.svelte";
   import Groups from "./groups.svelte";
@@ -40,10 +42,10 @@
   <div class="two inline fields">
     <div class="six wide field">
       <label for="modalidad">Modalidad</label>
-      <select id="modalidad" class="ui selection dropdown">
-        <option value="Cartel">Cartel</option>
-        <option value="Oral">Oral</option>
-        <option value="Invitada">Invitada</option>
+      <select name="" id="modalidad" class="ui selection dropdown">
+        {#each Object.entries(evento_modalidad_enum) as [_, mod]}
+          <option value={mod}>{mod}</option>
+        {/each}
       </select>
     </div>
   
