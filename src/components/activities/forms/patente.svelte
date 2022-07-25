@@ -33,7 +33,7 @@
     </div>
 
     <div class="field">
-      <label for="">Fecha Finalizacion</label>
+      <label for="">Fecha Fin</label>
       <input type="date" name="" id="">
     </div>
   </div>

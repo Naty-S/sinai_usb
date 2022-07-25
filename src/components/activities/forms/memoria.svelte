@@ -59,7 +59,7 @@
   </div>
 
   <div class="two inline fields">
-    <div class="four wide field">
+    <div class="field">
       <label for="">Volumen</label>
       <input type="text" bind:value={act_data.titulo}>
     </div>
@@ -87,23 +87,20 @@
     </div>
   </div>
 
-  <div class="two inline fields">
-    <div class="inline field">
-      <label for="">Tipo de Congreso</label>
-      <select id="tipo_congreso" class="ui selection dropdown">
-        {#each Object.entries(memoria_tipo_congreso_enum) as [_, tipo]}
-          <option value={tipo}>{tipo}</option>
-        {/each}
-      </select>
-    </div>
-
-    <div class="inline field">
-      <label for="">Entre los autores se encuentra algún estudiante de pre o postgrado</label>
-      <input class="ui checkbox" type="checkbox">
-    </div>
+  <div class="inline field">
+    <label for="">Tipo de Congreso</label>
+    <select name="" id="tipo_congreso" class="ui selection dropdown">
+      {#each Object.entries(memoria_tipo_congreso_enum) as [_, tipo]}
+        <option value={tipo}>{tipo}</option>
+      {/each}
+    </select>
   </div>
   
   <Groups grupo = {act_data.grupo} />
+  <div class="inline field">
+    <label for="">Entre los autores se encuentran uno o mas estudiante de pre o postgrado</label>
+    <input class="ui checkbox" type="checkbox">
+  </div>
   <Authors />
   <Observaciones observaciones = {act_data.observaciones} />
 

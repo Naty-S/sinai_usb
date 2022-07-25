@@ -1,44 +1,46 @@
 <script>
   // export let autores = [];
 </script>
-<!-- TODO: show text input when click 'agregar' -->
-<div>
-  <label class="required field">Autores</label>
-</div>
+<!-- TODO: #8 -->
 
-<div class="four inline fields">
-  <label for="">Externos</label>
-
-  <div class="eight wide field">
-    <input type="text" placeholder="Nombre">
-  </div>
-
-  <div class="two wide field">
-    <label for="">Ponente</label>
-    <input class="ui checkbox" type="checkbox">
+<div class="required field">
+  <label for="">Autores</label>
+  
+  <div class="field">
+    <div class="two inline fields">
+      <div class="ten wide field">
+        <label for="">Externos</label>
+        <input type="text" placeholder="Nombre">
+      </div>
+  
+      <div class="three wide field">
+        <label for="">Ponente</label>
+        <input class="ui checkbox" type="checkbox">
+      </div>
+      
+      <button class="ui red button">Elminar</button>    
+    </div>
+    <button class="ui blue button">Agregar</button>
+    <button class="ui red button">Limpiar</button>
   </div>
   
-  <button class="ui red button">Elminar</button>
-</div>
-
-<button class="ui blue button">Agregar</button>
-<button class="ui red button">Limpiar</button>
-
-<div class="four inline fields">
-  <label for="">USB</label>
-
-  <div class="eight wide field">
-    <!-- TODO: dropdown con los usuarios -->
-    <input type="text" placeholder="Nombre">
-  </div>
-
-  <div class="two wide field">
-    <label for="">Ponente</label>
-    <input class="ui checkbox" type="checkbox">
+  <div class="field">
+    <div class="two inline fields">
+      <div class="ten wide field">
+        <label for="">USB</label>
+        <!-- TODO: dropdown con los usuarios -->
+        <input type="text" placeholder="Nombre">
+      </div>
+  
+      <div class="three wide field">
+        <label for="">Ponente</label>
+        <input class="ui checkbox" type="checkbox">
+      </div>
+      
+      <button class="ui red button">Elminar</button>
+    </div>
+    <button class="ui blue button">Agregar</button>
+    <button class="ui red button">Limpiar</button>
   </div>
   
-  <button class="ui red button">Elminar</button>
 </div>
-
-<button class="ui blue button">Agregar</button>
-<button class="ui red button">Limpiar</button>

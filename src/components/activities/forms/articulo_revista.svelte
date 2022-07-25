@@ -102,7 +102,7 @@
   
   <Groups grupo = {act_data.grupo} />
   <div class="inline field">
-    <label for="">Entre los autores se encuentra algún estudiante de pre o postgrado</label>
+    <label for="">Entre los autores se encuentran uno o mas estudiante de pre o postgrado</label>
     <input class="ui checkbox" type="checkbox">
   </div>
   <Authors />
