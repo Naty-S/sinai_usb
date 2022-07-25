@@ -1,21 +1,7 @@
 <script lang="ts">
   import Authors from './authors.svelte';
-	import Groups from './groups.svelte';
-  // import { onMount } from 'svelte';
-  // import jQuery  from 'jquery';
-  
+	import Groups from './groups.svelte';  
   import Observaciones from './observaciones.svelte';
-
-  // onMount(() => {
-  //   window = jQuery;
-
-  //   jQuery('.ui.checkbox').checkbox();
-  //   jQuery('.selection.dropdown').dropdown();
-    
-  //   jQuery('.ui.calendar').calendar({
-  //     type: 'date'
-  //   });
-	// });
 
   const act_data =
   { titulo: undefined
@@ -47,7 +33,7 @@
   </div>
   <div class="ui four wide field small error message">
     <div class="header">Requerido</div>
-    <p>Introduzca un titulo</p>
+    <!-- <p>Introduzca un titulo</p> -->
   </div>
 
   <div class="inline fields">
@@ -87,18 +73,13 @@
     </div>
   </div>
 
-  <div class="two inline fields">
-    <div class="required field">
+  <div class="three inline fields">
+    <div class="eight wide required field">
       <label for="">Fecha de Publicación</label>
-      <div class="ui calendar">
-        <div class="ui input left icon">
-          <i class="calendar icon"></i>
-          <input type="text" placeholder="Seleccione fecha" name="date">
-        </div>        
-      </div>
+      <input type="date" name="" id="">
     </div>
 
-    <div class="inline fields">
+    <div class="ten wide field fields">
       <label for="">Estado</label>
       <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
         <label>
@@ -111,21 +92,18 @@
         </label>
       </div>
     </div>
-  </div>
 
-  <div class="two inline fields">
-    <div class="inline field">
+    <div class="four wide field">
       <label for="">Artículo Invitado</label>
       <input class="ui checkbox" type="checkbox">
     </div>
-
-    <div class="inline field">
-      <label for="">Entre los autores se encuentra algún estudiante de pre o postgrado</label>
-      <input class="ui checkbox" type="checkbox">
-    </div>
   </div>
-
+  
   <Groups grupo = {act_data.grupo} />
+  <div class="inline field">
+    <label for="">Entre los autores se encuentra algún estudiante de pre o postgrado</label>
+    <input class="ui checkbox" type="checkbox">
+  </div>
   <Authors />
   <Observaciones observaciones = {act_data.observaciones} />
 

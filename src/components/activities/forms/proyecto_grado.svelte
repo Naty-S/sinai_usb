@@ -43,12 +43,7 @@
 
     <div class="required field">
       <label for="">Fecha de la Defensa</label>
-      <div class="ui calendar">
-        <div class="ui input left icon">
-          <i class="calendar icon"></i>
-          <input type="text" placeholder="Seleccione fecha" name="date">
-        </div>        
-      </div>
+      <input type="date" name="" id="">
     </div>
   </div>
 

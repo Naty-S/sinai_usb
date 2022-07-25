@@ -1,5 +1,6 @@
 <script>
   import Authors from "./authors.svelte";
+  import CountryStates from "./country_states.svelte";
   import Groups from "./groups.svelte";
   import Observaciones from "./observaciones.svelte";
 
@@ -22,12 +23,12 @@
     <input type="text" bind:value={act_data.titulo}>
   </div>
 
-  <div class="two inline fields">
-    <div class="required field">
+  <div class="two required inline fields">
+    <div class="field">
       <label for="">Página Inicial</label>
       <input type="text">
     </div>
-    <div class="required field">
+    <div class="field">
       <label for="">Página Final</label>
       <input type="text">
     </div>
@@ -49,25 +50,12 @@
     <input type="text" bind:value={act_data.titulo}>
   </div>
 
-  <div class="three inline fields">
-    <div class="required field">
-      <label for="">Ciudad</label>
-      <!-- TODO: change to dropdown -->
-      <input type="text">
-    </div>
-    <div class="required field">
-      <label for="">Pais</label>
-      <!-- TODO: change to dropdown -->
-      <input type="text">
-    </div>
-    <div class="required field">
+  <div class="three required inline fields">
+    <CountryStates />
+    
+    <div class="field">
       <label for="">Fecha</label>
-      <div class="ui calendar">
-        <div class="ui input left icon">
-          <i class="calendar icon"></i>
-          <input type="text" placeholder="Seleccione fecha" name="date">
-        </div>        
-      </div>
+      <input type="date" name="" id="">
     </div>
   </div>
 
@@ -82,7 +70,7 @@
       <input class="ui checkbox" type="checkbox">
     </div>
   
-    <div class="inline field">
+    <div class="field">
       <label for="">Artículo Invitado</label>
       <input class="ui checkbox" type="checkbox" placeholder="">
     </div>

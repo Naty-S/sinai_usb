@@ -1,5 +1,6 @@
 <script>
   import Authors from "./authors.svelte";
+  import CountryStates from "./country_states.svelte";
 
   const act_data =
   { titulo: undefined
@@ -24,30 +25,17 @@
   </div>
 
   <div class="three inline fields">
-    <div class="required field">
-      <label for="">Ciudad</label>
-      <!-- TODO: change to dropdown -->
-      <input type="text">
-    </div>
-    <div class="required field">
-      <label for="">Pais</label>
-      <!-- TODO: change to dropdown -->
-      <input type="text">
-    </div>
+    <CountryStates />
+    
     <div class="required field">
       <label for="">Fecha</label>
-      <div class="ui calendar">
-        <div class="ui input left icon">
-          <i class="calendar icon"></i>
-          <input type="text" placeholder="Seleccione fecha" name="date">
-        </div>        
-      </div>
+      <input type="date" name="" id="">
     </div>
   </div>
 
   <div class="inline field">
-    <label for="cat">Categoría</label>
-    <select id="cat" class="ui selection dropdown">
+    <label for="categoria">Categoría</label>
+    <select id="categoria" class="ui selection dropdown">
       <option value="Composicion">Composicion</option>
       <option value="Arreglo">Arreglo</option>
       <option value="Ejecucion">Ejecucion</option>
