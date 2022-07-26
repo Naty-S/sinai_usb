@@ -24,6 +24,10 @@
 };
 </script>
 
+<!-- 
+  @component
+  Shows all activities for the Decano
+ -->
 <script>
   export let activities
 </script>
