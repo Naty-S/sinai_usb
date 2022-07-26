@@ -10,7 +10,7 @@
 
 <div class="ui large form">
 
-  <div class="ui centered grid container">
+  <div class="ui centered grid field">
     <div class="two column row">
       <div class="column">Nombre: </div>
       <div class="column">Segundo Nombre: </div>
@@ -65,7 +65,7 @@
     </div>
   </div>
 
-  <div class="ui centered grid container">
+  <div class="ui centered grid field">
     <div class="one column row">
       <div class="column">Grupos de Investigación: </div>
     </div>
