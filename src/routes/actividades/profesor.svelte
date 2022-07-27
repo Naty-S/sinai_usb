@@ -1,6 +1,8 @@
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
+  import ResumeTable from "$components/resume_table.svelte";
+
   // https://kit.svelte.dev/docs/loading
   // TODO: fetch from 'stores'
   export const load: Load = async ({ fetch }) => {    
@@ -35,36 +37,18 @@
 <h3>Resumen Actividades</h3>
 
 <!-- Display activities resume table -->
-<!-- TODO: 'sortable' not work -->
 <!-- TODO: #20 -->
-<table class="ui celled table uk-table-small">
-  <thead>
-    <tr class="center aligned">
-      <th class="uk-table-expand">Actividades</th>
-      <th>Anios</th>
-      <th><i>Total</i></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="uk-table-expand">
-        <a href="#">activity kind title</a>
-      </td>
-      <td class="center aligned uk-table-expand">
-        <a href="#">activity kind count</a>
-      </td>
-      <td class="center aligned">row activities count</td>
-    </tr>
-    <tr>
-      <td class="grey"><i>Total</i></td>
-      <td class="center aligned">column total count</td>
-      <td class="center aligned"><strong>column total count</strong></td>
-    </tr>
-  </tbody>
-</table>
+<ResumeTable
+  headers={["Actividad", "Anio1", "Anio1"]}
+  acts_counts={Array(2).fill("activity kind count")}
+  resume_kinds={["act1", "act2"]}
+  n_column="four column"
+  row_total
+  col_total
+/>
 
 <!-- Display activities by year -->
-{#each prof_activities as activities}
+{#each prof_activities.reverse() as activities}
   <ActsByYear {activities}/>
 {/each}
 

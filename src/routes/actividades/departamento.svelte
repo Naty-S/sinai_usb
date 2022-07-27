@@ -2,30 +2,36 @@
   @component
   Shows the departaments activities resume.
  -->
+<script>
+  import ResumeTable from "$components/resume_table.svelte";
+
+  const headers =
+    [ "Eventos en el Exterior"
+    , "Eventos Nacionales"
+    , "Proyectos"
+    , "Memorias"
+    , "Informes Tecnicos"
+    , "Articulos"
+    , "Libros"
+    , "Capitulos"
+    ];
+
+  const acts_counts = Array(8).fill("activity kind count");
+</script>
+
+<!--  -->
+En el manual pero no en el codigo actual
+<div class="ui divider" />
 
 <h2>El departamento de (dpto name) tiene en el sistema</h2>
 
-<!--  -->
-<table class="ui celled table uk-table-small">
-  <thead>
-    <tr class="center aligned">
-      <th class="uk-table-expand">Actividad</th>
-      <th>Anios</th>
-      <th><i>Total</i></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="uk-table-expand">
-        activity kind title
-      </td>
-      <td class="center aligned uk-table-expand">
-        activity kind count
-      </td>
-      <td class="center aligned">row activities count</td>
-    </tr>
-  </tbody>
-</table>
+<ResumeTable
+  headers={["Actividad", "Anio1", "Anio1"]}
+  acts_counts={acts_counts.slice(0,2)}
+  resume_kinds={["act1", "act2"]}
+  n_column="four column"
+  row_total
+/>
 
 <div class="uk-text-center">
  <a href="">Vista BRA Departamental</a>
@@ -41,6 +47,8 @@
 </div>
 <!--  -->
 
+<div class="ui divider" />
+
 <h2>Profesores con Actividades (#)</h2>
 <div class="uk-text-center">
   Nota: A continuacion se muestran los totales de las actividades ingresadas en el sistema
@@ -48,68 +56,25 @@
   click en su nombre.
 </div>
 
-<table class="ui celled table uk-table-small">
-  <thead>
-    <tr class="center aligned">
-      <th class="uk-table-expand">Profesor</th>
-      <th>Eventos en el Exterior</th>
-      <th>Eventos Nacionales</th>
-      <th>Proyectos</th>
-      <th>Memorias</th>
-      <th>Informes Tecnicos</th>
-      <th>Articulos</th>
-      <th>Libros</th>
-      <th>Capitulos</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="uk-table-expand">
-        <a href="#">prof name</a>
-      </td>
-      <td class="center aligned uk-table-expand">
-        activity kind count
-      </td>
-      <td class="center aligned uk-table-expand">
-        activity kind count
-      </td>
-      <td class="center aligned uk-table-expand">
-        activity kind count
-      </td>
-      <td class="center aligned uk-table-expand">
-        activity kind count
-      </td>
-      <td class="center aligned uk-table-expand">
-        activity kind count
-      </td>
-      <td class="center aligned uk-table-expand">
-        activity kind count
-      </td>
-      <td class="center aligned uk-table-expand">
-        activity kind count
-      </td>
-      <td class="center aligned uk-table-expand">
-        activity kind count
-      </td>
-    </tr>
-  </tbody>
-</table>
+<!-- TODO: #20 -->
+<ResumeTable
+  headers={["Profesor"].concat(headers)}
+  {acts_counts}
+  resume_kinds={["prof1", "prof2"]}
+  n_column="nine column"
+/>
 
 <div class="ui divider" />
 
 <h2>Profesores sin Actividades (#)</h2>
 
-<table class="ui celled table uk-table-small">
-  <thead>
-    <tr class="center aligned">
-      <th class="uk-table-expand">Profesor</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="uk-table-expand">
-        <a href="#">prof name</a>
-      </td>
-  </tbody>
-</table>
+<!-- TODO: #20 -->
+<ResumeTable
+  headers={["Profesor"]}
+  resume_kinds={["prof1", "prof2"]}
+/>
 
+<div class="ui divider" />
+
+acts by year departamento? las q aparecen en la tabla arriba o
+del prof q esta login?
