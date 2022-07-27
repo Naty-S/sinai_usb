@@ -37,6 +37,7 @@
             <!-- TODO: #16 ... -->
             <a href="/api/actividades/[id]/modificar">[Modificar]</a>
             <a href="/api/actividades/[id]/validar">[Validar]</a>
+            <a href="/api/actividades/[id]/validar">[Desvalidar]</a>
             <a href="/api/actividades/[id]/eliminar">[Eliminar]</a>
           </div>
         </li>
