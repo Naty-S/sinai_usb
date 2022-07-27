@@ -1,4 +1,4 @@
-<h1 class="ui blue header">
+<h1 class="ui blue header uk-text-center">
   Sistema de Información de Actividades de Investigación - SINAI
 </h1>
 
