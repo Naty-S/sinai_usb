@@ -30,6 +30,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@prisma/client": "^4.0.0"
+		"@prisma/client": "^4.0.0",
+		"cs-list": "^1.0.5"
 	}
 }

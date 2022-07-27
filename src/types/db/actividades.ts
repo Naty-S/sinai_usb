@@ -57,5 +57,6 @@ export type ActivityKind
   | proyecto_grado
   | proyecto_investigacion
   | recital
+  | undefined // This means there's no kind asociated to the activity. This shouldn't happen
   // | undefined // This means there's no kind asociated to the activity. This shouldn't happen
 ;

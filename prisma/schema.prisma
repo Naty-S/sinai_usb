@@ -17,6 +17,7 @@ datasource db {
 // Postgresql enumerable types
 //
 enum articulo_revista_estado_enum {
+  // TODO: #10
   Aceptado_via_publicacion  @map("Aceptado en Vias de Publicacion")
   Publicado
 }
@@ -59,6 +60,7 @@ enum evento_modalidad_enum {
 }
 
 enum grabacion_categoria_enum {
+  // TODO: #10
   Ejecucion_CD_Nacional          @map("Ejecucion en CD Nacional")
   Ejecucion_CD_Internacional     @map("Ejecucion en CD Internacional")
   CD_Completo_Nacional           @map("CD Completo Nacional")
@@ -116,6 +118,7 @@ enum meses_enum {
 }
 
 enum partitura_categoria_enum {
+  // TODO: #10
   Ejecucion_CD_Nacional          @map("Ejecucion en CD Nacional")
   Ejecucion_CD_Internacional     @map("Ejecucion en CD Internacional")
   CD_Completo_Nacional           @map("CD Completo Nacional")
@@ -166,6 +169,7 @@ enum profesor_dedicacion_enum {
 }
 
 enum profesor_diploma_tipo_enum {
+  // TODO: #10
   Lic_      @map("Lic.")
   Ph_D_     @map("Ph.D.")
   Doctor
@@ -179,6 +183,7 @@ enum profesor_sexo_enum {
 }
 
 enum proyecto_grado_nivel_academico_enum {
+  // TODO: #10
   Doctorado
   Maestria
   Especializacion
@@ -609,7 +614,7 @@ model articulo_revista {
   articulo_invitado Boolean                      @default(false)
   con_estudiantes   Boolean                      @default(false)
   estado            articulo_revista_estado_enum
-  fecha_publicacion DateTime                     @db.Date
+  fecha_publicacion DateTime                     @db.Date //TODO: #11
   indice            String?
   pag_final         String
   pag_inicial       String
@@ -717,7 +722,7 @@ model grabacion {
 model informe_tecnico {
   actividad      Int      @id
   confidencial   Boolean  @default(false) // Contrato de Confidencialidad
-  evaluacion_did Boolean  @default(false) // Informe de evaluacion en DID
+  evaluacion_did Boolean  @default(false) // Informe de evaluacion en DID. Evaluado por el DID
   evaluadores    String[]
   fecha_inicio   DateTime @db.Date
   institucion    String // inst que financia

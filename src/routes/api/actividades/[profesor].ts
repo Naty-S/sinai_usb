@@ -6,10 +6,19 @@ import PrismaClient from "$lib/prisma";
 
 const prisma = new PrismaClient();
 
+/**
+ * This function its called when the '/actividades' page its loaded
+ * (see 'load' function in 'routes/actividades/index.svelte')
+ * 
+ * Manages the load of the data for the activites to be displayed for the profesor
+ * 
+ * @param param0 - 
+ * @returns {Object<number, YearActivities[]>} The status code and the activities grouped by year and kind
+ */
 export const get: RequestHandler = async ({ request, params }) => {
-  
-  let body   = {};
-  let status = 500;  
+
+  let body = {};
+  let status = 500;
 
   try {
     // Find profesor's activities
@@ -17,8 +26,8 @@ export const get: RequestHandler = async ({ request, params }) => {
       where: {
         creada_por: params.profesor
       }
-    });      
-    
+    });
+
     // Find activities kind
     const _act_kind = await prisma.actividad.findMany({
       where: {
@@ -44,12 +53,12 @@ export const get: RequestHandler = async ({ request, params }) => {
         recitales: true
       }
     });
-  
+
     // Join activities with the info of the kind
     const acts: Actividad[] = _acts.map(a => {
 
       const k = _act_kind.find(k => k.id === a.id);
-
+      
       if (k) {
         // TODO: tell typescript k is not undefined
         // Remove id prop
@@ -107,9 +116,11 @@ export const get: RequestHandler = async ({ request, params }) => {
         .map(([_year, _acts]) => {
           return { year: _year, acts: group_by(_acts, "kind_name") }
         });
+
     console.log(group_by(acts, "fecha_creacion"));
         
-console.log(acts_by_year);
+    console.log(acts_by_year);
+
     status = 200;
     body = acts_by_year;
 

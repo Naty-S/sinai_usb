@@ -7,7 +7,7 @@ import type { ActivityKind } from "$types/db/actividades";
  * @returns {string} The formated date in 'Month year'
  */
 export const format_date = (date: Date | string): string => {
-  
+
   const _date = typeof date === "string" ? new Date(date) : date;
   const month = _date.toLocaleDateString('es', { month: "long" });
   const year = _date.getFullYear();
