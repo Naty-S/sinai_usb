@@ -2,10 +2,21 @@
   import type { YearActivities } from "$types/db/actividades";
   
   import { format_date, match_kind_to_title } from "$utils/index";
-  
   import KindInfo from "./kind_info.svelte";
   
+  // Props
   export let activities: YearActivities;
+
+  const groups_acts =
+    [ "articulos_revistas"
+    , "capitulos_libros"
+    , "eventos"
+    , "informes_tecnicos"
+    , "libros"
+    , "memorias"
+    , "proyectos_grado"
+    , "proyectos_investigacion"
+    ]
 </script>
 
 <h2 class="uk-text-center">
@@ -24,8 +35,9 @@
             <strong>autor1; autor2</strong>.
             "{act.titulo}".
             <KindInfo activity={act.kind_info} kind={act.kind_name} />
-            <!-- TODO: #15  -->
-            <span class="uk-text-emphasis">Realizada en el Grupo</span>: act.group.name.
+            {#if groups_acts.includes(kind)}
+              <span class="uk-text-emphasis">Realizada en el Grupo</span>: act.group.name.
+            {/if}
             
             <i>{act.observaciones ? "Observaciones: " + act.observaciones : ''}</i>
     
