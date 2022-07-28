@@ -35,7 +35,6 @@
             <strong>autor1; autor2</strong>.
             "{act.titulo}".
             <KindInfo activity={act.kind_info} kind={act.kind_name} />
-            <!-- TODO: #15  -->
             {#if groups_acts.includes(kind)}
               <span class="uk-text-emphasis">Realizada en el Grupo</span>: act.group.name.
             {/if}
