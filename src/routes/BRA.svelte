@@ -24,32 +24,63 @@
 </script>
 
 <script lang="ts">
+  import { onMount } from "svelte";
+
   import type { Actividad, YearActivities } from "$types/db/actividades";
 
   import ActsByYear from "$components/activities/acts_by_year.svelte";
   import BraHeader from "$components/bra/header.svelte";
 
   export let prof_activities: YearActivities[];
+  
+  let printBRA: () => void;
+
+  onMount(async () => {
+    const printJS = (await import("print-js")).default;
+
+    printBRA = () => { printJS(
+      // For usage reference go to: https://printjs.crabbly.com/
+      { printable: "bra"
+      , type: "html"
+      , maxWidth: 1600
+      , targetStyles: ['*']
+      , ignoreElements: ["resume_table"]
+      // , onPrintDialogClose: show_modal_success() TODO:
+      }
+    )};
+  });
 
   const count_acts = (acts: Record<string, Actividad[]>) => {
     return Object.entries(acts).reduce((count, [_, _acts]) => count + _acts.length, 0)
-  }
+  };
+
 </script>
 
-<BraHeader />
+<!-- <div class="ui grid"> -->
 
-<!-- Display activities resume table -->
-<!-- TODO: #20 -->
-<ResumeTable
-  headers={["Actividad", "Anio1", "Anio1"]}
-  acts_counts={Array(2).fill("activity kind count")}
-  resume_kinds={["act1", "act2"]}
-  n_column="four column"
-  row_total
-  col_total
-/>
+  <div id="bra">
+    <BraHeader />
+    
+    <!-- Display activities resume table -->
+    <!-- TODO: #20 -->
+    <ResumeTable
+      headers={["Actividad", "Anio1", "Anio1"]}
+      acts_counts={Array(2).fill("activity kind count")}
+      resume_kinds={["act1", "act2"]}
+      n_column="four column"
+      row_total
+      col_total
+    />
+    
+    <!-- Display activities by year -->
+    {#each prof_activities.reverse() as activities}
+      <ActsByYear {activities}/>
+    {/each}
+  </div>
 
-<!-- Display activities by year -->
-{#each prof_activities.reverse() as activities}
-  <ActsByYear {activities}/>
-{/each}
+  <div id="print_button" class="row">
+    <button type="button" class="ui blue button" on:click="{() => printBRA()}">
+      Imprimir vista BRA
+    </button>
+  </div>
+<!-- </div> -->

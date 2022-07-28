@@ -8,7 +8,7 @@
 </script>
 
 <!-- TODO: 'sortable' not work -->
-<!-- <div class="uk-overflow-auto"> <<- si se coloca no puedo colocar 'ui' --> 
+<div id="resume_table"> <!-- class="uk-overflow-auto"> <<- si se coloca no puedo colocar 'ui'  -->
   <table class="ui {n_column} celled striped table uk-table">
     <thead class="center aligned">
       <tr>
@@ -45,4 +45,4 @@
       {/if}
     </tbody>
   </table>
-<!-- </div> -->
+</div>
