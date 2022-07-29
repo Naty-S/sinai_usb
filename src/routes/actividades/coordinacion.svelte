@@ -15,6 +15,7 @@
   const acts_counts = Array(8).fill("activity kind count");
 </script>
 
+<!-- TODO: #42 -->
 <h2>Profesores con Actividades (#)</h2>
 <div class="uk-text-center">
   Nota: A continuacion se muestran los totales de las actividades ingresadas en el sistema
@@ -22,7 +23,6 @@
   click en su nombre.
 </div>
 
-<!-- TODO: #20 -->
 <ResumeTable
   headers={["Profesor"].concat(headers)}
   resume_kinds={["prof1", "prof2"]}
@@ -34,7 +34,6 @@
 
 <h2>Profesores sin Actividades (#)</h2>
 
-<!-- TODO: #20 -->
 <ResumeTable
   headers={["Profesor"]}
   resume_kinds={["prof1", "prof2"]}
@@ -49,7 +48,6 @@ del coordinador?
 
 <h2>Grupos con Actividades (#)</h2>
 
-<!-- TODO: #20 -->
 <ResumeTable
   headers={["Grupo"].concat(headers)}
   {acts_counts}
@@ -62,7 +60,6 @@ del coordinador?
 
 <h2>Grupos sin Actividades (#)</h2>
 
-<!-- TODO: #20 -->
 <ResumeTable
   headers={["Grupo"]}
   resume_kinds={["GID1", "GID2"]}

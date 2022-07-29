@@ -19,8 +19,7 @@
   const acts_counts = Array(8).fill("activity kind count");
 </script>
 
-<!--  -->
-En el manual pero no en el codigo actual
+<!-- TODO: #43 -->
 <div class="ui divider" />
 
 <h2>El departamento de (dpto name) tiene en el sistema</h2>
@@ -45,7 +44,6 @@ En el manual pero no en el codigo actual
   Nota: La suma de las actividades de los profesores no es igual al total del departamento,
   pues pueden tener varios autores.
 </div>
-<!--  -->
 
 <div class="ui divider" />
 
@@ -56,7 +54,6 @@ En el manual pero no en el codigo actual
   click en su nombre.
 </div>
 
-<!-- TODO: #20 -->
 <ResumeTable
   headers={["Profesor"].concat(headers)}
   {acts_counts}
@@ -68,7 +65,6 @@ En el manual pero no en el codigo actual
 
 <h2>Profesores sin Actividades (#)</h2>
 
-<!-- TODO: #20 -->
 <ResumeTable
   headers={["Profesor"]}
   resume_kinds={["prof1", "prof2"]}

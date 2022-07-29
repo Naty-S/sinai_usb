@@ -62,7 +62,7 @@
     <BraHeader />
     
     <!-- Display activities resume table -->
-    <!-- TODO: #20 -->
+    <!-- TODO: #41 -->
     <ResumeTable
       headers={["Actividad", "Anio1", "Anio1"]}
       acts_counts={Array(2).fill("activity kind count")}
