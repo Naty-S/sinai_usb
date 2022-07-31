@@ -59,8 +59,10 @@
 
 	<!-- svelte-ignore a11y-autofocus -->
 	<div class="center aligned actions">
-		<div autofocus class="ui button" on:click={close}>Cancel</div>
-		<div class="ui positive button">{ok_text}</div>
+		<div autofocus class="ui button" on:click={close}>Cancelar</div>
+		{#if ok_text !== ''}
+			<div class="ui positive button">{ok_text}</div>
+		{/if}
 	</div>
 </div>
 
