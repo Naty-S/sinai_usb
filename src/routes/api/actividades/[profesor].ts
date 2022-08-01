@@ -3,6 +3,8 @@ import { Prisma } from "@prisma/client";
 
 import type { Actividad, ActivityKind, YearActivities } from "$types/db/actividades";
 import PrismaClient from "$lib/prisma";
+import { group_by } from "$utils/backend";
+
 
 const prisma = new PrismaClient();
 
@@ -55,7 +57,7 @@ export const get: RequestHandler = async ({ request, params }) => {
     });
 
     // Join activities with the info of the kind
-    const acts: Actividad[] = _acts.map(a => {
+    const acts: Actividad[] = _acts.map( a => {
 
       const k = _act_kind.find(k => k.id === a.id);
       
@@ -66,8 +68,8 @@ export const get: RequestHandler = async ({ request, params }) => {
         // _k.shift();
         
         let _k = Object.entries(k);
-        let _kind_name: string;
-        let _kind_info: ActivityKind;
+        let _kind_name: string = '';
+        let _kind_info: ActivityKind = undefined;
   
         for (const [k_name, k_info] of _k) {
           if (k_info) {
@@ -78,7 +80,7 @@ export const get: RequestHandler = async ({ request, params }) => {
   
         return {
           ...a,
-          kind_name: _kind_name, // TODO: tell typescript its assigned
+          kind_name: _kind_name,
           kind_info: _kind_info
         }
       } else {
@@ -87,42 +89,43 @@ export const get: RequestHandler = async ({ request, params }) => {
       }
     });
 
-    /**
-     * Groups activities by the given prop.
-     * Used to group by year or kind
-     * 
-     * @param {Actividad[]} objectArray - The activities to group
-     * @param {string} prop - The prop to group by
-     * @returns {Record<string, Actividad[]>} The activities grouped by the given prop
-     */
-    const group_by = (objectArray: Actividad[] | any, prop: PropertyKey): Record<string, Actividad[] | Record<string, Actividad[]>> => {
+    // group kinds of activities by year
+    const acts_kinds_by_year: YearActivities[] = Object.entries(group_by("fecha_creacion", acts))
+      .map( ([_year, _acts]) => {
+        return {
+          year: _year,
+          acts: group_by("kind_name", _acts)
+        };
+      });
+    
+    // count kinds of activities by year
+    const acts_counts = Object.entries(group_by("kind_name", acts))
+      .map(([_kind, _acts]) => {
+        const years = acts_kinds_by_year.map(a => a["year"]);
+        const acts_by_year = group_by("fecha_creacion", _acts)
+        const _years_counts: number[] = []
 
-        return objectArray.reduce((acc: Actividad, obj: Actividad) => {
-          let key = prop === "fecha_creacion" ? obj[prop].getFullYear() : obj[prop]
-
-          if (!acc[key]) {
-            acc[key] = []
+        // fill empty years without activities
+        years.map(y => {
+          if (!acts_by_year[y]) {
+            acts_by_year[y] = []
           }
-
-          acc[key].push(obj)
-
-          return acc
-        }, {})
-      };
-
-    // Group by year-kind
-    const acts_by_year: YearActivities[] =
-      Object.entries(group_by(acts, "fecha_creacion"))
-        .map(([_year, _acts]) => {
-          return { year: _year, acts: group_by(_acts, "kind_name") }
         });
 
-    console.log(group_by(acts, "fecha_creacion"));
+        // count activities by year
+        Object.entries(acts_by_year).map( ([_, arr]) => _years_counts.push(arr.length) )
         
-    console.log(acts_by_year);
+        return {
+          kind: _kind,
+          years_counts: _years_counts
+        };
+      });
 
     status = 200;
-    body = acts_by_year;
+    body = {
+      acts_kinds_by_year,
+      acts_counts
+    };
 
   } catch (e) {
     // TODO: 

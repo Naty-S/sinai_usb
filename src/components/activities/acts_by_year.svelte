@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { YearActivities } from "$types/db/actividades";
   
+  import { format_date } from "$utils/frontend";
   import Modal from "$components/modal.svelte";
-  import { format_date, match_kind_to_title } from "$utils/index";
   import KindInfo from "./kind_info.svelte";
   
   // Props
@@ -56,7 +56,7 @@
   {#each Object.entries(activities.acts) as [kind, acts]}
   <!-- Display activities kind -->
     {#each acts as act}
-      <h3>{match_kind_to_title(kind, act.kind_info)}</h3>
+      <h3>{kind}</h3>
   
       <ol class="ui items">
         <div class="item">
