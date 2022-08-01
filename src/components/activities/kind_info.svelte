@@ -1,4 +1,5 @@
-<!-- 
+<!--
+  @component
   Display the information of the activity depending of its kind
   
   @param {ActivityKind} activity - The activity kind to display its info
@@ -6,7 +7,7 @@
 -->
 <script lang="ts">
   import type { ActivityKind } from "$types/db/actividades";
-  import { format_date } from "$utils/index";
+  import { format_date } from "$utils/frontend";
 
   export let activity: ActivityKind | any;
   export let kind: string;

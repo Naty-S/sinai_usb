@@ -40,6 +40,16 @@ export type YearActivities = {
   acts: Record<string, Actividad[]>
 };
 
+export type ActivitiesCounts = {
+  kind: string
+  years_counts: number[]
+};
+
+export type Activities = {
+  acts_kinds_by_year: YearActivities[],
+  acts_counts: ActivitiesCounts[]
+}
+
 export type ActivityKind
   = articulo_revista
   | capitulo_libro
@@ -57,6 +67,5 @@ export type ActivityKind
   | proyecto_grado
   | proyecto_investigacion
   | recital
-  | undefined // This means there's no kind asociated to the activity. This shouldn't happen
   // | undefined // This means there's no kind asociated to the activity. This shouldn't happen
 ;
