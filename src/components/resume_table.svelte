@@ -20,7 +20,7 @@
 </script>
 
 <!-- TODO: 'sortable' not work -->
-<div id="resume_table"> <!-- class="uk-overflow-auto"> <<- si se coloca no puedo colocar 'ui'  -->
+<div id="resume_table" class="uk-margin"> <!-- class="uk-overflow-auto"> <<- si se coloca no puedo colocar 'ui'  -->
   <table class="ui {n_column} celled striped table uk-table">
     <thead class="center aligned">
       <tr>
@@ -44,16 +44,16 @@
             <td class="center aligned">{count}</td>
           {/each}
           {#if row_total}
-            <td class="center aligned">
+            <td class="grey center aligned">
               <i>{ a.years_counts.reduce( (accum, count) => accum + count, 0 ) }</i>
             </td>
           {/if}
         </tr>
       {/each}
       {#if col_total}
-        <tr class="center aligned">
-          <td class="grey">
-            <i>Total</i>
+        <tr class="grey center aligned">
+          <td>
+            <strong><i>Total</i></strong>
           </td>
           {#each resume_total_counts as count}
             <td>{count}</td>

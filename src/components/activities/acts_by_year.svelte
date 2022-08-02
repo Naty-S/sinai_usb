@@ -48,7 +48,7 @@
 
 </script>
 
-<div id="{activities.year}_activities">
+<div id="{activities.year}_activities" class="uk-margin">
   <h2 class="uk-text-center">
     Actividades Correspondientes al año {activities.year}
   </h2>
@@ -74,7 +74,9 @@
               <span class="uk-text-emphasis">Creada por</span>: {act.creada_por} el {format_date(act.fecha_creacion)}
               <span class="uk-text-emphasis">Ultima modificacion</span>: act.modificacion
               {act.validado_por ? "Validada por: " + act.validado_por : ''}
-      
+
+            </div>
+            <div class="uk-margin-small">
               <!-- TODO: #16 ... -->
               <a href="/api/actividades/[id]/modificar">[Modificar]</a>
               <button
