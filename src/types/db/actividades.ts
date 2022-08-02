@@ -48,7 +48,7 @@ export type ActivitiesCounts = {
 export type Activities = {
   acts_kinds_by_year: YearActivities[],
   acts_counts: ActivitiesCounts[]
-}
+};
 
 export type ActivityKind
   = articulo_revista
