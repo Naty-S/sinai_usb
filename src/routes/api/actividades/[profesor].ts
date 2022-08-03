@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { Prisma } from "@prisma/client";
 
-import type { Actividad, ActivityKind, YearActivities } from "$types/db/actividades";
+import type { Activity, ActivityKind, YearActivities } from "$types/db/activities";
 import PrismaClient from "$lib/prisma";
 import { group_by } from "$utils/backend";
 
@@ -17,7 +17,7 @@ const prisma = new PrismaClient();
  * @param param0 - 
  * @returns {Object<number, YearActivities[]>} The status code and the activities grouped by year and kind
  */
-export const get: RequestHandler = async ({ request, params }) => {
+export const get: RequestHandler = async function({ request, params }) {
 
   let body = {};
   let status = 500;
@@ -27,6 +27,26 @@ export const get: RequestHandler = async ({ request, params }) => {
     const _acts = await prisma.actividad.findMany({
       where: {
         creada_por: params.profesor
+      },
+      include: {
+        autores_usb: true,
+        autores_externos: true,
+        articulos_revistas: true,
+        capitulos_libros: true,
+        composiciones: true,
+        eventos: true,
+        exposiciones: true,
+        grabaciones: true,
+        informes_tecnicos: true,
+        libros: true,
+        memorias: true,
+        partituras: true,
+        patentes: true,
+        premios: true,
+        premios_bienales: true,
+        proyectos_grado: true,
+        proyectos_investigacion: true,
+        recitales: true
       }
     });
 
@@ -57,7 +77,7 @@ export const get: RequestHandler = async ({ request, params }) => {
     });
 
     // Join activities with the info of the kind
-    const acts: Actividad[] = _acts.map( a => {
+    const acts: Activity[] = _acts.map( a => {
 
       const k = _act_kind.find(k => k.id === a.id);
       
@@ -135,14 +155,14 @@ export const get: RequestHandler = async ({ request, params }) => {
       if (e.code === 'P1012') {
         console.log(
           'There is a unique constraint violation, a new user cannot be created with this email'
-        )
-      }
-    }
-    throw e
-  }
+        );
+      };
+    };
+    throw e;
+  };
 
   return {
     status,
     body
-  }
-}
+  };
+};
