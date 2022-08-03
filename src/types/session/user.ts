@@ -4,8 +4,9 @@ import type { Activities } from "$types/db/activities";
 
 export type User = {
   email: string;
-  profesor_profile?: {
+  profesor_profile: {
     id: number;
+    id_card: number;
     name1: string;
     name2: string;
     surname1: string;
