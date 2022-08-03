@@ -204,11 +204,11 @@ model usuario {
 
   // Prisma relations
   actividades     actividad[]
-  administradores administrador?
-  profesores      profesor?
+  administrador   administrador?
+  autores         autor_usb[]
+  profesor        profesor?
 
-  autores      autor_usb[]
-  logs_usuario log_usuario[] @ignore
+  logs_usuario    log_usuario[] @ignore
 }
 
 model profesor {
@@ -228,7 +228,7 @@ model profesor {
   dedicacion           profesor_dedicacion_enum
   diploma_tipo         profesor_diploma_tipo_enum
   diploma_universidad  String
-  departamento         Int?
+  departamento         Int
   extension            Int?
   fecha_contrato       DateTime?                  @db.Date
   fecha_ingreso        DateTime?                  @db.Date
@@ -243,15 +243,15 @@ model profesor {
   actividades                  actividad[]
   autores                      autor_usb[]
   convocatorias_pei            convocatoria_pei[]
-  coordinaciones               coordinacion[]
+  coordinacion                 coordinacion?
   datos_informe                datos_informe[]
-  divisiones                   division[]
-  jefe_departamentos           departamento[]                    @relation("departamento_jefe_fkey")
+  division                     division?
+  jefe_departamentos           departamento[]                      @relation("departamento_jefe_fkey")
   historico_departamentos      historico_profesor_departamento[]
   historico_grupos             historico_profesor_grupo[]
   historico_nomina             historico_profesor_nomina[]
   logs_operaciones_actividades log_operacion_actividad[]
-  representante_departamentos  departamento[]                    @relation("departamento_representante_fkey")
+  representante_departamentos  departamento[]                      @relation("departamento_representante_fkey")
   grupos_investigacion         grupo_investigacion[]
   pei                          pei[]
   ppi                          ppi[]
@@ -259,7 +259,7 @@ model profesor {
 
 model coordinacion {
   id     Int    @id @default(autoincrement())
-  jefe   String
+  jefe   String @unique(map: "coordinacion_jefe_idx")
   correo String
   nombre String
   siglas String
@@ -270,13 +270,11 @@ model coordinacion {
   // Prisma relations
   departamentos departamento[]
   personal      personal_coordinacion[]
-
-  @@index([jefe])
 }
 
 model division {
   id     Int    @id @default(autoincrement())
-  jefe   String
+  jefe   String @unique(map: "division_jefe_idx")
   nombre String
 
   // Postgres relations
@@ -284,8 +282,6 @@ model division {
 
   // Prisma relations
   departamentos departamento[]
-
-  @@index([jefe])
 }
 
 // TODO: Evaluar agregar campo para distinguir si es suplente o no el jefe y representante (se diferencia en el historico).
@@ -493,7 +489,7 @@ model actividad {
   id                        Int       @id @default(autoincrement())
   creada_por                String
   validado_por              String?
-  cuota                     Int?
+  cuota                     Int
   descripcion               String?
   fecha_creacion            DateTime  @db.Date
   fecha_ultima_modificacion DateTime  @updatedAt @db.Date
@@ -510,24 +506,24 @@ model actividad {
   actividades_grupos           actividad_grupo_investigacion[]
   autores_externos             autor_externo[]
   autores_usb                  autor_usb[]
-  articulos_revistas           articulo_revista?
-  capitulos_libros             capitulo_libro?
-  composiciones                composicion?
+  articulo_revista             articulo_revista?
+  capitulo_libro               capitulo_libro?
+  composicion                  composicion?
   documentos                   documento[]
-  eventos                      evento?
-  exposiciones                 exposicion?
-  grabaciones                  grabacion?
-  informes_tecnicos            informe_tecnico?
-  libros                       libro?
+  evento                       evento?
+  exposicion                   exposicion?
+  grabacion                    grabacion?
+  informe_tecnico              informe_tecnico?
+  libro                        libro?
   logs_operaciones_actividades log_operacion_actividad[]
-  memorias                     memoria?
-  partituras                   partitura?
-  patentes                     patente?
-  premios                      premio?
-  premios_bienales             premio_bienal?
-  proyectos_grado              proyecto_grado?
-  proyectos_investigacion      proyecto_investigacion?
-  recitales                    recital?
+  memoria                      memoria?
+  partitura                    partitura?
+  patente                      patente?
+  premio                       premio?
+  premio_bienal                premio_bienal?
+  proyecto_grado               proyecto_grado?
+  proyecto_investigacion       proyecto_investigacion?
+  recital                      recital?
 
   @@index([creada_por])
   @@index([validado_por])

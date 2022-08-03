@@ -26,7 +26,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import type { Actividad, YearActivities } from "$types/db/actividades";
+  import type { Activity, YearActivities } from "$types/db/activities";
 
   import ActsByYear from "$components/activities/acts_by_year.svelte";
   import BraHeader from "$components/bra/header.svelte";
@@ -50,7 +50,7 @@
     )};
   });
 
-  const count_acts = (acts: Record<string, Actividad[]>) => {
+  const count_acts = (acts: Record<string, Activity[]>) => {
     return Object.entries(acts).reduce((count, [_, _acts]) => count + _acts.length, 0)
   };
 

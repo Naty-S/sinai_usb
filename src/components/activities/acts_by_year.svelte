@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { YearActivities } from "$types/db/actividades";
+  import type { YearActivities } from "$types/db/activities";
   
   import { format_date } from "$utils/frontend";
   import Modal from "$components/modal.svelte";
