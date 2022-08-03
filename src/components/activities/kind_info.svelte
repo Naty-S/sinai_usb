@@ -6,7 +6,7 @@
   @param {string}       kind     - Indicates the kind of the actvity
 -->
 <script lang="ts">
-  import type { ActivityKind } from "$types/db/actividades";
+  import type { ActivityKind } from "$types/db/activities";
   import { format_date } from "$utils/frontend";
 
   export let activity: ActivityKind | any;

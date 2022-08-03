@@ -1,4 +1,4 @@
-import type { Actividad, ActivityKind } from "$types/db/actividades";
+import type { Activity, ActivityKind, YearActivities, ActivitiesCounts } from "$types/db/activities";
 import type {
   articulo_revista,
   capitulo_libro,
@@ -26,14 +26,15 @@ import type {
  * @param {ActivityKind} act - Activity kind info
  * @returns {string} The detailed kind
  */
-export const get_detailed_kind = function(kind: string, act: ActivityKind): string {
+export const get_detailed_kind = function (kind: string, act: ActivityKind): string {
 
   // 'act_info' can't be 'undefined' because its verified in the parent
   // TODO: make typescript know that's not 'undefined'
 
   switch (kind) {
-    case "articulos_revistas":
+    case "articulo_revista":
       const _act_kind = act as articulo_revista
+      const a = act ? act as articulo_revista : act
 
       if ( ["SCI", "SSCI", "SCIENCE CITATION INDEX", "SOCIAL SCIENCES CITATION INDEX"].
         some( i => _act_kind.indice.toUpperCase().includes(i) ) ) {
@@ -59,13 +60,13 @@ export const get_detailed_kind = function(kind: string, act: ActivityKind): stri
         return "Publicaciones en Revistas Arbitradas"
       }
 
-    case "capitulos_libros":
+    case "capitulo_libro":
       return "Publicaciones de Capotulos de Libros";
 
-    case "composiciones":
+    case "composicion":
       return "Composiciones Solicitadas por Orquestas Sinfonicas o Agrupaciones Reconocidas";
 
-    case "eventos":
+    case "evento":
       if (act.modalidad === "Invitada" && act.pais === "Venezuela") {
         return "Asistencia a Eventos Nacionales"
 
@@ -82,16 +83,16 @@ export const get_detailed_kind = function(kind: string, act: ActivityKind): stri
         return "Eventos";
       }
 
-    case "exposiciones":
+    case "exposicion":
       return "Seleccion en Exposiciones, Bienales, Salones o Concursos Arbitrados";
 
-    case "grabaciones":
+    case "grabacion":
       return "Grabaciones Sonoras Evaluadas Por Arbitros";
 
-    case "informes_tecnicos":
+    case "informe_tecnico":
       return "Informes Tecnicos";
 
-    case "libros":
+    case "libro":
       if (act.pais === "Venezuela") {
         return "Libro Nacional"
 
@@ -102,13 +103,13 @@ export const get_detailed_kind = function(kind: string, act: ActivityKind): stri
         return "Publicaciones de Libros"
       }
 
-    case "memorias":
+    case "memoria":
       return "Memorias *Arbitradas* de Congresos";
 
-    case "partituras":
+    case "partitura":
       return "Partituras, Video o CD's Publicados en Editoriales Reconocidas";
 
-    case "patentes":
+    case "patente":
       if (act.pais === "Venezuela") {
         return "Patentes Nacional"
 
@@ -119,13 +120,13 @@ export const get_detailed_kind = function(kind: string, act: ActivityKind): stri
         return "Patentes"
       }
 
-    case "premios":
+    case "premio":
       return "Premios";
 
-    case "premios_bienales":
+    case "premio_bienal":
       return "Trabajos Reconocidos o Premiados En Bienales, Salones, Concursos o Exposiciones";
 
-    case "proyectos_grado":
+    case "proyecto_grado":
       if (act.nivel_academico === "Doctorado") {
         return "Tutoria de Tesis Doctorales"
 
@@ -151,7 +152,7 @@ export const get_detailed_kind = function(kind: string, act: ActivityKind): stri
         return "Proyectos de Grado Dirigidos";
       }
 
-    case "proyectos_investigacion":
+    case "proyecto_investigacion":
 
       const start = new Date(act.fecha_inicio);
       start.setMonth(start.getMonth() + act.meses_duracion);
@@ -164,7 +165,7 @@ export const get_detailed_kind = function(kind: string, act: ActivityKind): stri
         return "Proyectos de IYD";
       }
 
-    case "recitales":
+    case "recital":
       return "Recitales o Conciertos Arbitrados";
 
     default:
@@ -180,9 +181,9 @@ export const get_detailed_kind = function(kind: string, act: ActivityKind): stri
  * @param {string} prop - The prop to group by
  * @returns {Record<string, any>} The activities grouped by the given prop
  */
-export const group_by = function(prop: PropertyKey, acts: any): Record<string, any> {
+export const group_by = function (prop: PropertyKey, acts: any): Record<string, any> {
 
-  return acts.reduce((acc: any, obj: Actividad) => {
+  return acts.reduce((acc: any, obj: Activity) => {
     let key = prop === "fecha_creacion" ? obj[prop].getFullYear()
                                         : get_detailed_kind(obj.kind_name, obj.kind_info)
 
@@ -194,4 +195,42 @@ export const group_by = function(prop: PropertyKey, acts: any): Record<string, a
 
     return acc
   }, {})
+};
+
+// group kinds of activities by year
+export const acts_kinds_by_year = function (acts: any): YearActivities[] {
+
+  return Object.entries(group_by("fecha_creacion", acts))
+    .map(([_year, _acts]) => {
+      return {
+        year: _year,
+        acts: group_by("kind_name", _acts)
+      };
+    });
+}
+
+// count kinds of activities by year
+export const acts_counts = function (acts: any): ActivitiesCounts[] {
+  
+  return Object.entries(group_by("kind_name", acts))
+    .map(([_kind, _acts]) => {
+      const years = acts_kinds_by_year(acts).map(a => a["year"]);
+      const acts_by_year = group_by("fecha_creacion", _acts)
+      const _years_counts: number[] = []
+
+      // fill empty years without activities
+      years.map(y => {
+        if (!acts_by_year[y]) {
+          acts_by_year[y] = []
+        }
+      });
+
+      // count activities by year
+      Object.entries(acts_by_year).map(([_, arr]) => _years_counts.push(arr.length))
+
+      return {
+        kind: _kind,
+        years_counts: _years_counts
+      };
+    });
 };

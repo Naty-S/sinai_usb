@@ -19,37 +19,6 @@ import type {
 } from "@prisma/client";
 
 
-export type Actividad = {
-  id:                        number 
-  creada_por:                string
-  validado_por:              string | null
-  cuota:                     number | null
-  descripcion:               string | null
-  fecha_creacion:            Date 
-  fecha_ultima_modificacion: Date 
-  fecha_validacion:          Date | null
-  observaciones:             string | null
-  palabras_clave:            string[]
-  titulo:                    string
-  kind_name:                 string
-  kind_info:                 ActivityKind
-};
-
-export type YearActivities = {
-  year: string
-  acts: Record<string, Actividad[]>
-};
-
-export type ActivitiesCounts = {
-  kind: string
-  years_counts: number[]
-};
-
-export type Activities = {
-  acts_kinds_by_year: YearActivities[],
-  acts_counts: ActivitiesCounts[]
-}
-
 export type ActivityKind
   = articulo_revista
   | capitulo_libro
@@ -69,3 +38,34 @@ export type ActivityKind
   | recital
   // | undefined // This means there's no kind asociated to the activity. This shouldn't happen
 ;
+
+export type Activity = {
+  id:                        number 
+  creada_por:                string
+  validado_por:              string | null
+  cuota:                     number | null
+  descripcion:               string | null
+  fecha_creacion:            Date 
+  fecha_ultima_modificacion: Date 
+  fecha_validacion:          Date | null
+  observaciones:             string | null
+  palabras_clave:            string[]
+  titulo:                    string
+  kind_name:                 string
+  kind_info:                 ActivityKind
+};
+
+export type YearActivities = {
+  year: string
+  acts: Record<string, Activity[]>
+};
+
+export type ActivitiesCounts = {
+  kind: string
+  years_counts: number[]
+};
+
+export type Activities = {
+  acts_kinds_by_year: YearActivities[],
+  acts_counts: ActivitiesCounts[]
+};

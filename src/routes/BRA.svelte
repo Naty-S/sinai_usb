@@ -24,7 +24,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import type { Activities } from "$types/db/actividades";
+  import type { Activities, Activity, YearActivities } from "$types/db/activities";
+
   import ActsByYear from "$components/activities/acts_by_year.svelte";
   import BraHeader from "$components/bra/header.svelte";
   import ResumeTable from "$components/resume_table.svelte";

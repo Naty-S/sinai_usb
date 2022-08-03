@@ -1,34 +1,11 @@
-<script context="module" lang="ts">
-  import type { Load } from "@sveltejs/kit";
-
-  // https://kit.svelte.dev/docs/loading
-  // TODO: fetch from 'stores'
-  export const load: Load = async ({ fetch }) => {    
-    const res = await fetch("/api/actividades/eduardo@usb.ve");
-   
-    if (res.ok) {
-      const prof_activities: Activities = await res.json();
-
-      return {
-        props: {prof_activities}
-      }
-    }
-
-    const { message } = await res.json();
-    return {
-      error: new Error(message)
-    }
-};
-</script>
-
 <script lang="ts">
-  import type { Activities } from "$types/db/actividades";
+  import type { Activities } from "$types/db/activities";
 
   import ActsByYear from "$components/activities/acts_by_year.svelte";
   import ResumeTable from "$components/resume_table.svelte";
+	import { user } from '$lib/shared/stores/session';
 
-  export let prof_activities: Activities;
-
+  const prof_activities: Activities = $user.activities.profesor_activities;
   const years = prof_activities.acts_kinds_by_year.map( a => a["year"] );
   const headers = ["Actividad"].concat(years);  
 </script>

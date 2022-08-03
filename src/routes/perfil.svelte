@@ -1,7 +1,16 @@
 <script>
-  import { pei_nivel_enum, profesor_categoria_enum, profesor_dedicacion_enum, profesor_diploma_tipo_enum } from "@prisma/client";
+  import {
+    pei_nivel_enum
+    , profesor_categoria_enum
+    , profesor_dedicacion_enum
+    , profesor_diploma_tipo_enum
+  } from "@prisma/client";
 
+  import { user } from "$lib/shared/stores/session";
+
+  let profile = $user.profesor_profile?.profile;
 </script>
+
 <h2 class="uk-text-center">
   Datos Personales
 </h2>
@@ -12,20 +21,20 @@
 
   <div class="ui centered grid field">
     <div class="two column row">
-      <div class="column">Nombre: </div>
-      <div class="column">Segundo Nombre: </div>
+      <div class="column">Nombre: {$user.profesor_profile?.name1}</div>
+      <div class="column">Segundo Nombre: {$user.profesor_profile?.name2}</div>
     </div>
 
     <div class="two column row">
-      <div class="column">Apellido: </div>
-      <div class="column">Segundo Apellido: </div>
+      <div class="column">Apellido: {$user.profesor_profile?.surname1}</div>
+      <div class="column">Segundo Apellido: {$user.profesor_profile?.surname2}</div>
     </div>
   </div>
 
   <div class="two inline fields">
     <div class="required field">
       <label for="">Perfil</label>
-      <input type="text">
+      <input type="text" bind:value={profile}>
     </div>
     <div class="field">
       <label for="">Página url</label>
