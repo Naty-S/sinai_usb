@@ -37,7 +37,7 @@
           <a href="#">Vistas <span uk-navbar-parent-icon></span></a>
           <div class="uk-navbar-dropdown">
             <ul class="uk-nav uk-navbar-dropdown-nav">
-              <li><a href="#">BRA</a></li>
+              <li><a href="/BRA">BRA</a></li>
               <li><a href="#">Personal</a></li>
               <li><a href="#">Coordinacion</a></li>
               <li><a href="#">Departamento</a></li>

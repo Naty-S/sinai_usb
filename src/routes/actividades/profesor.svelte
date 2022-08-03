@@ -23,7 +23,7 @@
 
 <!-- Display activities by year -->
 {#each prof_activities.acts_kinds_by_year.reverse() as activities}
-  <ActsByYear {activities}/>
+  <ActsByYear {activities} editable/>
 {/each}
 
 <div class="uk-text-center">

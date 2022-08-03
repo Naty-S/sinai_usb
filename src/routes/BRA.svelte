@@ -1,36 +1,14 @@
-<script context="module" lang="ts">
-  import type { Load } from "@sveltejs/kit";
-
-  // https://kit.svelte.dev/docs/loading
-  // TODO: fetch from 'stores'
-  export const load: Load = async ({ fetch }) => {    
-    const res = await fetch("/api/actividades/eduardo@usb.ve");
-   
-    if (res.ok) {
-      const prof_activities: Activities = await res.json();
-
-      return {
-        props: {prof_activities}
-      }
-    }
-
-    const { message } = await res.json();
-    return {
-      error: new Error(message)
-    }
-};
-</script>
-
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import type { Activities, Activity, YearActivities } from "$types/db/activities";
+  import type { Activities } from "$types/db/activities";
 
   import ActsByYear from "$components/activities/acts_by_year.svelte";
   import BraHeader from "$components/bra/header.svelte";
   import ResumeTable from "$components/resume_table.svelte";
+	import { user } from '$lib/shared/stores/session';
 
-  export let prof_activities: Activities;
+  const prof_activities: Activities = $user.activities.profesor_activities;
   
   let printBRA: () => void;
 
@@ -51,40 +29,42 @@
     )};
   });
 
-  const years = prof_activities.acts_kinds_by_year.map( a => a["year"] );
-  const headers = ["Actividad"].concat(years);  
+  const acts_years = prof_activities.acts_kinds_by_year.map( a => a["year"] );
+  const headers = ["Actividad"].concat(acts_years);
+
+  // TODO: change to period set by the Dean
+  const current_year = new Date().getFullYear();
+  const period = "Julio " + (current_year - 1).toString() + " - Julio " + current_year.toString()
+  const years = (current_year - 1).toString() + " - " + current_year.toString();
+  const period_activities = prof_activities.acts_kinds_by_year.filter(a => period.includes(a.year))
 </script>
 
-<!-- <div class="ui grid"> -->
-  <div id="bra">
-    <BraHeader />
-    
-    <!-- Display activities resume table -->
-    <ResumeTable
-      {headers}
-      resume_kinds_counts={prof_activities.acts_counts}
-      n_column="{headers.length} column"
-      row_total
-      col_total
-    />
+<div id="bra" class="uk-margin">
+  <BraHeader {period}/>
+  
+  <!-- Display activities resume table -->
+  <ResumeTable
+    {headers}
+    resume_kinds_counts={prof_activities.acts_counts}
+    n_column="{headers.length} column"
+    row_total
+    col_total
+  />
 
-    <div class="ui three column text grid container">
-      <!-- <div class="equal width row"> -->
-        <div class="column">Encontradas: #</div>
-        <div class="center aligned column">Años:  - </div>
-        <div class="right aligned column">Páginas: #</div>
-      <!-- </div> -->
-    </div>
-
-    <!-- Display activities by year -->
-    {#each prof_activities.acts_kinds_by_year.reverse() as activities}
-      <ActsByYear {activities}/>
-    {/each}
+  <div class="ui three column grid container segment">
+    <div class="column">Encontradas: {period_activities.length}</div>
+    <div class="center aligned column">Años: {years}</div>
+    <div class="right aligned column">Páginas: #</div>
   </div>
 
-  <div id="print_button" class="uk-margin">
-    <button type="button" class="ui blue button" on:click="{() => printBRA()}">
-      Imprimir vista BRA
-    </button>
-  </div>
-<!-- </div> -->
+  <!-- Display activities by year -->
+  {#each period_activities.reverse() as activities}
+    <ActsByYear {activities} />
+  {/each}
+</div>
+
+<div id="print_button" class="ui container uk-margin">
+  <button type="button" class="ui blue button" on:click="{() => printBRA()}">
+    Imprimir vista BRA
+  </button>
+</div>

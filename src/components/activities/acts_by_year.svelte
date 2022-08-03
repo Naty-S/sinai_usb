@@ -7,16 +7,17 @@
   
   // Props
   export let activities: YearActivities;
+  export let editable = false;
 
   const groups_acts =
-    [ "articulos_revistas"
-    , "capitulos_libros"
-    , "eventos"
-    , "informes_tecnicos"
-    , "libros"
-    , "memorias"
-    , "proyectos_grado"
-    , "proyectos_investigacion"
+    [ "articulo_revista"
+    , "capitulo_libro"
+    , "evento"
+    , "informe_tecnico"
+    , "libro"
+    , "memoria"
+    , "proyecto_grado"
+    , "proyecto_investigacion"
     ];
 
   let show_validate = false;
@@ -25,21 +26,21 @@
   let actual_act_id = -1;
   let actual_act_title = '';
 
-  const _validate = (act_id: number, act_title: string) => {
+  const _validate = function (act_id: number, act_title: string) {
     show_validate = true;
     actual_act_id = act_id;
     actual_act_title = act_title;
     // validate in db
   };
 
-  /* const _invalidate = (act_id: number, act_title: string) => {
+  /* const _invalidate = function (act_id: number, act_title: string) {
     show_invalidate = true
     actual_act_id = act_id;
     actual_act_title = act_title;
     // invalidate in db
   }; */
 
-  const _delete = (act_id: number, act_title: string) => {
+  const _delete = function (act_id: number, act_title: string) {
     show_delete = true;
     actual_act_id = act_id;
     actual_act_title = act_title;
@@ -49,7 +50,7 @@
 </script>
 
 <div id="{activities.year}_activities" class="uk-margin">
-  <h2 class="uk-text-center">
+  <h2 class="ui blue header uk-text-center">
     Actividades Correspondientes al año {activities.year}
   </h2>
   
@@ -68,36 +69,40 @@
               {#if groups_acts.includes(kind)}
                 <span class="uk-text-emphasis">Realizada en el Grupo</span>: act.group.name.
               {/if}
-              <i>{act.observaciones ? "Observaciones: " + act.observaciones : ''}</i>
+              <i><span class="ui blue text">
+                {act.observaciones ? "Observaciones: " + act.observaciones : ''}
+              </span></i>
       
               <!-- TODO: #16 ... -->
-              <span class="uk-text-emphasis">Creada por</span>: {act.creada_por} el {format_date(act.fecha_creacion)}
+              <span class="uk-text-emphasis">Creada por</span>: {act.creada_por} el {format_date(act.fecha_creacion, true)}
               <span class="uk-text-emphasis">Ultima modificacion</span>: act.modificacion
               {act.validado_por ? "Validada por: " + act.validado_por : ''}
 
             </div>
-            <div class="uk-margin-small">
-              <!-- TODO: #16 ... -->
-              <a href="/api/actividades/[id]/modificar">[Modificar]</a>
-              <button
-                class="ui blue small button"
-                on:click="{() => _validate(act.id, act.titulo)}"
-              >
-                Validar
-              </button>
-              <!-- Shown in kms
-              <button
-                class="ui yellow small button"
-                on:click="{() => _invalidate(act.id, act.titulo)}">
-                  Desvalidar
-              </button> -->
-              <button
-                class="ui red small button"
-                on:click="{() => _delete(act.id, act.titulo)}"
-              >
-                Eliminar
-              </button>
-            </div>
+            {#if editable}
+              <div class="uk-margin-small">
+                <!-- TODO: #16 ... -->
+                <a href="/api/actividades/[id]/modificar">[Modificar]</a>
+                <button
+                  class="ui blue small button"
+                  on:click="{() => _validate(act.id, act.titulo)}"
+                >
+                  Validar
+                </button>
+                <!-- Shown in kms
+                <button
+                  class="ui yellow small button"
+                  on:click="{() => _invalidate(act.id, act.titulo)}">
+                    Desvalidar
+                </button> -->
+                <button
+                  class="ui red small button"
+                  on:click="{() => _delete(act.id, act.titulo)}"
+                >
+                  Eliminar
+                </button>
+              </div>
+            {/if}
           </li>
         </div>
       </ol>
