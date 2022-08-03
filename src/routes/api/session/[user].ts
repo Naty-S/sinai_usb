@@ -88,6 +88,7 @@ export const get: RequestHandler = async function({ request, params }) {
         email: _profesor.correo
         , profesor_profile: {
           id: _profesor.id
+          , id_card: _profesor.cedula
           , name1: _profesor.nombre1
           , name2: _profesor.nombre2
           , surname1: _profesor.apellido1
@@ -96,7 +97,7 @@ export const get: RequestHandler = async function({ request, params }) {
           , dedication: _profesor.dedicacion
           , department_id: _profesor.departamento
           , department_name: ''
-          , groups: []
+          , groups: ["g1","g2"]
           , diploma: _profesor.diploma_tipo
           , diploma_university: _profesor.diploma_universidad
           , ppi_number: _profesor.ppi[0].numero

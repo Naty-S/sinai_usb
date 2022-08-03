@@ -7,6 +7,7 @@ const init_user: User = {
   email: ''
   , profesor_profile: {
     id: -1
+    , id_card: 0
     , name1: ''
     , name2: ''
     , surname1: ''

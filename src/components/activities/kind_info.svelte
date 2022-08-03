@@ -13,7 +13,7 @@
   export let kind: string;
 </script>
 
-{#if kind === "articulos_revistas"}
+{#if kind === "articulo_revista"}
 
   <u>{activity.revista}</u>.
   <span class="uk-text-emphasis">Fecha de publicacion:</span> {format_date(activity.fecha_publicacion)}. <!-- anio -->
@@ -25,7 +25,7 @@
   {activity.con_estudiantes ? "Con estudiantes." : ''}
   {activity.paginas ? "Paginas: " + activity.paginas + '.' : ''} -->
 
-{:else if kind === "capitulos_libros"}
+{:else if kind === "capitulo_libro"}
 
   pp. {activity.pag_inicial} - {activity.pag_final}.
   "{activity.titulo_libro}".
@@ -36,7 +36,7 @@
   ISBN: {activity.isbn}.
   {activity.articulo_invitado ? "Articulo Invitado." : ''}
 
-{:else if kind === "composiciones"}
+{:else if kind === "composicion"}
 
   <u>Nombre del Evento: {activity.nombre_evento}</u>.
   {activity.ciudad}, {activity.pais}.
@@ -45,7 +45,7 @@
   Jurado: {activity.jurado}.
   Financiado por: {activity.financiado_por}.
 
-{:else if kind === "eventos"}
+{:else if kind === "evento"}
 
   Modalidad: {activity.modalidad}.
   <u>{activity.nombre}</u>.
@@ -53,7 +53,7 @@
   {format_date(activity.fecha)}.
   {activity.institucion ? "Financiamiento: " + activity.institucion + '.' : ''}
   
-{:else if kind === "exposiciones"}
+{:else if kind === "exposicion"}
   
   <u>Nombre del Evento: {activity.nombre_evento}</u>.
   Ciudad: {activity.ciudad}, Pais: {activity.pais}.
@@ -62,7 +62,7 @@
   {activity.organizado_por ? "Organizado por: " + activity.organizado_por + '.' : ''}
   {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
 
-{:else if kind === "grabaciones"}
+{:else if kind === "grabacion"}
   
   <u>{activity.editorial}</u>.
   {activity.nacional ? "Nacional." : "Internacional."}
@@ -72,7 +72,7 @@
   {activity.deposito_legal ? "Deposito legal: " + activity.deposito_legal + '.' : ''}
   {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
 
-{:else if kind === "informes_tecnicos"}
+{:else if kind === "informe_tecnico"}
   
   Fecha inicio: {format_date(activity.fecha_inicio)}.
   Financiamiento: {activity.institucion}.
@@ -81,7 +81,7 @@
   {activity.confidencial ? "Confidencial." : ''}
   {activity.evaluacion_did ? "Evaluado por el DID." : ''}
 
-{:else if kind === "libros"}
+{:else if kind === "libro"}
 
   <u>{activity.editorial}</u>.
   {activity.ciudad}, {activity.pais}.
@@ -89,7 +89,7 @@
   ISBN: {activity.isbn}.
   <!-- Segun el codigo viejo deberia de decir si es un articulo invitado, pero en el esquema de la DB no aparece -->
 
-{:else if kind === "memorias"}
+{:else if kind === "memoria"}
 
   <u>{activity.congreso}</u>.
   {activity.ciudad}, {activity.pais}.
@@ -104,7 +104,7 @@
   Paginas: {activity.paginas}.
   Tipo_congreso: {activity.tipo_congreso}. -->
 
-{:else if kind === "partituras"}
+{:else if kind === "partitura"}
 
   <u>{activity.editorial}</u>.
   {activity.nacional ? "Nacional." : "Internacional."}
@@ -114,18 +114,18 @@
   {activity.deposito_legal ? "Deposito legal: " + activity.deposito_legal + '.' : ''}
   {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
 
-{:else if kind === "patentes"}
+{:else if kind === "patente"}
 
   {activity.pais}.
   Numero: {activity.numero}.
   {format_date(activity.fecha_inicio)} - {format_date(activity.fecha_fin)}. <!-- anios -->
 
-{:else if kind === "premios"}
+{:else if kind === "premio"}
 
   {format_date(activity.fecha)}.
   Institucion que otorga: {activity.institucion}.
 
-{:else if kind === "premios_bienales"}
+{:else if kind === "premio_bienal"}
 
   <u>Nombre del Evento: {activity.nombre_evento}</u>.
   Titulo del premio: "{activity.titulo_premio}".
@@ -135,14 +135,14 @@
   {activity.organizado_por ? "Organizado por: " + activity.organizado_por + '.' : ''}
   {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
 
-{:else if kind === "proyectos_grado"}
+{:else if kind === "proyecto_grado"}
 
   Titulo Academico: {activity.titulo_academico}.
   Coordinación Academica: {activity.coordinacion_academica}.
   Nivel Academico: {activity.nivel_academico}.
   Fecha de Defensa: {format_date(activity.fecha_defensa)}.
 
-{:else if kind === "proyectos_investigacion"}
+{:else if kind === "proyecto_investigacion"}
 
   Fecha inicio: {format_date(activity.fecha_inicio)}.
   Financiamiento: {activity.institucion}.
@@ -151,7 +151,7 @@
   <!-- Moneda: {activity.moneda}.
   Monto: {activity.monto}. -->
 
-{:else if kind === "recitales"}
+{:else if kind === "recital"}
 
   <u>Nombre del Evento: {activity.nombre_evento}</u>.
   {activity.ciudad}, {activity.pais}.

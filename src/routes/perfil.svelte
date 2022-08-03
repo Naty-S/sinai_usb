@@ -8,7 +8,7 @@
 
   import { user } from "$lib/shared/stores/session";
 
-  let profile = $user.profesor_profile?.profile;
+  let profile = $user.profesor_profile.profile;
 </script>
 
 <h2 class="uk-text-center">
@@ -21,13 +21,13 @@
 
   <div class="ui centered grid field">
     <div class="two column row">
-      <div class="column">Nombre: {$user.profesor_profile?.name1}</div>
-      <div class="column">Segundo Nombre: {$user.profesor_profile?.name2}</div>
+      <div class="column">Nombre: {$user.profesor_profile.name1}</div>
+      <div class="column">Segundo Nombre: {$user.profesor_profile.name2}</div>
     </div>
 
     <div class="two column row">
-      <div class="column">Apellido: {$user.profesor_profile?.surname1}</div>
-      <div class="column">Segundo Apellido: {$user.profesor_profile?.surname2}</div>
+      <div class="column">Apellido: {$user.profesor_profile.surname1}</div>
+      <div class="column">Segundo Apellido: {$user.profesor_profile.surname2}</div>
     </div>
   </div>
 
