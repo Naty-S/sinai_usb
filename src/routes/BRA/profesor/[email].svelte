@@ -1,3 +1,24 @@
+<script context="module" lang="ts">
+  import type { Load } from "@sveltejs/kit";
+
+  // https://kit.svelte.dev/docs/loading
+  export const load: Load = async ({ fetch, params }) => {    
+    const res = await fetch(`/api/activities/professor/${params.email}`);
+   
+    if (res.ok) {
+      const prof_activities = await res.json();
+
+      return {
+        props: {prof_activities}
+      }
+    }
+
+    const { message } = await res.json();
+    return {
+      error: new Error(message)
+    }
+};
+</script>
 <script lang="ts">
   import { onMount } from "svelte";
 
@@ -6,9 +27,8 @@
   import ActsByYear from "$components/activities/acts_by_year.svelte";
   import BraHeader from "$components/bra/header.svelte";
   import ResumeTable from "$components/resume_table.svelte";
-	import { user } from '$lib/shared/stores/session';
 
-  const prof_activities: Activities = $user.activities.profesor_activities;
+  export let prof_activities: Activities;
   
   let printBRA: () => void;
 
@@ -46,7 +66,6 @@
   <ResumeTable
     {headers}
     resume_kinds_counts={prof_activities.acts_counts}
-    n_column="{headers.length} column"
     row_total
     col_total
   />

@@ -26,8 +26,6 @@
 <ResumeTable
   headers={["Profesor"].concat(headers)}
   resume_kinds={["prof1", "prof2"]}
-  {acts_counts}
-  n_column="nine column"
 />
 
 <div class="ui divider" />
@@ -50,9 +48,7 @@ del coordinador?
 
 <ResumeTable
   headers={["Grupo"].concat(headers)}
-  {acts_counts}
   resume_kinds={["GID1", "GID2"]}
-  n_column="ten column"
   row_total
 />
 

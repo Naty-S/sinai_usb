@@ -1,6 +1,6 @@
 <script>
 	import { user } from '$lib/shared/stores/session';
-  import { format_date } from '$utils/frontend';
+  import { format_date } from '$utils/formatting';
 
   export let period = '';
 
