@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { YearActivities } from "$types/db/activities";
   
-  import { format_date } from "$utils/frontend";
+  import { format_date } from "$utils/formatting";
   import Modal from "$components/modal.svelte";
   import KindInfo from "./kind_info.svelte";
   
@@ -82,7 +82,7 @@
             {#if editable}
               <div class="uk-margin-small">
                 <!-- TODO: #16 ... -->
-                <a href="/api/actividades/[id]/modificar">[Modificar]</a>
+                <a href="/api/activities/update_[id]">[Modificar]</a>
                 <button
                   class="ui blue small button"
                   on:click="{() => _validate(act.id, act.titulo)}"

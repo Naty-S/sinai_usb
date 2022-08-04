@@ -61,8 +61,9 @@ export type YearActivities = {
 };
 
 export type ActivitiesCounts = {
+  link?: string
   kind: string
-  years_counts: number[]
+  counts: number[]
 };
 
 export type Activities = {

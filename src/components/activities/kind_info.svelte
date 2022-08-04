@@ -7,7 +7,7 @@
 -->
 <script lang="ts">
   import type { ActivityKind } from "$types/db/activities";
-  import { format_date } from "$utils/frontend";
+  import { format_date } from "$utils/formatting";
 
   export let activity: ActivityKind | any;
   export let kind: string;
@@ -160,5 +160,7 @@
   Financiado por: {activity.financiado_por}.
 
 {:else}
-  ERROR kind: {kind}
+  <span class="ui red text"><strong>
+    ESTA ACTIVIDAD SE INGRESO DE FORMA INCORRECTA Y SUS DATOS NO SON VALIDOS
+  </strong></span>
 {/if}

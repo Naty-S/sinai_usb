@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 
 import type { Activity } from "$types/db/activities";
 import PrismaClient from "$lib/prisma";
-import { acts_kinds_by_year, acts_counts } from "$utils/backend";
+import { acts_kinds_by_year, acts_years_counts } from "$utils/grouping";
 
 
 const prisma = new PrismaClient();
@@ -118,7 +118,7 @@ export const get: RequestHandler = async function({ request, params }) {
         , activities: {
           profesor_activities: {
             acts_kinds_by_year: acts_kinds_by_year(_activities),
-            acts_counts: acts_counts(_activities)
+            acts_counts: acts_years_counts(_activities)
           }
         }
       };
