@@ -22,13 +22,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import type { Activities } from "$types/db/activities";
+  import type { ProfessorActivities } from "$types/db/activities";
 
-  import ActsByYear from "$components/activities/acts_by_year.svelte";
+  import ShowByYear from "$components/activities/show_by_year.svelte";
   import BraHeader from "$components/bra/header.svelte";
   import ResumeTable from "$components/resume_table.svelte";
 
-  export let prof_activities: Activities;
+  export let prof_activities: ProfessorActivities;
   
   let printBRA: () => void;
 
@@ -49,14 +49,14 @@
     )};
   });
 
-  const acts_years = prof_activities.acts_kinds_by_year.map( a => a["year"] );
+  const acts_years = prof_activities.by_year.map( a => a["year"] );
   const headers = ["Actividad"].concat(acts_years);
 
   // TODO: change to period set by the Dean
   const current_year = new Date().getFullYear();
   const period = "Julio " + (current_year - 1).toString() + " - Julio " + current_year.toString()
   const years = (current_year - 1).toString() + " - " + current_year.toString();
-  const period_activities = prof_activities.acts_kinds_by_year.filter(a => period.includes(a.year))
+  const period_activities = prof_activities.by_year.filter(a => period.includes(a.year))
 </script>
 
 <div id="bra" class="uk-margin">
@@ -65,7 +65,7 @@
   <!-- Display activities resume table -->
   <ResumeTable
     {headers}
-    resume_kinds_counts={prof_activities.acts_counts}
+    resume_kinds_counts={prof_activities.years_counts}
     row_total
     col_total
   />
@@ -78,7 +78,7 @@
 
   <!-- Display activities by year -->
   {#each period_activities.reverse() as activities}
-    <ActsByYear {activities} />
+    <ShowByYear {activities} />
   {/each}
 </div>
 
@@ -87,3 +87,5 @@
     Imprimir vista BRA
   </button>
 </div>
+
+<div class="ui divider" />

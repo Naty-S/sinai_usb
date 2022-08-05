@@ -240,7 +240,7 @@ model profesor {
   usuarios usuario @relation(fields: [correo], references: [login], onDelete: Cascade, onUpdate: Cascade)
 
   // Prisma relations
-  actividades                  actividad[]
+  actividades_validadas        actividad[]
   autores                      autor_usb[]
   convocatorias_pei            convocatoria_pei[]
   coordinacion                 coordinacion?

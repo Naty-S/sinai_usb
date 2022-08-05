@@ -24,15 +24,15 @@
 };
 </script>
 <script lang="ts">
-  import type { Activities } from "$types/db/activities";
+  import type { ProfessorActivities } from "$types/db/activities";
 
-  import ActsByYear from "$components/activities/acts_by_year.svelte";
+  import ShowByYear from "$components/activities/show_by_year.svelte";
   import ResumeTable from "$components/resume_table.svelte";
 
-  export let prof_activities: Activities;
+  export let prof_activities: ProfessorActivities;
 
-  const years = prof_activities.acts_kinds_by_year.map( a => a["year"] );
-  const headers = ["Actividad"].concat(years);  
+  const years = prof_activities.by_year.map( a => a["year"] );
+  const headers = ["Actividad"].concat(years);
 </script>
 
 <h3>Resumen Actividades</h3>
@@ -40,14 +40,14 @@
 <!-- Display activities resume table -->
 <ResumeTable
   {headers}
-  resume_kinds_counts={prof_activities.acts_counts}
+  resume_kinds_counts={prof_activities.years_counts}
   row_total
   col_total
 />
 
 <!-- Display activities by year -->
-{#each prof_activities.acts_kinds_by_year.reverse() as activities}
-  <ActsByYear {activities} editable/>
+{#each prof_activities.by_year.reverse() as activities}
+  <ShowByYear {activities} editable/>
 {/each}
 
 <div class="uk-text-center">
