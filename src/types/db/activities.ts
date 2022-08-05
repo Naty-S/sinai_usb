@@ -36,7 +36,7 @@ export type ActivityKind
   | proyecto_grado
   | proyecto_investigacion
   | recital
-  // | undefined // This means there's no kind asociated to the activity. This shouldn't happen
+  | undefined // This means there's no kind asociated to the activity. This shouldn't happen
 ;
 
 export type Activity = {
@@ -51,13 +51,15 @@ export type Activity = {
   observaciones:             string | null
   palabras_clave:            string[]
   titulo:                    string
+  autores_externos:          string[]
+  autores_usb:               string[]
   kind_name:                 string
   kind_info:                 ActivityKind
 };
 
 export type YearActivities = {
   year: string
-  acts: Record<string, Activity[]>
+  kind_activities: Record<string, Activity[]>
 };
 
 export type ActivitiesCounts = {
@@ -66,7 +68,34 @@ export type ActivitiesCounts = {
   counts: number[]
 };
 
-export type Activities = {
-  acts_kinds_by_year: YearActivities[],
-  acts_counts: ActivitiesCounts[]
+export type ProfessorActivities = {
+  by_year: YearActivities[],
+  years_counts: ActivitiesCounts[]
+};
+
+export type DepActivities = {
+  department: string,
+  professors_activities: {
+    professor: {
+      email: string,
+      name: string,
+      surname: string
+    },
+    activities: Activity[]
+  }[]
+};
+
+export type CoordActivities = {
+  coordination: string,
+  departments_activities: DepActivities[]
+};
+
+export type DivisionActivities = {
+  division: string,
+  departments_activities: DepActivities[]
+};
+
+export type DeanActivities = {
+  coordinations_activities: CoordActivities[],
+  divisions_activities: DivisionActivities[]
 };
