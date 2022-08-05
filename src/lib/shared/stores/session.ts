@@ -4,36 +4,8 @@ import type { User } from "$types/session/user";
 
 
 const init_user: User = {
-  email: ''
-  , profesor_profile: {
-    id: -1
-    , id_card: 0
-    , name1: ''
-    , name2: ''
-    , surname1: ''
-    , surname2: ''
-    , category: ''
-    , dedication: ''
-    , department_id: -1
-    , department_name: ''
-    , groups: []
-    , diploma: ''
-    , diploma_university: ''
-    , ppi_number: -1
-    , ppi_level: ''
-    , profile: ''
-    , page: ''
-    , research_lines: []
-  }
-  , coord_name: ''
-  , division_id: -1
-  , division_name: ''
-  , is_coord_chief: false
-  , is_dep_chief: false
-  , is_dep_representative: false
-  , is_division_chief: false
-  , is_dean: false
-  , activities: {}
+  email: '',
+  is_dean: false
 };
 
 const create_user = function() {

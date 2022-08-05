@@ -1,11 +1,9 @@
 /// <reference types="@sveltejs/kit" />
-import type { Activities } from "$types/db/activities";
-
 
 export type User = {
   email: string;
-  profesor_profile: {
-    id: number;
+  is_dean: boolean;
+  professor?: {
     id_card: number;
     name1: string;
     name2: string;
@@ -24,25 +22,14 @@ export type User = {
     page: string;
     research_lines: Array<string>;
   };
-  coord_id?: number;
-  coord_name?: string;
-  division_id?: number;
-  division_name?: string;
-  is_coord_chief: boolean;
-  is_dep_chief: boolean;
-  is_dep_representative: boolean;
-  is_division_chief: boolean;
-  is_dean: boolean;
-  activities: {
-    profesor_activities?: Activities;
-    coord_activities?: {
-
-    };
-    dep_activities?: {
-
-    };
-    division_activities?: {
-
-    };
+  coord_chief?: {
+    coord_id: number;
+    coord_name: string;
   };
+  division_chief?: {
+    division_id: number;
+    division_name: string;
+  };
+  is_dep_chief?: boolean;
+  is_dep_representative?: boolean;
 };
