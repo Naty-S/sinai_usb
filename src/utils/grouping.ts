@@ -34,7 +34,7 @@ export const acts_kinds_by_year = function (acts: Activity[], detailed?: boolean
     .map(([_year, _acts]) => {
       return {
         year: _year,
-        acts: group_by("kind_name", _acts, detailed)
+        kind_activities: group_by("kind_name", _acts, detailed)
       };
     });
 }
@@ -49,15 +49,14 @@ export const acts_years_counts = function (acts: Activity[], detailed?: boolean)
       const acts_by_year = group_by("fecha_creacion", _acts)
       const counts: number[] = []
 
-      // fill empty years without activities
+      // count activities by year
       years.map(y => {
         if (!acts_by_year[y]) {
-          acts_by_year[y] = [];
+          counts.push(0);
+        } else {
+          counts.push(acts_by_year[y].length)
         };
       });
-
-      // count activities by year
-      Object.entries(acts_by_year).map( ([_, arr]) => counts.push(arr.length) );
 
       return {
         kind: _kind,
@@ -68,8 +67,10 @@ export const acts_years_counts = function (acts: Activity[], detailed?: boolean)
 
 export const acts_kinds_counts = function (acts: Activity[], detailed?: boolean): number[] {
 
+  // TODO: global var
   const kinds = [
-    "articulo_revista"
+    "ACTIVIDAD INVALIDA"
+    , "articulo_revista"
     , "capitulo_libro"
     , "composicion"
     , "evento"
@@ -87,17 +88,16 @@ export const acts_kinds_counts = function (acts: Activity[], detailed?: boolean)
     , "recital"
   ];
   const acts_by_kind = group_by("kind_name", acts, detailed);
-  const counts: number[] = []
-
-  // fill empty kinds without activities
-  kinds.map(k => {
-    if (!acts_by_kind[k]) {
-      acts_by_kind[k] = [];
-    };
-  });
+  const counts: number[] = [];
 
   // count activities by kind
-  Object.entries(acts_by_kind).map(([_, arr]) => counts.push(arr.length));
+  kinds.map(k => {
+    if (!acts_by_kind[k]) {
+      counts.push(0);
+    } else {
+      counts.push(acts_by_kind[k].length)
+    };
+  });
 
   return counts;
 };

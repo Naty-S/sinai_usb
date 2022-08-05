@@ -29,11 +29,11 @@ export const format_date = function (
 
 /**
  * 
- * @param activity 
- * @returns 
+ * @param activity - 
+ * @returns {Activity} - 
  */
 export const format_activity_kind = function (activity: any): Activity {
-  let kind_name = '';
+  let kind_name = "ACTIVIDAD INVALIDA";
   let kind_info;
 
   const kinds = [
