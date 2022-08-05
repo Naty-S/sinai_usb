@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { Prisma } from "@prisma/client";
 
-import { prisma } from "../_api";
+import { prisma } from "$api/_api";
 
 
 /**
@@ -12,16 +12,16 @@ export const get: RequestHandler = async function ({ request, params }) {
   let status = 500;
 
   try {
-    const dep_name = await prisma.departamento.findUnique({
+    const department = (await prisma.departamento.findUniqueOrThrow({
       where: {
         id: Number(params.id)
       },
       select: {
         nombre: true
       }
-    });
+    })).nombre;
     
-    const dep_professors = await prisma.profesor.findMany({
+    const professors: {correo: string}[] = await prisma.profesor.findMany({
       where: {
         departamento: Number(params.id)
       },
@@ -30,22 +30,16 @@ export const get: RequestHandler = async function ({ request, params }) {
       }
     });
 
-    const users_acts = await Promise.all(dep_professors.map(async p => {
+    const professors_activities = await Promise.all(professors.map(async p => {
 
-      return await prisma.usuario.findUnique({
+      return await prisma.usuario.findUniqueOrThrow({
         where: {
           login: p.correo
         },
         select: {
-          login: true,
-          administrador: {
-            select: {
-              nombre: true
-            }
-          },
           profesor: {
             select: {
-              id: true,
+              correo: true,
               nombre1: true,
               apellido1: true
             }
@@ -78,8 +72,8 @@ export const get: RequestHandler = async function ({ request, params }) {
 
     status = 200;
     body = {
-      dep_name,
-      users_acts
+      department,
+      professors_activities
     };
 
   } catch (error) {
