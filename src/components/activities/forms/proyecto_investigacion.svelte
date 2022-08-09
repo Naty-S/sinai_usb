@@ -5,10 +5,12 @@
 
   const act_data =
   { titulo: undefined
-  , observaciones: undefined
-  , grupo: undefined
-  , 
-  }
+    , observaciones: undefined
+    , grupo: undefined
+    , 
+  };
+
+  let fonacit = true;
 </script>
 
 <h2 class="uk-text-center">
@@ -30,16 +32,16 @@
   
     <div class="twelve wide field">
       <label for="">Institución que financia o patrocina</label>
-      <!-- TODO: #12 -->
       <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
         <label>
-          <input class="uk-radio" type="radio" name="radio2" checked>
+          <input class="uk-radio" type="radio" name="radio2" checked on:click={() => fonacit = true}>
           Fonacit
         </label>
         <label>
-          <input class="uk-radio" type="radio" name="radio2">
+          <input class="uk-radio" type="radio" name="radio2" on:click={() => fonacit = false}>
           Otro
         </label>
+        <input type="text" name="" id="" hidden={fonacit}>
       </div>
     </div>
   </div>
