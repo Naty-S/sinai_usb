@@ -35,13 +35,13 @@ export const count_acts_kinds_by_year = function (acts: Activity[], detailed?: b
 };
 
 /**
- * Count activities kinds by professor
+ * Count activities kinds
  * 
  * @param acts 
  * @param detailed 
  * @returns 
  */
-export const count_acts_kinds_by_prof = function (acts: Activity[], detailed?: boolean): number[] {
+export const count_acts_kinds = function (acts: Activity[], detailed?: boolean): number[] {
 
   // TODO: global var
   const kinds = [

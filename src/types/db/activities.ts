@@ -68,7 +68,8 @@ export type ActivitiesCounts = {
   counts: number[]
 };
 
-export type ProfessorActivities = {
+export type EntityActivities = {
+  entity: string,
   by_year: YearActivities[],
   years_counts: ActivitiesCounts[]
 };
@@ -85,9 +86,18 @@ export type DepActivities = {
   }[]
 };
 
+export type GroupActivities = {
+  group: {
+    name: string,
+    id: number
+  },
+  activities: Activity[]
+}
+
 export type CoordActivities = {
   coordination: string,
-  departments_activities: DepActivities[]
+  departments_activities?: DepActivities[]
+  groups_activities?: GroupActivities[]
 };
 
 export type DivisionActivities = {
