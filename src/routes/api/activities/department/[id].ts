@@ -1,7 +1,9 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { Prisma } from "@prisma/client";
 
+import type { DepActivities } from "$types/db/activities";
 import { prisma } from "$api/_api";
+import { format_activity_kind } from "$utils/formatting";
 
 
 /**
@@ -70,11 +72,22 @@ export const get: RequestHandler = async function ({ request, params }) {
       });
     }));
 
-    status = 200;
-    body = {
+    const dep_activities: DepActivities = {
       department,
-      professors_activities
+      professors_activities: professors_activities.map(p => {
+        return {
+          professor: {
+            email: p.profesor.correo,
+            name: p.profesor.nombre1,
+            surname: p.profesor.apellido1
+          },
+          activities: p.actividades.map(a => format_activity_kind(a))
+        };
+      })
     };
+
+    status = 200;
+    body = dep_activities;
 
   } catch (error) {
     // TODO: 

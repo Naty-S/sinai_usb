@@ -1,7 +1,8 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { Prisma } from "@prisma/client";
 
-import type { Activity } from "$types/db/activities";
+import type { Activity, EntityActivities } from "$types/db/activities";
+
 import { format_activity_kind } from "$utils/formatting";
 import { acts_kinds_by_year } from "$utils/grouping";
 import { count_acts_kinds_by_year } from "$utils/maths";
@@ -19,7 +20,7 @@ import { prisma } from "../../_api";
  */
 export const get: RequestHandler = async function({ request, params }) {
 
-  let body = {};
+  let body: EntityActivities = {};
   let status = 500;
 
   try {
@@ -54,6 +55,7 @@ export const get: RequestHandler = async function({ request, params }) {
 
     status = 200;
     body = {
+      entity: "Profesor",
       by_year: acts_kinds_by_year(activities, true),
       years_counts: count_acts_kinds_by_year(activities, true)
     };

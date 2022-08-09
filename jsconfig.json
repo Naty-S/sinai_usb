@@ -12,6 +12,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"$api": ["src/routes/api"],
+			"$api/*": ["src/routes/api/*"],
 			"$assets": ["src/assets"],
 			"$assets/*": ["src/assets/*"],
 			"$components": ["src/components"],

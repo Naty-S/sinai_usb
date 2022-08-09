@@ -22,13 +22,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import type { ProfessorActivities } from "$types/db/activities";
+  import type { EntityActivities } from "$types/db/activities";
 
   import ShowByYear from "$components/activities/show_by_year.svelte";
   import BraHeader from "$components/bra/header.svelte";
   import ResumeTable from "$components/resume_table.svelte";
 
-  export let prof_activities: ProfessorActivities;
+  export let prof_activities: EntityActivities;
   
   let printBRA: () => void;
 
