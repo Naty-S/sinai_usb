@@ -20,69 +20,34 @@
 };
 </script>
 <script lang="ts">
-  import type { Activity, CoordActivities, DepActivities, GroupActivities } from "$types/db/activities";
+  import type { CoordActivities } from "$types/db/activities";
 
   import ResumeEntity from "$components/activities/resume_entity.svelte";
-  import ResumeTable from "$components/resume_table.svelte";
-  import Department from "../departamento/[id].svelte";
-
-  import { acts_kinds_by_year } from "$utils/grouping";
-  import { count_acts_kinds_by_year } from "$utils/maths";
+  import ResumeRank from "$components/activities/resume_rank.svelte";
 
   export let coord_activities: CoordActivities;
 
-  let dep_activities: DepActivities[];
-  let groups_activities: GroupActivities[];
-  let activities: Activity[] = [];
+  const departments_activities = coord_activities.departments_activities;
+  const groups_activities = coord_activities.groups_activities;
   
-  if (coord_activities.departments_activities) {
-    
-    dep_activities = coord_activities.departments_activities;
-    activities = dep_activities.flatMap(d => d.professors_activities).flatMap(p => p.activities);
-
-  } else if (coord_activities.groups_activities) {
-
-    groups_activities = coord_activities.groups_activities;
-    activities = groups_activities.flatMap(g => g.activities);
-
-  } else {
-    throw new Error(`Actividades desconocidas para la coordinacion: ${coord_activities.coordination}`);
-  };
 </script>
 
-<h2 class="ui blue header uk-text-center">
-  La coordinacion de "{coord_activities.coordination}" tiene en el sistema
-</h2>
-
-<ResumeTable
-  headers={["Actividad"].concat(acts_kinds_by_year(activities).map( a => a["year"] ))}
-  resume_kinds_counts={count_acts_kinds_by_year(activities)}
-  row_total
-/>
-
-<div class="ui divider" />
+<ResumeRank rank="Coordinacion" rank_activities={coord_activities} />
 
 {#if groups_activities}
-  {#each groups_activities.filter(g => g.activities.length > 0) as g}
-    <div class="ui divider" />
 
-    <h2 class="ui blue header uk-text-center">
-      El grupo de "{g.group.name}" tiene en el sistema
-    </h2>
-
-    <ResumeTable
-      headers={["Actividad"].concat(acts_kinds_by_year(g.activities).map( a => a["year"] ))}
-      resume_kinds_counts={count_acts_kinds_by_year(g.activities)}
-      row_total
-    />
+  {#each groups_activities as g}
+    <ResumeRank rank="Grupo" rank_activities={g} />
   {/each}
 
-  <ResumeEntity entity_activities={groups_activities} entity="Grupo"/>
+  <ResumeEntity entity="Grupo" entity_activities={groups_activities}/>
 
-{:else if dep_activities}
-  {#each dep_activities as dep_acts}
-    <Department dep_activities={dep_acts} />
+{:else if departments_activities}
+
+  {#each departments_activities as dep_acts}
+    <ResumeRank rank="Departamento" rank_activities={dep_acts} />
   {/each}
+
 {:else}
   ERROR
 {/if}

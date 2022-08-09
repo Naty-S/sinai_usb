@@ -10,18 +10,20 @@ import { format_activity_kind } from "$utils/formatting";
  * 
  */
 export const get: RequestHandler = async function ({ request, params }) {
-  let body = {};
+  
   let status = 500;
+  let body = {};
 
   try {
-    const department = (await prisma.departamento.findUniqueOrThrow({
+    const department = await prisma.departamento.findUniqueOrThrow({
       where: {
         id: Number(params.id)
       },
       select: {
+        id: true,
         nombre: true
       }
-    })).nombre;
+    });
     
     const professors: {correo: string}[] = await prisma.profesor.findMany({
       where: {
@@ -73,7 +75,10 @@ export const get: RequestHandler = async function ({ request, params }) {
     }));
 
     const dep_activities: DepActivities = {
-      department,
+      department: {
+        id: department.id,
+        name: department.nombre
+      },
       professors_activities: professors_activities.map(p => {
         return {
           professor: {
