@@ -20,8 +20,8 @@ import { prisma } from "../../_api";
  */
 export const get: RequestHandler = async function({ request, params }) {
 
-  let body: EntityActivities = {};
   let status = 500;
+  let body: EntityActivities = {};
 
   try {
     // Find professor's activities

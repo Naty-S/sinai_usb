@@ -1,14 +1,15 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { Prisma } from "@prisma/client";
 
-import type { DepActivities, GroupActivities } from "$types/db/activities";
-import { prisma } from "$api/_api";
+import type { CoordActivities, DepActivities, GroupActivities } from "$types/db/activities";
 import { format_activity_kind } from "$utils/formatting";
+import { prisma } from "$api/_api";
 
 
 export const get: RequestHandler = async function ({ request, params }) {
-  let body = {};
+  
   let status = 500;
+  let body = {};
 
   try {
     const coordination = await prisma.coordinacion.findUniqueOrThrow({
@@ -16,6 +17,7 @@ export const get: RequestHandler = async function ({ request, params }) {
         id: Number(params.id)
       },
       select: {
+        id: true,
         nombre: true,
         departamentos: {
           select: {
@@ -24,6 +26,8 @@ export const get: RequestHandler = async function ({ request, params }) {
         }
       }
     });
+
+    let coordination_activities: CoordActivities;
 
     if (params.id === '4') { // Coordination just manages groups "Integración e Información"
       const groups = await prisma.grupo_investigacion.findMany({
@@ -62,18 +66,20 @@ export const get: RequestHandler = async function ({ request, params }) {
       const groups_activities: GroupActivities[] = groups.map( g => {
         return {
           group: {
-            name: g.nombre,
-            id: g.id
+            id: g.id,
+            name: g.nombre
           },
           activities: g.actividades_grupos.map(a => format_activity_kind(a.Actividad))
         }
       });
 
-      status = 200;
-      body = {
-        coordination: coordination.nombre,
+      coordination_activities = {
+        coordination: {
+          id: coordination.id,
+          name: coordination.nombre
+        },
         groups_activities
-      }
+      };
 
     } else {
       const departments_activities: DepActivities[] = await Promise.all(
@@ -83,12 +89,18 @@ export const get: RequestHandler = async function ({ request, params }) {
         })
       );
 
-      status = 200;
-      body = {
-        coordination: coordination.nombre,
+      coordination_activities = {
+        coordination: {
+          id: coordination.id,
+          name: coordination.nombre
+        },
         departments_activities
-      }
+      };
     };
+
+    status = 200;
+    body = coordination_activities;
+
   } catch (error) {
     // TODO: 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -101,7 +113,7 @@ export const get: RequestHandler = async function ({ request, params }) {
       };
     };
     throw error;
-  }
+  };
 
   return {
     status,
