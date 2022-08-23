@@ -1,6 +1,6 @@
 /// <reference types="@sveltejs/kit" />
 
-export type User = {
+export interface User {
   email: string;
   is_dean: boolean;
   professor?: {
