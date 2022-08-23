@@ -17,28 +17,27 @@ datasource db {
 // Postgresql enumerable types
 //
 enum articulo_revista_estado_enum {
-  // TODO: #10
   Aceptado_via_publicacion  @map("Aceptado en Vias de Publicacion")
   Publicado
 }
 
 enum autor_tipo_actividad_enum {
-  Capitulo_Libro          @map("Capitulo Libro")
-  Composicion
-  Evento
-  Exposicion
-  Grabacion
-  Informe
-  Libro
-  Memoria
-  Partitura
-  Patente
-  Premio
-  Premio_Bienal           @map("Premio Bienal")
-  Proyecto_Investigacion  @map("Proyecto de Investigacion")
-  Proyecto_de_Grado       @map("Proyecto de Grado")
-  Recital
-  Revista
+  articulo_revista
+  capitulo_libro
+  composicion
+  evento
+  exposicion
+  grabacion
+  informe
+  libro
+  memoria
+  partitura
+  patente
+  premio
+  premio_bienal
+  proyecto_investigacion
+  proyecto_de_grado
+  recital
 }
 
 enum composicion_categoria_enum {
@@ -60,7 +59,6 @@ enum evento_modalidad_enum {
 }
 
 enum grabacion_categoria_enum {
-  // TODO: #10
   Ejecucion_CD_Nacional          @map("Ejecucion en CD Nacional")
   Ejecucion_CD_Internacional     @map("Ejecucion en CD Internacional")
   CD_Completo_Nacional           @map("CD Completo Nacional")
@@ -118,7 +116,6 @@ enum meses_enum {
 }
 
 enum partitura_categoria_enum {
-  // TODO: #10
   Ejecucion_CD_Nacional          @map("Ejecucion en CD Nacional")
   Ejecucion_CD_Internacional     @map("Ejecucion en CD Internacional")
   CD_Completo_Nacional           @map("CD Completo Nacional")
@@ -169,7 +166,6 @@ enum profesor_dedicacion_enum {
 }
 
 enum profesor_diploma_tipo_enum {
-  // TODO: #10
   Lic_      @map("Lic.")
   Ph_D_     @map("Ph.D.")
   Doctor
@@ -183,7 +179,6 @@ enum profesor_sexo_enum {
 }
 
 enum proyecto_grado_nivel_academico_enum {
-  // TODO: #10
   Doctorado
   Maestria
   Especializacion
@@ -610,11 +605,11 @@ model articulo_revista {
   articulo_invitado Boolean                      @default(false)
   con_estudiantes   Boolean                      @default(false)
   estado            articulo_revista_estado_enum
-  fecha_publicacion DateTime                     @db.Date //TODO: #11
+  fecha_publicacion DateTime?                    @db.Date
   indice            String?
   pag_final         String
   pag_inicial       String
-  paginas           Int? // cantidad de paginas
+  paginas           Int // cantidad de paginas
   revista           String // Nombre de la Revista Arbitrada
   volumen           String
 
