@@ -1,4 +1,5 @@
-import type { Activity } from "$types/db/activities";
+import type { Activity } from "$types/activities";
+
 
 /**
  * Formats the date to specified format
@@ -16,15 +17,20 @@ export const format_date = function (
 ): string {
 
   const _date = typeof date === "string" ? new Date(date) : date;
-  const _year = _date.getFullYear().toString();
-  let _month = _date.toLocaleDateString('es', { month: "long" });
-  _month = _month.charAt(0).toUpperCase() + _month.slice(1);
 
-  if (day) {
-    return _date.getDate().toString() + " de " + _month + " del " + _year;
+  if (_date) {
+    const _year = _date.getFullYear().toString();
+    let _month = _date.toLocaleDateString('es', { month: "long" });
+    _month = _month.charAt(0).toUpperCase() + _month.slice(1);
+  
+    if (day) {
+      return _date.getDate().toString() + " de " + _month + " del " + _year;
+    };
+  
+    return _month + ' ' + _year;
   };
 
-  return _month + ' ' + _year;
+  return "Por definir";
 };
 
 /**
