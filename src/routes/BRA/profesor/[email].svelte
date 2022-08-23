@@ -22,7 +22,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import type { EntityActivities } from "$types/db/activities";
+  import type { EntityActivities } from "$interfaces/activities";
 
   import ShowByYear from "$components/activities/show_by_year.svelte";
   import BraHeader from "$components/bra/header.svelte";

@@ -25,7 +25,7 @@
 };
 </script>
 <script lang="ts">
-  import type { DeanActivities } from "$types/db/activities";
+  import type { DeanActivities } from "$interfaces/activities";
 
   import ResumeRank from "$components/activities/resume_rank.svelte";
 

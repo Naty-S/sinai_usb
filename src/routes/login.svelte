@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   
-	import type { User } from '$types/session/user';
+	import type { User } from '$interfaces/user';
   import { user } from "$lib/shared/stores/session";
 
   const is_err = false;

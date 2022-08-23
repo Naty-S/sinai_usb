@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { Prisma } from "@prisma/client";
 
-import type { DepActivities } from "$types/db/activities";
+import type { DepActivities } from "$interfaces/activities";
 import { prisma } from "$api/_api";
 import { format_activity_kind } from "$utils/formatting";
 

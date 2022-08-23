@@ -3,7 +3,7 @@
   Show's activities resume table for professors or groups
  -->
 <script lang="ts">
-  import type { ProfessorActivities, GroupActivities } from "$types/db/activities";
+  import type { ProfessorActivities, GroupActivities } from "$interfaces/activities";
   
   import EntityWithActs from "./entity_with_acts.svelte";
   import EntityWithoutActs from "./entity_without_acts.svelte";

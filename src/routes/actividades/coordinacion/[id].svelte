@@ -20,7 +20,7 @@
 };
 </script>
 <script lang="ts">
-  import type { CoordActivities } from "$types/db/activities";
+  import type { CoordActivities } from "$interfaces/activities";
 
   import ResumeEntity from "$components/activities/resume_entity.svelte";
   import ResumeRank from "$components/activities/resume_rank.svelte";

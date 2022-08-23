@@ -1,4 +1,6 @@
-import type { Activity, YearActivities } from "$types/db/activities";
+import type { YearActivities } from "$interfaces/activities";
+import type { Activity } from "$types/activities";
+
 import { map_to_detailed_kind } from "$utils/mappings";
 
 /**

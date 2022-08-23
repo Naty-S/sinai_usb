@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ActivitiesCounts } from "$types/db/activities";
+  import type { ActivitiesCounts } from "$interfaces/activities";
 
   export let headers: string[] = [];
   export let resume_kinds_counts: ActivitiesCounts[] = [];

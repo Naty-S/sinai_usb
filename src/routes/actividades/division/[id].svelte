@@ -20,7 +20,7 @@
 };
 </script>
 <script lang="ts">
-  import type { DivisionActivities } from "$types/db/activities";
+  import type { DivisionActivities } from "$interfaces/activities";
 
   import ResumeRank from "$components/activities/resume_rank.svelte";
 
