@@ -15,6 +15,11 @@ export const submit = function (kind: kinds) {
         data.articulo_revista.paginas = Number(data.articulo_revista.paginas);
         break;
 
+      case "proyecto_investigacion":
+        // TODO: Remove when fix confusion in db with 'institucion'
+        data.proyecto_investigacion.monto = data.proyecto_investigacion.monto.toString();
+        break;
+
       case "recital":
         data.recital.fecha_evento = new Date(data.recital.fecha_evento);
         break;
