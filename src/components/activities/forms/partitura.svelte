@@ -1,68 +1,87 @@
-<script>
+<script lang="ts">
+  import { getContext } from "svelte";
+  import { key } from "svelte-forms-lib";
+  
   import { partitura_categoria_enum } from "@prisma/client";
 
-  import Authors from "./authors.svelte";
+  import { page } from "$app/stores";
 
-  const act_data =
-  { titulo: undefined
-  , 
-  }
+  import type { activity_form_ctx, kinds } from "$types/forms";
+
+  import Input from "$components/forms/input.svelte";
+  import Select from "$components/forms/select.svelte";
+
+  const param = $page.params.activity;
+  const kind = param as kinds;
+  const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
 <h2 class="uk-text-center">
   PARTITURAS, VIDEOS O CDs PUBLICADOS EN EDITORIALES RECONOCIDAS
 </h2>
 
-<div class="ui large form">
-
-  <div class="required field">
-    <label for="">Título de la Obra</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
-  <div class="required field">
-    <label for="">Nombre de la Editorial</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
+<div name="partitura form">
+  <Input
+    label="Título de la Obra"
+    name="actividad.titulo"
+    bind:value={$form.actividad.titulo}
+    error={$errors.actividad.titulo}
+    class="required field"
+  />
+  <Input
+    label="Nombre de la Editorial"
+    name="partitura.editorial"
+    bind:value={$form.partitura.editorial}
+    error={$errors.partitura.editorial}
+    class="required field"
+  />
   <div class="two inline fields">
-    <div class="required field">
-      <label for="">Fecha del Evento</label>
-      <input type="date" name="" id="">
-    </div>
-
-    <div class="inline field">
-      <label for="">Nacional</label>
-      <input class="ui checkbox" type="checkbox">
-    </div>
+    <Input
+      type="date"
+      label="Fecha del Evento"
+      name="partitura.fecha"
+      bind:value={$form.partitura.fecha}
+      error={$errors.partitura.fecha}
+      class="required field"
+    />
+    <Input
+      type="checkbox"
+      label="Nacional"
+      name="partitura.nacional"
+      bind:value={$form.partitura.nacional}
+      class="inline field"
+    />
   </div>
-
-  <div class="inline field">
-    <label for="">Categoría</label>
-    <select name="" id="categoria" class="ui selection dropdown">
-      {#each Object.entries(partitura_categoria_enum) as [_, cat]}
-        <option value={cat}>{cat.replaceAll('_', ' ')}</option>
-      {/each}
-    </select>
-  </div>
-
-  <div class="field">
-    <label for="">Jurado, Árbitro o Comité Editorial</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
   <div class="two inline fields">
-    <div class="eight wide field">
-      <label for="">Depósito Legal</label>
-      <input type="text" bind:value={act_data.titulo}>
-    </div>
-
-    <div class="eight wide field">
-      <label for="">Financiado Por</label>
-      <input type="text" bind:value={act_data.titulo}>
-    </div>
+    <Select
+      label="Categoría"
+      name="partitura.categoria"
+      bind:value={$form.partitura.categoria}
+      options={Object.entries(partitura_categoria_enum).map(([_, cat]) => cat)}
+      class="five wide field"
+    />
+    <Input
+      label="Jurado, Árbitro o Comité Editorial"
+      name="partitura.jurado"
+      bind:value={$form.partitura.jurado}
+      error={$errors.partitura.jurado}
+      class="ten wide field"
+    />
   </div>
-
-  <Authors />
-
+  <div class="two inline fields">
+    <Input
+      label="Depósito Legal"
+      name="partitura.deposito_legal"
+      bind:value={$form.partitura.deposito_legal}
+      error={$errors.partitura.deposito_legal}
+      class="eight wide field"
+    />
+    <Input
+      label="Financiado Por"
+      name="partitura.financiado_por"
+      bind:value={$form.partitura.financiado_por}
+      error={$errors.partitura.financiado_por}
+      class="eight wide field"
+    />
+  </div>
 </div>

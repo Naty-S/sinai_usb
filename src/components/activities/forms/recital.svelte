@@ -1,32 +1,25 @@
 <script lang="ts">
-  import { setContext } from "svelte";
-  import { createForm, key } from "svelte-forms-lib";
+  import { getContext } from "svelte";
+  import { key } from "svelte-forms-lib";
+  
+  import { page } from "$app/stores";
+  
+  import type { activity_form_ctx, kinds } from "$types/forms";
 
-  import { init  } from "$lib/shared/forms/init";
-  import { validationSchema  } from "$lib/shared/forms/validation";
-  import { submit  } from "$lib/shared/forms/submit";
-
-  import ActionsButtons from "./actions_buttons.svelte";
-  import Authors from "./authors.svelte";
+  import Input from "$components/forms/input.svelte";
+  
   import CountryStates from "./country_states.svelte";
-  import Observaciones from './observaciones.svelte';
-  import Input from "./input.svelte";
 
-  const initialValues = init("recital");
-  const onSubmit = submit("recital");
-  const formProps = { initialValues, onSubmit, validationSchema };
-  const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
-
-  setContext(key, {
-    form, errors, handleChange
-  });
+  const param = $page.params.activity;
+  const kind = param as kinds;
+  const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
 <h2 class="uk-text-center">
   RECITALES O CONCIERTOS ARBITRADOS
 </h2>
 
-<form class="ui large form" on:submit|preventDefault={handleSubmit}>
+<div name="recital form">
   <Input
     label="Título de la Obra"
     name="actividad.titulo"
@@ -68,7 +61,4 @@
       class="eight wide field"
     />
   </div>
-  <Authors />
-  <Observaciones />
-  <ActionsButtons />
-</form>
+</div>

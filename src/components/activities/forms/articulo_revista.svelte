@@ -1,33 +1,22 @@
 <script lang="ts">
-  import { setContext } from "svelte";
-  import { createForm, key } from "svelte-forms-lib";
+  import type { activity_form_ctx, kinds } from "$types/forms";
 
-  import { init  } from "$lib/shared/forms/init";
-  import { validationSchema  } from "$lib/shared/forms/validation";
-  import { submit  } from "$lib/shared/forms/submit";
+  import { getContext } from "svelte";
+  import { key } from "svelte-forms-lib";
+  import { page } from "$app/stores";
 
-  import ActionsButtons from "./actions_buttons.svelte";
-  import Authors from './authors.svelte';
-	import Groups from './groups.svelte';  
-  import Observaciones from './observaciones.svelte';
-  import Input from "./input.svelte";
+  import Input from "$components/forms/input.svelte";
 
-  const initialValues = init("articulo_revista");
-  const onSubmit = submit("articulo_revista");
-  const formProps = { initialValues, onSubmit, validationSchema };
-  const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
-
-  setContext(key, {
-    form, errors, handleChange
-  });
+  const param = $page.params.activity;
+  const kind = param as kinds;
+  const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
 <h2 class="uk-text-center">
   ARTÍCULOS EN REVISTAS
 </h2>
 
-<form class="ui large form" on:submit|preventDefault={handleSubmit}>
-
+<div name="articulo_revista form">
   <Input
     label="Título del Artículo"
     name="actividad.titulo"
@@ -61,8 +50,7 @@
       class="required field"
     />
   </div>
-  
-  <div class="three inline fields">
+  <div class="three inline required fields">
     <Input
       type="number"
       label="Cantidad de Páginas"
@@ -76,17 +64,16 @@
       name="articulo_revista.pag_inicial"
       bind:value={$form.articulo_revista.pag_inicial}
       error={$errors.articulo_revista.pag_inicial}
-      class="required field"
+      class="field"
     />
     <Input
       label="Página Final"
       name="articulo_revista.pag_final"
       bind:value={$form.articulo_revista.pag_final}
       error={$errors.articulo_revista.pag_final}
-      class="required field"
+      class="field"
     />
   </div>
-  
   <div class="two inline fields">
     <div class="ten wide field fields">
       <label for="articulo_revista.estado">Estado</label>
@@ -117,9 +104,11 @@
           Publicado
         </label>
       </div>
+
       {#if $errors.articulo_revista?.estado}
         {$errors.articulo_revista.estado}
       {/if}
+      
     </div>
     <Input
       type="checkbox"
@@ -129,6 +118,7 @@
       class="field"
     />
   </div>
+
   {#if $form.articulo_revista.estado === "Publicado"}
     <Input
       type="date"
@@ -139,8 +129,4 @@
       class="field"
     />
   {/if}
-  <Groups />
-  <Authors />
-  <Observaciones />
-  <ActionsButtons />
-</form>
+</div>

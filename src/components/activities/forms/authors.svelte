@@ -1,11 +1,15 @@
 <script lang="ts">
+  import { getContext, onMount } from "svelte";
+  import { key } from "svelte-forms-lib";
+  
   import type { autor_tipo_actividad_enum } from "@prisma/client";
+
+  import { page } from "$app/stores";
+  
   import type { activity_form_ctx, kinds } from "$types/forms";
 
-  import { getContext } from "svelte";
-  import { key } from "svelte-forms-lib";
-  import { page } from "$app/stores";
-  import Input from "./input.svelte";
+  import Input from "$components/forms/input.svelte";
+  import Select from "$components/forms/select.svelte";
 
   const param = $page.params.activity;
   const kind = param as kinds;
@@ -52,10 +56,31 @@
     $errors.autores_externos = $errors.autores_externos.filter( (_, j) => j !== i);
   };
 
-  $: student_usb = function (i: number) { return $form.autores_usb[i].es_estudiante}
+  $: student_usb = function (i: number) { return $form.autores_usb[i].es_estudiante }
   $: student_out = function (i: number) { return $form.autores_externos[i].es_estudiante }
-  $: tutor_usb = function (i: number) { return $form.autores_usb[i].es_tutor}
+  $: tutor_usb = function (i: number) { return $form.autores_usb[i].es_tutor }
   $: tutor_out = function (i: number) { return $form.autores_externos[i].es_tutor }
+
+  let professors: any[];
+  onMount(async () => {
+    const res = await fetch(`/api/professors`);
+
+    try {      
+      if (res.ok) {
+        professors = await res.clone().json();
+      };
+    } catch (error) {      
+      throw error;
+    };
+  });
+
+  $: $form.autores_usb.map(a => {
+    if (!a.es_estudiante) {
+      a.profesor_id = professors.find(p => p.nombre === a.nombre)?.id || null;
+    } else {
+      a.profesor_id = null;
+    };
+  });
 </script>
 
 <div class="required field">
@@ -72,18 +97,28 @@
 
     {#each $form.autores_usb as author, i}
       <div class="four inline fields">
-        <!-- TODO: dropdown con los usuarios -->
-        <Input
-          label="Nombre"
-          name={`autores_usb[${i}].nombre`}
-          bind:value={$form.autores_usb[i].nombre}
-          error={$errors.autores_usb[i]?.nombre}
-          class="ten wide required field"
-        />
+        {#if student_usb(i)}
+          <Input
+            label="Nombre Estudiante"
+            name="autores_usb[{i}].nombre"
+            bind:value={$form.autores_usb[i].nombre}
+            error={$errors.autores_usb[i]?.nombre}
+            class="ten wide required field"
+          />
+        {:else}
+          <Select
+            label="Nombre Profesor"
+            name="autores_usb[{i}].nombre"
+            bind:value={$form.autores_usb[i].nombre}
+            options={professors.map(p => p.nombre)}
+            class="ten wide required field"
+          />
+        {/if}
+        
         <Input
           type="checkbox"
           label="Ponente"
-          name={`autores_usb[${i}].es_ponente`}
+          name="autores_usb[${i}].es_ponente"
           bind:value={$form.autores_usb[i].es_ponente}
           class="three wide field"
         />                
@@ -91,7 +126,7 @@
           <Input
             type="checkbox"
             label="Estudiante"
-            name={`autores_usb[${i}].es_estudiante`}
+            name="autores_usb[${i}].es_estudiante"
             bind:value={$form.autores_usb[i].es_estudiante}
             class="three wide field"
           />
@@ -100,11 +135,12 @@
           <Input
             type="checkbox"
             label="Tutor"
-            name={`autores_usb[${i}].es_tutor`}
+            name="autores_usb[${i}].es_tutor"
             bind:value={$form.autores_usb[i].es_tutor}
             class="three wide field"
           />
         {/if}
+
         <button class="ui red button" on:click={() => remove_author_usb(i)}>
           Elminar
         </button>
@@ -114,23 +150,18 @@
         <div class="two inline fields">
           <Input
             label="Carrera"
-            name={`autores_usb[${i}].estudiante_carrera`}
+            name="autores_usb[${i}].estudiante_carrera"
             bind:value={$form.autores_usb[i].estudiante_carrera}
             error={$errors.autores_usb[i]?.estudiante_carrera}
             class="ten wide required field"
           />
           <Input
             label="Correo"
-            name={`autores_usb[${i}].correo`}
+            name="autores_usb[${i}].correo"
             bind:value={$form.autores_usb[i].correo}
+            error={$errors.autores_usb[i]?.correo}
             class="ten wide field"
-          >
-            {#if $errors.autores_usb[i]?.correo}
-              <div class="ui mini error message">
-                {$errors.autores_usb[i].correo}
-              </div>
-            {/if}
-          </Input>
+          />
         </div>
       {/if}
     {/each}
@@ -138,7 +169,7 @@
     <button class="ui blue button" on:click|preventDefault={add_author_usb}>
       Agregar
     </button>
-    {#if $form.autores_usb.length > 0}      
+    {#if $form.autores_usb.length > 0}
       <button class="ui red button" on:click={() => $form.autores_usb = []}>
         Limpiar
       </button>
@@ -148,106 +179,68 @@
   <div class="field">
     <span class="ui header">Externos</span>
 
-    {#each $form.autores_externos as author, i}      
+    {#each $form.autores_externos as author, i}
       <div class="two inline fields">
-        <div class="ten wide required field" class:error={$errors.autores_externos[i]?.nombre}>
-          <label for={`autores_externos[${i}].nombre`}>Nombre</label>
-          <input
-            type="text"
-            name={`autores_externos[${i}].nombre`}
-            bind:value={$form.autores_externos[i].nombre}
-            on:change={handleChange}
-          >
-          {#if $errors.autores_externos[i]?.nombre}
-            <div class="ui four wide field mini error message">
-              Requerido
-            </div>
-          {/if}
-        </div>
-        
-        <div class="ten wide required field" class:error={$errors.autores_externos[i]?.universidad}>
-          <label for={`autores_externos[${i}].nombre`}>Universidad</label>
-          <input
-            type="text"
-            name={`autores_externos[${i}].universidad`}
-            bind:value={$form.autores_externos[i].universidad}
-            on:change={handleChange}
-          >
-          {#if $errors.autores_externos[i]?.universidad}
-            <div class="ui four wide field mini error message">
-              Requerido
-            </div>
-          {/if}
-        </div>
+        <Input
+          label="Nombre"
+          name="autores_externos[{i}].nombre"
+          bind:value={$form.autores_externos[i].nombre}
+          error={$errors.autores_externos[i]?.nombre}
+          class="ten wide required field"
+        />
+        <Input
+          label="Universidad"
+          name="autores_externos[{i}].universidad"
+          bind:value={$form.autores_externos[i].universidad}
+          error={$errors.autores_externos[i]?.universidad}
+          class="ten wide required field"
+        />
       </div>
 
       {#if student_out(i)}
         <div class="two inline fields">
-          <div class="ten wide required field" class:error={$errors.autores_externos[i]?.estudiante_carrera}>
-            <label for={`autores_externos[${i}].estudiante_carrera`}>Carrera</label>
-            <input
-              type="text"
-              name={`autores_externos[${i}].estudiante_carrera`}
-              bind:value={$form.autores_externos[i].estudiante_carrera}
-              on:change={handleChange}
-            >
-            {#if $errors.autores_externos[i]?.estudiante_carrera}
-              <div class="ui four wide field mini error message">
-                Requerido
-              </div>
-            {/if}
-          </div>
-          <div class="ten wide field">
-            <label for={`autores_externos[${i}].correo`}>Correo</label>
-            <input
-              type="text"
-              name={`autores_externos[${i}].correo`}
-              bind:value={$form.autores_externos[i].correo}
-              on:change={handleChange}
-            >
-            {#if $errors.autores_externos[i]?.correo}
-              {$errors.autores_externos[i].correo}
-            {/if}
-          </div>
+          <Input
+            label="Carrera"
+            name="autores_externos[${i}].estudiante_carrera"
+            bind:value={$form.autores_externos[i].estudiante_carrera}
+            error={$errors.autores_externos[i]?.estudiante_carrera}
+            class="ten wide required field"
+          />
+          <Input
+            label="Correo"
+            name="autores_externos[${i}].correo"
+            bind:value={$form.autores_externos[i].correo}
+            error={$errors.autores_externos[i]?.correo}
+            class="ten wide field"
+          />
         </div>
       {/if}
       
       <div class="three inline fields">
-        <div class="three wide field">
-          <label for={`autores_externos[${i}].es_ponente`}>Ponente</label>
-          <input
-            type="checkbox"
-            name={`autores_externos[${i}].es_ponente`}
-            class="ui checkbox"
-            bind:value={$form.autores_externos[i].es_ponente}
-            on:change={handleChange}
-          >
-        </div>
-        
+        <Input
+          type="checkbox"
+          label="Ponente"
+          name="autores_externos[${i}].es_ponente"
+          bind:value={$form.autores_externos[i].es_ponente}
+          class="three wide field"
+        />                
         {#if !tutor_out(i)}
-          <div class="three wide field">
-            <label for={`autores_externos[${i}].es_estudiante`}>Estudiante</label>
-            <input
-              type="checkbox"
-              name={`autores_externos[${i}].es_estudiante`}
-              class="ui checkbox"
-              bind:value={$form.autores_externos[i].es_estudiante}
-              on:change={handleChange}
-            >
-          </div>
-        {/if}
-        
+          <Input
+            type="checkbox"
+            label="Estudiante"
+            name="autores_externos[${i}].es_estudiante"
+            bind:value={$form.autores_externos[i].es_estudiante}
+            class="three wide field"
+          />
+        {/if}        
         {#if !student_out(i)}
-          <div class="three wide field">
-            <label for={`autores_externos[${i}].es_tutor`}>Tutor</label>
-            <input
-              type="checkbox"
-              name={`autores_externos[${i}].es_tutor`}
-              class="ui checkbox"
-              bind:value={$form.autores_externos[i].es_tutor}
-              on:change={handleChange}
-            >
-          </div>
+          <Input
+            type="checkbox"
+            label="Tutor"
+            name="autores_externos[${i}].es_tutor"
+            bind:value={$form.autores_externos[i].es_tutor}
+            class="three wide field"
+          />
         {/if}
 
         <button class="ui red button" on:click={() => remove_author_out(i)}>
