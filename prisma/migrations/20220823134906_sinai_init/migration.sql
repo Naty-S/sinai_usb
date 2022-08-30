@@ -2,7 +2,7 @@
 CREATE TYPE "articulo_revista_estado_enum" AS ENUM ('Aceptado en Vias de Publicacion', 'Publicado');
 
 -- CreateEnum
-CREATE TYPE "autor_tipo_actividad_enum" AS ENUM ('Capitulo Libro', 'Composicion', 'Evento', 'Exposicion', 'Grabacion', 'Informe', 'Libro', 'Memoria', 'Partitura', 'Patente', 'Premio', 'Premio Bienal', 'Proyecto de Investigacion', 'Proyecto de Grado', 'Recital', 'Revista');
+CREATE TYPE "autor_tipo_actividad_enum" AS ENUM ('articulo_revista', 'capitulo_libro', 'composicion', 'evento', 'exposicion', 'grabacion', 'informe', 'libro', 'memoria', 'partitura', 'patente', 'premio', 'premio_bienal', 'proyecto_investigacion', 'proyecto_de_grado', 'recital');
 
 -- CreateEnum
 CREATE TYPE "composicion_categoria_enum" AS ENUM ('Composicion', 'Arreglo', 'Ejecucion');
@@ -91,7 +91,7 @@ CREATE TABLE "profesor" (
     "dedicacion" "profesor_dedicacion_enum" NOT NULL,
     "diploma_tipo" "profesor_diploma_tipo_enum" NOT NULL,
     "diploma_universidad" TEXT NOT NULL,
-    "departamento" INTEGER,
+    "departamento" INTEGER NOT NULL,
     "extension" INTEGER,
     "fecha_contrato" DATE,
     "fecha_ingreso" DATE,
@@ -278,7 +278,7 @@ CREATE TABLE "actividad" (
     "id" SERIAL NOT NULL,
     "creada_por" TEXT NOT NULL,
     "validado_por" TEXT,
-    "cuota" INTEGER,
+    "cuota" INTEGER NOT NULL,
     "descripcion" TEXT,
     "fecha_creacion" DATE NOT NULL,
     "fecha_ultima_modificacion" DATE NOT NULL,
@@ -350,11 +350,11 @@ CREATE TABLE "articulo_revista" (
     "articulo_invitado" BOOLEAN NOT NULL DEFAULT false,
     "con_estudiantes" BOOLEAN NOT NULL DEFAULT false,
     "estado" "articulo_revista_estado_enum" NOT NULL,
-    "fecha_publicacion" DATE NOT NULL,
+    "fecha_publicacion" DATE,
     "indice" TEXT,
     "pag_final" TEXT NOT NULL,
     "pag_inicial" TEXT NOT NULL,
-    "paginas" INTEGER,
+    "paginas" INTEGER NOT NULL,
     "revista" TEXT NOT NULL,
     "volumen" TEXT NOT NULL,
 
@@ -619,10 +619,10 @@ CREATE UNIQUE INDEX "profesor_cedula_idx" ON "profesor"("cedula");
 CREATE UNIQUE INDEX "profesor_codigo_idx" ON "profesor"("codigo");
 
 -- CreateIndex
-CREATE INDEX "coordinacion_jefe_idx" ON "coordinacion"("jefe");
+CREATE UNIQUE INDEX "coordinacion_jefe_idx" ON "coordinacion"("jefe");
 
 -- CreateIndex
-CREATE INDEX "division_jefe_idx" ON "division"("jefe");
+CREATE UNIQUE INDEX "division_jefe_idx" ON "division"("jefe");
 
 -- CreateIndex
 CREATE INDEX "departamento_coordinacion_idx" ON "departamento"("coordinacion");

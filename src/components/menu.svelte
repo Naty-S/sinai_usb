@@ -1,5 +1,6 @@
 <script>
-  import Modal from "$components/modal.svelte";
+  import { session } from "$app/stores";
+  import Modal from "./modal.svelte";
 
   const void_link = "javascript:void(0)";
   const entity = "profesor/eduardo@usb.ve";
@@ -14,7 +15,7 @@
   let show_create = false;
 </script>
 
-<nav class="uk-navbar uk-margin uk-navbar-container" uk-navbar="mode: click">
+<nav class="uk-navbar uk-margin uk-navbar-container" uk-navbar="mode:click; offset: -10; delay-hide: 200">
   <div class="uk-navbar-center">
     <div class="">SINAI - DID</div>
     <!-- TODO: #19 -->
@@ -151,25 +152,58 @@
 {#if show_create}
   <Modal
     title="Ingresar nueva actividad"
-    id={0}
-    close={() => show_create = false}
+    id="create_activity"
+    align="left"
     is_active={show_create}
+    close={() => show_create = false}
   >
-    <li><a href="/actividades/crear/">Artículos en Revistas</a></li>
-    <li><a href="/actividades/crear/">Asistencia a Eventos</a></li>
-    <li><a href="/actividades/crear/">Memorias de Congresos</a></li>
-    <li><a href="/actividades/crear/">Proyectos de Investigación y Desarrollo</a></li>
-    <li><a href="/actividades/crear/">Recitales o Conciertos Arbitrados</a></li>
-    <li><a href="/actividades/crear/">Composiciones solicitadas por Orquestas Sinfónicas o Agrupaciones Reconocidas</a></li>
-    <li><a href="/actividades/crear/">Grabaciones Sonoras Evaluadas por Arbitros</a></li>
-    <li><a href="/actividades/crear/">Partituras, Videos o CDs publicados en editoriales reconocidas</a></li>
-    <li><a href="/actividades/crear/">Selección en Exposiciones, Bienales, Salones o Concursos Arbitrados</a></li>
-    <li><a href="/actividades/crear/">Trabajos Reconocidos o Premiados en Bienales, Salones, Concursos o Exposiciones</a></li>
-    <li><a href="/actividades/crear/">Libros Publicados</a></li>
-    <li><a href="/actividades/crear/">Capítulos de Libros</a></li>
-    <li><a href="/actividades/crear/">Informes Técnicos</a></li>
-    <li><a href="/actividades/crear/">Premios</a></li>
-    <li><a href="/actividades/crear/">Patentes</a></li>
-    <li><a href="/actividades/crear/">Proyectos de Grado Dirigidos</a></li>
+    <li><a href="/actividades/crear/articulo_revista" on:click={() => show_create = false} >
+      Artículos en Revistas
+    </a></li>
+    <li><a href="/actividades/crear/capitulo_libro" on:click={() => show_create = false} >
+      Capítulos de Libros
+    </a></li>
+    <li><a href="/actividades/crear/composicion" on:click={() => show_create = false} >
+      Composiciones solicitadas por Orquestas Sinfónicas o Agrupaciones Reconocidas
+    </a></li>
+    <li><a href="/actividades/crear/evento" on:click={() => show_create = false} >
+      Asistencia a Eventos
+    </a></li>
+    <li><a href="/actividades/crear/exposicion" on:click={() => show_create = false} >
+      Selección en Exposiciones, Bienales, Salones o Concursos Arbitrados
+    </a></li>
+    <li><a href="/actividades/crear/grabacion" on:click={() => show_create = false} >
+      Grabaciones Sonoras Evaluadas por Arbitros
+    </a></li>
+    <li><a href="/actividades/crear/informe_tecnico" on:click={() => show_create = false} >
+      Informes Técnicos
+    </a></li>
+    <li><a href="/actividades/crear/libro" on:click={() => show_create = false} >
+      Libros Publicados
+    </a></li>
+    <li><a href="/actividades/crear/memoria" on:click={() => show_create = false} >
+      Memorias de Congresos
+    </a></li>
+    <li><a href="/actividades/crear/partitura" on:click={() => show_create = false} >
+      Partituras, Videos o CDs publicados en editoriales reconocidas
+    </a></li>
+    <li><a href="/actividades/crear/patente" on:click={() => show_create = false} >
+      Patentes
+    </a></li>
+    <li><a href="/actividades/crear/premio" on:click={() => show_create = false} >
+      Premios
+    </a></li>
+    <li><a href="/actividades/crear/premio_bienal" on:click={() => show_create = false} >
+      Trabajos Reconocidos o Premiados en Bienales, Salones, Concursos o Exposiciones
+    </a></li>
+    <li><a href="/actividades/crear/proyecto_grado" on:click={() => show_create = false} >
+      Proyectos de Grado Dirigidos
+    </a></li>
+    <li><a href="/actividades/crear/proyecto_investigacion" on:click={() => show_create = false} >
+      Proyectos de Investigación y Desarrollo
+    </a></li>
+    <li><a href="/actividades/crear/recital" on:click={() => show_create = false} >
+      Recitales o Conciertos Arbitrados
+    </a></li>
   </Modal>
 {/if}

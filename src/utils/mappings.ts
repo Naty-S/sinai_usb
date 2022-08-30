@@ -1,4 +1,4 @@
-import type { ActivityKind } from "$types/db/activities";
+import type { ActivityKind } from "$types/activities";
 import type {
   articulo_revista,
   capitulo_libro,

@@ -1,59 +1,64 @@
-<script>
+<script lang="ts">
+  import { getContext } from "svelte";
+  import { key } from "svelte-forms-lib";
+  
   import { proyecto_grado_nivel_academico_enum } from "@prisma/client";
 
-  import Authors from "./authors.svelte";
-  import Groups from "./groups.svelte";
-  import Observaciones from "./observaciones.svelte";
+  import { page } from "$app/stores";
 
-  const act_data =
-  { titulo: undefined
-  , observaciones: undefined
-  , grupo: undefined
-  , 
-  }
+  import type { activity_form_ctx, kinds } from "$types/forms";
+
+  import Input from "$components/forms/input.svelte";
+  import Select from "$components/forms/select.svelte";
+
+  const param = $page.params.activity;
+  const kind = param as kinds;
+  const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
 <h2 class="uk-text-center">
   PROYECTOS DE GRADO DIRIGIDOS
 </h2>
 
-<div class="ui large form">
-
-  <div class="required field">
-    <label for="">Título del Proyecto</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
+<div name="proyecto_grado form">
+  <Input
+    label="Título del Proyecto"
+    name="actividad.titulo"
+    bind:value={$form.actividad.titulo}
+    error={$errors.actividad.titulo}
+    class="required field"
+  />
   <div class="two inline required fields">
-    <div class="eight wide field">
-      <label for="">Título Académico al que se optó</label>
-      <input type="text" bind:value={act_data.titulo}>
-    </div>
-  
-    <div class="eight wide field">
-      <label for="">Coordinación Académica</label>
-      <input type="text" bind:value={act_data.titulo}>
-    </div>
+    <Input
+      label="Título Académico al que se optó"
+      name="proyecto_grado.titulo_academico"
+      bind:value={$form.proyecto_grado.titulo_academico}
+      error={$errors.proyecto_grado.titulo_academico}
+      class="eight wide field"
+    />
+    <Input
+      label="Coordinación Académica"
+      name="proyecto_grado.coordinacion_academica"
+      bind:value={$form.proyecto_grado.coordinacion_academica}
+      error={$errors.proyecto_grado.coordinacion_academica}
+      class="eight wide field"
+    />
   </div>
-
-  <div class="two inline fields">
-    <div class="inline field">
-      <label for="nivel_academico">Nivel Académico</label>
-      <select name="" id="nivel_academico" class="ui selection dropdown">
-        {#each Object.entries(proyecto_grado_nivel_academico_enum) as [_, cat]}
-          <option value={cat}>{cat.replace('_', ' ')}</option>
-        {/each}
-      </select>
-    </div>
-
-    <div class="required field">
-      <label for="">Fecha de la Defensa</label>
-      <input type="date" name="" id="">
-    </div>
+  <div class="two inline required fields">
+    <Select
+      label="Nivel Académico"
+      name="proyecto_grado.nivel_academico"
+      bind:value={$form.proyecto_grado.nivel_academico}
+      options={Object.entries(proyecto_grado_nivel_academico_enum).map(([_, nivel]) => nivel)}
+      class="five wide field"
+    />
+    <Input
+      type="date"
+      label="Fecha de la Defensa"
+      name="proyecto_grado.fecha_defensa"
+      bind:value={$form.proyecto_grado.fecha_defensa}
+      error={$errors.proyecto_grado.fecha_defensa}
+      class="field"
+    />
   </div>
-
-  <Groups grupo = {act_data.grupo} />
-  <Authors />
-  <Observaciones observaciones = {act_data.observaciones} />
-
 </div>

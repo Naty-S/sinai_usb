@@ -1,7 +1,8 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { Prisma } from "@prisma/client";
 
-import type { Activity, EntityActivities } from "$types/db/activities";
+import type { EntityActivities } from "$interfaces/activities";
+import type { Activity } from "$types/activities";
 
 import { format_activity_kind } from "$utils/formatting";
 import { acts_kinds_by_year } from "$utils/grouping";

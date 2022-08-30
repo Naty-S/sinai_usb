@@ -6,7 +6,7 @@
   @param {string}       kind     - Indicates the kind of the actvity
 -->
 <script lang="ts">
-  import type { ActivityKind } from "$types/db/activities";
+  import type { ActivityKind } from "$types/activities";
   import { format_date } from "$utils/formatting";
 
   export let activity: ActivityKind;
@@ -69,7 +69,7 @@
     <u>{activity.editorial}</u>.
     {activity.nacional ? "Nacional." : "Internacional."}
     {format_date(activity.fecha)}.
-    Jurado: {activity.jurado}.
+    Jurado: {activity.jurado || "Sin Jurado"}.
     Categoria: {activity.categoria}.
     {activity.deposito_legal ? "Deposito legal: " + activity.deposito_legal + '.' : ''}
     {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}

@@ -1,4 +1,5 @@
-import type { Activity, ActivitiesCounts } from "$types/db/activities";
+import type { ActivitiesCounts } from "$interfaces/activities";
+import type { Activity } from "$types/activities";
 
 import { group_by, acts_kinds_by_year } from "$utils/grouping";
 

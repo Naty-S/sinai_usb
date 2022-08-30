@@ -1,64 +1,72 @@
-<script>
-  import Authors from "./authors.svelte";
-  import Groups from "./groups.svelte";
-  import Observaciones from "./observaciones.svelte";
+<script lang="ts">
+  import { getContext } from "svelte";
+  import { key } from "svelte-forms-lib";
+  
+  import { page } from "$app/stores";
 
-  const act_data =
-  { titulo: undefined
-  , observaciones: undefined
-  , grupo: undefined
-  , 
-  }
+  import type { activity_form_ctx, kinds } from "$types/forms";
+
+  import Input from "$components/forms/input.svelte";
+
+  import Evaluators from "./evaluators.svelte";
+
+  const param = $page.params.activity;
+  const kind = param as kinds;
+  const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
 <h2 class="uk-text-center">
   INFORMES TÉCNICOS
 </h2>
 
-<div class="ui large form">
-
-  <div class="required field">
-    <label for="">Título</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
+<div name="informe_tecnico form">
+  <Input
+    label="Título"
+    name="actividad.titulo"
+    bind:value={$form.actividad.titulo}
+    error={$errors.actividad.titulo}
+    class="required field"
+  />
   <div class="two inline required fields">
-    <div class="field">
-      <label for="">Fecha de Inicio</label>
-      <input type="date" name="" id="">
-    </div>
-  
-    <div class="twelve wide field">
-      <label for="">Institución que financia</label>
-      <input type="text" bind:value={act_data.titulo}>
-    </div>
+    <Input
+      type="date"
+      label="Fecha de Inicio"
+      name="informe_tecnico.fecha_inicio"
+      bind:value={$form.informe_tecnico.fecha_inicio}
+      error={$errors.informe_tecnico.fecha_inicio}
+      class="field"
+    />
+    <Input
+      label="Institución que financia"
+      name="informe_tecnico.institucion"
+      bind:value={$form.informe_tecnico.institucion}
+      error={$errors.informe_tecnico.institucion}
+      class="twelve wide field"
+    />
   </div>
-
-  <div class="required field">
-    <label for="">Evaluadores</label>
-    <!-- TODO: #8 -->
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
   <div class="three inline fields">
-    <div class="required field">
-      <label for="">Duración estimada del Proyecto (meses)</label>
-      <input type="number" min="1" bind:value={act_data.titulo}>
-    </div>
-  
-    <div class="inline field">
-      <label for="">Contrato de Confidencialidad</label>
-      <input class="ui checkbox" type="checkbox">
-    </div>
-
-    <div class="inline field">
-      <label for="">Informe de evaluación en DID</label>
-      <input class="ui checkbox" type="checkbox">
-    </div>
+    <Input
+      type="number"
+      label="Duración estimada del Proyecto (meses)"
+      name="informe_tecnico.meses_duracion"
+      bind:value={$form.informe_tecnico.meses_duracion}
+      error={$errors.informe_tecnico.meses_duracion}
+      class="required field"
+    />
+    <Input
+      type="checkbox"
+      label="Contrato de Confidencialidad"
+      name="informe_tecnico.confidencial"
+      bind:value={$form.informe_tecnico.confidencial}
+      class="inline field"
+    />
+    <Input
+      type="checkbox"
+      label="Informe de evaluación en DID"
+      name="informe_tecnico.evaluacion_did"
+      bind:value={$form.informe_tecnico.evaluacion_did}
+      class="inline field"
+    />
   </div>
-
-  <Groups grupo = {act_data.grupo} />
-  <Authors />
-  <Observaciones observaciones = {act_data.observaciones} />
-
+  <Evaluators />
 </div>

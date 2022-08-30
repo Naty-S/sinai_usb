@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { YearActivities } from "$types/db/activities";
+  import type { YearActivities } from "$interfaces/activities";
   
   import { format_date } from "$utils/formatting";
   import Modal from "$components/modal.svelte";
@@ -112,11 +112,12 @@
 
 {#if show_validate}
   <Modal
+    id="validate_{actual_act_id}"
     title="Validar Actividad"
-    id={actual_act_id}
     ok_text="Validar"
-    close="{() => show_validate = false}"
+    align="center"
     is_active={show_validate}
+    close="{() => show_validate = false}"
   >
     <p>Esta seguro(a) que quiere VALIDAR esta actividad?</p>
     <p>"{actual_act_title}"</p>
@@ -125,11 +126,12 @@
 
 <!-- {#if show_invalidate}
   <Modal 
+    id="invalidate_{actual_act_id}"
     title="Desvalidar Actividad"
-    id={actual_act_id}
     ok_text="Desvalidar"
-    close="{() => show_invalidate = false}"
+    align="center"
     is_active={show_invalidate}
+    close="{() => show_invalidate = false}"
   >
     <p>Esta seguro(a) que quiere DESVALIDAR esta actividad?</p>
     <p>"{actual_act_title}"</p>
@@ -138,11 +140,12 @@
 
 {#if show_delete}
   <Modal 
+    id="delete_{actual_act_id}"
     title="Eliminar Actividad"
-    id={actual_act_id}
     ok_text="Eliminar"
-    close="{() => show_delete = false}"
+    align="center"
     is_active={show_delete}
+    close="{() => show_delete = false}"
   >
     <p>Esta seguro(a) que quiere ELIMINAR esta actividad?</p>
     <p>"{actual_act_title}"</p>

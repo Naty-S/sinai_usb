@@ -23,12 +23,12 @@
     return {
       error: new Error(message)
     };
-};
+  };
 </script>
 <script lang="ts">
   import { page } from "$app/stores";
 
-  import type { EntityActivities } from "$types/db/activities";
+  import type { EntityActivities } from "$interfaces/activities";
 
   import ShowByYear from "$components/activities/show_by_year.svelte";
   import ResumeTable from "$components/resume_table.svelte";

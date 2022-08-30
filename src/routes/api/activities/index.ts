@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { Prisma } from "@prisma/client";
 
-import type { CoordActivities, DeanActivities, DivisionActivities } from "$types/db/activities";
+import type { CoordActivities, DeanActivities, DivisionActivities } from "$interfaces/activities";
 import { prisma } from "$api/_api";
 
 
@@ -62,5 +62,5 @@ export const get: RequestHandler = async ({ request, params }) => {
   return {
     status,
     body
-  }
-}
+  };
+};

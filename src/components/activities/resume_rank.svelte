@@ -3,18 +3,18 @@
   Show's activities resume table for coordination or division
  -->
 <script lang="ts">
+  import type { Activity } from "$types/activities";
   import type {
-    Activity
-    , CoordActivities
+    CoordActivities
     , DepActivities
     , DivisionActivities
     , GroupActivities
-  } from "$types/db/activities";
+  } from "$interfaces/activities";
   
   import ResumeTable from "$components/resume_table.svelte";
   
   import { acts_kinds_by_year } from "$utils/grouping";
-  import { count_acts_kinds_by_year, count_acts_kinds } from "$utils/maths";
+  import { count_acts_kinds_by_year } from "$utils/maths";
 
   export let rank: string;
   export let rank_activities: CoordActivities | DivisionActivities | DepActivities | GroupActivities;

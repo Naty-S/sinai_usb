@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ActivitiesCounts, ProfessorActivities, GroupActivities } from "$types/db/activities";
+  import type { ActivitiesCounts, ProfessorActivities, GroupActivities } from "$interfaces/activities";
 
   import ResumeTable from "$components/resume_table.svelte";
   
