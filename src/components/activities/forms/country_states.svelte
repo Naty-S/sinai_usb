@@ -6,35 +6,31 @@
   import { page } from "$app/stores";
   import { getCountries, getStatesByName } from 'cs-list';
 
+  import Select from "$components/forms/select.svelte";
+
   const param = $page.params.activity;
   const kind = param as kinds;
   const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
   const countries = getCountries();
   
-  $: states = getStatesByName($form.recital.pais);
+  $: states = getStatesByName($form[kind].pais);
 </script>
 
-<div class="required field">
-  <label for="recital.pais">Pais</label>
-  <select
-    name="recital.pais"
-    class="ui fluid selection dropdown"
-    bind:value={$form.recital.pais}
-    on:change={handleChange}
-  >
-    {#each countries as country}
-      <option value={country.name}>{country.name}</option>
-    {/each}
-  </select>
-</div>
+<Select
+  label="Pais"
+  name="{kind}.pais"
+  bind:value={$form[kind].pais}
+  options={countries.map(c => c.name)}
+  class="field"
+/>
 
-<div class="required field" class:error={$errors.recital.ciudad}>
-  <label for="recital.ciudad">Ciudad</label>
+<div class="field" class:error={$errors[kind].ciudad}>
+  <label for="{kind}.ciudad">Ciudad</label>
   {#if states}
     <select
-      name="recital.ciudad"
+      name="{kind}.ciudad"
       class="ui fluid selection dropdown"
-      bind:value={$form.recital.ciudad}
+      bind:value={$form[kind].ciudad}
       on:change={handleChange}
     >
       {#each states as state}
@@ -44,12 +40,12 @@
   {:else}
     <input
       type="text"
-      name="recital.ciudad"
-      bind:value={$form.recital.ciudad}
+      name="{kind}.ciudad"
+      bind:value={$form[kind].ciudad}
       on:change={handleChange}
     >
   {/if}
-  {#if $errors.recital.ciudad}
+  {#if $errors[kind].ciudad}
     <div class="ui five wide field mini error message">
       Requerido
     </div>
