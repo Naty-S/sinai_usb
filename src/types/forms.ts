@@ -81,15 +81,16 @@ type actividades_form = {
 
 export type activity = {
   actividad: Omit<actividad, "id">
-  , autores_externos?: Omit<autor_externo, "id" | "actividad">[]
-  , autores_usb?: Omit<autor_usb, "id" | "actividad">[]
-  , actividades_grupos?: string[]
+  , autores_externos: Omit<autor_externo, "id" | "actividad">[]
+  , autores_usb: Omit<autor_usb, "id" | "actividad">[]
+  , actividades_grupos: string[]
+  , creation_success: boolean
 };
 
 export type actividad_form<kind extends kinds> = activity & Pick<actividades_form, kind>;
+
 export type activity_form_ctx<kind extends kinds> = {
   form: Writable<actividad_form<kind>>,
   errors: Writable<actividad_form<kind>>,
-  state: any, // es muy largo, se simplifica con 'any'
   handleChange: (event: Event) => any,
 };
