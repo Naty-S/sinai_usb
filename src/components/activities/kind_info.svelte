@@ -69,7 +69,7 @@
     <u>{activity.editorial}</u>.
     {activity.nacional ? "Nacional." : "Internacional."}
     {format_date(activity.fecha)}.
-    Jurado: {activity.jurado}.
+    Jurado: {activity.jurado || "Sin Jurado"}.
     Categoria: {activity.categoria}.
     {activity.deposito_legal ? "Deposito legal: " + activity.deposito_legal + '.' : ''}
     {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
