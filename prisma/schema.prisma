@@ -28,7 +28,7 @@ enum autor_tipo_actividad_enum {
   evento
   exposicion
   grabacion
-  informe
+  informe_tecnico
   libro
   memoria
   partitura
@@ -36,7 +36,7 @@ enum autor_tipo_actividad_enum {
   premio
   premio_bienal
   proyecto_investigacion
-  proyecto_de_grado
+  proyecto_grado
   recital
 }
 
@@ -703,7 +703,7 @@ model grabacion {
   editorial      String
   fecha          DateTime                 @db.Date
   financiado_por String?
-  jurado         String // Jurado, Árbitro o Comité Editorial
+  jurado         String? // Jurado, Árbitro o Comité Editorial
   nacional       Boolean                  @default(true)
 
   // Postgres relations
