@@ -1,8 +1,9 @@
 import type { actividad_form, kinds } from "$types/forms";
+import { goto } from "$app/navigation";
 
 
 export const submit = function (kind: kinds) {
-  return function (data: actividad_form<typeof kind>) {
+  return async function (data: actividad_form<typeof kind>) {
 
     switch (kind) {
       case "articulo_revista":
@@ -15,7 +16,21 @@ export const submit = function (kind: kinds) {
         data.articulo_revista.paginas = Number(data.articulo_revista.paginas);
         break;
 
+      case "informe_tecnico":
+        data.informe_tecnico.fecha_inicio = new Date(data.informe_tecnico.fecha_inicio);
+        break;
+
+      case "patente":
+        data.patente.fecha_inicio = new Date(data.patente.fecha_inicio);
+        data.patente.fecha_fin = new Date(data.patente.fecha_fin);
+        break;
+
+      case "proyecto_grado":
+        data.proyecto_grado.fecha_defensa = new Date(data.proyecto_grado.fecha_defensa);
+        break;
+
       case "proyecto_investigacion":
+        data.proyecto_investigacion.fecha_inicio = new Date(data.proyecto_investigacion.fecha_inicio);
         // TODO: Remove when fix confusion in db with 'institucion'
         data.proyecto_investigacion.monto = data.proyecto_investigacion.monto.toString();
         break;
@@ -25,10 +40,11 @@ export const submit = function (kind: kinds) {
         break;
 
       default:
+        data[kind].fecha = new Date(data[kind].fecha);
         break;
     };
 
-    fetch(`/api/activities/create/${kind}`, {
+    const res = await fetch(`/api/activities/create/${kind}`, {
       method: "POST",
       credentials: 'include',
       headers: {
@@ -36,5 +52,10 @@ export const submit = function (kind: kinds) {
       },
       body: JSON.stringify(data)
     });
+
+    if (res.ok) {
+      console.log("redirect: ", res.headers)
+      goto(`/actividades/profesor/${data.actividad.creada_por}`);
+    }
   };
 }

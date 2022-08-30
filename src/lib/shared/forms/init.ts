@@ -6,7 +6,7 @@ export const init = function (kind: kinds): actividad_form<typeof kind> {
   const act: activity = {
     actividad: {
       creada_por: "eduardo@usb.ve"
-      , titulo: 't'
+      , titulo: ''
       , cuota: 0
       , fecha_creacion: new Date()
       , fecha_ultima_modificacion: new Date()
@@ -16,15 +16,16 @@ export const init = function (kind: kinds): actividad_form<typeof kind> {
       , palabras_clave: []
       , validado_por: null
     }
+    , actividades_grupos: ['1']
+    , autores_externos: []
+    , autores_usb: []
+    , creation_success: false
   };
 
   switch (kind) {
     case "articulo_revista":
       const articulo_revista: actividad_form<"articulo_revista"> = {
         ...act
-        , actividades_grupos: ['1']
-        , autores_externos: []
-        , autores_usb: []
         , articulo_revista: {
           articulo_invitado: false
           , con_estudiantes: false
@@ -48,7 +49,7 @@ export const init = function (kind: kinds): actividad_form<typeof kind> {
           aceptado: false
           , articulo_invitado: false
           , ciudad: ''
-          , editores: []
+          , editores: ['']
           , editorial: ''
           , fecha: new Date("yyyy-MM-dd")
           , isbn: ''
@@ -118,7 +119,7 @@ export const init = function (kind: kinds): actividad_form<typeof kind> {
           , editorial: ''
           , fecha: new Date("yyyy-MM-dd")
           , financiado_por: null
-          , jurado: ''
+          , jurado: null
           , nacional: false
         }
       };
@@ -129,12 +130,12 @@ export const init = function (kind: kinds): actividad_form<typeof kind> {
       const informe_tecnico: actividad_form<"informe_tecnico"> = {
         ...act
         , informe_tecnico: {
-          confidencial: false
+            confidencial: false
           , evaluacion_did: false
-          , evaluadores: []
+          , evaluadores: ['']
           , fecha_inicio: new Date("yyyy-MM-dd")
           , institucion: ''
-          , meses_duracion: 0
+          , meses_duracion: 1
         }
       };
 
@@ -168,7 +169,7 @@ export const init = function (kind: kinds): actividad_form<typeof kind> {
           , medio_publicacion: null
           , pag_final: null
           , pag_inicial: null
-          , paginas: 0
+          , paginas: 1
           , pais: "Venezuela"
           , tipo_congreso: "Internacional"
           , volumen: null
@@ -252,10 +253,10 @@ export const init = function (kind: kinds): actividad_form<typeof kind> {
         ...act
         , proyecto_investigacion: {
           fecha_inicio: new Date("yyyy-MM-dd")
-          , institucion: ''
-          , meses_duracion: 0
-          , moneda: ''
-          , monto: ''
+          , institucion: "Fonacit"
+          , meses_duracion: 1
+          , moneda: "Bs."
+          , monto: '1'
         }
       };
 
@@ -264,8 +265,6 @@ export const init = function (kind: kinds): actividad_form<typeof kind> {
     case "recital":
       const recital: actividad_form<"recital"> = {
         ...act
-        , autores_externos: []
-        , autores_usb: []
         , recital: {
           ciudad: ''
           , fecha_evento: new Date("yyyy-MM-dd")

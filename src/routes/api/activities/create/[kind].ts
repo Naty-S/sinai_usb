@@ -20,14 +20,12 @@ export const post: RequestHandler = async ({ request, params }) => {
     create: _data[params.kind]
   };
 
-  let status = 500;
+  let status = 303;
   let headers = {
     location: "/"
   };
 
   try {
-    console.log(data);
-    
     let act = await prisma.actividad.create({ data });
 
     if (_data.actividades_grupos) {
@@ -48,12 +46,11 @@ export const post: RequestHandler = async ({ request, params }) => {
         }
       })
     };
-    console.log(act);
 
     status = 303;
     headers = {
-      location: `/actividades/profesor/${data.actividad.creada_por}`
-    }
+      location: `/actividades/profesor/${data.creada_por}`
+    };
 
   } catch (error) {
     // TODO: 
