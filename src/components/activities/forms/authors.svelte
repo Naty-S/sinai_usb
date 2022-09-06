@@ -63,7 +63,7 @@
 
   let professors: any[];
   onMount(async () => {
-    const res = await fetch(`/api/professors`);
+    const res = await fetch("/api/professors");
 
     try {      
       if (res.ok) {
