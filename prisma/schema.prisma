@@ -547,7 +547,7 @@ model actividad_grupo_investigacion {
   grupo     Int
 
   // Postgres relations
-  Actividad actividad           @relation(fields: [actividad], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Actividad actividad           @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Grupo     grupo_investigacion @relation(fields: [grupo], references: [id], onDelete: NoAction, onUpdate: Cascade)
 
 

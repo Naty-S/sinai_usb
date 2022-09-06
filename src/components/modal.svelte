@@ -1,17 +1,18 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
+	import { onDestroy } from "svelte";
 
 	export let id: string;
 	export let title: string;
 	export let ok_text = '';
 	export let close_text = "Cancelar";
-	export let align: string;
+	export let align = '';
 	export let is_active: boolean;
   export let close = () => {};
+  export let confirm = () => {};
 
 	let modal: any;
 
-	const handle_keydown = function (e) {
+	const handle_keydown = function (e: any) {
 		if (e.key === "Escape") {
 			close();
 			return;
@@ -20,7 +21,7 @@
 		if (e.key === "Tab") {
 			// trap focus
 			const nodes = modal.querySelectorAll('*');
-			const tabbable = Array.from(nodes).filter(n => n.tabIndex >= 0);
+			const tabbable: any[] = Array.from(nodes).filter((n: any) => n.tabIndex >= 0);
 
 			let index = tabbable.indexOf(document.activeElement);
 			if (index === -1 && e.shiftKey) index = 0;
@@ -33,12 +34,12 @@
 		};
 	};
 
-	const previously_focused = typeof document !== 'undefined' && document.documentElement;
+	const previously_focused = typeof document !== "undefined" && document.documentElement;
 
 	if (previously_focused) {
 		onDestroy(() => {
-			close();
 			previously_focused.focus();
+			close();
 		});
 	};
 </script>
@@ -62,9 +63,13 @@
 
 	<!-- svelte-ignore a11y-autofocus -->
 	<div class="center aligned actions">
-		<div class="ui button" on:click={close}>{close_text}</div>
+		<button class="ui button" on:click={close}>
+			{close_text}
+		</button>
 		{#if ok_text !== ''}
-			<div class="ui positive button">{ok_text}</div>
+			<button class="ui positive button" on:click={confirm}>
+				{ok_text}
+			</button>
 		{/if}
 	</div>
 </div>
