@@ -85,7 +85,13 @@
         <div class="item">
           <li>
             <div class="content">
-              <strong>autor1; autor2</strong>.
+              {#each act.autores_externos as author}
+                <strong>{author.nombre}</strong>,
+              {/each}
+              {#each act.autores_usb as author}
+                <strong>{author.nombre}</strong>,
+              {/each}
+              .
               "{act.titulo}".
 
               <KindInfo activity={act.kind_info} kind={act.kind_name} />
