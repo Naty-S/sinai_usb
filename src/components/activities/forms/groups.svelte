@@ -6,6 +6,8 @@
   import { key } from "svelte-forms-lib";
   import { page } from "$app/stores";
 
+  export let group_i: number = 0;
+
   const param = $page.params.activity;
   const kind = param as kinds;
   const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
@@ -13,7 +15,7 @@
   let groups: Group[] = [];
 
   onMount(async () => {
-    const res = await fetch(`/api/groups`);
+    const res = await fetch("/api/groups");
 
     try {      
       if (res.ok) {
@@ -27,11 +29,11 @@
 
 {#if $form.actividades_grupos}
   <div class="field">
-    <label for="actividades_grupos[0]">Grupo asociado</label>
+    <label for="actividades_grupos[{group_i}].new">Grupo asociado</label>
     <select
-      name="actividades_grupos[0]"
+      name="actividades_grupos[{group_i}].new"
       class="ui fluid selection dropdown"
-      bind:value={$form.actividades_grupos[0]}
+      bind:value={$form.actividades_grupos[group_i].new}
       on:change={handleChange}
     >
       {#each groups as g}

@@ -1,3 +1,25 @@
+<script context="module" lang="ts">
+  import type { Load } from "@sveltejs/kit";
+
+  // https://kit.svelte.dev/docs/loading
+  export const load: Load = async ({ fetch, params }) => {
+
+    const res = await fetch(`/api/activities/modify/${params.activity}/${params.id}`);
+   
+    if (res.ok) {
+      const activity_data = await res.json();
+
+      return {
+        props: {activity_data}
+      };
+    };
+
+    const { message } = await res.json();
+    return {
+      error: new Error(message)
+    };
+  };
+</script>
 <script lang="ts">
   import { setContext } from "svelte";
   import { createForm, key } from "svelte-forms-lib";
@@ -6,6 +28,7 @@
   import { goto } from "$app/navigation";
 
   import type { kinds } from "$types/forms";
+  import type { Activity } from "$types/activities";
 
   import { init } from "$lib/shared/forms/init";
   import { validation } from "$lib/shared/forms/validation";
@@ -35,10 +58,12 @@
   import Groups from "$components/activities/forms/groups.svelte";
   import Observaciones from "$components/forms/observaciones.svelte";
 
+  export let activity_data: Activity;
+
   const activity = $page.params.activity;
   const kind = activity as kinds;
-  const initialValues = init(kind);
-  const onSubmit = submit(kind);
+  const initialValues = init(kind, activity_data);
+  const onSubmit = submit(kind, true, $page.params.id);
   const validationSchema = validation(kind)
   const formProps = { initialValues, onSubmit, validationSchema };
   const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
@@ -90,7 +115,7 @@
   <Groups /> <!-- no esta en: patentes ni premios -->
   <Authors />
   <Observaciones />
-  <ActionsButtons />
+  <ActionsButtons action="Modificar" />
 </form>
 
 <!-- TODO: -->

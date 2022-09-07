@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "$api/_api";
 
 
-export const post: RequestHandler = async ({ request, params }) => {
+export const patch: RequestHandler = async ({ request, params }) => {
 
   let status = 500;
   let body = {};

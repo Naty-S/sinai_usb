@@ -61,7 +61,7 @@ type proyecto_investigacion_form = Omit<proyecto_investigacion, "actividad">;
 type recital_form = Omit<recital, "actividad">;
 
 type actividades_form = {
-  articulo_revista: articulo_revista_form
+    articulo_revista: articulo_revista_form
   , capitulo_libro: capitulo_libro_form
   , composicion: composicion_form
   , evento: evento_form
@@ -83,7 +83,10 @@ export type activity = {
   actividad: Omit<actividad, "id">
   , autores_externos: Omit<autor_externo, "id" | "actividad">[]
   , autores_usb: Omit<autor_usb, "id" | "actividad">[]
-  , actividades_grupos: string[]
+  , actividades_grupos: {
+    old: string,
+    new: string
+  }[]
   , creation_success: boolean
 };
 

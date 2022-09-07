@@ -22,7 +22,7 @@ export const post: RequestHandler = async ({ request, params }) => {
 
   let status = 303;
   let headers = {
-    location: "/"
+    location: '/'
   };
 
   try {

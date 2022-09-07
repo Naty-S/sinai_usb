@@ -2,7 +2,7 @@ import type { actividad_form, kinds } from "$types/forms";
 import { goto } from "$app/navigation";
 
 
-export const submit = function (kind: kinds) {
+export const submit = function (kind: kinds, update: boolean = false, id?: string) {
   return async function (data: actividad_form<typeof kind>) {
 
     switch (kind) {
@@ -31,6 +31,7 @@ export const submit = function (kind: kinds) {
 
       case "proyecto_investigacion":
         data.proyecto_investigacion.fecha_inicio = new Date(data.proyecto_investigacion.fecha_inicio);
+        
         // TODO: Remove when fix confusion in db with 'institucion'
         data.proyecto_investigacion.monto = data.proyecto_investigacion.monto.toString();
         break;
@@ -44,18 +45,30 @@ export const submit = function (kind: kinds) {
         break;
     };
 
-    const res = await fetch(`/api/activities/create/${kind}`, {
-      method: "POST",
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+    let res: Response;
 
+    if (update) {
+      res = await fetch(`/api/activities/modify/${kind}/${id}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+      });
+    } else {
+      res = await fetch(`/api/activities/create/${kind}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+    };
+    
     if (res.ok) {
-      console.log("redirect: ", res.headers)
-      goto(`/actividades/profesor/${data.actividad.creada_por}`);
-    }
+      goto(res.url);
+    };
   };
 }
