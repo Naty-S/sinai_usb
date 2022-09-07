@@ -1,5 +1,12 @@
 <script lang="ts">
+  import { goto, afterNavigate } from "$app/navigation";
+
   export let action = "Crear";
+
+  let previousPage: string;
+  afterNavigate((navigaton) => {
+    previousPage = navigaton?.from?.pathname || '/';
+  });
 </script>
 
 <div>
@@ -9,7 +16,7 @@
   <button type="reset" name="reset_act" class="ui red button">
     Reset
   </button>
-  <button class="ui button">
+  <button type="button" class="ui button" on:click={() => goto(previousPage)}>
     Regresar
   </button>
 </div>

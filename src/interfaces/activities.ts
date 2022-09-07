@@ -1,6 +1,7 @@
 /// <reference types="@sveltejs/kit" />
 
 import type { Activity } from "$types/activities"
+import type { Group } from "./groups"
 
 
 export interface YearActivities {
@@ -30,12 +31,9 @@ export interface ProfessorActivities {
 };
 
 export interface GroupActivities {
-  group: {
-    id: number,
-    name: string
-  },
+  group: Group,
   activities: Activity[]
-}
+};
 
 export interface DepActivities {
   department: {

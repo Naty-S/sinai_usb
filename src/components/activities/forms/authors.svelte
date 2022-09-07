@@ -14,7 +14,7 @@
   const param = $page.params.activity;
   const kind = param as kinds;
   const tipo_actividad = param as autor_tipo_actividad_enum;
-  const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
+  const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 
   const add_author_usb = function () {
     const init_author = {
@@ -61,7 +61,7 @@
   $: tutor_usb = function (i: number) { return $form.autores_usb[i].es_tutor }
   $: tutor_out = function (i: number) { return $form.autores_externos[i].es_tutor }
 
-  let professors: any[];
+  let professors: { id: number, nombre: string }[] = [];
   onMount(async () => {
     const res = await fetch("/api/professors");
 
@@ -118,7 +118,7 @@
         <Input
           type="checkbox"
           label="Ponente"
-          name="autores_usb[${i}].es_ponente"
+          name="autores_usb[{i}].es_ponente"
           bind:value={$form.autores_usb[i].es_ponente}
           class="three wide field"
         />                
@@ -126,7 +126,7 @@
           <Input
             type="checkbox"
             label="Estudiante"
-            name="autores_usb[${i}].es_estudiante"
+            name="autores_usb[{i}].es_estudiante"
             bind:value={$form.autores_usb[i].es_estudiante}
             class="three wide field"
           />
@@ -135,7 +135,7 @@
           <Input
             type="checkbox"
             label="Tutor"
-            name="autores_usb[${i}].es_tutor"
+            name="autores_usb[{i}].es_tutor"
             bind:value={$form.autores_usb[i].es_tutor}
             class="three wide field"
           />
@@ -150,14 +150,14 @@
         <div class="two inline fields">
           <Input
             label="Carrera"
-            name="autores_usb[${i}].estudiante_carrera"
+            name="autores_usb[{i}].estudiante_carrera"
             bind:value={$form.autores_usb[i].estudiante_carrera}
             error={$errors.autores_usb[i]?.estudiante_carrera}
             class="ten wide required field"
           />
           <Input
             label="Correo"
-            name="autores_usb[${i}].correo"
+            name="autores_usb[{i}].correo"
             bind:value={$form.autores_usb[i].correo}
             error={$errors.autores_usb[i]?.correo}
             class="ten wide field"
@@ -201,14 +201,14 @@
         <div class="two inline fields">
           <Input
             label="Carrera"
-            name="autores_externos[${i}].estudiante_carrera"
+            name="autores_externos[{i}].estudiante_carrera"
             bind:value={$form.autores_externos[i].estudiante_carrera}
             error={$errors.autores_externos[i]?.estudiante_carrera}
             class="ten wide required field"
           />
           <Input
             label="Correo"
-            name="autores_externos[${i}].correo"
+            name="autores_externos[{i}].correo"
             bind:value={$form.autores_externos[i].correo}
             error={$errors.autores_externos[i]?.correo}
             class="ten wide field"
@@ -220,7 +220,7 @@
         <Input
           type="checkbox"
           label="Ponente"
-          name="autores_externos[${i}].es_ponente"
+          name="autores_externos[{i}].es_ponente"
           bind:value={$form.autores_externos[i].es_ponente}
           class="three wide field"
         />                
@@ -228,7 +228,7 @@
           <Input
             type="checkbox"
             label="Estudiante"
-            name="autores_externos[${i}].es_estudiante"
+            name="autores_externos[{i}].es_estudiante"
             bind:value={$form.autores_externos[i].es_estudiante}
             class="three wide field"
           />
@@ -237,7 +237,7 @@
           <Input
             type="checkbox"
             label="Tutor"
-            name="autores_externos[${i}].es_tutor"
+            name="autores_externos[{i}].es_tutor"
             bind:value={$form.autores_externos[i].es_tutor}
             class="three wide field"
           />

@@ -65,7 +65,7 @@
 
     const group_activities = rank_activities as GroupActivities;
 
-    rank_name = group_activities.group.name;
+    rank_name = group_activities.group.nombre;
     rank_page = `/actividades/grupo/${group_activities.group.id}`;
     activities = group_activities.activities;
 

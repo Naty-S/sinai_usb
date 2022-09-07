@@ -27,8 +27,8 @@
 
   const confirm_validate = async function () {
     const res = await fetch(`/api/activities/validate/${actual_act_id}`, {
-      method: "POST",
-      credentials: 'include'
+      method: "PATCH",
+      credentials: "include"
     });
 
     try {      
@@ -56,7 +56,7 @@
   const confirm_delete = async function () {
     const res = await fetch(`/api/activities/delete/${actual_act_id}`, {
       method: "DELETE",
-      credentials: 'include'
+      credentials: "include"
     });
 
     try {      
@@ -96,7 +96,11 @@
 
               <KindInfo activity={act.kind_info} kind={act.kind_name} />
 
-              <span class="uk-text-emphasis">Realizada en el Grupo</span>: act.group.name.
+              <span class="uk-text-emphasis">Realizada en el Grupo</span>:
+              {#each act.groups as group}
+                {group.nombre},
+              {/each}
+              .
 
               <i><span class="ui blue text">
                 {act.observaciones ? "Observaciones: " + act.observaciones : ''}
@@ -118,7 +122,9 @@
             {#if editable}
               <div class="uk-margin-small">
                 <!-- TODO: #16 ... -->
-                <a href="/api/activities/update_[id]">[Modificar]</a>
+                <a href="/actividades/modificar/{act.kind_name}/{act.id}" class="ui green small button">
+                  Modificar
+                </a>
                 <!-- if act.creada_por !== current_user && !act.fecha_validacion &&
                   !act.validado_por => can validate -->
                 {#if !act.validado_por && !act.fecha_validacion}

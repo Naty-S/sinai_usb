@@ -22,7 +22,7 @@ import { prisma } from "../../_api";
 export const get: RequestHandler = async function({ request, params }) {
 
   let status = 500;
-  let body: EntityActivities = {};
+  let body = {};
 
   try {
     // Find professor's activities
@@ -31,6 +31,16 @@ export const get: RequestHandler = async function({ request, params }) {
         creada_por: params.email
       },
       include: {
+        actividades_grupos: {
+          select: {
+            Grupo: {
+              select: {
+                id: true,
+                nombre: true
+              }
+            }
+          }
+        },
         autores_usb: true,
         autores_externos: true,
         articulo_revista: true,
@@ -52,14 +62,15 @@ export const get: RequestHandler = async function({ request, params }) {
       }
     });
 
-    const activities: Activity[] = _acts.map( a => format_activity_kind(a) );
-
-    status = 200;
-    body = {
+    const activities: Activity[] = _acts.map(a => format_activity_kind(a));
+    const entityActivities: EntityActivities = {
       entity: "Profesor",
       by_year: acts_kinds_by_year(activities, true),
       years_counts: count_acts_kinds_by_year(activities, true)
     };
+
+    status = 200;
+    body = entityActivities;
 
   } catch (error) {
     // TODO: 

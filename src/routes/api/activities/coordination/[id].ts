@@ -67,7 +67,7 @@ export const get: RequestHandler = async function ({ request, params }) {
         return {
           group: {
             id: g.id,
-            name: g.nombre
+            nombre: g.nombre
           },
           activities: g.actividades_grupos.map(a => format_activity_kind(a.Actividad))
         }

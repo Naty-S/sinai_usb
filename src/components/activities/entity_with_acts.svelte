@@ -44,7 +44,7 @@
     entities_with_acts_counts = entities_with_acts.map( g => {
       return {
         link: `/actividades/grupo/${g.group.id}`,
-        kind: g.group.name,
+        kind: g.group.nombre,
         counts: count_acts_kinds(g.activities)
       };
     });

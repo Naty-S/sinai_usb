@@ -74,9 +74,21 @@ export const format_activity_kind = function (activity: any): Activity {
     };
   });
 
-  return {
+  const groups = activity.actividades_grupos.map((g: any) => {
+    return {
+      id: g.Grupo.id,
+      nombre: g.Grupo.nombre
+    }
+  });
+
+  delete activity["actividades_grupos"];
+
+  const act: Activity = {
     ...activity,
+    groups,
     kind_name,
     kind_info
   };
+
+  return act;
 };

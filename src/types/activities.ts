@@ -1,5 +1,6 @@
 /// <reference types="@sveltejs/kit" />
 
+import type { Group } from "$interfaces/groups";
 import type {
   actividad,
   autor_externo,
@@ -26,6 +27,7 @@ import type {
 export type Activity = actividad & {
   autores_externos: autor_externo[]
   autores_usb: autor_usb[]
+  groups: Group[]
   kind_name: string
   kind_info: ActivityKind
 };
