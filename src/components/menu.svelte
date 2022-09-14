@@ -3,8 +3,8 @@
   import Modal from "./modal.svelte";
 
   const void_link = "javascript:void(0)";
-  const entity = "profesor/eduardo@usb.ve";
-  const bra = "/BRA/profesor/eduardo@usb.ve";
+  const entity = "profesor/eduardo@usb.ve"; /* TODO: from current user */
+  const bra = "/BRA/profesor/eduardo@usb.ve"; /* TODO: from current user */
   const coord = "/actividades/coordinacion/2";
   const dep = "/actividades/departamento/2";
   const division = "/actividades/division/1";

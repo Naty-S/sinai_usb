@@ -10,10 +10,10 @@
 </script>
 
 <div>
-  <button type="submit" name="submit_act" class="ui green button">
+  <button type="submit" name="submit_form" class="ui green button">
     {action}
   </button>
-  <button type="reset" name="reset_act" class="ui red button">
+  <button type="reset" name="reset_form" class="ui red button">
     Reset
   </button>
   <button type="button" class="ui button" on:click={() => goto(previousPage)}>

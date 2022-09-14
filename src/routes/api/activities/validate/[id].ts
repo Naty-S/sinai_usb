@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "$api/_api";
 
 
-export const patch: RequestHandler = async ({ request, params }) => {
+export const patch: RequestHandler = async ({ params }) => {
 
   let status = 500;
   let body = {};
@@ -15,7 +15,7 @@ export const patch: RequestHandler = async ({ request, params }) => {
       data: {
         fecha_validacion: new Date(),
         fecha_ultima_modificacion: new Date(),
-        validado_por: "eduardo@usb.ve"
+        validado_por: "eduardo@usb.ve" /* TODO: from current user */
       },
       where: {
         id: Number(params.id)

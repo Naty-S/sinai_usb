@@ -19,6 +19,8 @@
       
       user.login(_user);
 
+      // if (Dean || coordinador tienen prof por validar registro) => redirect a la pag para validaciones
+
       if ( redirect ) { goto( redirect ); }
       else {
         console.log("No location in headers");

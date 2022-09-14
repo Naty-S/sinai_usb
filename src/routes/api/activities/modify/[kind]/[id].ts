@@ -9,7 +9,7 @@ import type { Activity } from "$types/activities";
 import { format_activity_kind } from "$utils/formatting";
 
 
-export const get: RequestHandler = async function ({ request, params }) {
+export const get: RequestHandler = async function ({ params }) {
 
   let status = 303;
   let body = {};
@@ -80,7 +80,6 @@ export const get: RequestHandler = async function ({ request, params }) {
 export const patch: RequestHandler = async function ({ request, params }) {
 
   const _data = await request.json();
-  console.log("patch act: ", _data)
 
   const data = {
     ..._data.actividad
