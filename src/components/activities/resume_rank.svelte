@@ -11,7 +11,7 @@
     , GroupActivities
   } from "$interfaces/activities";
   
-  import ResumeTable from "$components/resume_table.svelte";
+  import ResumeTable from "./resume_table.svelte";
   
   import { acts_kinds_by_year } from "$utils/grouping";
   import { count_acts_kinds_by_year } from "$utils/maths";

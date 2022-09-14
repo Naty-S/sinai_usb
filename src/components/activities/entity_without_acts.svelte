@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ActivitiesCounts, ProfessorActivities, GroupActivities } from "$interfaces/activities";
 
-  import ResumeTable from "$components/resume_table.svelte";
+  import ResumeTable from "./resume_table.svelte";
   
   export let entity: string;
   export let entity_activities: ProfessorActivities[] | GroupActivities[];
