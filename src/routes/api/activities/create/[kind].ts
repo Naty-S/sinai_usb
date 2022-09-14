@@ -9,6 +9,13 @@ export const post: RequestHandler = async ({ request, params }) => {
   const _data = await request.json();
   const data = {
     ..._data.actividad,
+    actividades_grupos: {
+      create: _data.actividades_grupos.map((g: any) => {
+        return {
+          grupo: Number(g.new)
+        };
+      })
+    },
     autores_usb: {
       create: _data.autores_usb
     },
@@ -16,6 +23,7 @@ export const post: RequestHandler = async ({ request, params }) => {
       create: _data.autores_externos
     },
   };
+  
   data[params.kind] = {
     create: _data[params.kind]
   };
@@ -26,32 +34,12 @@ export const post: RequestHandler = async ({ request, params }) => {
   };
 
   try {
-    let act = await prisma.actividad.create({ data });
-
-    if (_data.actividades_grupos) {
-      act = await prisma.actividad.update({
-        where: {
-          id: act.id
-        },
-        data: {
-          actividades_grupos: {
-            create: _data.actividades_grupos.map((g: string) => {
-              return {
-                Grupo: {
-                  connect: { id: Number(g) }
-                }
-              }
-            })
-          }
-        }
-      })
-    };
+    await prisma.actividad.create({ data });
 
     status = 303;
     headers = {
       location: `/actividades/profesor/${data.creada_por}`
     };
-
   } catch (error) {
     // TODO: 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
