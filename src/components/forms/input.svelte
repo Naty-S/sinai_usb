@@ -8,6 +8,7 @@
   export let type = "text";
   export let label: string;
   export let name: string;
+  export let placeholder = '';
   export let value: any;
   export let error: any = undefined;
 
@@ -22,6 +23,7 @@
     {type}
     {name}
     {value}
+    {placeholder}
     on:change={handleChange}
     on:blur={handleChange}
     class={type === "checkbox" ? "ui checkbox" : ''}
