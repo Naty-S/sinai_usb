@@ -53,7 +53,7 @@
       label="Modalidad"
       name="evento.modalidad"
       bind:value={$form.evento.modalidad}
-      options={Object.entries(evento_modalidad_enum).map(([_, mod]) => mod)}
+      options={Object.entries(evento_modalidad_enum).map(([_, mod]) => ({ val: mod, name: mod }))}
       class="six wide field"
     />
     <Input

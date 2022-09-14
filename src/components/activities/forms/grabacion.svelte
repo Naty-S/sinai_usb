@@ -57,7 +57,7 @@
       label="Categoría"
       name="grabacion.categoria"
       bind:value={$form.grabacion.categoria}
-      options={Object.entries(grabacion_categoria_enum).map(([_, cat]) => cat)}
+      options={Object.entries(grabacion_categoria_enum).map(([_, cat]) => ({ val: cat, name: cat }))}
       class="eight wide field"
     />
     <Input

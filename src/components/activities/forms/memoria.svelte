@@ -103,14 +103,14 @@
       label="Formato"
       name="memoria.formato"
       bind:value={$form.memoria.formato}
-      options={Object.entries(memoria_formato_enum).map(([_, f]) => f)}
+      options={Object.entries(memoria_formato_enum).map(([_, f]) => ({ val: f, name: f }))}
       class="field"
     />
     <Select
       label="Tipo de Congreso"
       name="memoria.tipo_congreso"
       bind:value={$form.memoria.tipo_congreso}
-      options={Object.entries(memoria_tipo_congreso_enum).map(([_, t]) => t)}
+      options={Object.entries(memoria_tipo_congreso_enum).map(([_, t]) => ({ val: t, name: t }))}
       class=" field"
     />
   </div>

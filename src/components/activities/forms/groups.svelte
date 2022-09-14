@@ -6,11 +6,13 @@
   import { key } from "svelte-forms-lib";
   import { page } from "$app/stores";
 
+  import Select from "$components/forms/select.svelte";
+
   export let group_i: number = 0;
 
   const param = $page.params.activity;
   const kind = param as kinds;
-  const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
+  const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 
   let groups: Group[] = [];
 
@@ -27,25 +29,11 @@
   });
 </script>
 
-{#if $form.actividades_grupos}
-  <div class="field">
-    <label for="actividades_grupos[{group_i}].new">Grupo asociado</label>
-    <select
-      name="actividades_grupos[{group_i}].new"
-      class="ui fluid selection dropdown"
-      bind:value={$form.actividades_grupos[group_i].new}
-      on:change={handleChange}
-    >
-      {#each groups as g}
-        <option value={g.id.toString()}>{g.id} - {g.nombre}</option>
-      {/each}
-    </select>
-    {#if $errors.actividades_grupos}
-      <div class="ui mini error message">
-        {$errors.actividades_grupos[0]}
-      </div>
-    {/if}
-  </div>
-{:else}
-  No data from DB
-{/if}
+<Select
+  label="Grupo asociado"
+  name="actividades_grupos[{group_i}].new"
+  bind:value={$form.actividades_grupos[group_i].new}
+  error={$errors.actividades_grupos[group_i].new}
+  options={groups.map(g => ({ val: g.id.toString(), name: `${g.id} - ${g.nombre}`}))}
+  class="field"
+/>
