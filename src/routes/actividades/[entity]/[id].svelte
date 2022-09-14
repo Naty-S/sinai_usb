@@ -30,8 +30,8 @@
 
   import type { EntityActivities } from "$interfaces/activities";
 
-  import ShowByYear from "$components/activities/show_by_year.svelte";
-  import ResumeTable from "$components/resume_table.svelte";
+  import YearsList from "$components/activities/years_list.svelte";
+  import ResumeTable from "$components/activities/resume_table.svelte";
 
   export let activities: EntityActivities;
 
@@ -50,7 +50,7 @@
 
 <!-- Display activities by year -->
 {#each activities.by_year.reverse() as activities}
-  <ShowByYear {activities} editable/>
+  <YearsList {activities} editable/>
 {/each}
 
 {#if $page.params.entity === "profesor"}

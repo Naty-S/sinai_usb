@@ -24,9 +24,9 @@
 
   import type { EntityActivities } from "$interfaces/activities";
 
-  import ShowByYear from "$components/activities/show_by_year.svelte";
+  import YearsList from "$components/activities/years_list.svelte";
+  import ResumeTable from "$components/activities/resume_table.svelte";
   import BraHeader from "$components/bra/header.svelte";
-  import ResumeTable from "$components/resume_table.svelte";
 
   export let prof_activities: EntityActivities;
   
@@ -78,7 +78,7 @@
 
   <!-- Display activities by year -->
   {#each period_activities.reverse() as activities}
-    <ShowByYear {activities} />
+    <YearsList {activities} />
   {/each}
 </div>
 
