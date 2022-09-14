@@ -4,6 +4,8 @@ import { parse, isDate } from "date-fns";
 import type { kinds } from "$types/forms";
 
 
+// TODO: regexs?
+
 function parseDate(value: any, originalValue: any) {
   const parsedDate = isDate(originalValue) || originalValue === null
     ? originalValue
@@ -13,14 +15,17 @@ function parseDate(value: any, originalValue: any) {
 };
 
 const articulo_revista = yup.object().shape({
-  articulo_invitado: yup.boolean().typeError("No es booleano")
+    articulo_invitado: yup.boolean().typeError("No es booleano")
   , con_estudiantes: yup.boolean().typeError("No es booleano")
   , estado: yup.string().oneOf(["Aceptado_via_publicacion", "Publicado"])
   , fecha_publicacion: yup.date().transform(parseDate).nullable()
   , indice: yup.string().nullable()
   , pag_final: yup.string().required("Requerido")
   , pag_inicial: yup.string().required("Requerido")
-  , paginas: yup.number().nullable().positive("Ingrese numero positivo").integer("Ingrese numero entero").min(1, "Minimo 1")
+  , paginas: yup.number().nullable()
+    .positive("Ingrese numero positivo")
+    .integer("Ingrese numero entero")
+    .min(1, "Minimo 1")
   , revista: yup.string().required("Requerido")
   , volumen: yup.string().required("Requerido")
 });
@@ -117,7 +122,10 @@ const memoria = yup.object().shape({
   , medio_publicacion: yup.string().nullable()
   , pag_final: yup.string().nullable()
   , pag_inicial: yup.string().nullable()
-  , paginas: yup.number().required("Requerido").positive("Ingrese numero positivo").integer("Ingrese numero entero").min(1, "Minimo 1")
+  , paginas: yup.number().required("Requerido")
+    .positive("Ingrese numero positivo")
+    .integer("Ingrese numero entero")
+    .min(1, "Minimo 1")
   , pais: yup.string().required("Requerido")
   , tipo_congreso: yup.string().oneOf(["Nacional", "Internacional"])
   , volumen: yup.string().nullable()
@@ -143,7 +151,7 @@ const partitura = yup.object().shape({
 
 const patente = yup.object().shape({
   fecha_fin: yup.date().transform(parseDate).typeError("Requerido")
-    // .min(yup.ref("fecha_inicio"), "La fecha final debe ser mayor que la inicial")
+    // .min(yup.ref("fecha_inicio"), "La fecha final debe ser mayor que la inicial") // TODO:
   , fecha_inicio: yup.date().transform(parseDate).typeError("Requerido")
   , numero: yup.string().required("Requerido")
   , pais: yup.string().required("Requerido")
