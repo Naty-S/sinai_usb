@@ -4,28 +4,30 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "$api/_api";
 
 
-export const get: RequestHandler = async ({ request, params }) => {
+export const get: RequestHandler = async () => {
   let status = 500;
   let body = {};
 
   try {
+    const p = await prisma.profesor.findUnique({
+      where: {
+        id: 1168
+      }
+    });
+    console.log(p)
+    // TODO: fix some that throws error in lieas_investigacion as NULL
     const professors = await prisma.profesor.findMany({
       select: {
         id: true,
-        nombre1: true,
-        nombre2: true,
-        apellido1: true,
-        apellido2: true
+        perfil: true,
+        confirmado: true,
+        cedula: true,
+        activo: true
       }
     });
 
     status = 200;
-    body = professors.map(p => {
-      return {
-        id: p.id,
-        nombre: `${p.apellido1} ${p.apellido2 || ''}, ${p.nombre1} ${p.nombre2 || ''}`
-      };
-    });
+    body = professors;
 
   } catch (error) {
     // TODO: 
