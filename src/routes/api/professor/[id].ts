@@ -6,22 +6,27 @@ import { prisma } from "$api/_api";
 
 export const patch: RequestHandler = async ({ request, params }) => {
 
-  const data = await request.json();
+  const _data = await request.json();
 
-  let status = 500;
-  let body = {};
+  let status = 303;
+  let headers = {
+    location: '/'
+  };
 
   try {
 
     await prisma.profesor.update({
-      data,
+      data: _data.new,
       where: {
         id: Number(params.id)
       }
     });
 
-    status = 200;
-    body = { action: "Validated || profile updated" };
+    status = 303;
+    const action = _data.url.pathname === "/validaciones/nuevos_profesores" ? "validado" : "perfil_modificado";
+    headers = {
+      location: `${_data.url}?${action}=true`
+    };
 
   } catch (error) {
     // TODO: 
@@ -40,14 +45,18 @@ export const patch: RequestHandler = async ({ request, params }) => {
 
   return {
     status,
-    body
+    headers
   };
 };
 
-export const del: RequestHandler = async ({ params }) => {
+export const del: RequestHandler = async ({ request, params }) => {
 
-  let status = 500;
-  let body = {};
+  const _data = await request.json();
+
+  let status = 303;
+  let headers = {
+    location: '/'
+  };
 
   try {
 
@@ -57,8 +66,10 @@ export const del: RequestHandler = async ({ params }) => {
       }
     });
 
-    status = 200;
-    body = { action: "Deleted" };
+    status = 303;
+    headers = {
+      location: `${_data.url}?rechazado=true`
+    };
 
   } catch (error) {
     // TODO: 
@@ -77,6 +88,6 @@ export const del: RequestHandler = async ({ params }) => {
 
   return {
     status,
-    body
+    headers
   };
 };
