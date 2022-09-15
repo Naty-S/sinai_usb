@@ -5,7 +5,7 @@ import type { Group } from "$interfaces/groups";
 import { prisma } from "$api/_api";
 
 
-export const get: RequestHandler = async ({ request, params }) => {
+export const get: RequestHandler = async () => {
   let status = 500;
   let body = {};
 

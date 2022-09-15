@@ -7,9 +7,9 @@
 
   import type { kinds } from "$types/forms";
 
-  import { init } from "$lib/shared/forms/init";
-  import { validation } from "$lib/shared/forms/validation";
-  import { submit } from "$lib/shared/forms/submit";
+  import { init } from "$lib/shared/forms/activities/init";
+  import { validation } from "$lib/shared/forms/activities/validation";
+  import { submit } from "$lib/shared/forms/activities/submit";
 
 	import Modal from '$components/modal.svelte';
 
@@ -39,7 +39,7 @@
   const kind = activity as kinds;
   const initialValues = init(kind);
   const onSubmit = submit(kind);
-  const validationSchema = validation(kind)
+  const validationSchema = validation(kind);
   const formProps = { initialValues, onSubmit, validationSchema };
   const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
 

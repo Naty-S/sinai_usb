@@ -2,7 +2,7 @@
   import { getContext, onMount } from "svelte";
   import { key } from "svelte-forms-lib";
   
-  import type { autor_tipo_actividad_enum } from "@prisma/client";
+  import type { autor_tipo_actividad_enum, profesor } from "@prisma/client";
 
   import { page } from "$app/stores";
   
@@ -67,7 +67,8 @@
 
     try {      
       if (res.ok) {
-        professors = await res.clone().json();
+        const res_json = await res.clone().json();
+        professors = res_json.map((p: profesor) => ({ id: p.id, nombre: p.perfil }));
       };
     } catch (error) {      
       throw error;
@@ -110,7 +111,7 @@
             label="Nombre Profesor"
             name="autores_usb[{i}].nombre"
             bind:value={$form.autores_usb[i].nombre}
-            options={professors.map(p => p.nombre)}
+            options={professors.map(p => ({ val: p.nombre, name: p.nombre }))}
             class="ten wide required field"
           />
         {/if}

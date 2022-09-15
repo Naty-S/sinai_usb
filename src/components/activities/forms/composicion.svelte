@@ -50,7 +50,7 @@
     label="Categoría"
     name="composicion.categoria"
     bind:value={$form.composicion.categoria}
-    options={Object.entries(composicion_categoria_enum).map(([_, cat]) => cat)}
+    options={Object.entries(composicion_categoria_enum).map(([_, cat]) => ({ val: cat, name: cat }))}
     class="inline field"
   />
   <div class="two inline fields">

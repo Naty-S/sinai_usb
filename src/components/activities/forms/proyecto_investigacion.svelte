@@ -111,7 +111,7 @@
         label=""
         name="proyecto_investigacion.moneda"
         bind:value={$form.proyecto_investigacion.moneda}
-        options={["Bs.", "$ (USD)"]}
+        options={[{ val: "Bs.", name: "Bs."}, ({ val: "$ (USD)", name: "$ (USD)" })]}
         class="five wide field"
       />
     </div>

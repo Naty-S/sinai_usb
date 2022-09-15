@@ -5,7 +5,7 @@
     GroupActivities 
   } from "$interfaces/activities";
 
-  import ResumeTable from "$components/resume_table.svelte";
+  import ResumeTable from "./resume_table.svelte";
 
   import { count_acts_kinds } from "$utils/maths";
 

@@ -49,7 +49,7 @@
       label="Nivel Académico"
       name="proyecto_grado.nivel_academico"
       bind:value={$form.proyecto_grado.nivel_academico}
-      options={Object.entries(proyecto_grado_nivel_academico_enum).map(([_, nivel]) => nivel)}
+      options={Object.entries(proyecto_grado_nivel_academico_enum).map(([_, nivel]) => ({ val: nivel, name: nivel }))}
       class="five wide field"
     />
     <Input

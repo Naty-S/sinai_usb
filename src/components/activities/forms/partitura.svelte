@@ -57,7 +57,7 @@
       label="Categoría"
       name="partitura.categoria"
       bind:value={$form.partitura.categoria}
-      options={Object.entries(partitura_categoria_enum).map(([_, cat]) => cat)}
+      options={Object.entries(partitura_categoria_enum).map(([_, cat]) => ({ val: cat, name: cat }))}
       class="five wide field"
     />
     <Input

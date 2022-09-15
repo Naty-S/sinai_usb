@@ -20,7 +20,7 @@
   label="Pais"
   name="{kind}.pais"
   bind:value={$form[kind].pais}
-  options={countries.map(c => c.name)}
+  options={countries.map(c => ({ val: c.name, name: c.name }))}
   class="field"
 />
 

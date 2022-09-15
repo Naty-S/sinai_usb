@@ -4,28 +4,18 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "$api/_api";
 
 
-export const post: RequestHandler = async ({ request, params }) => {
+export const post: RequestHandler = async ({ request }) => {
 
   const _data = await request.json();
-  const data = {
-    ..._data.actividad,
-    actividades_grupos: {
-      create: _data.actividades_grupos.map((g: any) => {
-        return {
-          grupo: Number(g.new)
-        };
-      })
-    },
-    autores_usb: {
-      create: _data.autores_usb
-    },
-    autores_externos: {
-      create: _data.autores_externos
-    },
+  const data_usuario = {
+    login: _data.professor.correo,
+    pass: _data.password,
+    // padded: 
   };
-  
-  data[params.kind] = {
-    create: _data[params.kind]
+  const data_ppi = {
+    ..._data.ppi,
+    profesor: _data.professor.cedula,
+    // activo: 
   };
 
   let status = 303;
@@ -34,11 +24,13 @@ export const post: RequestHandler = async ({ request, params }) => {
   };
 
   try {
-    await prisma.actividad.create({ data });
+    await prisma.usuario.create({ data: data_usuario });
+    await prisma.profesor.create({ data: _data.professor });
+    await prisma.ppi.create({ data: data_ppi });
 
     status = 303;
     headers = {
-      location: `/actividades/profesor/${data.creada_por}`
+      location: "/registro?exito=true"
     };
   } catch (error) {
     // TODO: 

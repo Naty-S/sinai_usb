@@ -1,23 +1,28 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { Prisma } from "@prisma/client";
 
+import type { Department } from "$interfaces/departments";
 import { prisma } from "$api/_api";
 
 
-export const get: RequestHandler = async () => {
+export const get: RequestHandler = async ({ request, params }) => {
   let status = 500;
   let body = {};
 
   try {
-    const professors = await prisma.profesor.findMany();
+    const departments: Department[] = await prisma.departamento.findMany({
+      select: {
+        id: true,
+        nombre: true
+      }
+    });
 
     status = 200;
-    body = professors;
+    body = departments;
 
   } catch (error) {
     // TODO: 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      console.log("error: ", error)
       // The .code property can be accessed in a type-safe manner
       // https://www.prisma.io/docs/reference/api-reference/error-reference
       if (error.code === 'P1012') {
