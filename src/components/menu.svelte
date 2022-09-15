@@ -1,96 +1,149 @@
 <script>
-  import Modal from "$components/modal.svelte";
+  import { session } from "$app/stores";
+  import Modal from "./modal.svelte";
+
+  const void_link = "javascript:void(0)";
+  const entity = "profesor/eduardo@usb.ve"; /* TODO: from current user */
+  const bra = "/BRA/profesor/eduardo@usb.ve"; /* TODO: from current user */
+  const coord = "/actividades/coordinacion/2";
+  const dep = "/actividades/departamento/2";
+  const division = "/actividades/division/1";
+
+  const groups = [1, 2];
+  const dep_chief_rep = true;
 
   let show_create = false;
 </script>
 
-<nav class="uk-navbar uk-margin uk-navbar-container" uk-navbar="mode: click">
+<nav class="uk-navbar uk-margin uk-navbar-container" uk-navbar="mode:click; offset: -10; delay-hide: 200">
   <div class="uk-navbar-center">
     <div class="">SINAI - DID</div>
     <!-- TODO: #19 -->
     <div class="">nombre prof (dpto name)</div>
-    <!-- TODO: #18 -->
-    <a class="uk-navbar-toggle uk-navbar-toggle-animate" uk-navbar-toggle-icon href="#">Menu</a>
+
+    <a href={void_link} class="uk-navbar-toggle uk-navbar-toggle-animate" uk-navbar-toggle-icon>
+      Menu
+    </a>
+    
     <div class="uk-navbar-dropdown uk-position-z-index">
       <ul class="uk-nav uk-navbar-dropdown-nav">
+
         <li name="activities">
-          <a href="#" class="uk-active">Actividades <span uk-navbar-parent-icon></span></a>
+          <a href={void_link} class="uk-active">
+            Actividades <span uk-navbar-parent-icon></span>
+          </a>
           <div class="uk-navbar-dropdown">
             <ul class="uk-nav uk-navbar-dropdown-nav">
-              <li><a href="#">Resumen</a></li>
-              <li><a on:click="{() => show_create = true}">Ingresar</a></li>
+              <li><a href="/actividades/{entity}">Resumen</a></li>
+              <li><a href={void_link} on:click={() => show_create = true}>Ingresar</a></li>
             </ul>
           </div>
         </li>
+
         <li class="uk-nav-divider" />
+
         <li name="consultations">
-          <a href="#">Consultas <span uk-navbar-parent-icon></span></a>
+          <a href={void_link}>
+            Consultas <span uk-navbar-parent-icon></span>
+          </a>
           <div class="uk-navbar-dropdown">
             <ul class="uk-nav uk-navbar-dropdown-nav">
-              <li><a href="#">Públicas</a></li>
-              <li><a href="#">Predeterminadas</a></li>
+              <li><a href={void_link}>Públicas</a></li>
+              <li><a href={void_link}>Predeterminadas</a></li>
             </ul>
           </div>
         </li>
+
         <li class="uk-nav-divider" />
+
         <li name="views">
-          <a href="#">Vistas <span uk-navbar-parent-icon></span></a>
+          <a href={void_link}>
+            Vistas <span uk-navbar-parent-icon></span>
+          </a>
           <div class="uk-navbar-dropdown">
             <ul class="uk-nav uk-navbar-dropdown-nav">
-              <li><a href="/BRA">BRA</a></li>
-              <li><a href="#">Personal</a></li>
-              <li><a href="#">Coordinacion</a></li>
-              <li><a href="#">Departamento</a></li>
-              <li><a href="#">Referencias Puras</a></li>
-              <li><a href="#">Certificación PEII</a></li>
+              <li><a href={bra}>BRA</a></li>
+              {#if dep_chief_rep}
+                <li><a href={dep}>Departamento</a></li>
+              {/if}
+              <li><a href={coord}>Coordinacion</a></li>
+              <li><a href={division}>Division</a></li>
+              
+              <!-- TODO: desired use cases -->
+              <li><a href={void_link}>Personal</a></li>
+              <li><a href={void_link}>Referencias Puras</a></li>
+              <li><a href={void_link}>Certificación PEII</a></li>
+              
               <li class="uk-nav-divider" />
+              
               <li>
-                <a href="#">Constancias <span uk-navbar-parent-icon></span></a>
+                <!-- TODO: desired use cases -->
+                <a href={void_link}>
+                  Constancias <span uk-navbar-parent-icon></span>
+                </a>
                 <div class="uk-navbar-dropdown">
                   <ul class="uk-nav uk-navbar-dropdown-nav">
-                    <li><a href="#">Proyectos</a></li>
-                    <li><a href="#">Grupos</a></li>
+                    <li><a href={void_link}>Proyectos</a></li>
+                    <li><a href={void_link}>Grupos</a></li>
                   </ul>
                 </div>
               </li>
+
               <li class="uk-nav-divider" />
+              
               <li>
-                <a href="#">Evaluaciones <span uk-navbar-parent-icon></span></a>
+                <!-- TODO: desired use cases -->
+                <a href={void_link}>
+                  Evaluaciones <span uk-navbar-parent-icon></span>
+                </a>
                 <div class="uk-navbar-dropdown">
                   <ul class="uk-nav uk-navbar-dropdown-nav">
-                    <li><a href="#">S2 Prueba</a></li>
-                    <li><a href="#">S2</a></li>
-                    <li><a href="#">GID</a></li>
+                    <li><a href={void_link}>S2 Prueba</a></li>
+                    <li><a href={void_link}>S2</a></li>
+                    <li><a href={void_link}>GID</a></li>
                   </ul>
                 </div>
               </li>
+              
               <li class="uk-nav-divider" />
+              
               <li>
-                <a href="#">Mis Grupos <span uk-navbar-parent-icon></span></a>
+                <a href={void_link}>
+                  Mis Grupos <span uk-navbar-parent-icon></span>
+                </a>
                 <div class="uk-navbar-dropdown">
                   <ul class="uk-nav uk-navbar-dropdown-nav">
-                    <li><a href="#">GID 1</a></li>
-                    <li><a href="#">GID 2</a></li>
+                    {#each groups as g}
+                      <li><a href="/actividades/grupo/{g}">GID {g}</a></li>
+                    {/each}
                   </ul>
                 </div>
               </li>
             </ul>
           </div>
         </li>
+        
         <li class="uk-nav-divider" />
+
         <li name="options">
-          <a href="#">Opciones <span uk-navbar-parent-icon></span></a>
+          <a href={void_link}>
+            Opciones <span uk-navbar-parent-icon></span>
+          </a>
           <div class="uk-navbar-dropdown">
             <ul class="uk-nav uk-navbar-dropdown-nav">
-              <li><a href="#">Cambiar Contraseña</a></li>
-              <li><a href="#">Cambiar Perfil</a></li>
+              <li><a href={void_link}>Cambiar Contraseña</a></li>
+              <li><a href={void_link}>Cambiar Perfil</a></li>
             </ul>
           </div>
         </li>
+        
         <li class="uk-nav-divider" />
-        <li><a href="#">Ayuda</a></li>
+        
+        <li><a href={void_link}>Ayuda</a></li>
+        
         <li class="uk-nav-divider" />
-        <li><a href="#">Salir</a></li>
+        
+        <li><a href={void_link}>Salir</a></li>
       </ul>
     </div>
   </div>
@@ -99,25 +152,58 @@
 {#if show_create}
   <Modal
     title="Ingresar nueva actividad"
-    id={0}
-    close={() => show_create = false}
+    id="create_activity"
+    align="left"
     is_active={show_create}
+    close={() => show_create = false}
   >
-    <li><a href="#">Artículos en Revistas</a></li>
-    <li><a href="#">Asistencia a Eventos</a></li>
-    <li><a href="#">Memorias de Congresos</a></li>
-    <li><a href="#">Proyectos de Investigación y Desarrollo</a></li>
-    <li><a href="#">Recitales o Conciertos Arbitrados</a></li>
-    <li><a href="#">Composiciones solicitadas por Orquestas Sinfónicas o Agrupaciones Reconocidas</a></li>
-    <li><a href="#">Grabaciones Sonoras Evaluadas por Arbitros</a></li>
-    <li><a href="#">Partituras, Videos o CDs publicados en editoriales reconocidas</a></li>
-    <li><a href="#">Selección en Exposiciones, Bienales, Salones o Concursos Arbitrados</a></li>
-    <li><a href="#">Trabajos Reconocidos o Premiados en Bienales, Salones, Concursos o Exposiciones</a></li>
-    <li><a href="#">Libros Publicados</a></li>
-    <li><a href="#">Capítulos de Libros</a></li>
-    <li><a href="#">Informes Técnicos</a></li>
-    <li><a href="#">Premios</a></li>
-    <li><a href="#">Patentes</a></li>
-    <li><a href="#">Proyectos de Grado Dirigidos</a></li>
+    <li><a href="/actividades/crear/articulo_revista" on:click={() => show_create = false} >
+      Artículos en Revistas
+    </a></li>
+    <li><a href="/actividades/crear/capitulo_libro" on:click={() => show_create = false} >
+      Capítulos de Libros
+    </a></li>
+    <li><a href="/actividades/crear/composicion" on:click={() => show_create = false} >
+      Composiciones solicitadas por Orquestas Sinfónicas o Agrupaciones Reconocidas
+    </a></li>
+    <li><a href="/actividades/crear/evento" on:click={() => show_create = false} >
+      Asistencia a Eventos
+    </a></li>
+    <li><a href="/actividades/crear/exposicion" on:click={() => show_create = false} >
+      Selección en Exposiciones, Bienales, Salones o Concursos Arbitrados
+    </a></li>
+    <li><a href="/actividades/crear/grabacion" on:click={() => show_create = false} >
+      Grabaciones Sonoras Evaluadas por Arbitros
+    </a></li>
+    <li><a href="/actividades/crear/informe_tecnico" on:click={() => show_create = false} >
+      Informes Técnicos
+    </a></li>
+    <li><a href="/actividades/crear/libro" on:click={() => show_create = false} >
+      Libros Publicados
+    </a></li>
+    <li><a href="/actividades/crear/memoria" on:click={() => show_create = false} >
+      Memorias de Congresos
+    </a></li>
+    <li><a href="/actividades/crear/partitura" on:click={() => show_create = false} >
+      Partituras, Videos o CDs publicados en editoriales reconocidas
+    </a></li>
+    <li><a href="/actividades/crear/patente" on:click={() => show_create = false} >
+      Patentes
+    </a></li>
+    <li><a href="/actividades/crear/premio" on:click={() => show_create = false} >
+      Premios
+    </a></li>
+    <li><a href="/actividades/crear/premio_bienal" on:click={() => show_create = false} >
+      Trabajos Reconocidos o Premiados en Bienales, Salones, Concursos o Exposiciones
+    </a></li>
+    <li><a href="/actividades/crear/proyecto_grado" on:click={() => show_create = false} >
+      Proyectos de Grado Dirigidos
+    </a></li>
+    <li><a href="/actividades/crear/proyecto_investigacion" on:click={() => show_create = false} >
+      Proyectos de Investigación y Desarrollo
+    </a></li>
+    <li><a href="/actividades/crear/recital" on:click={() => show_create = false} >
+      Recitales o Conciertos Arbitrados
+    </a></li>
   </Modal>
 {/if}

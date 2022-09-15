@@ -1,17 +1,21 @@
-<script>
+<script lang="ts">
+  import { getContext } from "svelte";
+  import { key } from "svelte-forms-lib";
+  
   import { memoria_formato_enum, memoria_tipo_congreso_enum } from "@prisma/client";
 
-  import Authors from "./authors.svelte";
-  import CountryStates from "./country_states.svelte";
-  import Groups from "./groups.svelte";
-  import Observaciones from "./observaciones.svelte";
+  import { page } from "$app/stores";
 
-  const act_data =
-  { titulo: undefined
-  , observaciones: undefined
-  , grupo: undefined
-  , 
-  }
+  import type { activity_form_ctx, kinds } from "$types/forms";
+
+  import Input from "$components/forms/input.svelte";
+  import Select from "$components/forms/select.svelte";
+
+  import CountryStates from "./country_states.svelte";
+
+  const param = $page.params.activity;
+  const kind = param as kinds;
+  const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
 <h2 class="uk-text-center">
@@ -21,87 +25,93 @@
   (In Extenso)
 </h4>
 
-<div class="ui large form">
-
-  <div class="required field">
-    <label for="">Título del Trabajo</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
-  <div class="required field">
-    <label for="">Nombre del Evento</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
-  <div class="three inline fields">
+<div name="memoria form">
+  <Input
+    label="Título del Trabajo"
+    name="actividad.titulo"
+    bind:value={$form.actividad.titulo}
+    error={$errors.actividad.titulo}
+    class="required field"
+  />
+  <Input
+    label="Nombre del Evento"
+    name="memoria.congreso"
+    bind:value={$form.memoria.congreso}
+    error={$errors.memoria.congreso}
+    class="required field"
+  />
+  <div class="three inline required fields">
     <CountryStates />
-    
-    <div class="required field">
-      <label for="">Fecha del Evento</label>
-      <input type="date" name="" id="">
-    </div>
+    <Input
+      type="date"
+      label="Fecha del Evento"
+      name="memoria.fecha"
+      bind:value={$form.memoria.fecha}
+      error={$errors.memoria.fecha}
+      class="field"
+    />
   </div>
-
-  <div class="two inline fields">    
-    <div class="inline ten wide field">
-      <label for="">Nombre del Medio de Publicación</label>
-      <input type="text" bind:value={act_data.titulo}>
-    </div>
-
-    <div class="inline field">
-      <label for="">Formato</label>
-      <select id="formato" class="ui selection dropdown">
-        {#each Object.entries(memoria_formato_enum) as [_, f]}
-          <option value={f}>{f}</option>
-        {/each}
-      </select>
-    </div>
+  <div class="three inline fields">    
+    <Input
+      label="Nombre del Medio de Publicación"
+      name="memoria.medio_publicacion"
+      bind:value={$form.memoria.medio_publicacion}
+      error={$errors.memoria.medio_publicacion}
+      class="eight wide field"
+    />
+    <Input
+      label="Volumen"
+      name="memoria.volumen"
+      bind:value={$form.memoria.volumen}
+      error={$errors.memoria.volumen}
+      class="field"
+    />
+    <Input
+      label="ISBN"
+      name="memoria.isbn"
+      bind:value={$form.memoria.isbn}
+      error={$errors.memoria.isbn}
+      class="field"
+    />
   </div>
-
-  <div class="two inline fields">
-    <div class="field">
-      <label for="">Volumen</label>
-      <input type="text" bind:value={act_data.titulo}>
-    </div>
-
-    <div class="field">
-      <label for="">ISBN</label>
-      <input type="text" bind:value={act_data.titulo}>
-    </div>
-  </div>
-
   <div class="three inline fields">
-    <div class="field">
-      <label for="">Cantidad de Páginas</label>
-      <input type="number" min="1">
-    </div>
-
-    <div class="field">
-      <label for="">Página Inicial</label>
-      <input type="text">
-    </div>
-
-    <div class="field">
-      <label for="">Página Final</label>
-      <input type="text">
-    </div>
+    <Input
+      type="number"
+      label="Cantidad de Páginas"
+      name="memoria.paginas"
+      bind:value={$form.memoria.paginas}
+      error={$errors.memoria.paginas}
+      class="field"
+    />
+    <Input
+      label="Página Inicial"
+      name="memoria.pag_inicial"
+      bind:value={$form.memoria.pag_inicial}
+      error={$errors.memoria.pag_inicial}
+      class="field"
+    />
+    <Input
+      label="Página Final"
+      name="memoria.pag_final"
+      bind:value={$form.memoria.pag_final}
+      error={$errors.memoria.pag_final}
+      class="field"
+    />
   </div>
-
-  <div class="inline field">
-    <label for="">Tipo de Congreso</label>
-    <select name="" id="tipo_congreso" class="ui selection dropdown">
-      {#each Object.entries(memoria_tipo_congreso_enum) as [_, tipo]}
-        <option value={tipo}>{tipo}</option>
-      {/each}
-    </select>
+  <div class="two inline fields">
+    <Select
+      label="Formato"
+      name="memoria.formato"
+      bind:value={$form.memoria.formato}
+      options={Object.entries(memoria_formato_enum).map(([_, f]) => ({ val: f, name: f }))}
+      class="field"
+    />
+    <Select
+      label="Tipo de Congreso"
+      name="memoria.tipo_congreso"
+      bind:value={$form.memoria.tipo_congreso}
+      options={Object.entries(memoria_tipo_congreso_enum).map(([_, t]) => ({ val: t, name: t }))}
+      class=" field"
+    />
   </div>
-  
-  <Groups grupo = {act_data.grupo} />
-  <div class="inline field">
-    <label for="">Entre los autores se encuentran uno o mas estudiante de pre o postgrado</label>
-    <input class="ui checkbox" type="checkbox">
-  </div>
-  <Authors />
-  <Observaciones observaciones = {act_data.observaciones} />
-
 </div>

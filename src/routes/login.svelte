@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   
-	import type { User } from '$types/session/user';
+	import type { User } from '$interfaces/user';
   import { user } from "$lib/shared/stores/session";
 
   const is_err = false;
@@ -18,6 +18,8 @@
       const redirect = res.headers.get("location");
       
       user.login(_user);
+
+      // if (Dean || coordinador tienen prof por validar registro) => redirect a la pag para validaciones
 
       if ( redirect ) { goto( redirect ); }
       else {

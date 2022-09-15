@@ -1,111 +1,132 @@
 <script lang="ts">
-  import Authors from './authors.svelte';
-	import Groups from './groups.svelte';  
-  import Observaciones from './observaciones.svelte';
+  import type { activity_form_ctx, kinds } from "$types/forms";
 
-  const act_data =
-  { titulo: undefined
-  , observaciones: undefined
-  , grupo: undefined
-  , articulo_invitado: undefined
-  , con_estudiantes: undefined
-  , estado: undefined
-  , fecha_publicacion: undefined
-  , indice: undefined
-  , pag_final: undefined
-  , pag_inicial: undefined
-  , paginas: undefined
-  , revista: undefined
-  , volumen: undefined
-  };
+  import { getContext } from "svelte";
+  import { key } from "svelte-forms-lib";
+  import { page } from "$app/stores";
 
-  const is_err = false;
+  import Input from "$components/forms/input.svelte";
+
+  const param = $page.params.activity;
+  const kind = param as kinds;
+  const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
 <h2 class="uk-text-center">
   ARTÍCULOS EN REVISTAS
 </h2>
 
-<div class="ui large form" class:error="{is_err}">
+<div name="articulo_revista form">
+  <Input
+    label="Título del Artículo"
+    name="actividad.titulo"
+    bind:value={$form.actividad.titulo}
+    error={$errors.actividad.titulo}
+    class="required field"
+  />
 
-  <div class="required field" class:error="{is_err}">
-    <label for="">Título del Artículo</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-  <div class="ui four wide field small error message">
-    <div class="header">Requerido</div>
-    <!-- <p>Introduzca un titulo</p> -->
-  </div>
-
+  <!-- TODO: #9 -->
+  <Input
+    label="Nombre de la Revista Arbitrada"
+    name="articulo_revista.revista"
+    bind:value={$form.articulo_revista.revista}
+    error={$errors.articulo_revista.revista}
+    class="required field"
+  />
+  
   <div class="two inline fields">
-    <label class="required" for="">Nombre de la Revista Arbitrada</label>
-    <div class="ten wide field">
-      <!-- TODO: #9 -->
-      <input type="text">
-    </div>
+    <Input
+      label="Índice"
+      name="articulo_revista.indice"
+      bind:value={$form.articulo_revista.indice}
+      error={$errors.articulo_revista.indice}
+      class="field"
+    />
+    <Input
+      label="Volumen"
+      name="articulo_revista.volumen"
+      bind:value={$form.articulo_revista.volumen}
+      error={$errors.articulo_revista.volumen}
+      class="required field"
+    />
   </div>
-
+  <div class="three inline required fields">
+    <Input
+      type="number"
+      label="Cantidad de Páginas"
+      name="articulo_revista.paginas"
+      bind:value={$form.articulo_revista.paginas}
+      error={$errors.articulo_revista.paginas}
+      class="field"
+    />
+    <Input
+      label="Página Inicial"
+      name="articulo_revista.pag_inicial"
+      bind:value={$form.articulo_revista.pag_inicial}
+      error={$errors.articulo_revista.pag_inicial}
+      class="field"
+    />
+    <Input
+      label="Página Final"
+      name="articulo_revista.pag_final"
+      bind:value={$form.articulo_revista.pag_final}
+      error={$errors.articulo_revista.pag_final}
+      class="field"
+    />
+  </div>
   <div class="two inline fields">
-    <div class="field">
-      <label for="">Índice</label>
-      <input type="text">
-    </div>
-    
-    <div class="required field">
-      <label for="">Volumen</label>
-      <input type="text">
-    </div>
-  </div>
-
-  <div class="three inline fields">
-    <div class="field">
-      <label for="">Cantidad de Páginas</label>
-      <input type="number" min="1">
-    </div>
-
-    <div class="required field">
-      <label for="">Página Inicial</label>
-      <input type="text">
-    </div>
-
-    <div class="required field">
-      <label for="">Página Final</label>
-      <input type="text">
-    </div>
-  </div>
-
-  <div class="three inline fields">
-    <div class="eight wide required field">
-      <label for="">Fecha de Publicación</label>
-      <input type="date" name="" id="">
-    </div>
-
     <div class="ten wide field fields">
-      <label for="">Estado</label>
+      <label for="articulo_revista.estado">Estado</label>
       <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
         <label>
-          <input class="uk-radio" type="radio" name="radio2" checked>
+          <input
+            type="radio"
+            id="articulo_revista.estado-Aceptado_via_publicacion"
+            name="articulo_revista.estado"
+            value="Aceptado_via_publicacion"
+            class="uk-radio"
+            on:change={handleChange}
+            on:blur={handleChange}
+            checked
+          >
           Aceptado en Vias de Publicacion
         </label>
         <label>
-          <input class="uk-radio" type="radio" name="radio2">
+          <input
+            type="radio"
+            id="articulo_revista.estado-Publicado"
+            name="articulo_revista.estado"
+            value="Publicado"
+            class="uk-radio"
+            on:change={handleChange}
+            on:blur={handleChange}
+          >
           Publicado
         </label>
       </div>
-    </div>
 
-    <div class="four wide field">
-      <label for="">Artículo Invitado</label>
-      <input class="ui checkbox" type="checkbox">
+      {#if $errors.articulo_revista?.estado}
+        {$errors.articulo_revista.estado}
+      {/if}
+      
     </div>
+    <Input
+      type="checkbox"
+      label="Artículo Invitado"
+      name="articulo_revista.articulo_invitado"
+      bind:value={$form.articulo_revista.articulo_invitado}
+      class="field"
+    />
   </div>
-  
-  <Groups grupo = {act_data.grupo} />
-  <div class="inline field">
-    <label for="">Entre los autores se encuentran uno o mas estudiante de pre o postgrado</label>
-    <input class="ui checkbox" type="checkbox">
-  </div>
-  <Authors />
-  <Observaciones observaciones = {act_data.observaciones} />
 
+  {#if $form.articulo_revista.estado === "Publicado"}
+    <Input
+      type="date"
+      label="Fecha de Publicación"
+      name="articulo_revista.fecha_publicacion"
+      bind:value={$form.articulo_revista.fecha_publicacion}
+      error={$errors.articulo_revista.fecha_publicacion}
+      class="field"
+    />
+  {/if}
 </div>

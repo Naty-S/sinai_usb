@@ -1,83 +1,95 @@
-<script>
-  import Authors from "./authors.svelte";
-  import CountryStates from "./country_states.svelte";
-  import Groups from "./groups.svelte";
-  import Observaciones from "./observaciones.svelte";
+<script lang="ts">
+  import type { activity_form_ctx, kinds } from "$types/forms";
 
-  const act_data =
-  { titulo: undefined
-  , observaciones: undefined
-  , grupo: undefined
-  , 
-  }
+  import { getContext } from "svelte";
+  import { key } from "svelte-forms-lib";
+  import { page } from "$app/stores";
+
+  import Input from "$components/forms/input.svelte";
+  
+  import CountryStates from "./country_states.svelte";
+  import Editors from "./editors.svelte";
+
+  const param = $page.params.activity;
+  const kind = param as kinds;
+  const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
 <h2 class="uk-text-center">
   CAPÍTULOS DE LIBROS
 </h2>
 
-<div class="ui large form">
-
-  <div class="required field">
-    <label for="">Título del Capítulo</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
+<div name="capitulo_libro form">
+  <Input
+    label="Título del Capítulo"
+    name="actividad.titulo"
+    bind:value={$form.actividad.titulo}
+    error={$errors.actividad.titulo}
+    class="required field"
+  />
   <div class="two required inline fields">
-    <div class="field">
-      <label for="">Página Inicial</label>
-      <input type="text">
-    </div>
-    <div class="field">
-      <label for="">Página Final</label>
-      <input type="text">
-    </div>
+    <Input
+      label="Página Inicial"
+      name="capitulo_libro.pag_inicial"
+      bind:value={$form.capitulo_libro.pag_inicial}
+      error={$errors.capitulo_libro.pag_inicial}
+      class="required field"
+    />
+    <Input
+      label="Página Final"
+      name="capitulo_libro.pag_final"
+      bind:value={$form.capitulo_libro.pag_final}
+      error={$errors.capitulo_libro.pag_final}
+      class="required field"
+    />
   </div>
-
-  <div class="required field">
-    <label for="">Título del Libro</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
-  <div class="required field">
-    <label for="">Casa Editorial</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
-  <div class="required field">
-    <label for="">Editores del Libro</label>
-    <!-- TODO: #8 -->
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
-  <div class="three required inline fields">
+  <Input
+    label="Título del Libro"
+    name="capitulo_libro.titulo_libro"
+    bind:value={$form.capitulo_libro.titulo_libro}
+    error={$errors.capitulo_libro.titulo_libro}
+    class="required field"
+  />
+  <Input
+    label="Casa Editorial"
+    name="capitulo_libro.editorial"
+    bind:value={$form.capitulo_libro.editorial}
+    error={$errors.capitulo_libro.editorial}
+    class="required field"
+  />
+  <div class="three inline required fields">
     <CountryStates />
-    
-    <div class="field">
-      <label for="">Fecha</label>
-      <input type="date" name="" id="">
-    </div>
+    <Input
+      type="date"
+      label="Fecha"
+      name="capitulo_libro.fecha"
+      bind:value={$form.capitulo_libro.fecha}
+      error={$errors.capitulo_libro.fecha}
+      class="field"
+    />
   </div>
-
   <div class="three inline fields">
-    <div class="required field">
-      <label for="">ISBN</label>
-      <input type="text" bind:value={act_data.titulo}>
-    </div>
-
-    <div class="field">
-      <label for="">Aceptado para Publicación</label>
-      <input class="ui checkbox" type="checkbox">
-    </div>
-  
-    <div class="field">
-      <label for="">Artículo Invitado</label>
-      <input class="ui checkbox" type="checkbox" placeholder="">
-    </div>
+    <Input
+      label="ISBN"
+      name="capitulo_libro.isbn"
+      bind:value={$form.capitulo_libro.isbn}
+      error={$errors.capitulo_libro.isbn}
+      class="required field"
+    />
+    <Input
+      type="checkbox"
+      label="Aceptado para Publicación"
+      name="capitulo_libro.aceptado"
+      bind:value={$form.capitulo_libro.aceptado}
+      class="field"
+    />
+    <Input
+      type="checkbox"
+      label="Artículo Invitado"
+      name="capitulo_libro.articulo_invitado"
+      bind:value={$form.capitulo_libro.articulo_invitado}
+      class="field"
+    />
   </div>
-
-  <Groups grupo = {act_data.grupo} />
-  <Authors />
-  <Observaciones observaciones = {act_data.observaciones} />
-
+  <Editors />
 </div>

@@ -1,0 +1,224 @@
+<script lang="ts">
+  import { onMount, setContext } from "svelte";
+  import { createForm, key } from "svelte-forms-lib";
+  
+  import {
+    profesor_categoria_enum,
+    profesor_condicion_enum,
+    profesor_dedicacion_enum,
+    profesor_diploma_tipo_enum,
+    ppi_nivel_enum
+  } from "@prisma/client";
+
+  import { page } from "$app/stores";
+
+  import type { Department } from "$interfaces/departments";
+
+  import { init } from "$lib/shared/forms/register/init";
+  import { validation } from "$lib/shared/forms/register/validation";
+  import { submit } from "$lib/shared/forms/register/submit";
+
+  import ActionsButtons from "$components/forms/actions_buttons.svelte";
+  import Input from "$components/forms/input.svelte";
+  import Select from "$components/forms/select.svelte";
+
+  const initialValues = init();
+  const onSubmit = submit();
+  const validationSchema = validation();
+  const formProps = { initialValues, onSubmit, validationSchema };
+  const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
+
+  $: registered = Boolean($page.url.searchParams.get("exito"));
+
+  setContext(key, {
+    form, errors, handleChange
+  });
+
+  let departments: Department[] = [];
+
+  onMount(async () => {
+    const res = await fetch("/api/departments");
+
+    try {      
+      if (res.ok) {
+        departments = await res.clone().json();
+      };
+    } catch (error) {      
+      throw error;
+    };
+  });
+</script>
+
+{#if registered}
+  <p class="uk-text-center">
+    Se ha registrado de forma exitosa en el sistema del Sinai. <br/>
+    Se le ha notificado al coordinador de su departamento para que sea activado en el 
+    sistema y pueda ingresar.
+  </p>
+{:else}
+  <form class="ui large form" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
+    <div class="two inline fields">
+      <Input
+        label="Primer Nombre"
+        name="professor.nombre1"
+        bind:value={$form.professor.nombre1}
+        error={$errors.professor.nombre1}
+        class="required field"
+      />
+      <Input
+        label="Segundo Nombre"
+        name="professor.nombre2"
+        bind:value={$form.professor.nombre2}
+        error={$errors.professor.nombre2}
+        class="field"
+      />
+    </div>
+    <div class="two inline fields">
+      <Input
+        label="Primer Apellido"
+        name="professor.apellido1"
+        bind:value={$form.professor.apellido1}
+        error={$errors.professor.apellido1}
+        class="required field"
+      />
+      <Input
+        label="Segundo Apellido"
+        name="professor.apellido2"
+        bind:value={$form.professor.apellido2}
+        error={$errors.professor.apellido2}
+        class="field"
+      />
+    </div>
+    <Input
+      label="Perfil"
+      name="professor.perfil"
+      bind:value={$form.professor.perfil}
+      error={$errors.professor.perfil}
+      class="required field"
+    />
+    <div class="two required fields">
+      <Input
+        label="Contraseña"
+        name="password"
+        bind:value={$form.password}
+        error={$errors.password}
+        class="field"
+      />
+      <Input
+        label="Repita contraseña"
+        name="confirm_password"
+        bind:value={$form.confirm_password}
+        error={$errors.confirm_password}
+        class="field"
+      />
+    </div>
+    <div class="three inline fields">
+      <Input
+        label="Cédula "
+        name="professor.cedula"
+        placeholder={"12345678"}
+        bind:value={$form.professor.cedula}
+        error={$errors.professor.cedula}
+        class="required field"
+      />
+      <Input
+        label="Correo"
+        name="professor.correo"
+        placeholder="correo@usb.ve"
+        bind:value={$form.professor.correo}
+        error={$errors.professor.correo}
+        class="required field"
+      />
+      <Select
+        label="Sexo"
+        name="professor.sexo"
+        bind:value={$form.professor.sexo}
+        options={[{ val: 'F', name: 'F'}, { val: 'M', name: 'M'}]}
+        class="inline field"
+      />
+    </div>
+    <div class="three inline fields">
+      <Select
+        label="Categoría"
+        name="professor.categoria"
+        bind:value={$form.professor.categoria}
+        options={Object.entries(profesor_categoria_enum).map(([_, categoria]) => ({ val: categoria, name: categoria }))}
+        class="inline field"
+      />
+      <Select
+        label="Condición"
+        name="professor.condicion"
+        bind:value={$form.professor.condicion}
+        options={Object.entries(profesor_condicion_enum).map(([_, condicion]) => ({ val: condicion, name: condicion }))}
+        class="inline field"
+      />
+      <Select
+        label="Dedicación"
+        name="professor.dedicacion"
+        bind:value={$form.professor.dedicacion}
+        options={Object.entries(profesor_dedicacion_enum).map(([_, dedicacion]) => ({ val: dedicacion, name: dedicacion }))}
+        class="inline field"
+      />
+    </div>
+    <div class="field">
+      <label for="">PPI</label>
+      <div class="three inline fields">
+        <Input
+          type="number"
+          label="Numero"
+          name="numero"
+          bind:value={$form.ppi.numero}
+          error={$errors.ppi.numero}
+          class="required field"
+        />
+        <Input
+          label="Anio"
+          name="anio"
+          bind:value={$form.ppi.anio}
+          error={$errors.ppi.anio}
+          class="required field"
+        />
+        <Select
+          label="Nivel"
+          name="ppi.nivel"
+          bind:value={$form.ppi.nivel}
+          options={Object.entries(ppi_nivel_enum).map(([_, nivel]) => ({ val: nivel, name: nivel }))}
+          class="inline field"
+        />
+      </div>
+    </div>
+    <div class="two inline fields">
+      <Select
+        label="Último Diploma"
+        name="professor.diploma_tipo"
+        bind:value={$form.professor.diploma_tipo}
+        options={Object.entries(profesor_diploma_tipo_enum).map(([_, diploma]) => ({ val: diploma, name: diploma }))}
+        class="five wide inline field"
+      />
+      <Input
+        label="Universidad donde lo obtuvo"
+        name="professor.diploma_universidad"
+        bind:value={$form.professor.diploma_universidad}
+        error={$errors.professor.diploma_universidad}
+        class="eleven wide required field"
+      />
+    </div>
+    <Select
+      label="Departamento"
+      name="professor.departamento"
+      bind:value={$form.professor.departamento}
+      options={departments.map(d => ({ val: d.id.toString(), name: `${d.id} - ${d.nombre}`}))}
+      class="inline field"
+    />
+    <Input
+      label="Página Web Personal"
+      name="professor.url"
+      placeholder="http://"
+      bind:value={$form.professor.url}
+      error={$errors.professor.url}
+      class="field"
+    />
+
+    <ActionsButtons action="Registrarse" />
+  </form>
+{/if}

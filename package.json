@@ -32,6 +32,9 @@
 	"dependencies": {
 		"@prisma/client": "^4.0.0",
 		"cs-list": "^1.0.5",
-		"print-js": "^1.6.0"
+		"date-fns": "^2.29.2",
+		"print-js": "^1.6.0",
+		"svelte-forms-lib": "^2.0.1",
+		"yup": "^0.32.11"
 	}
 }

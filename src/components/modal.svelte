@@ -1,24 +1,27 @@
-<script>
-	import { onDestroy } from 'svelte';
+<script lang="ts">
+	import { onDestroy } from "svelte";
 
-	export let title = '';
-	export let id = -1;
+	export let id: string;
+	export let title: string;
 	export let ok_text = '';
+	export let close_text = "Cancelar";
+	export let align = '';
+	export let is_active: boolean;
   export let close = () => {};
-	export let is_active = false;
+  export let confirm = () => {};
 
-	let modal;
+	let modal: any;
 
-	const handle_keydown = e => {
-		if (e.key === 'Escape') {
+	const handle_keydown = function (e: any) {
+		if (e.key === "Escape") {
 			close();
 			return;
-		}
+		};
 
-		if (e.key === 'Tab') {
+		if (e.key === "Tab") {
 			// trap focus
 			const nodes = modal.querySelectorAll('*');
-			const tabbable = Array.from(nodes).filter(n => n.tabIndex >= 0);
+			const tabbable: any[] = Array.from(nodes).filter((n: any) => n.tabIndex >= 0);
 
 			let index = tabbable.indexOf(document.activeElement);
 			if (index === -1 && e.shiftKey) index = 0;
@@ -28,16 +31,16 @@
 
 			tabbable[index].focus();
 			e.preventDefault();
-		}
+		};
 	};
 
-	const previously_focused = typeof document !== 'undefined' && document.activeElement;
+	const previously_focused = typeof document !== "undefined" && document.documentElement;
 
 	if (previously_focused) {
 		onDestroy(() => {
 			previously_focused.focus();
 		});
-	}
+	};
 </script>
 
 <svelte:window on:keydown={handle_keydown}/>
@@ -45,23 +48,27 @@
 <div class="modal-background" on:click={close} />
 
 <div
-  id="invalidate_{id}"
-  class="ui {is_active? "active" : ''} modal this-modal"
+  {id}
+  class="ui {is_active ? "active" : ''} modal this-modal"
   role="dialog"
   aria-modal="true"
   bind:this={modal}
 >
 	<div class="center aligned header">{title}</div>
 	
-	<div class="center aligned content">
+	<div class="{align} aligned content">
 		<slot></slot>
 	</div>
 
 	<!-- svelte-ignore a11y-autofocus -->
 	<div class="center aligned actions">
-		<div autofocus class="ui button" on:click={close}>Cancelar</div>
+		<button class="ui button" on:click={close}>
+			{close_text}
+		</button>
 		{#if ok_text !== ''}
-			<div class="ui positive button">{ok_text}</div>
+			<button class="ui positive button" on:click={confirm}>
+				{ok_text}
+			</button>
 		{/if}
 	</div>
 </div>

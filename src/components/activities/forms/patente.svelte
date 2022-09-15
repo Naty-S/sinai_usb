@@ -1,60 +1,67 @@
-<script>
+<script lang="ts">
+  import { getContext } from "svelte";
+  import { key } from "svelte-forms-lib";
+
   import { getCountries }  from 'cs-list';
 
-  import Authors from "./authors.svelte";
-  import Observaciones from "./observaciones.svelte";
+  import { page } from "$app/stores";
 
+  import type { activity_form_ctx, kinds } from "$types/forms";
+
+  import Input from "$components/forms/input.svelte";
+  import Select from "$components/forms/select.svelte";
+
+  const param = $page.params.activity;
+  const kind = param as kinds;
+  const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
   const countries = getCountries();
-  const act_data =
-  { titulo: undefined
-  , observaciones: undefined
-  , 
-  };
-
 </script>
 
 <h2 class="uk-text-center">
   PATENTES
 </h2>
 
-<div class="ui large form">
-
-  <div class="required field">
-    <label for="">Título</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
+<div name="patente form">
+  <Input
+    label="Título"
+    name="actividad.titulo"
+    bind:value={$form.actividad.titulo}
+    error={$errors.actividad.titulo}
+    class="required field"
+  />
   <div class="two inline fields">
     <label class="required two wide field" for="">Vigencia</label>
-    
-    <div class="field">
-      <label for="">Fecha de Inicio</label>
-      <input type="date" name="" id="">
-    </div>
-
-    <div class="field">
-      <label for="">Fecha Fin</label>
-      <input type="date" name="" id="">
-    </div>
+    <Input
+      type="date"
+      label="Fecha de Inicio"
+      name="patente.fecha_inicio"
+      bind:value={$form.patente.fecha_inicio}
+      error={$errors.patente.fecha_inicio}
+      class="field"
+    />
+    <Input
+      type="date"
+      label="Fecha Fin"
+      name="patente.fecha_fin"
+      bind:value={$form.patente.fecha_fin}
+      error={$errors.patente.fecha_fin}
+      class="field"
+    />
   </div>
-
   <div class="two required inline fields">
-    <div class="seven wide field">
-      <label for="">Número</label>
-      <input type="text">
-    </div>
-    
-    <div class="ten wide field">
-      <label for="">País que otorga</label>
-      <select name="" id="pais" class="ui selection dropdown">
-        {#each countries as country}
-          <option value={country.code}>{country.name}</option>
-        {/each}
-      </select>
-    </div>
+    <Input
+      label="Número"
+      name="patente.numero"
+      bind:value={$form.patente.numero}
+      error={$errors.patente.numero}
+      class="field"
+    />
+    <Select
+      label="País que otorga"
+      name="patente.pais"
+      bind:value={$form.patente.pais}
+      options={countries.map(c => ({ val: c.name, name: c.name }))}
+      class="field"
+    />
   </div>
-  
-  <Authors />
-  <Observaciones observaciones = {act_data.observaciones} />
-
 </div>

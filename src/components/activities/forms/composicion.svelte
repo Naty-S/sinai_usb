@@ -1,61 +1,72 @@
-<script>
+<script lang="ts">
+  import type { activity_form_ctx, kinds } from "$types/forms";
+
+  import { getContext } from "svelte";
+  import { key } from "svelte-forms-lib";
+  import { page } from "$app/stores";
   import { composicion_categoria_enum } from "@prisma/client";
 
-  import Authors from "./authors.svelte";
+  import Input from "$components/forms/input.svelte";
+  import Select from "$components/forms/select.svelte";
+  
   import CountryStates from "./country_states.svelte";
 
-  const act_data =
-  { titulo: undefined
-  , 
-  }
+  const param = $page.params.activity;
+  const kind = param as kinds;
+  const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
 <h2 class="uk-text-center">
   COMPOSICIONES SOLICITADAS POR ORQUESTAS SINFÓNICAS O AGRUPACIONES RECONOCIDAS
 </h2>
 
-<div class="ui large form">
-
-  <div class="required field">
-    <label for="">Título de la Obra</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
-  <div class="required field">
-    <label for="">Nombre del Evento</label>
-    <input type="text" bind:value={act_data.titulo}>
-  </div>
-
-  <div class="three inline fields">
+<div name="composicion form">
+  <Input
+    label="Título de la Obra"
+    name="actividad.titulo"
+    bind:value={$form.actividad.titulo}
+    error={$errors.actividad.titulo}
+    class="required field"
+  />
+  <Input
+    label="Nombre del Evento"
+    name="composicion.nombre_evento"
+    bind:value={$form.composicion.nombre_evento}
+    error={$errors.composicion.nombre_evento}
+    class="required field"
+  />
+  <div class="three inline required fields">
     <CountryStates />
-    
-    <div class="required field">
-      <label for="">Fecha</label>
-      <input type="date" name="" id="">
-    </div>
+    <Input
+      type="date"
+      label="Fecha"
+      name="composicion.fecha"
+      bind:value={$form.composicion.fecha}
+      error={$errors.composicion.fecha}
+      class="field"
+    />
   </div>
-
-  <div class="inline field">
-    <label for="categoria">Categoría</label>
-    <select name="" id="categoria" class="ui selection dropdown">
-      {#each Object.entries(composicion_categoria_enum) as [_, comp]}
-        <option value={comp}>{comp}</option>
-      {/each}
-    </select>
-  </div>
-
+  <Select
+    label="Categoría"
+    name="composicion.categoria"
+    bind:value={$form.composicion.categoria}
+    options={Object.entries(composicion_categoria_enum).map(([_, cat]) => ({ val: cat, name: cat }))}
+    class="inline field"
+  />
   <div class="two inline fields">
-    <div class="required ten wide field">
-      <label for="">Jurado, Árbitro o Comité Editorial</label>
-      <input type="text" bind:value={act_data.titulo}>
-    </div>
-
-    <div class="eight wide field">
-      <label for="">Financiado Por</label>
-      <input type="text" bind:value={act_data.titulo}>
-    </div>
+    <Input
+      label="Financiado Por"
+      name="composicion.jurado"
+      bind:value={$form.composicion.jurado}
+      error={$errors.composicion.jurado}
+      class="ten wide required field"
+    />
+    <Input
+      label="Jurado, Árbitro o Comité Editorial"
+      name="composicion.financiado_por"
+      bind:value={$form.composicion.financiado_por}
+      error={$errors.composicion.financiado_por}
+      class="eight wide field"
+    />
   </div>
-
-  <Authors />
-
 </div>
