@@ -216,7 +216,7 @@ model profesor {
   apellido1            String
   apellido2            String?
   activo               Boolean                    @default(false)
-  confirmado           Boolean                    @default(false)
+  confirmado           Boolean                    @default(false) // confirmacion de proyecto?
   sexo                 profesor_sexo_enum
   categoria            profesor_categoria_enum
   condicion            profesor_condicion_enum
@@ -322,7 +322,7 @@ model convocatoria_pei {
   aplica   Boolean                      @default(false)
 
   // Postgres relations
-  Profesor profesor @relation(fields: [profesor], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Profesor profesor @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([profesor])
 }
