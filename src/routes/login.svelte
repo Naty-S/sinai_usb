@@ -1,34 +1,29 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { session } from '$app/stores';
   
-	import type { User } from '$interfaces/user';
-  import { user } from "$lib/shared/stores/session";
-
   const is_err = false;
   let email = '';
   let pass = '';
 
   const login = async function () {
 
-    const res = await fetch("/api/session/" + email);
+    const res = await fetch("/api/auth/" + email, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, pass })
+    });
 
     if (res.ok) {
       
-      const _user: User = await res.clone().json();
-      const redirect = res.headers.get("location");
-      
-      user.login(_user);
-
       // if (Dean || coordinador tienen prof por validar registro) => redirect a la pag para validaciones
-
-      if ( redirect ) { goto( redirect ); }
-      else {
-        console.log("No location in headers");
-      };
+      $session.user = await res.clone().json();
 
     } else {
       const { message } = await res.clone().json();
-      console.log(new Error(message));
     };
   };
 </script>
