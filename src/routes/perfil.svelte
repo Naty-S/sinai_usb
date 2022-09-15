@@ -6,9 +6,9 @@
     , profesor_diploma_tipo_enum
   } from "@prisma/client";
 
-  import { user } from "$lib/shared/stores/session";
+  import { session } from '$app/stores';
 
-  let profile = $user.profesor_profile.profile;
+  let profile = $session.user.professor;
 </script>
 
 <h2 class="uk-text-center">

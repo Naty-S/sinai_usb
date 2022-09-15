@@ -1,10 +1,11 @@
 <script>
-	import { user } from '$lib/shared/stores/session';
+  import { session } from '$app/stores';
+
   import { format_date } from '$utils/formatting';
 
   export let period = '';
 
-  const profile = $user.profesor_profile;
+  const profile = $session.user.professor;
   const current_date = format_date(new Date(), true);
 </script>
 
