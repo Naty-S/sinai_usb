@@ -30,7 +30,7 @@
     const groups_activities = coord_activities.groups_activities;
 
     rank_name = coord_activities.coordination.name;
-    rank_page = `/actividades/coordinacion/${coord_activities.coordination.id}`;
+    rank_page = `/sinai/actividades/coordinacion/${coord_activities.coordination.id}`;
 
     if (dep_activities) {
       
@@ -49,7 +49,7 @@
     const dep_activities = division_activities.departments_activities;
     
     rank_name = division_activities.division.name;
-    rank_page = `/actividades/division/${division_activities.division.id}`;
+    rank_page = `/sinai/actividades/division/${division_activities.division.id}`;
     activities = dep_activities.flatMap(d => d.professors_activities).flatMap(p => p.activities);
 
   } else if (rank === "Departamento") {
@@ -58,7 +58,7 @@
     const professors_activities = dep_activities.professors_activities;
 
     rank_name = dep_activities.department.name;
-    rank_page = `/actividades/departamento/${dep_activities.department.id}`;
+    rank_page = `/sinai/actividades/departamento/${dep_activities.department.id}`;
     activities = professors_activities.flatMap(p => p.activities);
 
   } else if (rank === "Grupo") {
@@ -66,7 +66,7 @@
     const group_activities = rank_activities as GroupActivities;
 
     rank_name = group_activities.group.nombre;
-    rank_page = `/actividades/grupo/${group_activities.group.id}`;
+    rank_page = `/sinai/actividades/grupo/${group_activities.group.id}`;
     activities = group_activities.activities;
 
   } else {

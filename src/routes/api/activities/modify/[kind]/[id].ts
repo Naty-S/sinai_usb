@@ -185,7 +185,7 @@ export const patch: RequestHandler = async function ({ request, params }) {
 
     status = 303;
     headers = {
-      location: `/actividades/profesor/${data.creada_por}`
+      location: `/sinai/actividades/profesor/${data.creada_por}`
     };
 
   } catch (error) {

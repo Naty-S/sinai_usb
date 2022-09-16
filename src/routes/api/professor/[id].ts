@@ -23,7 +23,7 @@ export const patch: RequestHandler = async ({ request, params }) => {
     });
 
     status = 303;
-    const action = _data.url.pathname === "/validaciones/nuevos_profesores" ? "validado" : "perfil_modificado";
+    const action = _data.url.pathname === "/sinai/validaciones/nuevos_profesores" ? "validado" : "perfil_modificado";
     headers = {
       location: `${_data.url}?${action}=true`
     };

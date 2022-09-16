@@ -38,7 +38,7 @@
 <ResumeRank rank="Departamento" rank_activities={dep_activities} />
 
 <div class="uk-text-center">
-  <a href="/BRA/departamento/{$page.params.id}" class="ui button disabled">
+  <a href="/sinai/BRA/departamento/{$page.params.id}" class="ui button disabled">
     Vista BRA Departamental
   </a>
 </div>

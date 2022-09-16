@@ -8,7 +8,7 @@ export const submit = function () {
     data.professor.cedula = Number(data.professor.cedula);
 
     // register
-    const res = await fetch("/api/register", {
+    const res = await fetch("/api/auth/register", {
       method: "POST",
       credentials: "include",
       headers: {

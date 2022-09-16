@@ -14,9 +14,9 @@
 
   import type { Department } from "$interfaces/departments";
 
-  import { init } from "$lib/shared/forms/register/init";
-  import { validation } from "$lib/shared/forms/register/validation";
-  import { submit } from "$lib/shared/forms/register/submit";
+  import { init } from "$lib/shared/forms/auth/register/init";
+  import { validation } from "$lib/shared/forms/auth/register/validation";
+  import { submit } from "$lib/shared/forms/auth/register/submit";
 
   import ActionsButtons from "$components/forms/actions_buttons.svelte";
   import Input from "$components/forms/input.svelte";

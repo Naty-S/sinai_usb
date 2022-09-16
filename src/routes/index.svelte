@@ -4,5 +4,5 @@
   you can use markdown!!
  -->
 <main>
-  <a class="uk-button" href="/login">Iniciar Sesion</a>
+  <a class="uk-button" href="/sinai/login">Iniciar Sesion</a>
 </main>

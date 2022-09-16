@@ -11,8 +11,8 @@ import { count_acts_kinds_by_year } from "$utils/maths";
 import { prisma } from "../../_api";
 
 /**
- * This function its called when the '/actividades/profesor' page its loaded
- * (see 'load' function in 'routes/actividades/profesor.svelte')
+ * This function its called when the '/sinai/actividades/profesor' page its loaded
+ * (see 'load' function in 'routes/sinai/actividades/profesor.svelte')
  * 
  * Manages the load of the data for the activites to be displayed for the professor
  * 

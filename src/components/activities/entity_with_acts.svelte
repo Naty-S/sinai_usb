@@ -43,7 +43,7 @@
     entities_with_acts = groups_activities.filter(g => g.activities.length > 0);
     entities_with_acts_counts = entities_with_acts.map( g => {
       return {
-        link: `/actividades/grupo/${g.group.id}`,
+        link: `/sinai/actividades/grupo/${g.group.id}`,
         kind: g.group.nombre,
         counts: count_acts_kinds(g.activities)
       };
@@ -55,7 +55,7 @@
     entities_with_acts = professors_activities.filter(p => p.activities.length > 0);
     entities_with_acts_counts = entities_with_acts.map( p => {
       return {
-        link: `/actividades/profesor/${p.professor.email}`,
+        link: `/sinai/actividades/profesor/${p.professor.email}`,
         kind: `${p.professor.name}, ${p.professor.surname}`,
         counts: count_acts_kinds(p.activities)
       };

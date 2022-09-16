@@ -102,7 +102,7 @@
     close_text="Ir a resumen"
     align="center"
     is_active={$form.creation_success}
-    close={() => { $form.creation_success = false; goto(`/actividades/profesor/${professor}`)}}
+    close={() => { $form.creation_success = false; goto(`/sinai/actividades/profesor/${professor}`)}}
   >
     <p>Desea ingresar otra actividad?</p>
   </Modal>

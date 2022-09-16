@@ -122,7 +122,7 @@
             {#if editable}
               <div class="uk-margin-small">
                 <!-- TODO: #16 ... -->
-                <a href="/actividades/modificar/{act.kind_name}/{act.id}" class="ui green small button">
+                <a href="/sinai/actividades/modificar/{act.kind_name}/{act.id}" class="ui green small button">
                   Modificar
                 </a>
                 <!-- if act.creada_por !== current_user && !act.fecha_validacion &&

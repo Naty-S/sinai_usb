@@ -4,10 +4,10 @@
 
   const void_link = "javascript:void(0)";
   const entity = "profesor/eduardo@usb.ve"; /* TODO: from current user */
-  const bra = "/BRA/profesor/eduardo@usb.ve"; /* TODO: from current user */
-  const coord = "/actividades/coordinacion/2";
-  const dep = "/actividades/departamento/2";
-  const division = "/actividades/division/1";
+  const bra = "/sinai/BRA/profesor/eduardo@usb.ve"; /* TODO: from current user */
+  const coord = "/sinai/actividades/coordinacion/2";
+  const dep = "/sinai/actividades/departamento/2";
+  const division = "/sinai/actividades/division/1";
 
   const groups = [1, 2];
   const dep_chief_rep = true;
@@ -34,7 +34,7 @@
           </a>
           <div class="uk-navbar-dropdown">
             <ul class="uk-nav uk-navbar-dropdown-nav">
-              <li><a href="/actividades/{entity}">Resumen</a></li>
+              <li><a href="/sinai/actividades/{entity}">Resumen</a></li>
               <li><a href={void_link} on:click={() => show_create = true}>Ingresar</a></li>
             </ul>
           </div>
@@ -114,7 +114,7 @@
                 <div class="uk-navbar-dropdown">
                   <ul class="uk-nav uk-navbar-dropdown-nav">
                     {#each groups as g}
-                      <li><a href="/actividades/grupo/{g}">GID {g}</a></li>
+                      <li><a href="/sinai/actividades/grupo/{g}">GID {g}</a></li>
                     {/each}
                   </ul>
                 </div>
@@ -157,52 +157,52 @@
     is_active={show_create}
     close={() => show_create = false}
   >
-    <li><a href="/actividades/crear/articulo_revista" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/articulo_revista" on:click={() => show_create = false} >
       Artículos en Revistas
     </a></li>
-    <li><a href="/actividades/crear/capitulo_libro" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/capitulo_libro" on:click={() => show_create = false} >
       Capítulos de Libros
     </a></li>
-    <li><a href="/actividades/crear/composicion" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/composicion" on:click={() => show_create = false} >
       Composiciones solicitadas por Orquestas Sinfónicas o Agrupaciones Reconocidas
     </a></li>
-    <li><a href="/actividades/crear/evento" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/evento" on:click={() => show_create = false} >
       Asistencia a Eventos
     </a></li>
-    <li><a href="/actividades/crear/exposicion" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/exposicion" on:click={() => show_create = false} >
       Selección en Exposiciones, Bienales, Salones o Concursos Arbitrados
     </a></li>
-    <li><a href="/actividades/crear/grabacion" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/grabacion" on:click={() => show_create = false} >
       Grabaciones Sonoras Evaluadas por Arbitros
     </a></li>
-    <li><a href="/actividades/crear/informe_tecnico" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/informe_tecnico" on:click={() => show_create = false} >
       Informes Técnicos
     </a></li>
-    <li><a href="/actividades/crear/libro" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/libro" on:click={() => show_create = false} >
       Libros Publicados
     </a></li>
-    <li><a href="/actividades/crear/memoria" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/memoria" on:click={() => show_create = false} >
       Memorias de Congresos
     </a></li>
-    <li><a href="/actividades/crear/partitura" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/partitura" on:click={() => show_create = false} >
       Partituras, Videos o CDs publicados en editoriales reconocidas
     </a></li>
-    <li><a href="/actividades/crear/patente" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/patente" on:click={() => show_create = false} >
       Patentes
     </a></li>
-    <li><a href="/actividades/crear/premio" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/premio" on:click={() => show_create = false} >
       Premios
     </a></li>
-    <li><a href="/actividades/crear/premio_bienal" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/premio_bienal" on:click={() => show_create = false} >
       Trabajos Reconocidos o Premiados en Bienales, Salones, Concursos o Exposiciones
     </a></li>
-    <li><a href="/actividades/crear/proyecto_grado" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/proyecto_grado" on:click={() => show_create = false} >
       Proyectos de Grado Dirigidos
     </a></li>
-    <li><a href="/actividades/crear/proyecto_investigacion" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/proyecto_investigacion" on:click={() => show_create = false} >
       Proyectos de Investigación y Desarrollo
     </a></li>
-    <li><a href="/actividades/crear/recital" on:click={() => show_create = false} >
+    <li><a href="/sinai/actividades/crear/recital" on:click={() => show_create = false} >
       Recitales o Conciertos Arbitrados
     </a></li>
   </Modal>
