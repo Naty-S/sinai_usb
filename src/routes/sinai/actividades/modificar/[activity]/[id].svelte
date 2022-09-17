@@ -24,7 +24,7 @@
   import { setContext } from "svelte";
   import { createForm, key } from "svelte-forms-lib";
 
-  import { page } from "$app/stores";
+  import { page, session } from "$app/stores";
   import { goto } from "$app/navigation";
 
   import type { kinds } from "$types/forms";
@@ -62,7 +62,7 @@
 
   const activity = $page.params.activity;
   const kind = activity as kinds;
-  const initialValues = init(kind, activity_data);
+  const initialValues = init(kind, $session.user, activity_data);
   const onSubmit = submit(kind, true, $page.params.id);
   const validationSchema = validation(kind)
   const formProps = { initialValues, onSubmit, validationSchema };

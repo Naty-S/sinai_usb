@@ -1,3 +1,4 @@
+import type { User } from "$interfaces/auth";
 import type { Activity } from "$types/activities";
 import type { activity, actividad_form, kinds } from "$types/forms";
 import type {
@@ -20,11 +21,11 @@ import type {
 } from "@prisma/client";
 
 
-export const init = function (kind: kinds, data?: Activity): actividad_form<typeof kind> {
+export const init = function (kind: kinds, user: User, data?: Activity): actividad_form<typeof kind> {
 
   const act: activity = {
     actividad: {
-        creada_por: "eduardo@usb.ve" /* TODO: from current user */
+        creada_por: `${user.email}`
       , titulo: data?.titulo || ''
       , cuota: data?.cuota || 0
       , fecha_creacion: data?.fecha_creacion || new Date()
