@@ -38,7 +38,7 @@
   const headers = ["Actividad"].concat(activities.by_year.map( a => a["year"] ));
 </script>
 
-<h3>Resumen Actividades</h3>
+<h3>Resumen de Actividades del {activities.entity}</h3>
 
 <!-- Display activities resume table -->
 <ResumeTable
