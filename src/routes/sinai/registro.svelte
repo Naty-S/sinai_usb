@@ -96,22 +96,6 @@
       error={$errors.professor.perfil}
       class="required field"
     />
-    <div class="two required fields">
-      <Input
-        label="Contraseña"
-        name="password"
-        bind:value={$form.password}
-        error={$errors.password}
-        class="field"
-      />
-      <Input
-        label="Repita contraseña"
-        name="confirm_password"
-        bind:value={$form.confirm_password}
-        error={$errors.confirm_password}
-        class="field"
-      />
-    </div>
     <div class="three inline fields">
       <Input
         label="Cédula "

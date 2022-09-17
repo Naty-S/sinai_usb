@@ -10,9 +10,6 @@ export const validation = function () {
   const perfil = /^[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+, [A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+$/;
   const url = /^(http|https):\/\/(www\.|[a-z]+)\.([a-z]+\.[a-z]+\.[a-z]+|[a-z]+\.[a-z]+|\2[a-z]+)\/.*$/;
   
-  // Password "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-  const pwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-
   const deps_ids = Array.from({ length: 30 }, (_, i) => (i + 2).toString());
   
   // ppi years from 1997 until current year
@@ -56,8 +53,6 @@ export const validation = function () {
       anio: yup.string().required("Requerido").oneOf(ppi_years, "Ingrese un año entre 1997 y el actual"),
       nivel: yup.string().oneOf(["Candidato", "Nivel_I", "Nivel_II", "Nivel_III", "Nivel_IV"]),
       numero: yup.number().required("Requerido"),
-    }),
-    password: yup.string().required("Requerido").min(8, "Minimo 8 caracteres"),
-    confirm_password: yup.string().oneOf([yup.ref("password"), null], "Las contraseñas no coinciden")
+    })
   });
 };

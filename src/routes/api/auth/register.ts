@@ -9,7 +9,7 @@ export const post: RequestHandler = async ({ request }) => {
   const _data = await request.json();
   const data_usuario = {
     login: _data.professor.correo,
-    pass: _data.password,
+    pass: _data.cedula, // TODO encriptar
     // padded: 
   };
   const data_ppi = {

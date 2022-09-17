@@ -26,8 +26,6 @@ export const init = function () {
       anio: 2022,
       nivel: "Candidato",
       numero: 0,
-    },
-    password: '',
-    confirm_password: ''
+    }
   };
 };
