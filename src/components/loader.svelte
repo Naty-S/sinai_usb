@@ -14,7 +14,7 @@
 		
       if (remaining > 0.15) setTimeout(next, 500 / remaining);
 		};
-    
+
 		setTimeout(next, 250);
 	});
 </script>
@@ -23,6 +23,7 @@
 	<div class="progress-container">
 		<div class="progress" style="width: {p * 100}%" />
 	</div>
+  <div class="ui big active primary elastic loader" />
 {/if}
 
 {#if p >= 0.4}
@@ -35,7 +36,7 @@
 		top: 0;
 		left: 0;
 		width: 100%;
-		height: 4px;
+		height: 6px;
 		z-index: 999;
 	}
 

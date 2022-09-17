@@ -1,13 +1,21 @@
 <!-- Apply code to all `routes` files -->
 <script>
-  import Menu from '$components/menu/index.svelte';
+	import { navigating } from "$app/stores";
+
+  import Menu from "$components/menu/menu.svelte";
+  import Loader from "$components/loader.svelte";
 </script>
 
-<main>
-  <Menu />
-  <div class="ui container">
-    <slot />
-  </div>
-  <div class="ui divider" />
-</main>
+<Menu />
 
+<main>
+  <div class="ui container">
+    {#if $navigating}
+      <Loader />
+    {:else}
+      <slot />
+      <div class="ui divider" />
+    {/if}
+  </div>
+</main>
+  
