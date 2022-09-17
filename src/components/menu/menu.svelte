@@ -1,7 +1,8 @@
 <script lang="ts">
-	import type { submenu_item } from "$types/menu";
   import { session } from "$app/stores";
   
+	import type { submenu_item } from "$types/menu";
+
   import ActivitiesModal from './activities_modal.svelte';
   import Submenu from './submenu.svelte';
 
@@ -67,7 +68,9 @@
 
   let show_create = false;
 
-  const logout = function () {
+  const logout = async function () {
+    await fetch("/api/auth/logout");
+
     $session.user = null;
   };
 </script>
