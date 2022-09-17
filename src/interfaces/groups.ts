@@ -1,3 +1,5 @@
+/// <reference types="@sveltejs/kit" />
+
 
 export interface Group {
   id: number

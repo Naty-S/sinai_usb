@@ -27,6 +27,16 @@ export const get: RequestHandler = async function ({ request, params }) {
           select: {
             Actividad: {
               include: {
+                actividades_grupos: {
+                  select: {
+                    Grupo: {
+                      select: {
+                        id: true,
+                        nombre: true
+                      }
+                    }
+                  }
+                },
                 autores_usb: true,
                 autores_externos: true,
                 articulo_revista: true,
@@ -56,7 +66,7 @@ export const get: RequestHandler = async function ({ request, params }) {
 
     status = 200;
     body = {
-      entity: group.nombre,
+      entity: `Grupo ${group.nombre}`,
       by_year: acts_kinds_by_year(activities, true),
       years_counts: count_acts_kinds_by_year(activities, true)
     };
@@ -64,6 +74,7 @@ export const get: RequestHandler = async function ({ request, params }) {
   } catch (error) {
     // TODO: 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      console.log("prisma error: ", error)
       // The .code property can be accessed in a type-safe manner
       // https://www.prisma.io/docs/reference/api-reference/error-reference
       if (error.code === 'P1012') {

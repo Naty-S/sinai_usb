@@ -8,11 +8,11 @@ import { User } from "$interfaces/auth";
 declare global {
 	declare namespace App {
 		interface Locals {
-			user: User;
+			user: User | null;
 		}
 		// interface Platform {}
 		interface Session {
-			user: User;
+			user: User | null;
 		}
 		// interface Stuff {}
 	};

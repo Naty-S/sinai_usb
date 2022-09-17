@@ -1,9 +1,11 @@
 /// <reference types="@sveltejs/kit" />
 
+import type { grupo_investigacion } from "@prisma/client";
+
 
 export interface User {
   email: string;
-  is_dean: boolean;
+  dean?: string;
   professor?: {
     id_card: number;
     name1: string;
@@ -19,8 +21,19 @@ export interface User {
         id: number;
         nombre: string;
       };
+      division: {
+        id: number;
+        nombre: string;
+      };
     };
-    groups: Array<string>;
+    groups: {
+      grupos_investigacion: grupo_investigacion[],
+      historico_grupos: {
+        Grupo: grupo_investigacion;
+        inicio: Date;
+        fin: Date | null;
+      }[]
+    };
     diploma: string;
     diploma_university: string;
     ppi_number?: number | null;
@@ -28,15 +41,15 @@ export interface User {
     profile: string;
     page?: string | null;
     research_lines: Array<string>;
-    is_dep_chief?: boolean;
-    is_dep_representative?: boolean;
+    is_dep_chief: boolean;
+    is_dep_representative: boolean;
     coord_chief?: {
-      coord_id: number;
-      coord_name: string;
+      id: number;
+      name: string;
     };
     division_chief?: {
-      division_id: number;
-      division_name: string;
+      id: number;
+      name: string;
     };
   };
 };

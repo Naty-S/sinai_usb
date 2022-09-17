@@ -19,7 +19,7 @@ import { prisma } from "../../_api";
  * @param param0 - 
  * @returns {} The status code and the activities grouped by year and kind
  */
-export const get: RequestHandler = async function({ request, params }) {
+export const get: RequestHandler = async function({ params }) {
 
   let status = 500;
   let body = {};
@@ -62,9 +62,15 @@ export const get: RequestHandler = async function({ request, params }) {
       }
     });
 
+    const professor = await prisma.profesor.findUniqueOrThrow({
+      where: {
+        correo: params.email
+      }
+    })
+
     const activities: Activity[] = _acts.map(a => format_activity_kind(a));
     const entityActivities: EntityActivities = {
-      entity: "Profesor",
+      entity: `Prof. ${professor.apellido1}, ${professor.nombre1}`,
       by_year: acts_kinds_by_year(activities, true),
       years_counts: count_acts_kinds_by_year(activities, true)
     };
