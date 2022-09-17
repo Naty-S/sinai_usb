@@ -87,5 +87,3 @@
     Imprimir vista BRA
   </button>
 </div>
-
-<div class="ui divider" />

@@ -8,5 +8,6 @@
   <div class="ui container">
     <slot />
   </div>
+  <div class="ui divider" />
 </main>
 
