@@ -50,6 +50,16 @@ export const get: RequestHandler = async function ({ request, params }) {
           },
           actividades: {
             include: {
+              actividades_grupos: {
+                select: {
+                  Grupo: {
+                    select: {
+                      id: true,
+                      nombre: true
+                    }
+                  }
+                }
+              },
               autores_usb: true,
               autores_externos: true,
               articulo_revista: true,
