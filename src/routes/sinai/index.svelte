@@ -3,6 +3,10 @@
   Main page ***www.sinai.did.usb.ve***
   you can use markdown!!
  -->
-<main>
+<svelte:head>
+	<title>SINAI</title>
+</svelte:head>
+
+<div>
   <a class="uk-button" href="/sinai/login">Iniciar Sesion</a>
-</main>
+</div>
