@@ -153,7 +153,7 @@
         </ul>
       </div>
     {:else}
-      <div class=""></div>
+      <a id="register" href="/sinai/registro" class="">Registro</a>
     {/if}
   </div>
 </nav>
