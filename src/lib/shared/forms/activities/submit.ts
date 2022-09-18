@@ -16,6 +16,10 @@ export const submit = function (kind: kinds, update: boolean = false, id?: strin
         data.articulo_revista.paginas = Number(data.articulo_revista.paginas);
         break;
 
+      case "evento":
+        data.evento.internacional = data.evento.pais !== "Venezuela";
+        break;
+
       case "informe_tecnico":
         data.informe_tecnico.fecha_inicio = new Date(data.informe_tecnico.fecha_inicio);
         break;

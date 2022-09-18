@@ -58,7 +58,7 @@ const evento = yup.object().shape({
   ciudad: yup.string().required("Requerido")
   , fecha: yup.date().transform(parseDate).typeError("Requerido")
   , institucion: yup.string().nullable()
-  , internacional: yup.boolean() // no esta en el form, se deduce del pais?
+  , internacional: yup.boolean()
   , modalidad: yup.string().oneOf(["Cartel", "Oral", "Invitada"])
   , nombre: yup.string().required("Requerido")
   , pais: yup.string().required("Requerido")
