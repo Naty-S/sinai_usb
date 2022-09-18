@@ -48,15 +48,14 @@
       }
     )};
   });
-
-  const acts_years = prof_activities.by_year.map( a => a["year"] );
-  const headers = ["Actividad"].concat(acts_years);
-
-  // TODO: change to period set by the Dean
+  
   const current_year = new Date().getFullYear();
-  const period = "Julio " + (current_year - 1).toString() + " - Julio " + current_year.toString()
   const years = (current_year - 1).toString() + " - " + current_year.toString();
-  const period_activities = prof_activities.by_year.filter(a => period.includes(a.year))
+  // TODO: change to period set by the Dean
+  const period = "Julio " + (current_year - 1).toString() + " - Julio " + current_year.toString()
+  const period_activities = prof_activities.by_year.filter(a => period.includes(a.year.toString()))
+  const acts_years = period_activities.map(a => a.year.toString());
+  const headers = ["Actividad"].concat(acts_years);
 </script>
 
 <div id="bra" class="uk-margin">
@@ -65,7 +64,11 @@
   <!-- Display activities resume table -->
   <ResumeTable
     {headers}
-    resume_kinds_counts={prof_activities.years_counts}
+    resume_kinds_counts={prof_activities.years_counts.map(yc => ({
+        kind: yc.kind,
+        counts: yc.counts.filter(c => c.year && period.includes(c.year.toString()))
+      })
+    )}
     row_total
     col_total
   />
@@ -82,8 +85,6 @@
   {/each}
 </div>
 
-<div id="print_button" class="ui container uk-margin">
-  <button type="button" class="ui blue button" on:click="{() => printBRA()}">
-    Imprimir vista BRA
-  </button>
-</div>
+<button type="button" class="ui blue button" on:click="{() => printBRA()}">
+  Imprimir vista BRA
+</button>

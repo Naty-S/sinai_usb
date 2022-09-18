@@ -17,14 +17,14 @@ export const count_acts_kinds_by_year = function (acts: Activity[], detailed?: b
 
       const years = acts_kinds_by_year(acts, detailed).map(a => a["year"]);
       const acts_by_year = group_by("fecha_creacion", _acts)
-      const counts: number[] = []
+      const counts: { count: number, year: number }[] = []
 
       // count activities by year
       years.map(y => {
         if (!acts_by_year[y]) {
-          counts.push(0);
+          counts.push({ count: 0, year: Number(y) });
         } else {
-          counts.push(acts_by_year[y].length)
+          counts.push({ count: acts_by_year[y].length, year: Number(y) });
         };
       });
 
@@ -42,7 +42,7 @@ export const count_acts_kinds_by_year = function (acts: Activity[], detailed?: b
  * @param detailed 
  * @returns 
  */
-export const count_acts_kinds = function (acts: Activity[], detailed?: boolean): number[] {
+export const count_acts_kinds = function (acts: Activity[], detailed?: boolean): { count: number }[] {
 
   // TODO: global var
   const kinds = [
@@ -65,14 +65,14 @@ export const count_acts_kinds = function (acts: Activity[], detailed?: boolean):
     , "recital"
   ];
   const acts_by_kind = group_by("kind_name", acts, detailed);
-  const counts: number[] = [];
+  const counts: { count: number }[] = [];
 
   // count activities by kind
   kinds.map(k => {
     if (!acts_by_kind[k]) {
-      counts.push(0);
+      counts.push({ count: 0 });
     } else {
-      counts.push(acts_by_kind[k].length)
+      counts.push({ count: acts_by_kind[k].length });
     };
   });
 
