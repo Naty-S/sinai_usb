@@ -56,7 +56,7 @@
   import ActionsButtons from "$components/forms/actions_buttons.svelte";
   import Authors from "$components/activities/forms/authors.svelte";
   import Groups from "$components/activities/forms/groups.svelte";
-  import Observaciones from "$components/forms/observaciones.svelte";
+  import Observaciones from "$components/activities/forms/observaciones.svelte";
 
   export let activity_data: Activity;
 
