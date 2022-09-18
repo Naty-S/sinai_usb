@@ -19,8 +19,17 @@
 
     if (res.ok) {
       
-      // if (Dean || coordinador tienen prof por validar registro) => redirect a la pag para validaciones
       $session.user = await res.clone().json();
+      
+      if ($session.user?.professor) {
+        goto(`/sinai/actividades/profesor/${$session.user.email}`);
+        
+      } else if ($session.user?.dean) {
+        goto("/sinai/actividades");
+        
+      } else {
+        console.log("error, no prof or dean")
+      };
 
     } else {
       const { message } = await res.clone().json();
