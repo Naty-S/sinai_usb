@@ -2,6 +2,7 @@ import type { Handle, GetSession } from "@sveltejs/kit";
 
 import * as cookie from "cookie";
 
+
 export const handle: Handle = async function ({ event, resolve }) {
 
 	const cookies = cookie.parse(event.request.headers.get("cookie") || '');

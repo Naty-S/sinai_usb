@@ -25,7 +25,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
 
   const act: activity = {
     actividad: {
-        creada_por: `${user.email}`
+        creada_por: user.email
       , titulo: data?.titulo || ''
       , cuota: data?.cuota || 0
       , fecha_creacion: data?.fecha_creacion || new Date()

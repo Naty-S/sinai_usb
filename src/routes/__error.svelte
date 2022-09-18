@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import type { Load } from '@sveltejs/kit'
+	import type { Load } from "@sveltejs/kit";
 
 	export const load: Load = ({ error, status }) => {
 		return {
@@ -9,7 +9,7 @@
 </script>
 
 <script lang="ts">
-	import { dev } from '$app/env';
+	import { dev } from "$app/env";
 
 	export let error: Error;
 	export let status: number;
