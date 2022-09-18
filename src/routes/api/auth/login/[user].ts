@@ -44,11 +44,19 @@ export const post: RequestHandler = async function({ request, params }) {
       }
     });
 
+    const pending_professor = await prisma.profesor.findFirst({
+      where: {
+        activo: { equals: false }
+      }
+    });
+
     const professor = _user.profesor;
     
     const user: User = {
-      email: _user.login
+      email: _user.login,
+      pending_professors: pending_professor !== null
     };
+
     let jwt = '';
 
     if (professor) {

@@ -5,6 +5,7 @@ import type { grupo_investigacion } from "@prisma/client";
 
 export interface User {
   email: string;
+  pending_professors: boolean;
   dean?: string;
   professor?: {
     id_card: number;
