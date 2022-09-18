@@ -5,8 +5,9 @@
 
   export let period = '';
 
-  const profile = $session.user.professor;
   const current_date = format_date(new Date(), true);
+  
+  $: profile = $session.user?.professor;
 </script>
 
 <div id="bra_header" class="uk-margin">
@@ -18,20 +19,22 @@
   
   <div class="ui centered grid container">
     <div class="three column row">
-      <div class="column"><strong>Profesor:</strong> {profile.name1 + ' ' + profile.surname1}</div>
-      <div class="column"><strong>Cédula:</strong> {profile.id_card}</div>
-      <div class="column"><strong>Vista:</strong>	Bono BRA</div>
+      <div class="column"><strong>Profesor:</strong> {profile?.name1} {profile?.surname1}</div>
+      <div class="column"><strong>Cédula:</strong> {profile?.id_card}</div>
+      <div class="column"><strong>Vista:</strong> Bono BRA</div>
     </div>
   
     <div class="four column row">
-      <div class="column"><strong>Categoría:</strong> {profile.category}</div>
-      <div class="column"><strong>Dedicación:</strong>	{profile.dedication}</div>
-      <div class="column"><strong>Último Diploma:</strong>	{profile.diploma}</div>
-      <div class="column"><strong>Num. PPI:</strong> {profile.ppi_number}</div>
+      <div class="column"><strong>Categoría:</strong> {profile?.category}</div>
+      <div class="column"><strong>Dedicación:</strong> {profile?.dedication}</div>
+      <div class="column"><strong>Último Diploma:</strong> {profile?.diploma}</div>
+      <div class="column"><strong>Num. PPI:</strong> {profile?.ppi_number}</div>
     </div>
   
     <div class="one column row">
-      <div class="column"><strong>Grupos de Investigación:</strong> {profile.groups.join(". ")}</div>
+      <div class="column"><strong>Grupos de Investigación:</strong>
+        {profile?.groups.grupos_investigacion.map(g => g.nombre).join(". ")}
+      </div>
     </div>
   </div>
   
@@ -39,7 +42,7 @@
   
   <div class="ui centered grid container">
     <div class="two column row">
-      <div class="column"><strong>Departamento:</strong> {profile.department_name}</div>
+      <div class="column"><strong>Departamento:</strong> {profile?.department.name}</div>
       <div class="column"><strong>Tipo de Actividad:</strong> TODAS</div>
     </div>
   
