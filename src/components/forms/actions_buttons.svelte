@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto, afterNavigate } from "$app/navigation";
 
-  export let action = "Crear";
+  export let action: string;
 
   let previousPage: string;
   afterNavigate((navigaton) => {
