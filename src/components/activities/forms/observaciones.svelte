@@ -5,6 +5,8 @@
   import { key } from "svelte-forms-lib";
   import { page } from "$app/stores";
 
+  import ErrorMsg from "$components/forms/error_msg.svelte";
+
   const param = $page.params.activity;
   const kind = param as kinds;
   const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
@@ -18,4 +20,5 @@
     bind:value={$form.actividad.observaciones}
     on:change={handleChange}
   />
+  <ErrorMsg error={$errors.actividad.observaciones} />
 </div>

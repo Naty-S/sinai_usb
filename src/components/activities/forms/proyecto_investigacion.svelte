@@ -8,6 +8,7 @@
 
   import Input from "$components/forms/input.svelte";
   import Select from "$components/forms/select.svelte";
+  import ErrorMsg from "$components/forms/error_msg.svelte";
 
   const param = $page.params.activity;
   const kind = param as kinds;
@@ -79,13 +80,7 @@
           hidden={fonacit}
         >
       </div>
-
-      {#if $errors.proyecto_investigacion?.institucion}
-        <div class="ui mini error message">
-          {$errors.proyecto_investigacion.institucion}
-        </div>
-      {/if}
-      
+      <ErrorMsg error={$errors.proyecto_investigacion.institucion} />      
     </div>
   </div>
   <div class="two required inline fields">

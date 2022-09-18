@@ -5,6 +5,8 @@
   import { key } from "svelte-forms-lib";
   import { page } from "$app/stores";
 
+  import ErrorMsg from "./error_msg.svelte";
+
   export let type = "text";
   export let label: string;
   export let name: string;
@@ -29,10 +31,6 @@
     class={type === "checkbox" ? "ui checkbox" : ''}
     checked={value}
   >
-  {#if error}
-    <div class="ui mini error message">
-      {error}
-    </div>
-  {/if}
+  <ErrorMsg {error} />
   <slot></slot>
 </div>

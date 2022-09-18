@@ -5,6 +5,8 @@
   import { key } from "svelte-forms-lib";
   import { page } from "$app/stores";
 
+  import ErrorMsg from "./error_msg.svelte";
+
   export let label: string;
   export let name: string;
   export let value: any;
@@ -29,9 +31,5 @@
       <option value={opt.val}>{opt.name.replaceAll('_', ' ')}</option>
     {/each}
   </select>
-  {#if error}
-    <div class="ui mini error message">
-      {error}
-    </div>
-  {/if}
+  <ErrorMsg {error} />
 </div>
