@@ -40,14 +40,7 @@
   };
 
   let show_create = false;
-  console.log(document.querySelector(".ui.nag"))
 </script>
-
-<div class="ui nag">
-  <div class="title">Welcome to the nag module</div>
-  <div>Look, i am a nag!</div>
-  <i class="close icon"></i>
-</div>
 
 <nav
   id="sinai_navabar"
