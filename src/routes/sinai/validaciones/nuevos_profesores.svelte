@@ -4,7 +4,7 @@
   import type { profesor } from "@prisma/client";
 
   import { goto } from "$app/navigation";
-  import { page } from "$app/stores";
+  import { page, session } from "$app/stores";
 
   import Modal from "$components/modal.svelte";
 
@@ -20,7 +20,17 @@
     try {      
       if (res.ok) {
         const res_json = await res.clone().json();
-        new_professors = res_json.filter((p: profesor) => !p.activo);
+
+        if ($session.user?.dean) {
+          new_professors = res_json.filter((p: profesor) => !p.activo);
+
+        } else if ($session.user?.professor) {
+          new_professors = res_json.filter((p: profesor) => !p.activo &&
+            $session.user?.professor?.coord_chief?.departments.includes(p.departamento)
+          );
+        } else {
+          console.log("ERROR: no logged in")
+        };
       };
     } catch (error) {      
       throw error;

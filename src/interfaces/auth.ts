@@ -47,6 +47,7 @@ export interface User {
     coord_chief?: {
       id: number;
       name: string;
+      departments: number[];
     };
     division_chief?: {
       id: number;

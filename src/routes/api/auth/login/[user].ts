@@ -35,7 +35,11 @@ export const post: RequestHandler = async function({ request, params }) {
                 fin: true,
               }
             },
-            coordinacion: true,
+            coordinacion: {
+              include: {
+                departamentos: true
+              }
+            },
             division: true,
             jefe_departamentos: true,
             representante_departamentos: true,
@@ -62,8 +66,10 @@ export const post: RequestHandler = async function({ request, params }) {
     if (professor) {
       
       const coord_chief = professor.coordinacion ?
-        { id: professor.coordinacion.id, name: professor.coordinacion.nombre }
-        : undefined
+        { id: professor.coordinacion.id
+        , name: professor.coordinacion.nombre
+        , departments: professor.coordinacion.departamentos.map(d => d.id)
+        } : undefined
       ;
       const division_chief = professor.division ?
         { id: professor.division.id, name: professor.division.nombre }
