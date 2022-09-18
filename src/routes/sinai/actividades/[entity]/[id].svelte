@@ -30,12 +30,16 @@
 
   import type { EntityActivities } from "$interfaces/activities";
 
+	import Modal from '$components/modal.svelte';
   import YearsList from "$components/activities/years_list.svelte";
   import ResumeTable from "$components/activities/resume_table.svelte";
 
   export let activities: EntityActivities;
 
   const headers = ["Actividad"].concat(activities.by_year.map( a => a["year"] ));
+
+  $: act_created = Boolean($page.url.searchParams.get("act_created"));
+  $: act_modified = Boolean($page.url.searchParams.get("act_modified"));
 </script>
 
 <h3>Resumen de Actividades del {activities.entity}</h3>
@@ -53,7 +57,8 @@
   <YearsList {activities} editable/>
 {/each}
 
-{#if $page.params.entity === "profesor"}
+{#if $page.params.entity === "profesor"} 
+<!-- TODO: footer? -->
   <div class="uk-text-center">
     <p>
       Nota: Las actividades ingresadas en el Sistema podrán ser consultadas públicamente
@@ -63,4 +68,29 @@
       Ante cualquier duda o problema con el sistema, comuníqueselo al Webmaster.
     </p>
   </div>
+{/if}
+
+{#if act_created}
+  <Modal
+    id="act_created"
+    title="Actividad creada con exito"
+    ok_text="Ingresar"
+    close_text="Cancelar"
+    align="center"
+    is_active={act_created}
+    close={() => act_created = false}
+  >
+    <p>Desea ingresar otra actividad?</p>
+  </Modal>
+{/if}
+
+{#if act_modified}
+  <Modal
+    id="act_modified"
+    title="Actividad modificada con exito"
+    close_text="Ok"
+    align="center"
+    is_active={act_modified}
+    close={() => act_modified = false}
+  />
 {/if}

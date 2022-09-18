@@ -38,7 +38,7 @@ export const post: RequestHandler = async ({ request, params }) => {
 
     status = 303;
     headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}`
+      location: `/sinai/actividades/profesor/${data.creada_por}?act_created=true`
     };
   } catch (error) {
     // TODO: 

@@ -3,15 +3,12 @@
   import { createForm, key } from "svelte-forms-lib";
 
   import { page, session } from "$app/stores";
-  import { goto } from "$app/navigation";
 
   import type { kinds } from "$types/forms";
 
   import { init } from "$lib/shared/forms/activities/init";
   import { validation } from "$lib/shared/forms/activities/validation";
   import { submit } from "$lib/shared/forms/activities/submit";
-
-	import Modal from '$components/modal.svelte';
 
   import ArticuloRevista from "$components/activities/forms/articulo_revista.svelte";
 	import CapituloLibro from "$components/activities/forms/capitulo_libro.svelte";
@@ -47,7 +44,6 @@
     form, errors, handleChange
   });
 </script>
-
 
 <form class="ui large form" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
 
@@ -92,18 +88,3 @@
   <Observaciones />
   <ActionsButtons />
 </form>
-
-<!-- TODO: -->
-<!-- {#if $form.creation_success}
-  <Modal
-    id="creation_success"
-    title="Actividad creada con exito"
-    ok_text="Ingresar"
-    close_text="Ir a resumen"
-    align="center"
-    is_active={$form.creation_success}
-    close={() => { $form.creation_success = false; goto(`/sinai/actividades/profesor/${professor}`)}}
-  >
-    <p>Desea ingresar otra actividad?</p>
-  </Modal>
-{/if} -->

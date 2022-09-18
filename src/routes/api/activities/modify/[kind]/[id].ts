@@ -11,7 +11,7 @@ import { format_activity_kind } from "$utils/formatting";
 
 export const get: RequestHandler = async function ({ params }) {
 
-  let status = 303;
+  let status = 500;
   let body = {};
 
   try {
@@ -185,7 +185,7 @@ export const patch: RequestHandler = async function ({ request, params }) {
 
     status = 303;
     headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}`
+      location: `/sinai/actividades/profesor/${data.creada_por}?act_modified=true`
     };
 
   } catch (error) {
