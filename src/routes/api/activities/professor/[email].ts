@@ -31,6 +31,16 @@ export const get: RequestHandler = async function({ params }) {
         creada_por: params.email
       },
       include: {
+        logs_operaciones_actividades: {
+          select: {
+            profesor: true,
+            Profesor: { select: { correo: true } },
+            fecha: true,
+            hora: true
+          },
+          where: { operacion: "Modificacion" },
+          orderBy: { fecha: "desc" }
+        },
         actividades_grupos: {
           select: {
             Grupo: {

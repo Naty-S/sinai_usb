@@ -38,6 +38,15 @@ export const get: RequestHandler = async function ({ request, params }) {
             select: {
               Actividad: {
                 include: {
+                  logs_operaciones_actividades: {
+                    select: {
+                      Profesor: { select: { correo: true } },
+                      fecha: true,
+                      hora: true
+                    },
+                    where: { operacion: "Modificacion" },
+                    orderBy: { fecha: "desc" }
+                  },
                   actividades_grupos: {
                     select: {
                       Grupo: {
