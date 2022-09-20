@@ -14,8 +14,9 @@
   export let value: any;
   export let error: any = undefined;
 
-  const param = $page.params.activity;
-  const kind = param as kinds;
+  const act = $page.params.activity;
+  const kind = act as kinds;
+  const ctx = act ? kind : '';
   const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
