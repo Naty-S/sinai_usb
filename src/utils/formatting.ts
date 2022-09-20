@@ -1,4 +1,6 @@
 import type { Activity } from "$types/activities";
+import type { ActivityActionLog } from "$interfaces/logs";
+import type { Group } from "$interfaces/groups";
 
 
 /**
@@ -74,20 +76,32 @@ export const format_activity_kind = function (activity: any): Activity {
     };
   });
 
-  const groups = activity.actividades_grupos.map((g: any) => {
+  const groups: Group[] = activity.actividades_grupos.map((g: any) => {
     return {
       id: g.Grupo.id,
       nombre: g.Grupo.nombre
     }
   });
 
+  let actions_log: ActivityActionLog[] = [];
+  
+  if (activity.logs_operaciones_actividades?.length > 0) {
+    actions_log = activity.logs_operaciones_actividades.map((l: any) => ({
+      professor: l.Profesor.correo,
+      date: l.fecha,
+      time: l.hora
+    }));
+  };
+
   delete activity["actividades_grupos"];
+  delete activity["logs_operaciones_actividades"];
 
   const act: Activity = {
     ...activity,
     groups,
     kind_name,
-    kind_info
+    kind_info,
+    actions_log
   };
 
   return act;

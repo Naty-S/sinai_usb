@@ -14,7 +14,7 @@ import { prisma } from "$api/_api";
 export const get: RequestHandler = async function ({ request, params }) {
   
   let status = 500;
-  let body: EntityActivities = {};
+  let body = {};
 
   try {
     const group = await prisma.grupo_investigacion.findUniqueOrThrow({
@@ -27,6 +27,15 @@ export const get: RequestHandler = async function ({ request, params }) {
           select: {
             Actividad: {
               include: {
+                logs_operaciones_actividades: {
+                  select: {
+                    Profesor: { select: { correo: true } },
+                    fecha: true,
+                    hora: true
+                  },
+                  where: { operacion: "Modificacion" },
+                  orderBy: { fecha: "desc" }
+                },
                 actividades_grupos: {
                   select: {
                     Grupo: {

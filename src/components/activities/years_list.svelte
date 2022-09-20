@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { goto, invalidate } from "$app/navigation";
-  import { page } from "$app/stores";
+  import { session } from "$app/stores";
   
+  import type { Activity } from "$types/activities";
   import type { YearActivities } from "$interfaces/activities";
   
   import { format_date } from "$utils/formatting";
@@ -12,8 +12,24 @@
   export let activities: YearActivities;
   export let editable = false;
 
+  $: user = $session.user;
+  $: professor = user?.professor;
+  $: is_chief = professor?.coord_chief || professor?.is_dep_representative || professor?.is_dep_chief;
+
+  const can_validate = function (act: Activity) {
+    return (user?.dean || (is_chief && user?.email !== act.creada_por));
+  };
+
+  const can_modify = function (act: Activity) {
+    return user?.dean || !is_chief;
+  };
+
+  const can_delete = function (act: Activity) {
+    return user?.dean || !is_chief;
+  };
+
   let show_validate = false;
-  // let show_invalidate = false;
+  let show_invalidate = false;
   let show_delete = false;
   let actual_act_id = -1;
   let actual_act_title = '';
@@ -26,12 +42,16 @@
   };
 
   const confirm_validate = async function () {
-    const res = await fetch(`/api/activities/validate/${actual_act_id}`, {
-      method: "PATCH",
-      credentials: "include"
-    });
-
     try {      
+      const res = await fetch(`/api/activities/validate/${actual_act_id}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ validado_por: user?.email })
+      });
+  
       if (res.ok) {
         success = await res.clone().json();
         show_validate = false;
@@ -41,11 +61,27 @@
     };
   };
 
-  /* const popup_invalidate = function (act_id: number, act_title: string) {
+  const popup_invalidate = function (act_id: number, act_title: string) {
     show_invalidate = true
     actual_act_id = act_id;
     actual_act_title = act_title;
-  }; */
+  };
+
+  const confirm_invalidate = async function () {
+    try {      
+      const res = await fetch(`/api/activities/invalidate/${actual_act_id}`, {
+        method: "PATCH",
+        credentials: "include"
+      });
+  
+      if (res.ok) {
+        success = await res.clone().json();
+        show_invalidate = false;
+      };
+    } catch (error) {      
+      throw error;
+    };
+  };
 
   const popup_delete = function (act_id: number, act_title: string) {
     show_delete = true;
@@ -54,12 +90,12 @@
   };
 
   const confirm_delete = async function () {
-    const res = await fetch(`/api/activities/delete/${actual_act_id}`, {
-      method: "DELETE",
-      credentials: "include"
-    });
-
     try {      
+      const res = await fetch(`/api/activities/delete/${actual_act_id}`, {
+        method: "DELETE",
+        credentials: "include"
+      });
+  
       if (res.ok) {
         success = await res.clone().json();
         show_delete = false;
@@ -68,7 +104,6 @@
       throw error;
     };
   };
-
 </script>
 
 <div id="{activities.year}_activities" class="uk-margin">
@@ -85,68 +120,70 @@
         <div class="item">
           <li>
             <div class="content">
-              {#each act.autores_externos as author}
-                <strong>{author.nombre}</strong>,
-              {/each}
-              {#each act.autores_usb as author}
-                <strong>{author.nombre}</strong>,
-              {/each}
-              .
+              <strong>
+                {act.autores_externos.length > 0 ? act.autores_externos.map(a => a.nombre).join("; ") + ';' : ''}
+                {act.autores_usb.length > 0 ? act.autores_usb.map(a => a.nombre).join("; ") + '.' : ''}
+              </strong>
+
               "{act.titulo}".
 
               <KindInfo activity={act.kind_info} kind={act.kind_name} />
 
-              <span class="uk-text-emphasis">Realizada en el Grupo</span>:
-              {#each act.groups as group}
-                {group.nombre},
-              {/each}
-              .
+              <span class="uk-text-emphasis">Realizada en el(los) Grupo(s)</span>:
+              {act.groups.map(g => g.nombre).join(", ")}.
 
               <i><span class="ui blue text">
-                {act.observaciones ? "Observaciones: " + act.observaciones : ''}
+                {act.observaciones ? "Observaciones: " + act.observaciones + '.' : ''}
               </span></i>
       
-              <!-- TODO: #16 ... -->
-              <span class="uk-text-emphasis">Creada por</span>: {act.creada_por} el 
-                {format_date(act.fecha_creacion, true)}.
-
-              <span class="uk-text-emphasis">Ultima modificacion</span>:
-                {format_date(act.fecha_ultima_modificacion, true)}.
-
-              {#if act.validado_por && act.fecha_validacion}
-                <span class="uk-text-emphasis">Validada por</span>: {act.validado_por}.
-                <span class="uk-text-emphasis">Fecha validacion</span>: {format_date(act.fecha_validacion, true)}.
+              {#if user?.dean || is_chief || true}
+                <span class="ui red text">
+                  Creada por {act.creada_por} el {format_date(act.fecha_creacion, true)}.
+                  {#if act.actions_log[0]}
+                    Modificado recientemente por {act.actions_log[0].professor}
+                    el {format_date(act.actions_log[0].date, true)}
+                    a las {act.actions_log[0].time}.
+                  {/if}
+                  {#if act.validado_por && act.fecha_validacion}
+                    Validada por {act.validado_por} el {format_date(act.fecha_validacion, true)}.
+                  {/if}
+                </span>
               {/if}
-
             </div>
             {#if editable}
               <div class="uk-margin-small">
-                <!-- TODO: #16 ... -->
-                <a href="/sinai/actividades/modificar/{act.kind_name}/{act.id}" class="ui green small button">
-                  Modificar
-                </a>
-                <!-- if act.creada_por !== current_user && !act.fecha_validacion &&
-                  !act.validado_por => can validate -->
-                {#if !act.validado_por && !act.fecha_validacion}
-                  <button
-                    class="ui blue small button"
-                    on:click={() => popup_validate(act.id, act.titulo)}
+                {#if can_modify(act)}
+                  <a
+                    href="/sinai/actividades/modificar/{act.kind_name}/{act.id}" 
+                    class="ui green small button"
                   >
-                    Validar
+                    Modificar
+                  </a>
+                {/if}
+                {#if can_validate(act)}
+                  {#if !act.validado_por && !act.fecha_validacion}
+                    <button
+                      class="ui blue small button"
+                      on:click={() => popup_validate(act.id, act.titulo)}
+                    >
+                      Validar
+                    </button>
+                  {:else}
+                    <button
+                      class="ui yellow small button"
+                      on:click={() => popup_invalidate(act.id, act.titulo)}>
+                        Desvalidar
+                    </button>
+                  {/if}
+                {/if}
+                {#if can_delete(act)}
+                  <button
+                    class="ui red small button"
+                    on:click={() => popup_delete(act.id, act.titulo)}
+                  >
+                    Eliminar
                   </button>
                 {/if}
-                <!-- Shown in kms, act.validado_por && act.fecha_validacion
-                <button
-                  class="ui yellow small button"
-                  on:click={() => popup_invalidate(act.id, act.titulo)}>
-                    Desvalidar
-                </button> -->
-                <button
-                  class="ui red small button"
-                  on:click={() => popup_delete(act.id, act.titulo)}
-                >
-                  Eliminar
-                </button>
               </div>
             {/if}
           </li>
@@ -183,7 +220,7 @@
   </Modal>
 {/if}
 
-<!-- {#if show_invalidate}
+{#if show_invalidate}
   <Modal 
     id="invalidate_{actual_act_id}"
     title="Desvalidar Actividad"
@@ -191,12 +228,24 @@
     align="center"
     is_active={show_invalidate}
     close={() => show_invalidate = false}
-    confirm={() => {  }}
+    confirm={confirm_invalidate}
   >
     <p>Esta seguro(a) que quiere DESVALIDAR esta actividad?</p>
     <p>"{actual_act_title}"</p>
   </Modal>
-{/if} -->
+{/if}
+{#if success.action === "Invalidated"}
+  <Modal
+    id="{actual_act_id}_validated"
+    title="Desvalidar Actividad"
+    align="center"
+    is_active={success.action === "Invalidated"}
+    close_text="Cerrar"
+    close={() => { success.action = ''; location.reload(); }}
+  >
+    <p>Actividad Desvalidada con Exito !!!</p>
+  </Modal>
+{/if}
 
 {#if show_delete}
   <Modal 
