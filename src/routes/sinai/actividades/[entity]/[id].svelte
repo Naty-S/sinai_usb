@@ -36,7 +36,7 @@
 
   export let activities: EntityActivities;
 
-  const headers = ["Actividad"].concat(activities.by_year.map( a => a["year"] ));
+  const headers = ["Actividad"].concat(activities.by_year.map(a => a.year.toString()));
 
   $: act_created = Boolean($page.url.searchParams.get("act_created"));
   $: act_modified = Boolean($page.url.searchParams.get("act_modified"));

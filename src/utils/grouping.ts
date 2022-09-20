@@ -35,7 +35,7 @@ export const acts_kinds_by_year = function (acts: Activity[], detailed?: boolean
   return Object.entries(group_by("fecha_creacion", acts))
     .map(([_year, _acts]) => {
       return {
-        year: _year,
+        year: Number(_year),
         kind_activities: group_by("kind_name", _acts, detailed)
       };
     });

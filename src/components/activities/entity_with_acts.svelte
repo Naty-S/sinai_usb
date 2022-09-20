@@ -8,6 +8,7 @@
   import ResumeTable from "./resume_table.svelte";
 
   import { count_acts_kinds } from "$utils/maths";
+  import { map_to_detailed_kind } from "$utils/mappings";
 
   export let entity: string;
   export let entity_activities: ProfessorActivities[] | GroupActivities[];
@@ -15,24 +16,45 @@
   // TODO: global var
   const kinds = [
     "ACTIVIDAD INVALIDA"
-    , "articulo_revista"
-    , "capitulo_libro"
-    , "composicion"
-    , "evento"
-    , "exposicion"
-    , "grabacion"
-    , "informe_tecnico"
-    , "libro"
-    , "memoria"
-    , "partitura"
-    , "patente"
-    , "premio"
-    , "premio_bienal"
-    , "proyecto_grado"
-    , "proyecto_investigacion"
-    , "recital"
+    , "Publicaciones en Revistas Indexadas en el SCI-SSCI-ARTS"
+    , "Publicaciones en Revistas Indexadas en Otros Indices"
+    , "Publicaciones en Revistas Arbitradas No Indexadas"
+    , "Articulos Aceptados en Vías de Publicación"
+    , "Publicaciones en Revistas Arbitradas"
+    , "Publicaciones de Capitulos de Libros"
+    , "Composiciones Solicitadas por Orquestas Sinfonicas o Agrupaciones Reconocidas"
+    , "Asistencia a Eventos Internacionales"
+    , "Asistencia a Eventos Nacionales"
+    , "Eventos en Venezuela"
+    , "Eventos en el Exterior"
+    , "Eventos"
+    , "Seleccion en Exposiciones, Bienales, Salones o Concursos Arbitrados"
+    , "Grabaciones Sonoras Evaluadas Por Arbitros"
+    , "Informes Tecnicos"
+    , "Libro Nacional"
+    , "Libro Internacional"
+    , "Publicaciones de Libros"
+    , "Memorias *Arbitradas* de Congresos"
+    , "Partituras, Video o CD's Publicados en Editoriales Reconocidas"
+    , "Patentes Nacional"
+    , "Patentes Internacional"
+    , "Patentes"
+    , "Premios"
+    , "Trabajos Reconocidos o Premiados En Bienales, Salones, Concursos o Exposiciones"
+    , "Tutoria de Tesis Doctorales"
+    , "Tutoria de Trabajos de Grado (Maestrias)"
+    , "Tutoria de Proyectos de Grado (Especializaciones)"
+    , "Proyectos de Grado (Postgrados)"
+    , "Tutoria de Proyectos de Grado (Licencituras)"
+    , "Tutoria de Proyectos de Grado (Ingenierias)"
+    , "Proyectos de Grado (Pasantias Largas)"
+    , "Proyectos de Grado Dirigidos"
+    , "Proyectos de IYD (Vigentes)"
+    , "Proyectos de IYD"
+    , "Recitales o Conciertos Arbitrados"
   ];
   const acts_kinds_headers = [entity].concat(kinds);
+  console.log(entity_activities.map(e => e.activities.map(a => map_to_detailed_kind(a.kind_name, a.kind_info))))
 
   let entities_with_acts;
   let entities_with_acts_counts: ActivitiesCounts[];
@@ -45,7 +67,7 @@
       return {
         link: `/sinai/actividades/grupo/${g.group.id}`,
         kind: g.group.nombre,
-        counts: count_acts_kinds(g.activities)
+        counts: count_acts_kinds(g.activities, true)
       };
     });
 
@@ -57,7 +79,7 @@
       return {
         link: `/sinai/actividades/profesor/${p.professor.email}`,
         kind: `${p.professor.name}, ${p.professor.surname}`,
-        counts: count_acts_kinds(p.activities)
+        counts: count_acts_kinds(p.activities, true)
       };
     });
 
@@ -78,4 +100,5 @@
 <ResumeTable
   headers={acts_kinds_headers}
   resume_kinds_counts={entities_with_acts_counts}
+  row_total
 />
