@@ -3,9 +3,11 @@
 
   export let action: string;
 
-  let previousPage: string;
-  afterNavigate((navigaton) => {
-    previousPage = navigaton?.from?.pathname || '/';
+  let previousPage: string = "/sinai";
+  afterNavigate((navigation) => {
+    if (navigation?.from) {
+      previousPage = navigation.from.pathname;
+    };
   });
 </script>
 
