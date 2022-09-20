@@ -5,14 +5,17 @@ import type { Group } from "./groups"
 
 
 export interface YearActivities {
-  year: string
+  year: number,
   kind_activities: Record<string, Activity[]>
 };
 
 export interface ActivitiesCounts {
-  link?: string
-  kind: string
-  counts: number[]
+  link?: string,
+  kind: string,
+  counts: {
+    count: number,
+    year?: number
+  }[]
 };
 
 export interface EntityActivities {

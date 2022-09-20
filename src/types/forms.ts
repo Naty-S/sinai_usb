@@ -92,6 +92,8 @@ export type activity = {
 
 export type actividad_form<kind extends kinds> = activity & Pick<actividades_form, kind>;
 
+// TODO: el ctx tambien esta en login y register
+// select, input more general
 export type activity_form_ctx<kind extends kinds> = {
   form: Writable<actividad_form<kind>>,
   errors: Writable<actividad_form<kind>>,

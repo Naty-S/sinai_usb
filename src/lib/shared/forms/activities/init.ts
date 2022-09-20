@@ -25,7 +25,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
 
   const act: activity = {
     actividad: {
-        creada_por: `${user.email}`
+        creada_por: user.email
       , titulo: data?.titulo || ''
       , cuota: data?.cuota || 0
       , fecha_creacion: data?.fecha_creacion || new Date()
@@ -38,7 +38,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
     }
     , actividades_grupos:
         data?.groups.map(g => ({ old: g.id.toString(), new: g.id.toString() })) ||
-        [{ old: '1', new: '1'}]
+        [{ old: '?', new: '1'}]
     , autores_externos: data?.autores_externos || []
     , autores_usb: data?.autores_usb || []
     , creation_success: false

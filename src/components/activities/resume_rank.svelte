@@ -85,8 +85,8 @@
   </h2>
 
   <ResumeTable
-    headers={["Actividad"].concat(acts_kinds_by_year(activities).map( a => a["year"] ))}
-    resume_kinds_counts={count_acts_kinds_by_year(activities)}
+    headers={["Actividad"].concat(acts_kinds_by_year(activities, true).map(a => a.year.toString()))}
+    resume_kinds_counts={count_acts_kinds_by_year(activities, true)}
     row_total
   />
 

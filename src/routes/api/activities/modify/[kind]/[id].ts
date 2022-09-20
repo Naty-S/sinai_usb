@@ -89,26 +89,25 @@ export const patch: RequestHandler = async function ({ request, params }) {
     update: _data[params.kind]
   };
 
-  if (_data.actividades_grupos[0].old !== _data.actividades_grupos[0].new) {
-    const actividades_grupos_create = _data.actividades_grupos.map((g: any) => {
-      return {
-        grupo: Number(g.new)
-      };
-    });
-    const actividades_grupos_delete = _data.actividades_grupos.map((g: any) => {
-      return {
-        actividad_grupo: {
-          actividad: Number(params.id),
-          grupo: Number(g.old)
-        }
-      };
-    });
+  let actividades_grupos_create: { grupo: number }[] = [];
+  let actividades_grupos_delete: { actividad: number, grupo: number }[] = [];
+  _data.actividades_grupos.forEach((group: { old: string, new: string }) => {
+    if (group.old !== '?' && group.old !== group.new) {
+      actividades_grupos_create.push({
+        grupo: Number(group.new)
+      });
+      actividades_grupos_delete.push({
+        actividad: Number(params.id),
+        grupo: Number(group.old)
+      });
+    };
 
-    data.actividades_grupos = {
-      create: actividades_grupos_create,
-      delete: actividades_grupos_delete
-    }
-  };
+    if (group.old === '?') {
+      actividades_grupos_create.push({
+        grupo: Number(group.new)
+      });
+    };
+  });
 
   let status = 303;
   let headers = {
@@ -138,6 +137,15 @@ export const patch: RequestHandler = async function ({ request, params }) {
       }
     });
 
+    const actividades_grupos = await prisma.actividad.findUnique({
+      where: {
+        id: Number(params.id)
+      },
+      select: {
+        actividades_grupos: true
+      }
+    })
+
     data.autores_usb = {
       update: _data.autores_usb.map((a: autor_usb) => {
         if (a.id) {
@@ -152,7 +160,7 @@ export const patch: RequestHandler = async function ({ request, params }) {
       }),
       deleteMany: {
         OR: autores_usb?.autores_usb.filter(a =>
-          !_data.autores_usb.map((a: autor_usb) => a.id).includes(a.id)
+          !_data.autores_usb.map((_a: autor_usb) => _a.id).includes(a.id)
         )
       }
     };
@@ -171,7 +179,17 @@ export const patch: RequestHandler = async function ({ request, params }) {
       }),
       deleteMany: {
         OR: autores_externos?.autores_externos.filter(a =>
-          !_data.autores_externos.map((a: autor_externo) => a.id).includes(a.id)
+          !_data.autores_externos.map((_a: autor_externo) => _a.id).includes(a.id)
+        )
+      }
+    };
+
+    data.actividades_grupos = {
+      create: actividades_grupos_create,
+      delete: actividades_grupos_delete,
+      deleteMany: {
+        OR: actividades_grupos?.actividades_grupos.filter(ag =>
+          !_data.actividades_grupos.map((g: { old: string, new: string }) => Number(g.new)).includes(ag.grupo)
         )
       }
     };

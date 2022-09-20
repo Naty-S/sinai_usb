@@ -18,7 +18,7 @@
     return numbers.reduce((sum, number) => sum + number, 0);
   };
 
-  const resume_total_counts = zip(...resume_kinds_counts.map(c => c.counts)).map(sum);
+  const resume_total_counts = zip(...resume_kinds_counts.map(ac => ac.counts.map(c => c.count))).map(sum);
 </script>
 
 <!-- TODO: 'sortable' not work -->
@@ -46,12 +46,12 @@
               {a.kind}
             {/if}
           </td>
-          {#each a.counts as count}
+          {#each a.counts.map(c => c.count) as count}
             <td class="center aligned">{count}</td>
           {/each}
           {#if row_total}
             <td class="grey center aligned">
-              <i>{ a.counts.reduce( (accum, count) => accum + count, 0 ) }</i>
+              <i>{ a.counts.map(c => c.count).reduce( (accum, count) => accum + count, 0 ) }</i>
             </td>
           {/if}
         </tr>
