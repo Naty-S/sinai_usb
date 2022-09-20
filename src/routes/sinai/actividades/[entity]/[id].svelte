@@ -26,11 +26,13 @@
   };
 </script>
 <script lang="ts">
+  import { goto } from "$app/navigation";
   import { page } from "$app/stores";
 
   import type { EntityActivities } from "$interfaces/activities";
 
 	import Modal from '$components/modal.svelte';
+  import ActivitiesModal from "$components/nav_menu/activities_modal.svelte";
   import YearsList from "$components/activities/years_list.svelte";
   import ResumeTable from "$components/activities/resume_table.svelte";
 
@@ -40,6 +42,8 @@
 
   $: act_created = Boolean($page.url.searchParams.get("act_created"));
   $: act_modified = Boolean($page.url.searchParams.get("act_modified"));
+
+  let show_create = false;
 </script>
 
 <h3>Resumen de Actividades del {activities.entity}</h3>
@@ -79,6 +83,7 @@
     align="center"
     is_active={act_created}
     close={() => act_created = false}
+    confirm={() => { act_created = false; show_create = true; }}
   >
     <p>Desea ingresar otra actividad?</p>
   </Modal>
@@ -91,6 +96,9 @@
     close_text="Ok"
     align="center"
     is_active={act_modified}
-    close={() => act_modified = false}
+    close={() => { act_modified = false; /* location.replace($page.url.pathname); */ }}
   />
+{/if}
+{#if show_create}
+  <ActivitiesModal show={show_create} close={() => show_create = false} />
 {/if}
