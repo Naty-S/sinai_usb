@@ -36,7 +36,10 @@
   ].filter(Boolean) as submenu_item[];
 
   const logout = async function () {
-    await fetch("/api/auth/logout");
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include"
+    });
 
     $session.user = null;
   };
