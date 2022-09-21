@@ -127,13 +127,13 @@ export const post: RequestHandler = async function({ request, params }) {
         , division_chief
       };
 
-      jwt = Buffer.from(JSON.stringify(professor)).toString("base64");
+      jwt = Buffer.from(JSON.stringify(user)).toString("base64");
       
     } else if (_user.administrador) {
       console.log("Admin, todas las actividades")
 
       user.dean = _user.administrador.nombre;
-      jwt = Buffer.from(JSON.stringify(_user.administrador)).toString("base64");
+      jwt = Buffer.from(JSON.stringify(user)).toString("base64");
 
     } else {
       console.log("No es profesor ni admin")
@@ -143,7 +143,7 @@ export const post: RequestHandler = async function({ request, params }) {
     // cookie expires in 24 hours = 86400 seg
     // must specify Domain so the cookie is propagated to subdomains
     headers = {
-      "set-cookie": `jwt=${jwt}; Path=/sinai; HttpOnly; Max-Age=86400; Domain=/sinai;`
+      "set-cookie": `jwt=${jwt}; Path=/sinai; HttpOnly; Max-Age=86400;`// TODO Domain=/sinai;`
     };
     body = user;
 
