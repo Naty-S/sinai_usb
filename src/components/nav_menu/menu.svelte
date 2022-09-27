@@ -107,7 +107,7 @@
       name="Opciones"
       items={[
         {href: void_link, click: () => {}, name: "Cambiar Contraseña"},
-        {href: "/sinai/perfil", click: () => {}, name: "Cambiar Perfil"}
+        {href: `/sinai/perfil/${user?.professor?.id}`, click: () => {}, name: "Cambiar Perfil"}
       ]}
     />
     <li class="uk-nav-divider" />
