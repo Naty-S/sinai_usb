@@ -37,7 +37,7 @@
 
   $: options = professor ? [
       {href: void_link, click: () => {}, name: "Cambiar Contraseña"},
-      {href: `/sinai/perfil/${professor.id}`, click: () => {}, name: "Cambiar Perfil"}
+      {href: `/sinai/perfil/${user?.email}`, click: () => {}, name: "Cambiar Perfil"}
     ] : [{ href: void_link, click: () => {}, name: "Modificar Profesores"}];
 
   const logout = async function () {
@@ -65,6 +65,7 @@
       ]}
     />
     <li class="uk-nav-divider" />
+    <!-- TODO: desired use cases -->
     <Submenu
       href={void_link}
       name="Consultas"
