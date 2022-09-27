@@ -13,7 +13,7 @@ export const get: RequestHandler = async function ({ params }) {
     const profesor = await prisma.profesor.findUniqueOrThrow({
       where: { id: Number(params.id) },
       include: {
-        ppi: true,
+        pei: true,
         grupos_investigacion: true,
         historico_grupos: {
           select: {
@@ -50,8 +50,8 @@ export const get: RequestHandler = async function ({ params }) {
       }
       , diploma: profesor.diploma_tipo
       , diploma_university: profesor.diploma_universidad
-      , ppi_number: profesor.ppi[0].numero
-      , ppi_level: profesor.ppi[0].nivel
+      , pei_number: profesor.pei[0].numero
+      , pei_level: profesor.pei[0].nivel
       , profile: profesor.perfil
       , page: profesor.url
       , research_lines: profesor.lineas_investigacion

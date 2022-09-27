@@ -154,8 +154,8 @@
     </div>
 
     <div class="two column row">
-      <div class="column">Número del PEI: {profile?.ppi_number}</div>
-      <div class="column">Nivel: {profile?.ppi_level}</div>
+      <div class="column">Número del PEI: {profile?.pei_number}</div>
+      <div class="column">Nivel: {profile?.pei_level}</div>
     </div>
   </div>
 

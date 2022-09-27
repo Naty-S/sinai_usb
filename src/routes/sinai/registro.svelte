@@ -7,7 +7,7 @@
     profesor_condicion_enum,
     profesor_dedicacion_enum,
     profesor_diploma_tipo_enum,
-    ppi_nivel_enum
+    pei_nivel_enum
   } from "@prisma/client";
 
   import { page } from "$app/stores";
@@ -151,22 +151,22 @@
           type="number"
           label="Numero"
           name="numero"
-          bind:value={$form.ppi.numero}
-          error={$errors.ppi.numero}
+          bind:value={$form.pei.numero}
+          error={$errors.pei.numero}
           class="required field"
         />
         <Input
           label="Anio"
           name="anio"
-          bind:value={$form.ppi.anio}
-          error={$errors.ppi.anio}
+          bind:value={$form.pei.anio}
+          error={$errors.pei.anio}
           class="required field"
         />
         <Select
           label="Nivel"
-          name="ppi.nivel"
-          bind:value={$form.ppi.nivel}
-          options={Object.entries(ppi_nivel_enum).map(([_, nivel]) => ({ val: nivel, name: nivel }))}
+          name="pei.nivel"
+          bind:value={$form.pei.nivel}
+          options={Object.entries(pei_nivel_enum).map(([_, nivel]) => ({ val: nivel, name: nivel }))}
           class="inline field"
         />
       </div>

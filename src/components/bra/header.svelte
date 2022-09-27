@@ -28,7 +28,7 @@
       <div class="column"><strong>Categoría:</strong> {profile?.category}</div>
       <div class="column"><strong>Dedicación:</strong> {profile?.dedication}</div>
       <div class="column"><strong>Último Diploma:</strong> {profile?.diploma}</div>
-      <div class="column"><strong>Num. PPI:</strong> {profile?.ppi_number}</div>
+      <div class="column"><strong>Num. PEI:</strong> {profile?.pei_number}</div>
     </div>
   
     <div class="one column row">
