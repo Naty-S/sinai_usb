@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import type { Load, RequestEvent } from "@sveltejs/kit";
+  import type { Load } from "@sveltejs/kit";
 
   // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params }) => {
@@ -38,46 +38,27 @@
   import { validation } from "$lib/shared/forms/profile/validation";
   import { submit } from "$lib/shared/forms/profile/submit";
 
+  import Modal from "$components/modal.svelte";
   import ActionsButtons from "$components/forms/actions_buttons.svelte";
   import Input from "$components/forms/input.svelte";
   import Select from "$components/forms/select.svelte";
-  
+
   import ResearchLines from "$components/forms/profile/research_lines.svelte";
 
   export let profile;
   
   const initialValues = init(profile);
-  $: onSubmit = submit($page.params.id, $page.url);
+  const onSubmit = submit($page.params.id, $page.url.pathname);
   const validationSchema = validation();
   const formProps = { initialValues, onSubmit, validationSchema };
-  const { form, errors, handleChange, handleSubmit, handleReset, isSubmitting } = createForm(formProps);
+  const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
 
   setContext(key, {
     form, errors, handleChange
   });
 
-  $: update_user = function (e: any) {
-    // console.log(e)
-
-    if (isSubmitting && $session.user?.professor) {
-      $session.user.professor.profile = $form.perfil;
-      $session.user.professor.page = $form.url;
-      $session.user.professor.category = $form.categoria;
-      $session.user.professor.dedication = $form.dedicacion;
-      $session.user.professor.diploma = $form.diploma_tipo;
-      $session.user.professor.diploma_university = $form.diploma_universidad;
-      $session.user.professor.research_lines = $form.lineas_investigacion;
-  
-      // const cookies = cookie.parse(e.request.headers.get("cookie") || '');
-      // const jwt = Buffer.from(JSON.stringify($session.user)).toString("base64");
-      // cookies.jwt = jwt;
-      // console.log(cookies)
-      // e.request.headers.set("cookie", JSON.stringify(cookies))
-    };
-  };
+  $: modified = Boolean($page.url.searchParams.get("modificado"));
 </script>
-
-<!-- <svelte:window on:submit={update_user} ></svelte:window> -->
 
 <form id="profile_form" class="ui large form" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
   
@@ -89,13 +70,13 @@
 
   <div class="ui centered grid field">
     <div class="two column row">
-      <div class="column">Nombre: {profile?.name1}</div>
-      <div class="column">Segundo Nombre: {profile?.name2}</div>
+      <div class="column">Nombre: {$session.user?.professor?.name1}</div>
+      <div class="column">Segundo Nombre: {$session.user?.professor?.name2}</div>
     </div>
 
     <div class="two column row">
-      <div class="column">Apellido: {profile?.surname1}</div>
-      <div class="column">Segundo Apellido: {profile?.surname2}</div>
+      <div class="column">Apellido: {$session.user?.professor?.surname1}</div>
+      <div class="column">Segundo Apellido: {$session.user?.professor?.surname2}</div>
     </div>
   </div>
 
@@ -144,18 +125,18 @@
   <div class="ui centered grid field">
     <div class="one column row">
       <div class="column">Grupos de Investigación: 
-        {profile?.groups.grupos_investigacion.map(g => g.nombre).join(", ")}.
-        {profile?.groups.historico_grupos.map(g => g.Grupo.nombre).join(", ")}.
+        {$session.user?.professor?.groups.grupos_investigacion.map(g => g.nombre).join(", ")}.
+        {$session.user?.professor?.groups.historico_grupos.map(g => g.Grupo.nombre).join(", ")}.
       </div>
     </div>
 
     <div class="one column row">
-      <div class="column">Departamento: {profile?.department.name}</div>
+      <div class="column">Departamento: {$session.user?.professor?.department.name}</div>
     </div>
 
     <div class="two column row">
-      <div class="column">Número del PEI: {profile?.pei_number}</div>
-      <div class="column">Nivel: {profile?.pei_level}</div>
+      <div class="column">Número del PEI: {$session.user?.professor?.pei_number}</div>
+      <div class="column">Nivel: {$session.user?.professor?.pei_level}</div>
     </div>
   </div>
 
@@ -179,3 +160,16 @@
   <ResearchLines />
   <ActionsButtons action="Modificar" />
 </form>
+
+{#if modified}
+  <Modal
+    id="profile_modified"
+    title="Perfil Modificado"
+    close_text="Ok"
+    align="center"
+    is_active={modified}
+    close={() => location.replace($page.url.pathname)}
+  >
+  <p>Validado con exito!!!</p>
+  </Modal>
+{/if}
