@@ -35,6 +35,11 @@
     {href: void_link, click: () => {}, name: "Certificación PEII"}
   ].filter(Boolean) as submenu_item[];
 
+  $: options = professor ? [
+      {href: void_link, click: () => {}, name: "Cambiar Contraseña"},
+      {href: `/sinai/perfil/${professor.id}`, click: () => {}, name: "Cambiar Perfil"}
+    ] : [{ href: void_link, click: () => {}, name: "Modificar Profesores"}];
+
   const logout = async function () {
     await fetch("/api/auth/logout", {
       method: "POST",
@@ -100,15 +105,12 @@
       href={void_link}
       name="Mis Grupos"
       items={groups}
-    />          
+    />
     <li class="uk-nav-divider" />
     <Submenu
       href={void_link}
       name="Opciones"
-      items={[
-        {href: void_link, click: () => {}, name: "Cambiar Contraseña"},
-        {href: `/sinai/perfil/${user?.professor?.id}`, click: () => {}, name: "Cambiar Perfil"}
-      ]}
+      items={options}
     />
     <li class="uk-nav-divider" />
     
