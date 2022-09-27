@@ -4,7 +4,7 @@
   // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params }) => {
 
-    const res = await fetch(`/api/professor/${params.id}`);
+    const res = await fetch(`/api/professor/${params.email}`);
    
     if (res.ok) {
       const profile = await res.json();
@@ -29,10 +29,8 @@
     , profesor_dedicacion_enum
     , profesor_diploma_tipo_enum
   } from "@prisma/client";
-  import * as cookie from "cookie";
 
   import { session, page } from "$app/stores";
-  import {  } from "$app/paths";
 
   import { init } from "$lib/shared/forms/profile/init";
   import { validation } from "$lib/shared/forms/profile/validation";
@@ -57,6 +55,7 @@
     form, errors, handleChange
   });
 
+  $: professor = $session.user?.professor;
   $: modified = Boolean($page.url.searchParams.get("modificado"));
 </script>
 
@@ -70,13 +69,13 @@
 
   <div class="ui centered grid field">
     <div class="two column row">
-      <div class="column">Nombre: {$session.user?.professor?.name1}</div>
-      <div class="column">Segundo Nombre: {$session.user?.professor?.name2}</div>
+      <div class="column">Nombre: {professor?.name1}</div>
+      <div class="column">Segundo Nombre: {professor?.name2}</div>
     </div>
 
     <div class="two column row">
-      <div class="column">Apellido: {$session.user?.professor?.surname1}</div>
-      <div class="column">Segundo Apellido: {$session.user?.professor?.surname2}</div>
+      <div class="column">Apellido: {professor?.surname1}</div>
+      <div class="column">Segundo Apellido: {professor?.surname2}</div>
     </div>
   </div>
 
@@ -125,18 +124,18 @@
   <div class="ui centered grid field">
     <div class="one column row">
       <div class="column">Grupos de Investigación: 
-        {$session.user?.professor?.groups.grupos_investigacion.map(g => g.nombre).join(", ")}.
-        {$session.user?.professor?.groups.historico_grupos.map(g => g.Grupo.nombre).join(", ")}.
+        {professor?.groups.grupos_investigacion.map(g => g.nombre).join(", ")}.
+        {professor?.groups.historico_grupos.map(g => g.Grupo.nombre).join(", ")}.
       </div>
     </div>
 
     <div class="one column row">
-      <div class="column">Departamento: {$session.user?.professor?.department.name}</div>
+      <div class="column">Departamento: {professor?.department.name}</div>
     </div>
 
     <div class="two column row">
-      <div class="column">Número del PEI: {$session.user?.professor?.pei_number}</div>
-      <div class="column">Nivel: {$session.user?.professor?.pei_level}</div>
+      <div class="column">Número del PEI: {professor?.pei_number}</div>
+      <div class="column">Nivel: {professor?.pei_level}</div>
     </div>
   </div>
 
@@ -170,6 +169,6 @@
     is_active={modified}
     close={() => location.replace($page.url.pathname)}
   >
-  <p>Validado con exito!!!</p>
+  <p>Perfil Modificado con exito!!!</p>
   </Modal>
 {/if}
