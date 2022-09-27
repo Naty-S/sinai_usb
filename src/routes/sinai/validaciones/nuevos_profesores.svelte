@@ -57,7 +57,7 @@
         new: {
           activo: true,
         },
-        url: $page.url
+        pathname: $page.url.pathname
       })
     });
 

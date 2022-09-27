@@ -1,9 +1,8 @@
 import { goto } from "$app/navigation";
 
 
-export const submit = function (id: string, url: URL) {
+export const submit = function (id: string, pathname: string) {
   return async function (data: any) {
-    console.log(data)
     const res = await fetch(`/api/professor/${id}`, {
       method: "PATCH",
       credentials: "include",
@@ -12,14 +11,12 @@ export const submit = function (id: string, url: URL) {
       },
       body: JSON.stringify({
         new: data,
-        url
+        pathname
       })
     });
 
     if (res.ok) {
-      console.log(res.url)
       goto(res.url);
-      // location.reload();
     };
   };
 };
