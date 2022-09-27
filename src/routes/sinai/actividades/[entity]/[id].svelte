@@ -83,7 +83,7 @@
     align="center"
     is_active={act_created}
     close={() => act_created = false}
-    confirm={() => { act_created = false; location.reload(); show_create = true; }}
+    confirm={() => { act_created = false; location.replace($page.url.pathname); show_create = true; }}
   >
     <p>Desea ingresar otra actividad?</p>
   </Modal>
@@ -96,7 +96,7 @@
     close_text="Ok"
     align="center"
     is_active={act_modified}
-    close={() => { act_modified = false; location.reload();/* location.replace($page.url.pathname); */ }}
+    close={() => { act_modified = false; location.replace($page.url.pathname); }}
   />
 {/if}
 {#if show_create}

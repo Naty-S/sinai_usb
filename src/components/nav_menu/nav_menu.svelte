@@ -1,13 +1,15 @@
 <script lang="ts">
   import { session } from "$app/stores";
+
+  import type { User } from "$interfaces/auth";
     
   import ActivitiesModal from "./activities_modal.svelte";
 	import MenuDropdown from "./menu.svelte";
+  
+  const username = function (user: User) {
+    
+    const professor = user.professor;  
 
-  $: user = $session.user;
-  $: professor = user?.professor;  
-
-  $: username = function () {
     let name = '';
     let rank = '';
 
@@ -29,8 +31,8 @@
       } else {
         rank = `Dpto. de ${professor?.department.name}`;
       };
-    } else if (user?.dean) {
-      name = `${user?.dean}. `;
+    } else if (user.dean) {
+      name = `${user.dean}. `;
       rank = "Decano"
     } else {
       name = "Throw Error: No user. Cookie not sent to correct domain";
@@ -50,8 +52,8 @@
 >
   <div id="nav_container" class="uk-navbar-center">
     <div class="">SINAI - DID</div>
-    {#if user}
-      <div class="">{username()}</div>
+    {#if $session.user}
+      <div class="">{username($session.user)}</div>
 
       <MenuDropdown show_create={() => show_create = true} />
       

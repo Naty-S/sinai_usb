@@ -10,14 +10,14 @@
 
   let show_validate = false;
   let show_reject = false;
-  let actual_prof_id = -1;
+  let actual_prof_email = '';
   let actual_prof_name = '';
   let new_professors: profesor[] = [];
 
   onMount(async () => {
-    const res = await fetch("/api/professors");
-
     try {      
+      const res = await fetch("/api/professors");
+  
       if (res.ok) {
         const res_json = await res.clone().json();
 
@@ -40,28 +40,28 @@
   $: validated = Boolean($page.url.searchParams.get("validado"));
   $: rejected = Boolean($page.url.searchParams.get("rechazado"));
 
-  const popup_validate = function (prof_id: number, prof_name: string) {
+  const popup_validate = function (prof_email: string, prof_name: string) {
     show_validate = true;
-    actual_prof_id = prof_id;
+    actual_prof_email = prof_email;
     actual_prof_name = prof_name;
   };
 
   const confirm_validate = async function () {
-    const res = await fetch(`/api/professor/${actual_prof_id}`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        new: {
-          activo: true,
-        },
-        url: $page.url
-      })
-    });
-
     try {      
+      const res = await fetch(`/api/professor/${actual_prof_email}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          new: {
+            activo: true,
+          },
+          pathname: $page.url.pathname
+        })
+      });
+  
       if (res.ok) {
         show_validate = false;
         goto(res.url);
@@ -71,25 +71,25 @@
     };
   };
 
-  const popup_reject = function (prof_id: number, prof_name: string) {
+  const popup_reject = function (prof_email: string, prof_name: string) {
     show_reject = true;
-    actual_prof_id = prof_id;
+    actual_prof_email = prof_email;
     actual_prof_name = prof_name;
   };
 
   const confirm_reject = async function () {
-    const res = await fetch(`/api/professor/${actual_prof_id}`, {
-      method: "DELETE",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        url: $page.url
-      })
-    });
-
     try {      
+      const res = await fetch(`/api/professor/${actual_prof_email}`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url: $page.url
+        })
+      });
+  
       if (res.ok) {
         show_reject = false;
         goto(res.url);
@@ -132,10 +132,10 @@ else => no puede entrar aqui
             {p.perfil}. ({p.activo ? "Activo" : "No Activo"} - {p.confirmado ? "Confirmado" : "No Confirmado"})
           </div>
           <div class="six wide right aligned column">
-            <button class="ui blue small button" on:click={() => popup_validate(p.id, p.perfil)}>
+            <button class="ui blue small button" on:click={() => popup_validate(p.correo, p.perfil)}>
               Validar
             </button>
-            <button class="ui red small button" on:click={() => popup_reject(p.id, p.perfil)}>
+            <button class="ui red small button" on:click={() => popup_reject(p.correo, p.perfil)}>
               Rechazar
             </button>
           </div>
@@ -152,8 +152,8 @@ else => no puede entrar aqui
           Ultimo diploma: {p.diploma_tipo.replaceAll('_', '')}.
           Universidad donde lo obtuvo: {p.diploma_universidad}.
           Departamento: {p.departamento}.
-          Lineas de investigacion: {p.lineas_investigacion}.
-          URL: {p.url ? p.url : ''}.
+          Lineas de investigacion: {p.lineas_investigacion.join(", ")}.
+          URL: {p.url ? p.url : ''}
         </div>
       </div>      
     </div>
@@ -162,7 +162,7 @@ else => no puede entrar aqui
 
 {#if validated}
   <Modal
-    id="validated_{actual_prof_id}"
+    id="validated_{actual_prof_email}"
     title="Validar Profesor"
     close_text="Ok"
     align="center"
@@ -175,7 +175,7 @@ else => no puede entrar aqui
 {/if}
 {#if rejected}
   <Modal
-    id="rejected_{actual_prof_id}"
+    id="rejected_{actual_prof_email}"
     title="Rechazar Profesor"
     close_text="Ok"
     align="center"
@@ -187,7 +187,7 @@ else => no puede entrar aqui
 {/if}
 {#if show_validate}
   <Modal
-    id="validate_{actual_prof_id}"
+    id="validate_{actual_prof_email}"
     title="Validar Profesor"
     ok_text="Validar"
     align="center"
@@ -201,7 +201,7 @@ else => no puede entrar aqui
 {/if}
 {#if show_reject}
   <Modal
-    id="validate_{actual_prof_id}"
+    id="validate_{actual_prof_email}"
     title="Rechazar Profesor"
     ok_text="Rechazar"
     align="center"

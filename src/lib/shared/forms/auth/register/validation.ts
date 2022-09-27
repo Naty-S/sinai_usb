@@ -14,7 +14,7 @@ export const validation = function () {
   
   // ppi years from 1997 until current year
   const years_count = new Date().getFullYear() - 1996;
-  const ppi_years = Array.from({ length: years_count }, (_, i) => (i + 1997).toString());
+  const pei_years = Array.from({ length: years_count }, (_, i) => (i + 1997).toString());
 
   const not_req_word = yup.lazy(value => !value ? yup.string().nullable() :
     yup.string().matches(one_word, "Escriba un solo nombre sin espacios")
@@ -49,9 +49,9 @@ export const validation = function () {
       ),
       // grupos_investigacion: [],
     }),
-    ppi: yup.object().shape({
-      anio: yup.string().required("Requerido").oneOf(ppi_years, "Ingrese un año entre 1997 y el actual"),
-      nivel: yup.string().oneOf(["Candidato", "Nivel_I", "Nivel_II", "Nivel_III", "Nivel_IV"]),
+    pei: yup.object().shape({
+      anio: yup.string().required("Requerido").oneOf(pei_years, "Ingrese un año entre 1997 y el actual"),
+      nivel: yup.string().oneOf(["A", "B", "C"]),
       numero: yup.number().required("Requerido"),
     })
   });

@@ -138,14 +138,14 @@
       
               {#if user?.dean || is_chief || true}
                 <span class="ui red text">
-                  Creada por {act.creada_por} el {format_date(act.fecha_creacion, true)}.
+                  (Creada por {act.creada_por} el {format_date(act.fecha_creacion, true)}).
                   {#if act.actions_log[0]}
-                    Modificado recientemente por {act.actions_log[0].professor}
+                    (Modificado recientemente por {act.actions_log[0].professor}
                     el {format_date(act.actions_log[0].date, true)}
-                    a las {act.actions_log[0].time}.
+                    a las {act.actions_log[0].time}).
                   {/if}
                   {#if act.validado_por && act.fecha_validacion}
-                    Validada por {act.validado_por} el {format_date(act.fecha_validacion, true)}.
+                    (Validada por {act.validado_por} el {format_date(act.fecha_validacion, true)}).
                   {/if}
                 </span>
               {/if}

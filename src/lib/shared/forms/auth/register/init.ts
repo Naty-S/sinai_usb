@@ -22,7 +22,7 @@ export const init = function () {
       url: null,
       // grupos_investigacion: [],
     },
-    ppi: {
+    pei: {
       anio: 2022,
       nivel: "Candidato",
       numero: 0,

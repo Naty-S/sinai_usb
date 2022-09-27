@@ -3,20 +3,23 @@
 
   // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params }) => {    
-    const res = await fetch(`/api/activities/professor/${params.email}`);
-   
-    if (res.ok) {
-      const prof_activities = await res.json();
+    const res1 = await fetch(`/api/activities/professor/${params.email}`);
+    const res2 = await fetch(`/api/professor/${params.email}`);
+
+    if (res1.ok && res2.ok) {
+      const prof_activities = await res1.json();
+      const profile = await res2.json();
 
       return {
-        props: {prof_activities}
-      }
-    }
+        props: {prof_activities, profile}
+      };
+    };
 
-    const { message } = await res.json();
+    const { message1 } = await res1.json();
+    const { message2 } = await res2.json();
     return {
-      error: new Error(message)
-    }
+      error: new Error(message1 + message2)
+    };
 };
 </script>
 <script lang="ts">
@@ -29,6 +32,7 @@
   import BraHeader from "$components/bra/header.svelte";
 
   export let prof_activities: EntityActivities;
+  export let profile;
   
   let printBRA: () => void;
 
@@ -59,7 +63,7 @@
 </script>
 
 <div id="bra" class="uk-margin">
-  <BraHeader {period}/>
+  <BraHeader {profile} {period}/>
   
   <!-- Display activities resume table -->
   <ResumeTable
@@ -85,6 +89,6 @@
   {/each}
 </div>
 
-<button type="button" class="ui blue button" on:click="{() => printBRA()}">
+<button type="button" class="ui blue button" on:click={() => printBRA()}>
   Imprimir vista BRA
 </button>
