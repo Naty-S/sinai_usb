@@ -136,7 +136,7 @@
                 {act.observaciones ? "Observaciones: " + act.observaciones + '.' : ''}
               </span></i>
       
-              {#if user?.dean || is_chief || true}
+              {#if user?.dean || is_chief}
                 <span class="ui red text">
                   (Creada por {act.creada_por} el {format_date(act.fecha_creacion, "long-day")}).
                   {#if act.actions_log[0]}
