@@ -1,9 +1,9 @@
 import { goto } from "$app/navigation";
 
 
-export const submit = function (id: string, pathname: string) {
+export const submit = function (email: string, pathname: string) {
   return async function (data: any) {
-    const res = await fetch(`/api/professor/${id}`, {
+    const res = await fetch(`/api/professor/${email}`, {
       method: "PATCH",
       credentials: "include",
       headers: {

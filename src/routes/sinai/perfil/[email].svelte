@@ -46,7 +46,7 @@
   export let profile;
   
   const initialValues = init(profile);
-  const onSubmit = submit($page.params.id, $page.url.pathname);
+  const onSubmit = submit($page.params.email, $page.url.pathname);
   const validationSchema = validation();
   const formProps = { initialValues, onSubmit, validationSchema };
   const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
