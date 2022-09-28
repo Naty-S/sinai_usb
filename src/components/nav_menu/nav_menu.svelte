@@ -44,7 +44,7 @@
   let show_create = false;
 </script>
 
-<div class="uk-width-1-1 uk-position-fixed" style="top: 0">
+<div class="uk-width-1-1 uk-position-fixed uk-position-z-index" style="top: 0">
   <nav
     id="sinai_navabar"
     class="uk-navbar uk-navbar-container"

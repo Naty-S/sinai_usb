@@ -50,11 +50,16 @@
   };
 </script>
 
-<a id="menu_dropdown" href={void_link} class="uk-navbar-toggle uk-navbar-toggle-animate" uk-navbar-toggle-icon>
+<a
+  id="menu_dropdown"
+  href={void_link}
+  class="uk-navbar-toggle uk-navbar-toggle-animate"
+  uk-navbar-toggle-icon
+>
   Menu
 </a>
 
-<div id="nav_dropdown" class="uk-navbar-dropdown uk-position-z-index">
+<div id="nav_dropdown" class="uk-navbar-dropdown">
   <ul id="nav_dropdown_list" class="uk-nav uk-navbar-dropdown-nav">
     <Submenu
       href={void_link}
