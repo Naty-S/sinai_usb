@@ -163,6 +163,7 @@
                 {#if can_validate(act)}
                   {#if !act.validado_por && !act.fecha_validacion}
                     <button
+                      type="button"
                       class="ui blue small button"
                       on:click={() => popup_validate(act.id, act.titulo)}
                     >
@@ -170,14 +171,17 @@
                     </button>
                   {:else}
                     <button
+                      type="button"
                       class="ui yellow small button"
-                      on:click={() => popup_invalidate(act.id, act.titulo)}>
-                        Desvalidar
+                      on:click={() => popup_invalidate(act.id, act.titulo)}
+                    >
+                      Desvalidar
                     </button>
                   {/if}
                 {/if}
                 {#if can_delete(act)}
                   <button
+                    type="button"
                     class="ui red small button"
                     on:click={() => popup_delete(act.id, act.titulo)}
                   >

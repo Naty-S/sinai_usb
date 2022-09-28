@@ -132,10 +132,18 @@ else => no puede entrar aqui
             {p.perfil}. ({p.activo ? "Activo" : "No Activo"} - {p.confirmado ? "Confirmado" : "No Confirmado"})
           </div>
           <div class="six wide right aligned column">
-            <button class="ui blue small button" on:click={() => popup_validate(p.correo, p.perfil)}>
+            <button
+              type="button"
+              class="ui blue small button"
+              on:click={() => popup_validate(p.correo, p.perfil)}
+            >
               Validar
             </button>
-            <button class="ui red small button" on:click={() => popup_reject(p.correo, p.perfil)}>
+            <button
+              type="button"
+              class="ui red small button"
+              on:click={() => popup_reject(p.correo, p.perfil)}
+            >
               Rechazar
             </button>
           </div>

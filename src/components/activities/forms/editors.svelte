@@ -18,8 +18,8 @@
 	};  
 
 	const remove_editor = function (i: number) {
-    $form.capitulo_libro.editores = $form.capitulo_libro.editores.filter( (_, j) => j !== i );
-    $errors.capitulo_libro.editores = $errors.capitulo_libro.editores.filter( (_, j) => j !== i );
+    $form.capitulo_libro.editores.splice(i, 1);
+    $errors.capitulo_libro.editores.splice(i, 1);
   };
 
 </script>
@@ -43,17 +43,17 @@
           error={$errors.capitulo_libro.editores[i]}
           class="ten wide required field"
         />
-        <button class="ui red button" on:click={() => remove_editor(i)}>
+        <button type="button" class="ui red button" on:click={() => remove_editor(i)}>
           Elminar
         </button>
       </div>
     {/each}
 
-    <button class="ui blue button" on:click|preventDefault={add_editor}>
+    <button type="button" class="ui blue button" on:click|preventDefault={add_editor}>
       Agregar
     </button>
     {#if $form.capitulo_libro.editores.length > 0}      
-      <button class="ui red button" on:click={() => $form.capitulo_libro.editores = []}>
+      <button type="button" class="ui red button" on:click={() => $form.capitulo_libro.editores = []}>
         Limpiar
       </button>
     {/if}

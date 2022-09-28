@@ -32,8 +32,8 @@
   };
 
   const remove_group = function (i: number) {
-    $form.actividades_grupos = $form.actividades_grupos.filter( (_, j) => j !== i );
-    $errors.actividades_grupos = $errors.actividades_grupos.filter( (_, j) => j !== i );
+    $form.actividades_grupos.splice(i, 1);
+    $errors.actividades_grupos.splice(i, 1);
   };
 </script>
 
@@ -57,17 +57,17 @@
           options={groups.map(g => ({ val: g.id.toString(), name: `${g.id} - ${g.nombre}`}))}
           class="field"
         />
-        <button class="ui red button" on:click={() => remove_group(i)}>
+        <button type="button" class="ui red button" on:click={() => remove_group(i)}>
           Elminar
         </button>
       </div>
     {/each}
 
-    <button class="ui blue button" on:click|preventDefault={add_group}>
+    <button type="button" class="ui blue button" on:click|preventDefault={add_group}>
       Agregar
     </button>
     {#if $form.actividades_grupos.length > 0}      
-      <button class="ui red button" on:click={() => $form.actividades_grupos = []}>
+      <button type="button" class="ui red button" on:click={() => $form.actividades_grupos = []}>
         Limpiar
       </button>
     {/if}

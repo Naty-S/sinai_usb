@@ -19,8 +19,8 @@
 	};
 
 	const remove = function (i: number) {
-    $form.lineas_investigacion = $form.lineas_investigacion.filter((_, j) => j !== i);
-    $errors.lineas_investigacion = $errors.lineas_investigacion.filter((_, j) => j !== i);
+    $form.lineas_investigacion.splice(i, 1);
+    $errors.lineas_investigacion.splice(i, 1);
   };
 </script>
 
@@ -43,17 +43,17 @@
           class="ten wide field"
         />
           <!-- error={$errors.lineas_investigacion[i]} -->
-        <button class="ui red button" on:click={() => remove(i)}>
+        <button type="button" class="ui red button" on:click={() => remove(i)}>
           Elminar
         </button>
       </div>
     {/each}
 
-    <button class="ui blue button" on:click|preventDefault={add}>
+    <button type="button" class="ui blue button" on:click|preventDefault={add}>
       Agregar
     </button>
     {#if $form.lineas_investigacion.length > 0}      
-      <button class="ui red button" on:click={() => $form.lineas_investigacion = []}>
+      <button type="button" class="ui red button" on:click={() => $form.lineas_investigacion = []}>
         Limpiar
       </button>
     {/if}

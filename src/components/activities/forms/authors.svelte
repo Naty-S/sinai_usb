@@ -32,8 +32,8 @@
 	};
 
 	const remove_author_usb = function (i: number) {
-    $form.autores_usb = $form.autores_usb.filter( (_, j) => j !== i );
-    $errors.autores_usb = $errors.autores_usb.filter( (_, j) => j !== i );
+    $form.autores_usb.splice(i, 1);
+    $errors.autores_usb.splice(i, 1);
   };
 
 	const add_author_out = function () {
@@ -52,8 +52,8 @@
 	};
 
 	const remove_author_out = function (i: number) {
-    $form.autores_externos = $form.autores_externos.filter( (_, j) => j !== i);
-    $errors.autores_externos = $errors.autores_externos.filter( (_, j) => j !== i);
+    $form.autores_externos.splice(i, 1);
+    $errors.autores_externos.splice(i, 1);
   };
 
   $: student_usb = function (i: number) { return $form.autores_usb[i].es_estudiante }
@@ -142,7 +142,7 @@
           />
         {/if}
 
-        <button class="ui red button" on:click={() => remove_author_usb(i)}>
+        <button type="button" class="ui red button" on:click={() => remove_author_usb(i)}>
           Elminar
         </button>
       </div>
@@ -167,11 +167,11 @@
       {/if}
     {/each}
 
-    <button class="ui blue button" on:click|preventDefault={add_author_usb}>
+    <button type="button" class="ui blue button" on:click|preventDefault={add_author_usb}>
       Agregar
     </button>
     {#if $form.autores_usb.length > 0}
-      <button class="ui red button" on:click={() => $form.autores_usb = []}>
+      <button type="button" class="ui red button" on:click={() => $form.autores_usb = []}>
         Limpiar
       </button>
     {/if}
@@ -244,17 +244,17 @@
           />
         {/if}
 
-        <button class="ui red button" on:click={() => remove_author_out(i)}>
+        <button type="button" class="ui red button" on:click={() => remove_author_out(i)}>
           Elminar
         </button>
       </div>
     {/each}
     
-    <button class="ui blue button" on:click|preventDefault={add_author_out}>
+    <button type="button" class="ui blue button" on:click|preventDefault={add_author_out}>
       Agregar
     </button>
     {#if $form.autores_externos.length > 0}      
-      <button class="ui red button" on:click={() => $form.autores_externos = []}>
+      <button type="button" class="ui red button" on:click={() => $form.autores_externos = []}>
         Limpiar
       </button>
     {/if}
