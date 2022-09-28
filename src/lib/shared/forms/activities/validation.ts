@@ -1,24 +1,17 @@
 import * as yup from "yup";
-import { parse, isDate } from "date-fns";
 
 import type { kinds } from "$types/forms";
 
+import { parse_date } from "$utils/formatting";
+
 
 // TODO: regexs?
-
-function parseDate(value: any, originalValue: any) {
-  const parsedDate = isDate(originalValue) || originalValue === null
-    ? originalValue
-    : parse(originalValue, "yyyy-MM-dd", new Date());
-
-  return parsedDate;
-};
 
 const articulo_revista = yup.object().shape({
     articulo_invitado: yup.boolean().typeError("No es booleano")
   , con_estudiantes: yup.boolean().typeError("No es booleano")
   , estado: yup.string().oneOf(["Aceptado_via_publicacion", "Publicado"])
-  , fecha_publicacion: yup.date().transform(parseDate).nullable()
+  , fecha_publicacion: yup.date().transform(parse_date).nullable()
   , indice: yup.string().nullable()
   , pag_final: yup.string().required("Requerido")
   , pag_inicial: yup.string().required("Requerido")
@@ -36,7 +29,7 @@ const capitulo_libro = yup.object().shape({
   , ciudad: yup.string().required("Requerido")
   , editores: yup.array(yup.string())
   , editorial: yup.string().required("Requerido")
-  , fecha: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , isbn: yup.string().required("Requerido")
   , pag_final: yup.string().required("Requerido")
   , pag_inicial: yup.string().required("Requerido")
@@ -47,7 +40,7 @@ const capitulo_libro = yup.object().shape({
 const composicion = yup.object().shape({
   categoria: yup.string().oneOf(["Composicion", "Arreglo", "Ejecucion"])
   , ciudad: yup.string().required("Requerido")
-  , fecha: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , financiado_por: yup.string().nullable()
   , jurado: yup.string().required("Requerido")
   , nombre_evento: yup.string().required("Requerido")
@@ -56,7 +49,7 @@ const composicion = yup.object().shape({
 
 const evento = yup.object().shape({
   ciudad: yup.string().required("Requerido")
-  , fecha: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().nullable()
   , internacional: yup.boolean()
   , modalidad: yup.string().oneOf(["Cartel", "Oral", "Invitada"])
@@ -67,7 +60,7 @@ const evento = yup.object().shape({
 const exposicion = yup.object().shape({
   categoria: yup.string().nullable()
   , ciudad: yup.string().required("Requerido")
-  , fecha: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , financiado_por: yup.string().nullable()
   , nombre_evento: yup.string().required("Requerido")
   , organizado_por: yup.string().nullable()
@@ -85,7 +78,7 @@ const grabacion = yup.object().shape({
   ])
   , deposito_legal: yup.string().nullable()
   , editorial: yup.string().required("Requerido")
-  , fecha: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , financiado_por: yup.string().nullable()
   , jurado: yup.string().nullable()
   , nacional: yup.boolean().typeError("No es booleano")
@@ -95,7 +88,7 @@ const informe_tecnico = yup.object().shape({
   confidencial: yup.boolean().typeError("No es booleano")
   , evaluacion_did: yup.boolean().typeError("No es booleano")
   , evaluadores: yup.array(yup.string().required("Requerido")).min(1, "Ingrese al menos 1 evaluador")
-  , fecha_inicio: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha_inicio: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().required("Requerido")
   , meses_duracion: yup.number().required("Requerido")
     .positive("Ingrese numero positivo")
@@ -107,7 +100,7 @@ const libro = yup.object().shape({
   aceptado: yup.boolean().typeError("No es booleano")
   , ciudad: yup.string().required("Requerido")
   , editorial: yup.string().required("Requerido")
-  , fecha: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , isbn: yup.string().required("Requerido")
   , pais: yup.string().required("Requerido")
 });
@@ -116,7 +109,7 @@ const memoria = yup.object().shape({
   ciudad: yup.string().required("Requerido")
   , con_estudiantes: yup.boolean().typeError("No es booleano")
   , congreso: yup.string().required("Requerido")
-  , fecha: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , formato: yup.string().oneOf(["CD", "Libro", "Revista"])
   , isbn: yup.string().nullable()
   , medio_publicacion: yup.string().nullable()
@@ -143,29 +136,29 @@ const partitura = yup.object().shape({
   ])
   , deposito_legal: yup.string().nullable()
   , editorial: yup.string().required("Requerido")
-  , fecha: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , financiado_por: yup.string().nullable()
   , jurado: yup.string().nullable()
   , nacional: yup.boolean().typeError("No es booleano")
 });
 
 const patente = yup.object().shape({
-  fecha_fin: yup.date().transform(parseDate).typeError("Requerido")
+  fecha_fin: yup.date().transform(parse_date).typeError("Requerido")
     // .min(yup.ref("fecha_inicio"), "La fecha final debe ser mayor que la inicial") // TODO:
-  , fecha_inicio: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha_inicio: yup.date().transform(parse_date).typeError("Requerido")
   , numero: yup.string().required("Requerido")
   , pais: yup.string().required("Requerido")
 });
 
 const premio = yup.object().shape({
-  fecha: yup.date().transform(parseDate).typeError("Requerido")
+  fecha: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().required("Requerido")
 });
 
 const premio_bienal = yup.object().shape({
   categoria: yup.string().required("Requerido")
   , ciudad: yup.string().required("Requerido")
-  , fecha: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , financiado_por: yup.string().nullable()
   , nombre_evento: yup.string().required("Requerido")
   , organizado_por: yup.string().nullable()
@@ -175,7 +168,7 @@ const premio_bienal = yup.object().shape({
 
 const proyecto_grado = yup.object().shape({
   coordinacion_academica: yup.string().required("Requerido")
-  , fecha_defensa: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha_defensa: yup.date().transform(parse_date).typeError("Requerido")
   , nivel_academico: yup.string().oneOf([
     "Doctorado"
     , "Maestria"
@@ -189,7 +182,7 @@ const proyecto_grado = yup.object().shape({
 });
 
 const proyecto_investigacion = yup.object().shape({
-  fecha_inicio: yup.date().transform(parseDate).typeError("Requerido")
+  fecha_inicio: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().required("Requerido")
   , meses_duracion: yup.number().required("Requerido")
     .positive("Ingrese numero positivo")
@@ -201,7 +194,7 @@ const proyecto_investigacion = yup.object().shape({
 
 const recital = yup.object().shape({
   ciudad: yup.string().required("Requerido")
-  , fecha_evento: yup.date().transform(parseDate).typeError("Requerido")
+  , fecha_evento: yup.date().transform(parse_date).typeError("Requerido")
   , financiado_por: yup.string().nullable()
   , jurado: yup.string().required("Requerido")
   , nombre_evento: yup.string().required("Requerido")

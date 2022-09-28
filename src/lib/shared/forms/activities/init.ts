@@ -20,6 +20,8 @@ import type {
   recital,
 } from "@prisma/client";
 
+import { format_date } from "$utils/formatting";
+
 
 export const init = function (kind: kinds, user: User, data?: Activity): actividad_form<typeof kind> {
 
@@ -45,6 +47,9 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
   };
 
   let info;
+  const init_date = function (date?: Date): Date {
+    return date ? format_date(date, "yyyy-MM-dd") as unknown as Date : new Date("yyyy-MM-dd");
+  };
 
   switch (kind) {
     case "articulo_revista":
@@ -56,7 +61,9 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
             articulo_invitado: info?.articulo_invitado || false
           , con_estudiantes: info?.con_estudiantes || false
           , estado: info?.estado || "Aceptado_via_publicacion"
-          , fecha_publicacion: info?.fecha_publicacion || null
+          , fecha_publicacion: info?.fecha_publicacion
+              ? format_date(info.fecha_publicacion, "yyyy-MM-dd") as unknown as Date
+              : null
           , indice: info?.indice || null
           , pag_final: info?.pag_final || ''
           , pag_inicial: info?.pag_inicial || ''
@@ -79,7 +86,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
           , ciudad: info?.ciudad || ''
           , editores: info?.editores || ['']
           , editorial: info?.editorial || ''
-          , fecha: info?.fecha || new Date("yyyy-MM-dd")
+          , fecha: init_date(info?.fecha)
           , isbn: info?.isbn || ''
           , pag_final: info?.pag_final || ''
           , pag_inicial: info?.pag_inicial || ''
@@ -98,7 +105,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
         , composicion: {
             categoria: info?.categoria || "Arreglo"
           , ciudad: info?.ciudad || ''
-          , fecha: info?.fecha || new Date("yyyy-MM-dd")
+          , fecha: init_date(info?.fecha)
           , financiado_por: info?.financiado_por || null
           , jurado: info?.jurado || ''
           , nombre_evento: info?.nombre_evento || ''
@@ -115,7 +122,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
         ...act
         , evento: {
             ciudad: info?.ciudad || ''
-          , fecha: info?.fecha || new Date("yyyy-MM-dd")
+          , fecha: init_date(info?.fecha)
           , institucion: info?.institucion || null
           , internacional: info?.internacional || false
           , modalidad: info?.modalidad || "Cartel"
@@ -134,7 +141,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
         , exposicion: {
             categoria: info?.categoria || null
           , ciudad: info?.ciudad || ''
-          , fecha: info?.fecha || new Date("yyyy-MM-dd")
+          , fecha: init_date(info?.fecha)
           , financiado_por: info?.financiado_por || null
           , nombre_evento: info?.nombre_evento || ''
           , organizado_por: info?.organizado_por || null
@@ -153,7 +160,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
             categoria: info?.categoria || "CD_Completo_Internacional"
           , deposito_legal: info?.deposito_legal || null
           , editorial: info?.editorial || ''
-          , fecha: info?.fecha || new Date("yyyy-MM-dd")
+          , fecha: init_date(info?.fecha)
           , financiado_por: info?.financiado_por || null
           , jurado: info?.jurado || null
           , nacional: info?.nacional || false
@@ -171,7 +178,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
             confidencial: info?.confidencial || false
           , evaluacion_did: info?.evaluacion_did || false
           , evaluadores: info?.evaluadores || ['']
-          , fecha_inicio: info?.fecha_inicio || new Date("yyyy-MM-dd")
+          , fecha_inicio: init_date(info?.fecha_inicio)
           , institucion: info?.institucion || ''
           , meses_duracion: info?.meses_duracion || 1
         }
@@ -188,7 +195,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
             aceptado: info?.aceptado || false
           , ciudad: info?.ciudad || ''
           , editorial: info?.editorial || ''
-          , fecha: info?.fecha || new Date("yyyy-MM-dd")
+          , fecha: init_date(info?.fecha)
           , isbn: info?.isbn || ''
           , pais: info?.pais || "Venezuela"
         }
@@ -205,7 +212,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
             ciudad: info?.ciudad || ''
           , con_estudiantes: info?.con_estudiantes || false
           , congreso: info?.congreso || ''
-          , fecha: info?.fecha || new Date("yyyy-MM-dd")
+          , fecha: init_date(info?.fecha)
           , formato: info?.formato || "CD"
           , isbn: info?.isbn || null
           , medio_publicacion: info?.medio_publicacion || null
@@ -229,7 +236,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
             categoria: info?.categoria || "CD_Completo_Internacional"
           , deposito_legal: info?.deposito_legal || null
           , editorial: info?.editorial || ''
-          , fecha: info?.fecha || new Date("yyyy-MM-dd")
+          , fecha: init_date(info?.fecha)
           , financiado_por: info?.financiado_por || null
           , jurado: info?.jurado || null
           , nacional: info?.nacional || false
@@ -244,8 +251,8 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       const patente: actividad_form<"patente"> = {
         ...act
         , patente: {
-            fecha_fin: info?.fecha_fin || new Date("yyyy-MM-dd")
-          , fecha_inicio: info?.fecha_inicio || new Date("yyyy-MM-dd")
+            fecha_fin: init_date(info?.fecha_fin)
+          , fecha_inicio: init_date(info?.fecha_inicio)
           , numero: info?.numero || ''
           , pais: info?.pais || "Venezuela"
         }
@@ -259,7 +266,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       const premio: actividad_form<"premio"> = {
         ...act
         , premio: {
-            fecha: info?.fecha || new Date("yyyy-MM-dd")
+            fecha: init_date(info?.fecha)
           , institucion: info?.institucion || ''
         }
       };
@@ -274,7 +281,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
         , premio_bienal: {
             categoria: info?.categoria || ''
           , ciudad: info?.ciudad || ''
-          , fecha: info?.fecha || new Date("yyyy-MM-dd")
+          , fecha: init_date(info?.fecha)
           , financiado_por: info?.financiado_por || null
           , nombre_evento: info?.nombre_evento || ''
           , organizado_por: info?.organizado_por || null
@@ -292,7 +299,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
         ...act
         , proyecto_grado: {
             coordinacion_academica: info?.coordinacion_academica || ''
-          , fecha_defensa: info?.fecha_defensa || new Date("yyyy-MM-dd")
+          , fecha_defensa: init_date(info?.fecha_defensa)
           , nivel_academico: info?.nivel_academico || "Doctorado"
           , titulo_academico: info?.titulo_academico || ''
         }
@@ -306,7 +313,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       const proyecto_investigacion: actividad_form<"proyecto_investigacion"> = {
         ...act
         , proyecto_investigacion: {
-            fecha_inicio: info?.fecha_inicio || new Date("yyyy-MM-dd")
+            fecha_inicio: init_date(info?.fecha_inicio)
           , institucion: info?.institucion || "Fonacit"
           , meses_duracion: info?.meses_duracion || 1
           , moneda: info?.moneda || "Bs."
@@ -323,7 +330,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
         ...act
         , recital: {
             ciudad: info?.ciudad || ''
-          , fecha_evento: info?.fecha_evento || new Date("yyyy-MM-dd")
+          , fecha_evento: init_date(info?.fecha_evento)
           , financiado_por: info?.financiado_por || null
           , jurado: info?.jurado || ''
           , nombre_evento: info?.nombre_evento || ''
@@ -331,6 +338,6 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
         }
       };
 
-      return recital
+      return recital;
   };
 };

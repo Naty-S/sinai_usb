@@ -6,7 +6,7 @@
   export let profile;
   export let period = '';
 
-  const current_date = format_date(new Date(), true);
+  const current_date = format_date(new Date(), "long-day");
   
   $: professor = $session.user?.professor;
 </script>

@@ -2,34 +2,35 @@ import type { Activity } from "$types/activities";
 import type { ActivityActionLog } from "$interfaces/logs";
 import type { Group } from "$interfaces/groups";
 
+import { parse, isDate } from "date-fns";
+
 
 /**
  * Formats the date to specified format
  *    - `Month` `yyyy` (default)
  *    - `dd` de `Month` del `yyyy`
+ *    - yyyy-MM-dd
  * Used to display the activity's description and current date
  * 
  * @param {Date | string} date - The date to format
- * @param {boolean} day - Tell's if include the day in the format
- * @returns {string} The formated date in 'Month year'
+ * @param {string} format - 
+ * @returns {string} The formated date
  */
-export const format_date = function (
-  date: Date | string,
-  day?: boolean,
-): string {
+export const format_date = function (date: Date | string, format: string = "long"): string {
 
   const _date = typeof date === "string" ? new Date(date) : date;
 
   if (_date) {
-    const _year = _date.getFullYear().toString();
-    let _month = _date.toLocaleDateString('es', { month: "long" });
-    _month = _month.charAt(0).toUpperCase() + _month.slice(1);
-  
-    if (day) {
-      return _date.getDate().toString() + " de " + _month + " del " + _year;
+    switch (format) {
+      case "long-day":
+        return _date.toLocaleDateString("es", { year: "numeric", month: "long", day: "2-digit" });
+    
+      case "yyyy-MM-dd":
+        return _date.toLocaleDateString("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" });
+    
+      default: // "long"
+        return _date.toLocaleDateString("es", { year: "numeric", month: "long" });
     };
-  
-    return _month + ' ' + _year;
   };
 
   return "Por definir";
@@ -105,4 +106,12 @@ export const format_activity_kind = function (activity: any): Activity {
   };
 
   return act;
+};
+
+export const parse_date = function (value: any, originalValue: any) {
+  const parsed_date = isDate(originalValue) || originalValue === null
+    ? originalValue
+    : parse(originalValue, "yyyy-MM-dd", new Date());
+
+  return parsed_date;
 };
