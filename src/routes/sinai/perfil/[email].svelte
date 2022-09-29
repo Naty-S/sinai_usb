@@ -123,9 +123,8 @@
 
   <div class="ui centered grid field">
     <div class="one column row">
-      <div class="column">Grupos de Investigación: 
-        {professor?.groups.grupos_investigacion.map(g => g.nombre).join(", ")}.
-        {professor?.groups.historico_grupos.map(g => g.Grupo.nombre).join(", ")}.
+      <div class="column">Responsable de los Grupos de Investigación: 
+        {professor?.groups.grupos_investigacion.map(g => g.nombre).join(", ")}
       </div>
     </div>
 

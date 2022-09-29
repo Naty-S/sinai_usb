@@ -33,9 +33,8 @@
     </div>
   
     <div class="one column row">
-      <div class="column"><strong>Grupos de Investigación:</strong>
+      <div class="column"><strong>Responsable de los Grupos de Investigación:</strong>
         {professor?.groups.grupos_investigacion.map(g => g.nombre).join(". ")}
-        {professor?.groups.historico_grupos.map(g => g.Grupo.nombre).join(", ")}.
       </div>
     </div>
   </div>
