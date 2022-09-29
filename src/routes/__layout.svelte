@@ -12,19 +12,17 @@
 <NavMenu />
 <Notifications />
 
-<main class="uk-margin">
-  <div class="ui container">
-    {#if $navigating}
-      <Loader />
+<main class="ui container uk-margin">
+  {#if $navigating}
+    <Loader />
+  {:else}
+    {#if $session.user && $page.url.pathname !== "/sinai/login"}
+      <slot />
+      <ToTop />
+      <div class="ui divider" />
     {:else}
-      {#if $session.user && $page.url.pathname !== "/sinai/login"}
-        <slot />
-        <ToTop />
-        <div class="ui divider" />
-      {:else}
-        <Login />
-      {/if}
+      <Login />
     {/if}
-  </div>
+  {/if}
 </main>
   

@@ -14,8 +14,6 @@
       redirect = `/sinai/actividades/profesor/${session.user.email}`;
     } else if (session.user?.dean) {
       redirect = "/sinai/actividades";
-    } else {
-      console.log("ERROR?")
     };
 
     return {
@@ -23,8 +21,6 @@
       redirect
     }
   }
-</script>
-<script lang="ts">
 </script>
 
 <svelte:head>
