@@ -25,14 +25,14 @@
   $: division = `/sinai/actividades/division/${user?.professor?.division_chief?.id}`;
 
   $: views = [
-    {href: bra, click: () => {}, name: "BRA"},
-    professor?.is_dep_chief || professor?.is_dep_representative ? {href: dep, click: () => {}, name: "Departamento"} : null,
-    professor?.coord_chief ? {href: coord, click: () => {}, name: "Coordinacion"} : null,
-    professor?.division_chief ? {href: division, click: () => {}, name: "Division"} : null,
+    professor && {href: bra, click: () => {}, name: "BRA"},
+    (professor?.is_dep_chief || professor?.is_dep_representative) && {href: dep, click: () => {}, name: "Departamento"},
+    professor?.coord_chief && {href: coord, click: () => {}, name: "Coordinacion"},
+    professor?.division_chief && {href: division, click: () => {}, name: "Division"},
     // <!-- TODO: desired use cases -->
-    {href: void_link, click: () => {}, name: "Personal"},
-    {href: void_link, click: () => {}, name: "Referencias Puras"},
-    {href: void_link, click: () => {}, name: "Certificación PEII"}
+    // {href: void_link, click: () => {}, name: "Personal"},
+    // {href: void_link, click: () => {}, name: "Referencias Puras"},
+    // {href: void_link, click: () => {}, name: "Certificación PEII"}
   ].filter(Boolean) as submenu_item[];
 
   $: options = professor ? [
@@ -71,15 +71,15 @@
     />
     <li class="uk-nav-divider" />
     <!-- TODO: desired use cases -->
-    <Submenu
+    <!-- <Submenu
       href={void_link}
       name="Consultas"
       items={[
         {href: void_link, click: () => {}, name: "Públicas"},
         {href: void_link, click: () => {}, name: "Predeterminadas"}
       ]}
-    />
-    <li class="uk-nav-divider" />
+    /> -->
+    <!-- <li class="uk-nav-divider" /> -->
     <Submenu
       href={void_link}
       name="Vistas"
@@ -87,17 +87,17 @@
     />
     <li class="uk-nav-divider" />
     <!-- TODO: desired use cases -->
-    <Submenu
+    <!-- <Submenu
       href={void_link}
       name="Constancias"
       items={[
         {href: void_link, click: () => {}, name: "Proyectos"},
         {href: void_link, click: () => {}, name: "Grupos"}
       ]}
-    />
-    <li class="uk-nav-divider" />
+    /> -->
+    <!-- <li class="uk-nav-divider" /> -->
     <!-- TODO: desired use cases -->
-    <Submenu
+    <!-- <Submenu
       href={void_link}
       name="Evaluaciones"
       items={[
@@ -105,8 +105,8 @@
         {href: void_link, click: () => {}, name: "S2"},
         {href: void_link, click: () => {}, name: "GID"}
       ]}
-    />
-    <li class="uk-nav-divider" />
+    /> -->
+    <!-- <li class="uk-nav-divider" /> -->
     <Submenu
       href={void_link}
       name="Mis Grupos"
