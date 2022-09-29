@@ -42,13 +42,31 @@
   };
 
   let show_create = false;
+  let fixed = false;
+
+  const fix_on_top = function() {
+    const scroll_container = document.documentElement || document.body;
+    
+    if (!scroll_container) {
+      return;
+    };
+
+    if (scroll_container.scrollTop > 0) {
+      fixed = true;
+    } else {
+      fixed = false;
+    };
+  };
 </script>
 
-<div class="uk-width-1-1 uk-position-fixed uk-position-z-index" style="top: 0">
+<svelte:window on:scroll={fix_on_top} />
+
+<!-- <div class="uk-width-1-1 uk-position-fixed uk-position-z-index" > -->
   <nav
     id="sinai_navabar"
-    class="uk-navbar uk-navbar-container"
+    class="uk-navbar uk-navbar-container uk-width-1-1 {fixed && "uk-position-fixed"} uk-position-z-index"
     uk-navbar="mode:click; offset: -10;"
+    style="top: 0"
   >
     <div id="nav_container" class="uk-navbar-center">
       <div class="">SINAI - DID</div>
@@ -62,7 +80,7 @@
       {/if}
     </div>
   </nav>
-</div>
+<!-- </div> -->
 
 {#if show_create}
   <ActivitiesModal show={show_create} close={() => show_create = false} />
