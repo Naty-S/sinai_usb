@@ -25,10 +25,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import type { EntityActivities } from "$interfaces/activities";
+  import type { EntityActivities, YearActivities } from "$interfaces/activities";
 
   import YearsList from "$components/activities/years_list.svelte";
-  import ResumeTable from "$components/activities/resume_table.svelte";
   import BraHeader from "$components/bra/header.svelte";
 
   export let prof_activities: EntityActivities;
@@ -53,32 +52,45 @@
     )};
   });
   
-  const current_year = new Date().getFullYear();
-  const years = (current_year - 1).toString() + " - " + current_year.toString();
+  const curr_year = new Date().getFullYear();
+  const last_year = curr_year - 1;
+  const years = last_year + " - " + curr_year;
+
   // TODO: change to period set by the Dean
-  const period = "Julio " + (current_year - 1).toString() + " - Julio " + current_year.toString()
-  const period_activities = prof_activities.by_year.filter(a => period.includes(a.year.toString()))
-  const acts_years = period_activities.map(a => a.year.toString());
-  const headers = ["Actividad"].concat(acts_years);
+  const period = "01 Agosto " + last_year + " - 31 Julio " + curr_year;
+  
+  const last_acts_by_year = prof_activities.by_year.find(a => a.year === last_year) || {kind_activities: {}};
+  const last_year_acts = Object.entries(last_acts_by_year.kind_activities).filter(([kind, acts]) =>
+    acts.filter(a =>
+      new Date(a.fecha_creacion).getMonth() > 7
+    ).length > 0
+  );
+  const curr_acts_by_year = prof_activities.by_year.find(a => a.year === curr_year) || {kind_activities: {}};
+  const curr_year_acts = Object.entries(curr_acts_by_year.kind_activities).filter(([kind, acts]) =>
+    acts.filter(a =>
+      new Date(a.fecha_creacion).getMonth() < 8
+    ).length > 0
+  );
+
+  const period_activities: YearActivities[] = [
+    {
+      year: last_year,
+      kind_activities: Object.fromEntries(last_year_acts)
+    },
+    {
+      year: curr_year,
+      kind_activities: Object.fromEntries(curr_year_acts)
+    }
+  ];
+
+  const headers = ["Actividad", `${curr_year - 1}`, `${curr_year}`];
 </script>
 
 <div id="bra" class="uk-margin">
   <BraHeader {profile} {period}/>
   
-  <!-- Display activities resume table -->
-  <ResumeTable
-    {headers}
-    resume_kinds_counts={prof_activities.years_counts.map(yc => ({
-        kind: yc.kind,
-        counts: yc.counts.filter(c => c.year && period.includes(c.year.toString()))
-      })
-    )}
-    row_total
-    col_total
-  />
-
   <div class="ui three column grid container segment">
-    <div class="column">Encontradas: {period_activities.length}</div>
+    <div class="column">Encontradas: #</div>
     <div class="center aligned column">Años: {years}</div>
     <div class="right aligned column">Páginas: #</div>
   </div>
