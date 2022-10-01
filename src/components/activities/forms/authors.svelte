@@ -63,9 +63,9 @@
 
   let professors: { id: number, nombre: string }[] = [];
   onMount(async () => {
-    const res = await fetch("/api/professors");
-
     try {      
+      const res = await fetch("/api/professors");
+
       if (res.ok) {
         const res_json = await res.clone().json();
         professors = res_json.map((p: profesor) => ({ id: p.id, nombre: p.perfil }));
