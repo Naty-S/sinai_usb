@@ -6,6 +6,7 @@
   import Submenu from './submenu.svelte';
 
   export let show_create: MouseEventHandler<HTMLAnchorElement>;
+  export let show_modify_bra_period: MouseEventHandler<HTMLAnchorElement>;
 
   $: user = $session.user;
   $: professor = user?.professor;  
@@ -35,10 +36,18 @@
     // {href: void_link, click: () => {}, name: "Certificación PEII"}
   ].filter(Boolean) as submenu_item[];
 
-  $: options = professor ? [
-      {href: void_link, click: () => {}, name: "Cambiar Contraseña"},
-      {href: `/sinai/perfil/${user?.email}`, click: () => {}, name: "Cambiar Perfil"}
-    ] : [{ href: void_link, click: () => {}, name: "Modificar Profesores"}];
+  let options: submenu_item[];
+  $: if (professor) {
+      options = [
+        {href: void_link, click: () => {}, name: "Cambiar Contraseña"},
+        {href: `/sinai/perfil/${user?.email}`, click: () => {}, name: "Cambiar Perfil"}
+      ];
+    } else if (user?.dean) {
+      options = [
+        { href: void_link, click: () => {}, name: "Modificar Profesores"},
+        {href: void_link, click: () => show_modify_bra_period(), name: "Modificar Periodo BRA"}
+      ];
+    };
 
   const logout = async function () {
     await fetch("/api/auth/logout", {

@@ -15,9 +15,9 @@
   let groups: Group[] = [];
 
   onMount(async () => {
-    const res = await fetch("/api/groups");
-
     try {
+      const res = await fetch("/api/groups");
+
       if (res.ok) {
         groups = await res.clone().json();
       };

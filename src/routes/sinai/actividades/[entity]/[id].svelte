@@ -33,7 +33,7 @@
 
 	import Modal from '$components/modal.svelte';
   import ActivitiesModal from "$components/nav_menu/activities_modal.svelte";
-  import YearsList from "$components/activities/years_list.svelte";
+  import YearActivities from "$components/activities/year_activities.svelte";
   import ResumeTable from "$components/activities/resume_table.svelte";
 
   export let activities: EntityActivities;
@@ -57,8 +57,8 @@
 />
 
 <!-- Display activities by year -->
-{#each activities.by_year.reverse() as activities}
-  <YearsList {activities} editable/>
+{#each activities.by_year as year_activities}
+  <YearActivities {year_activities} editable/>
 {/each}
 
 {#if $page.params.entity === "profesor"} 

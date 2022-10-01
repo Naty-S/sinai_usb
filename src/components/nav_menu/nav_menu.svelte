@@ -5,6 +5,7 @@
     
   import ActivitiesModal from "./activities_modal.svelte";
 	import MenuDropdown from "./menu.svelte";
+  import ModifyBraPeriodModal from "./modify_bra_period_modal.svelte";
   
   const username = function (user: User) {
     
@@ -42,6 +43,7 @@
   };
 
   let show_create = false;
+  let show_modify_bra = false;
   let fixed = false;
 
   const fix_on_top = function() {
@@ -73,7 +75,10 @@
       {#if $session.user}
         <div class="">{username($session.user)}</div>
   
-        <MenuDropdown show_create={() => show_create = true} />
+        <MenuDropdown
+          show_create={() => show_create = true}
+          show_modify_bra_period={() => show_modify_bra = true}
+        />
         
       {:else}
         <a id="register" href="/sinai/registro" class="">Registro</a>
@@ -84,4 +89,8 @@
 
 {#if show_create}
   <ActivitiesModal show={show_create} close={() => show_create = false} />
+{/if}
+
+{#if show_modify_bra}
+  <ModifyBraPeriodModal show={show_modify_bra} close={() => show_modify_bra = false} />
 {/if}

@@ -37,9 +37,9 @@
   let departments: Department[] = [];
 
   onMount(async () => {
-    const res = await fetch("/api/departments");
-
     try {      
+      const res = await fetch("/api/departments");
+  
       if (res.ok) {
         departments = await res.clone().json();
       };

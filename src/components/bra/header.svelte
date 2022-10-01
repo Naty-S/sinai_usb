@@ -20,7 +20,7 @@
   
   <div class="ui centered grid container">
     <div class="three column row">
-      <div class="column"><strong>Profesor:</strong> {professor?.name1}, {professor?.surname1}</div>
+      <div class="column"><strong>Profesor:</strong> {professor?.name1} {professor?.surname1}</div>
       <div class="column"><strong>Cédula:</strong> {professor?.id_card}</div>
       <div class="column"><strong>Vista:</strong> Bono BRA</div>
     </div>
