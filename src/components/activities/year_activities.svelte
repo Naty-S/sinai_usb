@@ -9,8 +9,10 @@
   import KindInfo from "./kind_info.svelte";
   
   // Props
-  export let activities: YearActivities;
+  export let year_activities: YearActivities;
   export let editable = false;
+
+  const activities = Object.entries(year_activities.kind_activities);
 
   $: user = $session.user;
   $: professor = user?.professor;
@@ -106,96 +108,98 @@
   };
 </script>
 
-<div id="{activities.year}_activities" class="uk-margin">
-  <h2 class="ui blue header uk-text-center">
-    Actividades Correspondientes al año {activities.year}
-  </h2>
-  
-  {#each Object.entries(activities.kind_activities) as [kind, acts]}
-  <!-- Display activities kind -->
-    {#each acts as act}
-      <h3>{kind}</h3>
-  
-      <ol class="ui items">
-        <div class="item">
-          <li>
-            <div class="content">
-              <strong>
-                {act.autores_externos.length > 0 ? act.autores_externos.map(a => a.nombre).join("; ") + ';' : ''}
-                {act.autores_usb.length > 0 ? act.autores_usb.map(a => a.nombre).join("; ") + '.' : ''}
-              </strong>
+{#if activities.length > 0}
+  <div id="{year_activities.year}_activities" class="uk-margin">
+    <h2 class="ui blue header uk-text-center">
+      Actividades Correspondientes al año {year_activities.year}
+    </h2>
+    
+    {#each activities as [kind, acts]}
+    <!-- Display activities kind -->
+      {#each acts as act}
+        <h3>{kind}</h3>
+    
+        <ol class="ui items">
+          <div class="item">
+            <li>
+              <div class="content">
+                <strong>
+                  {act.autores_externos.length > 0 ? act.autores_externos.map(a => a.nombre).join("; ") + ';' : ''}
+                  {act.autores_usb.length > 0 ? act.autores_usb.map(a => a.nombre).join("; ") + '.' : ''}
+                </strong>
 
-              "{act.titulo}".
+                "{act.titulo}".
 
-              <KindInfo activity={act.kind_info} kind={act.kind_name} />
+                <KindInfo activity={act.kind_info} kind={act.kind_name} />
 
-              <span class="uk-text-emphasis">Realizada en el(los) Grupo(s)</span>:
-              {act.groups.map(g => g.nombre).join(", ")}.
+                <span class="uk-text-emphasis">Realizada en el(los) Grupo(s)</span>:
+                {act.groups.map(g => g.nombre).join(", ")}.
 
-              <i><span class="ui blue text">
-                {act.observaciones ? "Observaciones: " + act.observaciones + '.' : ''}
-              </span></i>
-      
-              {#if user?.dean || is_chief}
-                <span class="ui red text">
-                  (Creada por {act.creada_por} el {format_date(act.fecha_creacion, "long-day")}).
-                  {#if act.actions_log[0]}
-                    (Modificado recientemente por {act.actions_log[0].professor}
-                    el {format_date(act.actions_log[0].date, "long-day")}
-                    a las {act.actions_log[0].time}).
-                  {/if}
-                  {#if act.validado_por && act.fecha_validacion}
-                    (Validada por {act.validado_por} el {format_date(act.fecha_validacion, "long-day")}).
-                  {/if}
-                </span>
-              {/if}
-            </div>
-            {#if editable}
-              <div class="uk-margin-small">
-                {#if can_modify(act)}
-                  <a
-                    href="/sinai/actividades/modificar/{act.kind_name}/{act.id}" 
-                    class="ui green small button"
-                  >
-                    Modificar
-                  </a>
-                {/if}
-                {#if can_validate(act)}
-                  {#if !act.validado_por && !act.fecha_validacion}
-                    <button
-                      type="button"
-                      class="ui blue small button"
-                      on:click={() => popup_validate(act.id, act.titulo)}
-                    >
-                      Validar
-                    </button>
-                  {:else}
-                    <button
-                      type="button"
-                      class="ui yellow small button"
-                      on:click={() => popup_invalidate(act.id, act.titulo)}
-                    >
-                      Desvalidar
-                    </button>
-                  {/if}
-                {/if}
-                {#if can_delete(act)}
-                  <button
-                    type="button"
-                    class="ui red small button"
-                    on:click={() => popup_delete(act.id, act.titulo)}
-                  >
-                    Eliminar
-                  </button>
+                <i><span class="ui blue text">
+                  {act.observaciones ? "Observaciones: " + act.observaciones + '.' : ''}
+                </span></i>
+        
+                {#if user?.dean || is_chief}
+                  <span class="ui red text">
+                    (Creada por {act.creada_por} el {format_date(act.fecha_creacion, "long-day")}).
+                    {#if act.actions_log[0]}
+                      (Modificado recientemente por {act.actions_log[0].professor}
+                      el {format_date(act.actions_log[0].date, "long-day")}
+                      a las {act.actions_log[0].time}).
+                    {/if}
+                    {#if act.validado_por && act.fecha_validacion}
+                      (Validada por {act.validado_por} el {format_date(act.fecha_validacion, "long-day")}).
+                    {/if}
+                  </span>
                 {/if}
               </div>
-            {/if}
-          </li>
-        </div>
-      </ol>
+              {#if editable}
+                <div class="uk-margin-small">
+                  {#if can_modify(act)}
+                    <a
+                      href="/sinai/actividades/modificar/{act.kind_name}/{act.id}" 
+                      class="ui green small button"
+                    >
+                      Modificar
+                    </a>
+                  {/if}
+                  {#if can_validate(act)}
+                    {#if !act.validado_por && !act.fecha_validacion}
+                      <button
+                        type="button"
+                        class="ui blue small button"
+                        on:click={() => popup_validate(act.id, act.titulo)}
+                      >
+                        Validar
+                      </button>
+                    {:else}
+                      <button
+                        type="button"
+                        class="ui yellow small button"
+                        on:click={() => popup_invalidate(act.id, act.titulo)}
+                      >
+                        Desvalidar
+                      </button>
+                    {/if}
+                  {/if}
+                  {#if can_delete(act)}
+                    <button
+                      type="button"
+                      class="ui red small button"
+                      on:click={() => popup_delete(act.id, act.titulo)}
+                    >
+                      Eliminar
+                    </button>
+                  {/if}
+                </div>
+              {/if}
+            </li>
+          </div>
+        </ol>
+      {/each}
     {/each}
-  {/each}
-</div>
+  </div>
+{/if}
 
 {#if show_validate}
   <Modal
