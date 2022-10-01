@@ -7,10 +7,19 @@
   import Notifications from "$components/notifications.svelte";
   import ToTop from "$components/to_top.svelte";
   import Login from "./sinai/login.svelte";
+
+  $: user = $session.user;
 </script>
 
 <NavMenu />
-<Notifications />
+
+{#if user?.pending_professors && (user?.dean || user?.professor?.coord_chief)}
+  <Notifications header_msg="Hay profesores pendientes por validar" >
+    <a href="/sinai/validaciones/nuevos_profesores">
+      Ver Profesores
+    </a>
+  </Notifications>
+{/if}
 
 <main class="ui container uk-margin">
   {#if $navigating}
