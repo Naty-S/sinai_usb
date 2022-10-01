@@ -404,6 +404,13 @@ model historico_profesor_nomina {
   @@index([profesor])
 }
 
+model periodo_bra {
+  id     Int      @id @default(0)
+  fin    DateTime @db.Date
+  inicio DateTime @db.Date
+  activo Boolean  @default(false)
+}
+
 model pei {
   id       Int             @id @default(autoincrement())
   profesor Int
