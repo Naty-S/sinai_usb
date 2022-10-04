@@ -1,91 +1,85 @@
 <script lang="ts">
   import { session } from "$app/stores";
 
-  import type { User } from "$interfaces/auth";
-    
   import ActivitiesModal from "./activities_modal.svelte";
+  import Letterhead from "./letterhead/index.svelte";
 	import MenuDropdown from "./menu.svelte";
   import ModifyBraPeriodModal from "./modify_bra_period_modal.svelte";
   
-  const username = function (user: User) {
-    
-    const professor = user.professor;  
-
-    let name = '';
-    let rank = '';
-
-    if (professor) {
-      name = `Prof. ${professor.surname1}, ${professor.name1}. `;
-
-      if (professor.is_dep_chief) {
-        rank = `Jefe del Dpto. de ${professor.department.name}`;
-  
-      } else if (professor.is_dep_representative) {
-        rank = `Representante del Dpto. de ${professor.department.name}`;
-        
-      } else if (professor.coord_chief) {
-        rank = `Coordinador de ${professor.coord_chief.name}`;
-        
-      } else if (professor.division_chief) {
-        rank = `Jefe de Division de ${professor.division_chief.name}`;
-        
-      } else {
-        rank = `Dpto. de ${professor?.department.name}`;
-      };
-    } else if (user.dean) {
-      name = `${user.dean}. `;
-      rank = "Decano"
-    } else {
-      name = "Throw Error: No user. Cookie not sent to correct domain";
-    };
-
-    return name + rank;
-  };
-
   let show_create = false;
   let show_modify_bra = false;
-  let fixed = false;
+  let fixed = '';
+  let navbar = "uk-navbar-right";
 
-  const fix_on_top = function() {
-    const scroll_container = document.documentElement || document.body;
+  const fix_on_top = function () {
+    const container = document.documentElement || document.body;
     
-    if (!scroll_container) {
+    if (!container) {
       return;
     };
 
-    if (scroll_container.scrollTop > 0) {
-      fixed = true;
+    if (container.scrollTop > 0) {
+      fixed = "uk-position-fixed";
     } else {
-      fixed = false;
+      fixed = '';
     };
+  };
+
+  const fit_menu = function () {
+    const container = document.documentElement || document.body;
+    
+    if (!container) {
+      return;
+    };
+
+    if (window.screen.width < 426) {
+      navbar = "uk-width-1-1";
+    } else {
+      navbar = "uk-navbar-right";
+    }
   };
 </script>
 
-<svelte:window on:scroll={fix_on_top} />
+<svelte:window on:scroll={fix_on_top} on:resize={fit_menu} />
 
-<!-- <div class="uk-width-1-1 uk-position-fixed uk-position-z-index" > -->
-  <nav
-    id="sinai_navabar"
-    class="uk-navbar uk-navbar-container uk-width-1-1 {fixed && "uk-position-fixed"} uk-position-z-index"
-    uk-navbar="mode:click; offset: -10;"
-    style="top: 0"
-  >
-    <div id="nav_container" class="uk-navbar-center">
-      <div class="">SINAI - DID</div>
+<nav
+  id="navabar_container"
+  class="uk-navbar-container uk-width-1-1 uk-position-z-index {fixed}"
+  uk-navbar="mode:click; offset: -10;"
+  style={fixed ? "top: 0;" : ''}
+>
+  <!-- 
+    class="ui top {fixed ? "fixed" : ''} text menu"
+  -->
+
+  <div id="navbar" class={navbar}>
+    <Letterhead/>
+    <ul id="nav" class="uk-navbar-nav">
       {#if $session.user}
-        <div class="">{username($session.user)}</div>
-  
-        <MenuDropdown
-          show_create={() => show_create = true}
-          show_modify_bra_period={() => show_modify_bra = true}
-        />
-        
+        <li>
+          <!-- <div class="right floated two wide computer mobile column uk-padding-remove"> -->
+            <MenuDropdown
+              show_create={() => show_create = true}
+              show_modify_bra_period={() => show_modify_bra = true}
+            />
+          <!-- </div> -->
+        </li>
       {:else}
-        <a id="register" href="/sinai/registro" class="">Registro</a>
+        <li>
+          <a id="login" href="/sinai/login" class="ui primary button">
+            Iniciar sesion
+          </a>
+        </li>
+        <li>
+          <a id="register" href="/sinai/registro" class="ui primary button">
+            Registro
+          </a>
+        </li>
       {/if}
-    </div>
-  </nav>
-<!-- </div> -->
+    </ul>
+    <!-- </Letterhead> -->
+  </div>
+</nav>
 
 {#if show_create}
   <ActivitiesModal show={show_create} close={() => show_create = false} />
