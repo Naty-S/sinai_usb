@@ -31,16 +31,16 @@
   )) || [];
 
   $: if(professor) {
-    views.concat({ href: bra, click: () => {}, name: "BRA" });
+    views.push({ href: bra, click: () => {}, name: "BRA" });
 
     if (professor.is_dep_chief || professor.is_dep_representative) {
-      views.concat({ href: dep, click: () => {}, name: "Departamento" });
+      views.push({ href: dep, click: () => {}, name: "Departamento" });
 
     } else if (professor.coord_chief) {
-      views.concat({ href: coord, click: () => {}, name: "Coordinacion" });
+      views.push({ href: coord, click: () => {}, name: "Coordinacion" });
       
     } else if (professor.division_chief) {
-      views.concat({ href: division, click: () => {}, name: "Division" });
+      views.push({ href: division, click: () => {}, name: "Division" });
     };
     // <!-- TODO: desired use cases -->
     // {href: void_link, click: () => {}, name: "Personal"},
@@ -74,9 +74,12 @@
   id="menu"
   href={void_link}
   class="uk-navbar-toggle uk-navbar-toggle-animate"
+  style="min-height: fit-content;"
   uk-navbar-toggle-icon
 >
-  Menu
+  <span class="ui primary text uk-text-bold ">
+    Menu
+  </span>
 </a>
 
 <div id="navbar_dropdown" class="uk-navbar-dropdown">
