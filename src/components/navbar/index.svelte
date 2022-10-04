@@ -48,17 +48,15 @@
   uk-navbar="mode:click; offset: -10;"
   style={fixed ? "top: 0;" : ''}
 >
-  <div id="navbar" class={navbar}>
+  <div id="navbar" class="{navbar} uk-inline uk-margin-bottom">
     <Letterhead />
-    <ul id="nav" class="uk-navbar-nav uk-position-center-right uk-position-large">
+    <ul id="nav" class="uk-navbar-nav uk-position-center-right uk-margin-small-right">
       {#if $session.user}
         <li>
-          <!-- <div class="right floated two wide computer mobile column uk-padding-remove"> -->
-            <MenuDropdown
-              show_create={() => show_create = true}
-              show_modify_bra_period={() => show_modify_bra = true}
-            />
-          <!-- </div> -->
+          <MenuDropdown
+            show_create={() => show_create = true}
+            show_modify_bra_period={() => show_modify_bra = true}
+          />
         </li>
       {:else}
         <li>
@@ -73,7 +71,6 @@
         </li>
       {/if}
     </ul>
-    <!-- </Letterhead> -->
   </div>
 </nav>
 
