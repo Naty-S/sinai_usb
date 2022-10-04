@@ -5,7 +5,8 @@
   import Letterhead from "./letterhead/index.svelte";
 	import MenuDropdown from "./menu.svelte";
   import ModifyBraPeriodModal from "./modify_bra_period_modal.svelte";
-  
+  import bkg from "$lib/assets/letterhead_bkg.png";
+
   let show_create = false;
   let show_modify_bra = false;
   let fixed = '';
@@ -44,33 +45,40 @@
 
 <nav
   id="navabar"
-  class="uk-navbar-container uk-width-1-1 uk-position-z-index {fixed}"
-  uk-navbar="mode:click; offset: -10;"
+  class="uk-navbar-container uk-position-z-index uk-width-1-1 {fixed}"
+  uk-navbar="mode:click;"
   style={fixed ? "top: 0;" : ''}
 >
-  <div id="navbar" class="{navbar} uk-inline uk-margin-bottom">
-    <Letterhead />
-    <ul id="nav" class="uk-navbar-nav uk-position-center-right uk-margin-small-right">
-      {#if $session.user}
-        <li>
-          <MenuDropdown
-            show_create={() => show_create = true}
-            show_modify_bra_period={() => show_modify_bra = true}
-          />
-        </li>
-      {:else}
-        <li>
-          <a id="login" href="/sinai/login" class="ui primary button">
-            Iniciar sesion
-          </a>
-        </li>
-        <li>
-          <a id="register" href="/sinai/registro" class="ui primary button">
-            Registro
-          </a>
-        </li>
-      {/if}
-    </ul>
+  <div
+    id="navbar_background"
+    class="ui image uk-background-cover uk-width-1-1"
+    data-src={bkg}
+    uk-img="width: 100%;"
+  >
+    <div id="navbar" class="{navbar} uk-inline uk-margin-bottom">
+      <Letterhead />
+      <ul id="nav" class="uk-navbar-nav uk-position-center-right uk-margin-small-right uk-position-z-index">
+        {#if $session.user}
+          <li class="ui tertiary vertically fitted segment uk-margin-small-top">
+            <MenuDropdown
+              show_create={() => show_create = true}
+              show_modify_bra_period={() => show_modify_bra = true}
+            />
+          </li>
+        {:else}
+          <li class="uk-margin-large-top">
+            <a id="login" href="/sinai/login" class="ui primary tiny button">
+              Iniciar sesion
+            </a>
+          </li>
+          <li class="uk-margin-large-top">
+            <a id="register" href="/sinai/registro" class="ui primary tiny button">
+              Registro
+            </a>
+          </li>
+        {/if}
+      </ul>
+    </div>
   </div>
 </nav>
 
