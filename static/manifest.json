@@ -7,8 +7,13 @@
   "start_url": "/sinai/",
   "icons": [
     {
-      "src": "logo-256.png",
-      "sizes": "256x256",
+      "src": "favicon.ico",
+      "sizes": "16x16",
+      "type": "image/ico"
+    },
+    {
+      "src": "$lib/assets/icons/logo-80.png",
+      "sizes": "80x80",
       "type": "image/png"
     }
   ]
