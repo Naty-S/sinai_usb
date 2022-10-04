@@ -60,7 +60,7 @@
 </script>
 
 <a
-  id="menu_dropdown"
+  id="menu"
   href={void_link}
   class="uk-navbar-toggle uk-navbar-toggle-animate"
   uk-navbar-toggle-icon
@@ -69,45 +69,36 @@
 </a>
 
 <div id="nav_dropdown" class="uk-navbar-dropdown">
-  <ul id="nav_dropdown_list" class="uk-nav uk-navbar-dropdown-nav">
+  <ul id="nav_dropdown_content" class="uk-navbar-dropdown-nav uk-nav-default uk-nav-divider" uk-nav>
     <Submenu
-      href={void_link}
       name="Actividades"
       items={[
         {href: `/sinai/actividades/${resume_link}`, click: () => {}, name: "Revisar Mis Actividades"},
         {href: void_link, click: () => show_create(), name: "Ingresar Nueva Actividad"}
       ]}
     />
-    <li class="uk-nav-divider" />
     <!-- TODO: desired use cases -->
     <!-- <Submenu
-      href={void_link}
       name="Consultas"
       items={[
         {href: void_link, click: () => {}, name: "Públicas"},
         {href: void_link, click: () => {}, name: "Predeterminadas"}
       ]}
     /> -->
-    <!-- <li class="uk-nav-divider" /> -->
     <Submenu
-      href={void_link}
       name="Vistas"
       items={views}
     />
-    <li class="uk-nav-divider" />
     <!-- TODO: desired use cases -->
     <!-- <Submenu
-      href={void_link}
       name="Constancias"
       items={[
         {href: void_link, click: () => {}, name: "Proyectos"},
         {href: void_link, click: () => {}, name: "Grupos"}
       ]}
     /> -->
-    <!-- <li class="uk-nav-divider" /> -->
     <!-- TODO: desired use cases -->
     <!-- <Submenu
-      href={void_link}
       name="Evaluaciones"
       items={[
         {href: void_link, click: () => {}, name: "S2 Prueba"},
@@ -115,24 +106,20 @@
         {href: void_link, click: () => {}, name: "GID"}
       ]}
     /> -->
-    <!-- <li class="uk-nav-divider" /> -->
     <Submenu
-      href={void_link}
       name="Mis Grupos"
       items={groups}
     />
-    <li class="uk-nav-divider" />
     <Submenu
-      href={void_link}
       name="Opciones"
       items={options}
     />
-    <li class="uk-nav-divider" />
-    
-    <li><a href={void_link}>Ayuda</a></li>
-    
-    <li class="uk-nav-divider" />
-    
-    <li><a href={void_link} on:click={logout}>Salir</a></li>
+    <Submenu
+      name="Ayuda"
+      items={[]}
+    />
+    <li><button type="button" class="ui red button" on:click={logout}>
+      Salir
+    </button></li>
   </ul>
 </div>
