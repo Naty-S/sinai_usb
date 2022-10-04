@@ -8,8 +8,20 @@
   export let show_create: MouseEventHandler<HTMLAnchorElement>;
   export let show_modify_bra_period: MouseEventHandler<HTMLAnchorElement>;
 
+  const void_link = "javascript:void(0)";
+
+  let views: submenu_item[] = [];
+  let options: submenu_item[] = [];
+
   $: user = $session.user;
   $: professor = user?.professor;  
+
+  $: resume_link = professor ? `profesor/${user?.email}` : '';
+  $: bra = `/sinai/BRA/profesor/${user?.email}`;
+  $: coord = `/sinai/actividades/coordinacion/${user?.professor?.coord_chief?.id}`;
+  $: dep = `/sinai/actividades/departamento/${user?.professor?.department.id}`;
+  $: division = `/sinai/actividades/division/${user?.professor?.division_chief?.id}`;
+
   $: groups = professor?.groups.historico_grupos.filter(g => !g.fin).map(g => (
     {
       href: `/sinai/actividades/grupo/${g.Grupo.id}`,
@@ -18,36 +30,35 @@
     }
   )) || [];
 
-  const void_link = "javascript:void(0)";
-  $: resume_link = professor ? `profesor/${user?.email}` : '';
-  $: bra = `/sinai/BRA/profesor/${user?.email}`;
-  $: coord = `/sinai/actividades/coordinacion/${user?.professor?.coord_chief?.id}`;
-  $: dep = `/sinai/actividades/departamento/${user?.professor?.department.id}`;
-  $: division = `/sinai/actividades/division/${user?.professor?.division_chief?.id}`;
+  $: if(professor) {
+    views.concat({ href: bra, click: () => {}, name: "BRA" });
 
-  $: views = [
-    professor && {href: bra, click: () => {}, name: "BRA"},
-    (professor?.is_dep_chief || professor?.is_dep_representative) && {href: dep, click: () => {}, name: "Departamento"},
-    professor?.coord_chief && {href: coord, click: () => {}, name: "Coordinacion"},
-    professor?.division_chief && {href: division, click: () => {}, name: "Division"},
+    if (professor.is_dep_chief || professor.is_dep_representative) {
+      views.concat({ href: dep, click: () => {}, name: "Departamento" });
+
+    } else if (professor.coord_chief) {
+      views.concat({ href: coord, click: () => {}, name: "Coordinacion" });
+      
+    } else if (professor.division_chief) {
+      views.concat({ href: division, click: () => {}, name: "Division" });
+    };
     // <!-- TODO: desired use cases -->
     // {href: void_link, click: () => {}, name: "Personal"},
     // {href: void_link, click: () => {}, name: "Referencias Puras"},
     // {href: void_link, click: () => {}, name: "Certificación PEII"}
-  ].filter(Boolean) as submenu_item[];
+  };
 
-  let options: submenu_item[];
   $: if (professor) {
-      options = [
-        {href: void_link, click: () => {}, name: "Cambiar Contraseña"},
-        {href: `/sinai/perfil/${user?.email}`, click: () => {}, name: "Cambiar Perfil"}
-      ];
-    } else if (user?.dean) {
-      options = [
-        { href: void_link, click: () => {}, name: "Modificar Profesores"},
-        {href: void_link, click: () => show_modify_bra_period(), name: "Modificar Periodo BRA"}
-      ];
-    };
+    options = [
+      {href: void_link, click: () => {}, name: "Cambiar Contraseña"},
+      {href: `/sinai/perfil/${user?.email}`, click: () => {}, name: "Cambiar Perfil"}
+    ];
+  } else if (user?.dean) {
+    options = [
+      { href: void_link, click: () => {}, name: "Modificar Profesores"},
+      {href: void_link, click: () => show_modify_bra_period(), name: "Modificar Periodo BRA"}
+    ];
+  };
 
   const logout = async function () {
     await fetch("/api/auth/logout", {
@@ -68,8 +79,12 @@
   Menu
 </a>
 
-<div id="nav_dropdown" class="uk-navbar-dropdown">
-  <ul id="nav_dropdown_content" class="uk-navbar-dropdown-nav uk-nav-default uk-nav-divider" uk-nav>
+<div id="navbar_dropdown" class="uk-navbar-dropdown">
+  <ul
+    id="navbar_dropdown_content_nav"
+    class="uk-navbar-dropdown-nav uk-nav-default uk-nav-divider"
+    uk-nav
+  >
     <Submenu
       name="Actividades"
       items={[
@@ -85,10 +100,7 @@
         {href: void_link, click: () => {}, name: "Predeterminadas"}
       ]}
     /> -->
-    <Submenu
-      name="Vistas"
-      items={views}
-    />
+    <Submenu name="Vistas" items={views} />
     <!-- TODO: desired use cases -->
     <!-- <Submenu
       name="Constancias"
@@ -106,20 +118,13 @@
         {href: void_link, click: () => {}, name: "GID"}
       ]}
     /> -->
-    <Submenu
-      name="Mis Grupos"
-      items={groups}
-    />
-    <Submenu
-      name="Opciones"
-      items={options}
-    />
-    <Submenu
-      name="Ayuda"
-      items={[]}
-    />
-    <li><button type="button" class="ui red button" on:click={logout}>
-      Salir
-    </button></li>
+    <Submenu name="Mis Grupos" items={groups} />
+    <Submenu name="Opciones" items={options} />
+    <Submenu name="Ayuda" items={[]} />
+    <li>
+      <button type="button" class="ui red button" on:click={logout}>
+        Salir
+      </button>
+    </li>
   </ul>
 </div>

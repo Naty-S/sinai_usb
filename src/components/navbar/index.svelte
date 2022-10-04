@@ -48,10 +48,6 @@
   uk-navbar="mode:click; offset: -10;"
   style={fixed ? "top: 0;" : ''}
 >
-  <!-- 
-    class="ui top {fixed ? "fixed" : ''} text menu"
-  -->
-
   <div id="navbar" class={navbar}>
     <Letterhead/>
     <ul id="nav" class="uk-navbar-nav">

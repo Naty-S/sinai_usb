@@ -32,7 +32,7 @@
   import type { EntityActivities } from "$interfaces/activities";
 
 	import Modal from '$components/modal.svelte';
-  import ActivitiesModal from "$components/nav_menu/activities_modal.svelte";
+  import ActivitiesModal from "$components/navbar/activities_modal.svelte";
   import YearActivities from "$components/activities/year_activities.svelte";
   import ResumeTable from "$components/activities/resume_table.svelte";
 

@@ -3,10 +3,12 @@
 
   export let name: string;
   export let items: submenu_item[];
+
+  const void_link = "javascript:void(0)";
 </script>
 
-<li name="{name}_submenu" class="uk-parent">
-  <a href="#">
+<li id="{name}_submenu" class="uk-parent">
+  <a href={void_link}>
     <span class="ui primary text">
       {name}
     </span>
@@ -14,13 +16,12 @@
   </a>
   <ul id="{name}_submenu_content" class="uk-nav-sub">
     {#each items as item}
-      <li class="">
-        <a href={item.href} on:click={item.click} class="">
+      <div class="ui fitted divider" />
+      <li>
+        <a href={item.href} on:click={item.click}>
           {item.name}
         </a>
       </li>
-      <!-- <div class="ui fitted divider" /> -->
     {/each}
   </ul>
-  <!-- <div class="ui fitted divider" /> -->
 </li>
