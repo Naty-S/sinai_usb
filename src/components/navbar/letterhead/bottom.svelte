@@ -1,9 +1,10 @@
 <script lang="ts">
   import { session } from "$app/stores";
-
+  
   import type { User } from "$interfaces/auth";
-    
+  
   import Sinai from "./sinai.svelte";
+	import LogoUSB from './logo_usb.svelte';
 
   const username = function (user: User) {
     
@@ -39,16 +40,15 @@
 
     return name + rank;
   };
-
 </script>
 
-<svg id="bottom" viewBox="0 0 1440 78">
-  <filter id="bottom_border" x="0" y="0" filterUnits="userSpaceOnUse">
-    <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur"/>
+<svg id="bottom_drawing" viewBox="0 0 1440 78">
+  <filter id="bottom_border" x=0 y=0 filterUnits="userSpaceOnUse">
+    <feGaussianBlur in="SourceGraphic" stdDeviation=1 result="blur"/>
   </filter>
-  <filter id="text_shadow" x="0" y="0" filterUnits="userSpaceOnUse">
-    <feOffset result="offOut" in="SourceAlpha" dx="3" dy="3" />
-    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="3" />
+  <filter id="text_shadow" x=0 y=0 filterUnits="userSpaceOnUse">
+    <feOffset result="offOut" in="SourceAlpha" dx=3 dy=3 />
+    <feGaussianBlur result="blurOut" in="offOut" stdDeviation=3 />
     <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
   </filter>
   <path
@@ -74,7 +74,11 @@
     filter="url(#bottom_border)"
   />
   <Sinai />
-  <text x="500" y="62" fill="white" textLength="50%" filter="url(#text_shadow)">
+  <LogoUSB />
+  <text x=500 y=22 fill="yellow" textLength=50% filter="url(#text_shadow)">
+    Sistema de Informacion de Actividades de Investigacion
+  </text>
+  <text x=500 y=62 fill="white" textLength=50% filter="url(#text_shadow)">
     {$session.user ? username($session.user) : ''}
   </text>
 </svg>
