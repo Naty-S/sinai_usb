@@ -9,7 +9,7 @@
   let show_create = false;
   let show_modify_bra = false;
   let fixed = '';
-  let navbar = "uk-navbar-right";
+  let navbar = "ui grid container uk-navbar-center";
 
   const fix_on_top = function () {
     const container = document.documentElement || document.body;
@@ -35,7 +35,7 @@
     if (window.screen.width < 426) {
       navbar = "uk-width-1-1";
     } else {
-      navbar = "uk-navbar-right";
+      navbar = "ui grid container uk-navbar-center";
     }
   };
 </script>
@@ -43,14 +43,14 @@
 <svelte:window on:scroll={fix_on_top} on:resize={fit_menu} />
 
 <nav
-  id="navabar_container"
+  id="navabar"
   class="uk-navbar-container uk-width-1-1 uk-position-z-index {fixed}"
   uk-navbar="mode:click; offset: -10;"
   style={fixed ? "top: 0;" : ''}
 >
   <div id="navbar" class={navbar}>
-    <Letterhead/>
-    <ul id="nav" class="uk-navbar-nav">
+    <Letterhead />
+    <ul id="nav" class="uk-navbar-nav uk-position-center-right uk-position-large">
       {#if $session.user}
         <li>
           <!-- <div class="right floated two wide computer mobile column uk-padding-remove"> -->
