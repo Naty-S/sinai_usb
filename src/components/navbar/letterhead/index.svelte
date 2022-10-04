@@ -3,18 +3,13 @@
 <script lang="ts">
   import Top from "./top.svelte";
   import Bottom from "./bottom.svelte";
-
-  import bkg from "$lib/assets/logos/letterhead_bkg.png";
 </script>
 
 <div id="letterhead" class="ui equal width grid container">
-  <div id="top" class="row uk-padding-remove-bottom">
+  <div id="top" class="row uk-padding-remove-bottom uk-position-z-index">
     <Top />
   </div>
-  <div class="uk-position-absolute uk-margin-large-right uk-margin-top" style="width: 62%; height: 62%; right: 0">
-    <img src={bkg} alt="" />
-  </div>
-  <div id="bottom" class="row uk-padding-remove-top">
+  <div id="bottom" class="row uk-padding-remove uk-position-z-index">
     <Bottom />
   </div>
 </div>

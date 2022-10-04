@@ -25,7 +25,7 @@
   {#if $navigating}
     <Loader />
   {:else}
-    {#if $session.user && $page.url.pathname !== "/sinai/login"}
+    {#if ($session.user && $page.url.pathname !== "/sinai/login") || $page.url.pathname === "/sinai/registro"}
       <slot />
       <ToTop />
       <div class="ui divider" />

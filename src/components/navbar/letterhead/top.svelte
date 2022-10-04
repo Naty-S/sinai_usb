@@ -1,10 +1,15 @@
-<svg id="top" viewBox="0 0 1440 74">
-  <filter id="top_border" x="0" y="0" filterUnits="userSpaceOnUse">
+<svg id="top_drawing" viewBox="0 0 1440 74">
+  <filter id="top_border" x=0 y=0 filterUnits="userSpaceOnUse">
     <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur"/>
   </filter>
-  <filter id="text_shadow" x="0" y="0" filterUnits="userSpaceOnUse">
-    <feOffset result="offOut" in="SourceAlpha" dx="3" dy="3" />
-    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="3" />
+  <filter id="did_shadow" x=0 y=0 filterUnits="userSpaceOnUse">
+    <feOffset result="offOut" in="SourceAlpha" dx=3 dy=3 />
+    <feGaussianBlur result="blurOut" in="offOut" stdDeviation=2 />
+    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+  </filter>
+  <filter id="sinai_shadow" x=0 y=0 filterUnits="userSpaceOnUse">
+    <feOffset result="offOut" in="SourceAlpha" dx=3 dy=3 />
+    <feGaussianBlur result="blurOut" in="offOut" stdDeviation=2 />
     <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
   </filter>
   <path
@@ -24,13 +29,18 @@
       z
     "
     stroke="#003c65"
-    stroke-width="4"
-    stroke-opacity="80%"
+    stroke-width=4
+    stroke-opacity=80%
     fill="#0099ff"
     filter="url(#top_border)"
   />
-  <text x="25" y="42" fill="#91dff5" textLength="30%" filter="url(#text_shadow)">
+  <text x=500 y=22 fill="#fafa96" textLength=44% filter="url(#sinai_shadow)" font-size=18>
+    Sistema de Informacion de Actividades de Investigacion
+  </text>
+  <text x=60 y=28 fill="#91dff5" textLength=24% filter="url(#did_shadow)" font-size=20>
     DECANATO DE INVESTIGACION
+  </text>
+  <text x=140 y=58 fill="#91dff5" textLength=12% filter="url(#did_shadow)" font-size=20>
     Y DESARROLLO
   </text>
 </svg>

@@ -46,9 +46,9 @@
   <filter id="bottom_border" x=0 y=0 filterUnits="userSpaceOnUse">
     <feGaussianBlur in="SourceGraphic" stdDeviation=1 result="blur"/>
   </filter>
-  <filter id="text_shadow" x=0 y=0 filterUnits="userSpaceOnUse">
+  <filter id="user_shadow" x=0 y=0 filterUnits="userSpaceOnUse">
     <feOffset result="offOut" in="SourceAlpha" dx=3 dy=3 />
-    <feGaussianBlur result="blurOut" in="offOut" stdDeviation=3 />
+    <feGaussianBlur result="blurOut" in="offOut" stdDeviation=2 />
     <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
   </filter>
   <path
@@ -75,10 +75,7 @@
   />
   <Sinai />
   <LogoUSB />
-  <text x=500 y=22 fill="yellow" textLength=50% filter="url(#text_shadow)">
-    Sistema de Informacion de Actividades de Investigacion
-  </text>
-  <text x=500 y=62 fill="white" textLength=50% filter="url(#text_shadow)">
+  <text x=500 y=62 fill="white" textLength=52% filter="url(#user_shadow)" font-size=18>
     {$session.user ? username($session.user) : ''}
   </text>
 </svg>
