@@ -1,6 +1,6 @@
 <!-- 
   @component
-  Show's activities resume table for coordination or division
+  Show's activities resume table for coordination, department or division
  -->
 <script lang="ts">
   import type { Activity } from "$types/activities";
@@ -43,7 +43,7 @@
     } else {
       throw new Error(`Actividades desconocidas para la coordinacion: ${coord_activities.coordination}`);
     };
-  } else if (rank === "Division") {
+  } else if (rank === "División") {
 
     const division_activities = rank_activities as DivisionActivities;
     const dep_activities = division_activities.departments_activities;

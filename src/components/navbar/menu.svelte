@@ -1,7 +1,11 @@
 <script lang="ts">
+import { goto } from "$app/navigation";
+
   import { session } from "$app/stores";
   
 	import type { submenu_item } from "$types/menu";
+
+  import * as api from "$lib/api";
 
   import Submenu from './submenu.svelte';
 
@@ -37,10 +41,10 @@
       views.push({ href: dep, click: () => {}, name: "Departamento" });
 
     } else if (professor.coord_chief) {
-      views.push({ href: coord, click: () => {}, name: "Coordinacion" });
+      views.push({ href: coord, click: () => {}, name: "Coordinación" });
       
     } else if (professor.division_chief) {
-      views.push({ href: division, click: () => {}, name: "Division" });
+      views.push({ href: division, click: () => {}, name: "División" });
     };
     // <!-- TODO: desired use cases -->
     // {href: void_link, click: () => {}, name: "Personal"},
@@ -61,12 +65,11 @@
   };
 
   const logout = async function () {
-    await fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "include"
-    });
+    await api.post("/api/auth/logout", null);
 
     $session.user = null;
+
+    goto("/sinai/login");
   };
 </script>
 

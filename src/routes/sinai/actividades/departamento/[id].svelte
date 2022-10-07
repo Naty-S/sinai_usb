@@ -6,22 +6,33 @@
   import type { Load } from "@sveltejs/kit";
 
   // https://kit.svelte.dev/docs/loading
-  export const load: Load = async ({ fetch, params }) => {    
-    const res = await fetch(`/api/activities/department/${params.id}`);
-   
-    if (res.ok) {
-      const dep_activities = await res.json();
+  export const load: Load = async ({ fetch, params, session }) => {
 
+    const user = session.user;
+    
+    if (user?.professor?.is_dep_chief || user?.professor?.is_dep_representative) {
+
+      const res = await fetch(`/api/activities/department/${params.id}`);
+     
+      if (res.ok) {
+        const dep_activities = await res.json();
+  
+        return {
+          props: { dep_activities }
+        };
+      };
+  
+      const { message } = await res.json();
       return {
-        props: {dep_activities}
-      }
-    }
-
-    const { message } = await res.json();
-    return {
-      error: new Error(message)
-    }
-};
+        error: new Error(message)
+      };
+    } else {
+      return {
+        error: new Error("Acceso denegado. Inicie sesión como jefe o representante."),
+        status: 401
+      };
+    };
+  };
 </script>
 <script lang="ts">
   import { page } from "$app/stores";
@@ -32,7 +43,6 @@
   import ResumeRank from "$components/activities/resume_rank.svelte";
   
   export let dep_activities: DepActivities;
-
 </script>
 
 <ResumeRank rank="Departamento" rank_activities={dep_activities} />

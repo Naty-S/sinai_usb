@@ -39,6 +39,8 @@ export interface Professor {
   };
   pei_number?: string | null;
   pei_level?: string | null;
+  ppi_number?: number | null;
+  ppi_level?: string | null;
   is_dep_chief: boolean;
   is_dep_representative: boolean;
   coord_chief?: {

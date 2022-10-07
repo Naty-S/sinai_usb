@@ -1,11 +1,15 @@
 <script lang="ts">
+  import { getContext, onMount } from "svelte";
+  import { key } from "svelte-forms-lib";
+
+  import { page } from "$app/stores";
+  
   import type { activity_form_ctx, kinds } from "$types/forms";
   import type { Group } from "$interfaces/groups";
 
-  import { getContext, onMount } from "svelte";
-  import { key } from "svelte-forms-lib";
-  import { page } from "$app/stores";
+  import * as api from "$lib/api";
 
+  import Modal from "$components/modal.svelte";
   import Select from "$components/forms/select.svelte";
 
   const param = $page.params.activity;
@@ -13,16 +17,18 @@
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 
   let groups: Group[] = [];
+  let action = { info: '', code: '' };
 
   onMount(async () => {
-    try {
-      const res = await fetch("/api/groups");
+    const res = await api.get("/api/groups");
 
-      if (res.ok) {
-        groups = await res.clone().json();
-      };
-    } catch (error) {
-      throw error;
+    if (res.ok) {
+      groups = await res.clone().json();
+      
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
     };
   });
 
@@ -73,3 +79,20 @@
     {/if}
   </div>
 </div>
+
+{#if action.info !== ''}
+  <Modal
+    id="error"
+    title="Error. {action.code}"
+    close_text="Ok"
+    align="center"
+    is_active={action.info !== ''}
+    close={() => location.replace($page.url.pathname)}
+  >
+    <p>
+      Hubo un problema al cargar los datos de la página, recargue 
+      o contáctese con algún administrador.
+    </p>
+    <span class="ui red text">Detalles: {action.info}</span>
+  </Modal>
+{/if}

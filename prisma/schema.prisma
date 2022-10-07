@@ -483,6 +483,15 @@ model red_grupo_investigacion {
   @@index([red])
 }
 
+model errors_log {
+  id      Int      @id @default(autoincrement())
+  causa   String
+  mensaje String
+  codigo  String?
+  campos  String[]
+  fecha   DateTime @db.Date
+}
+
 //
 // Actividades
 //

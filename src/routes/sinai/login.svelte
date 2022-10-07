@@ -1,38 +1,35 @@
-<script lang="ts">
-  import { goto } from '$app/navigation';
-  import { session } from '$app/stores';
+<script lang="ts" context="module">
+  import { redirect } from "$lib/shared/session";
   
+  export const load = redirect;
+
+  
+</script>
+<script lang="ts">
+  import { goto } from "$app/navigation";
+  import { session } from "$app/stores";
+  import * as api from "$lib/api";
+
   const is_err = false;
   let email = '';
   let pass = '';
 
   const login = async function () {
 
-    const res = await fetch("/api/auth/login/" + email, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email, pass })
-    });
+    const res = await api.post("/api/auth/login/" + email, { email, pass });
 
     if (res.ok) {
-      
       $session.user = await res.clone().json();
       
       if ($session.user?.professor) {
         goto(`/sinai/actividades/profesor/${$session.user.email}`);
         
-      } else if ($session.user?.dean) {
+      } else { // Dean
         goto("/sinai/actividades");
-        
-      } else {
-        console.log("error, no prof or dean")
       };
-
     } else {
       const { message } = await res.clone().json();
+      console.log(message)
     };
   };
 </script>

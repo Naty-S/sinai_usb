@@ -10,7 +10,7 @@
       const activity_data = await res.json();
 
       return {
-        props: {activity_data}
+        props: { activity_data }
       };
     };
 

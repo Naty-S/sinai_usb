@@ -21,17 +21,18 @@
       };
     };
 
-    const { message1 } = await res1.json();
-    const { message2 } = await res2.json();
+    const { message: message1 } = await res1.json();
+    const { message: message2 } = await res2.json();
+    const { message: message3 } = await res3.json();
     return {
-      error: new Error(message1 + message2)
+      error: new Error(message1 + "\n" + message2 + "\n" + message3)
     };
 };
 </script>
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import type { periodo_bra } from "@prisma/client";
+  import type { periodo_bra, profesor } from "@prisma/client";
   import type {
     EntityActivities,
     YearActivities as YearActivitiesT
@@ -41,11 +42,10 @@
 
   import YearActivities from "$components/activities/year_activities.svelte";
   import BraHeader from "$components/bra/header.svelte";
-
   import Notifications from "$components/notifications.svelte";
 
   export let prof_activities: EntityActivities;
-  export let profile;
+  export let profile: profesor;
   export let period: periodo_bra;
   
   let printBRA: () => void;
@@ -97,6 +97,8 @@
       kind_activities: Object.fromEntries(last_year_acts)
     }
   ];
+
+  const acts_count = curr_year_acts.concat(last_year_acts).reduce((prev, [_, as]) => prev + as.length, 0);
 </script>
 
 {#if !period.activo}
@@ -107,7 +109,7 @@
   <BraHeader {profile} period={_period}/>
   
   <div class="ui three column grid container segment">
-    <div class="column">Encontradas: #</div>
+    <div class="column">Encontradas: {acts_count}</div>
     <div class="center aligned column">Años: {years}</div>
     <div class="right aligned column">Páginas: #</div>
   </div>

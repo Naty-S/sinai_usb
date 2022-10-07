@@ -3,6 +3,8 @@
   
   import { format_date } from "$utils/formatting";
 
+  import * as api from "$lib/api";
+
   import Modal from "../modal.svelte";
 
   export let show: boolean;
@@ -13,45 +15,42 @@
   let activo: boolean;
   let ok_text = "Modificar";
   let close_text = "Cancelar";
-  let success = { action: '' };
+  let action = { info: '', code: '' };
 
   const modify_bra_period = async function () {
-    try {
-      const res = await fetch("/api/bra", {
-        method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ inicio: new Date(inicio), fin: new Date(fin), activo })
-      });
-  
-      if (res.ok) {
-        success = await res.clone().json();
-        ok_text='';
-        close_text="Ok";
-      };
-    } catch (error) {
-      throw error;
-    }
+    const res = await api.patch("/api/bra",
+      { inicio: new Date(inicio), fin: new Date(fin), activo }
+    );
+
+    if (res.ok) {
+      const { code } = await res.clone().json();
+      action.code = code;
+      ok_text='';
+      close_text="Ok";
+
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
+    };
   };
 
   onMount(async () => {
-    try {
-      const res = await fetch("/api/bra");
-    
-      if (res.ok) {
-        const period = await res.json();
+    const res = await api.get("/api/bra");
+  
+    if (res.ok) {
+      const period = await res.json();
 
-        inicio = format_date(period.inicio, "yyyy-MM-dd") as unknown as Date;
-        fin = format_date(period.fin, "yyyy-MM-dd") as unknown as Date;
-        activo = period.activo;
-      };      
-    } catch (error) {
-      throw error;
-    };
+      inicio = format_date(period.inicio, "yyyy-MM-dd") as unknown as Date;
+      fin = format_date(period.fin, "yyyy-MM-dd") as unknown as Date;
+      activo = period.activo;
+      
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
+    }
   });
-  $: console.log(activo)
 </script>
 
 <Modal
@@ -64,8 +63,8 @@
   close={close}
   confirm={modify_bra_period}
 >
-  {#if success.action === "BRA Modified"}
-    Periodo BRA modificado con exito!!!
+  {#if action.code === "BRA Modified"}
+    Período BRA modificado con éxito!!!
   {:else}
     <div class="ui centered grid container">
       <div class="two column row">
@@ -98,3 +97,19 @@
     </div>
   {/if}
 </Modal>
+{#if action.info !== ''}
+  <Modal
+    id="error"
+    title="Error. {action.code}"
+    close_text="Ok"
+    align="center"
+    is_active={action.info !== ''}
+    close={close}
+  >
+    <p>
+      Hubo un problema al intentar modificar el período BRA por favor vuelva a intentar
+      o contáctese con algún administrador.
+    </p>
+    <span class="ui red text">Detalles: {action.info}</span>
+  </Modal>
+{/if}

@@ -2,21 +2,28 @@
   import type { Load } from "@sveltejs/kit";
 
   // https://kit.svelte.dev/docs/loading
-  export const load: Load = async ({ fetch, params }) => {
+  export const load: Load = async ({ fetch, params, session }) => {
 
-    const res = await fetch(`/api/professor/${params.email}`);
-   
-    if (res.ok) {
-      const profile = await res.json();
-
-      return {
-        props: {profile}
+    if (session.user?.professor) {
+      const res = await fetch(`/api/professor/${params.email}`);
+     
+      if (res.ok) {
+        const profile = await res.json();
+  
+        return {
+          props: { profile }
+        };
       };
-    };
-
-    const { message } = await res.json();
-    return {
-      error: new Error(message)
+  
+      const { message } = await res.json();
+      return {
+        error: new Error(message)
+      };
+    } else {
+      return {
+        error: new Error("Acceso denegado. Inicie sesion como profesor."),
+        status: 401
+      };
     };
   };
 </script>
@@ -133,11 +140,11 @@
     </div>
 
     <div class="two column row">
-      <div class="column">Número del PEI: {professor?.pei_number}</div>
-      <div class="column">Nivel: {professor?.pei_level}</div>
+      <div class="column">Número del PPI: {professor?.ppi_number}</div>
+      <div class="column">Nivel: {professor?.ppi_level}</div>
     </div>
   </div>
-
+  <div>Aplica a PEI</div> <!-- TODO!!!! -->
   <div class="two inline required fields">
     <Select
       label="Último Diploma"
@@ -168,6 +175,6 @@
     is_active={modified}
     close={() => location.replace($page.url.pathname)}
   >
-  <p>Perfil Modificado con exito!!!</p>
+    <p>Perfil modificado con éxito!!!</p>
   </Modal>
 {/if}

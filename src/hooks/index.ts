@@ -11,10 +11,11 @@ export const handle: Handle = async function ({ event, resolve }) {
 	event.locals.user = jwt ? JSON.parse(jwt) : null;
 	
 	return await resolve(event);
-}
+};
 
 export const getSession: GetSession = function ({ locals }) {
 	return {
 		user: locals.user
 	};
-}
+};
+

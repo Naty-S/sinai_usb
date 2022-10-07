@@ -31,11 +31,9 @@
       } else {
         rank = `Dpto. de ${professor?.department.name}`;
       };
-    } else if (user.dean) {
+    } else {
       name = `${user.dean}. `;
       rank = "Decano"
-    } else {
-      name = "Throw Error: No user. Cookie not sent to correct domain";
     };
 
     return name + rank;

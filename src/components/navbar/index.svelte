@@ -54,6 +54,7 @@
     class="ui image uk-background-cover uk-width-1-1"
     data-src={bkg}
     uk-img="width: 100%;"
+    style="background-image: url({bkg});"
   >
     <div id="navbar" class="{navbar} uk-inline uk-margin-bottom">
       <Letterhead />

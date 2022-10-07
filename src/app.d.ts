@@ -9,11 +9,11 @@ declare global {
 	declare namespace App {
 		interface Locals {
 			user: User | null;
-		}
+		};
 		// interface Platform {}
 		interface Session {
 			user: User | null;
-		}
+		};
 		// interface Stuff {}
 	};
 };
