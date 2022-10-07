@@ -1,9 +1,11 @@
-<script>
-  import { session } from '$app/stores';
+<script lang="ts">
+  import type { profesor } from "@prisma/client";
 
-  import { format_date } from '$utils/formatting';
+  import { session } from "$app/stores";
 
-  export let profile;
+  import { format_date } from "$utils/formatting";
+
+  export let profile: profesor;
   export let period = '';
 
   const current_date = format_date(new Date(), "long-day");
@@ -26,10 +28,10 @@
     </div>
   
     <div class="four column row">
-      <div class="column"><strong>Categoría:</strong> {profile.category}</div>
-      <div class="column"><strong>Dedicación:</strong> {profile.dedication}</div>
-      <div class="column"><strong>Último Diploma:</strong> {profile.diploma}</div>
-      <div class="column"><strong>Num. PEI:</strong> {professor?.pei_number}</div>
+      <div class="column"><strong>Categoría:</strong> {profile.categoria}</div>
+      <div class="column"><strong>Dedicación:</strong> {profile.dedicacion}</div>
+      <div class="column"><strong>Último Diploma:</strong> {profile.diploma_tipo}</div>
+      <div class="column"><strong>Num. PPI:</strong> {professor?.ppi_number}</div>
     </div>
   
     <div class="one column row">

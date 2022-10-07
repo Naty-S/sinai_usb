@@ -6,23 +6,30 @@
   import type { Load } from "@sveltejs/kit";
 
   // https://kit.svelte.dev/docs/loading
-  export const load: Load = async ({ fetch }) => {
+  export const load: Load = async ({ fetch, session }) => {
 
-    const res = await fetch("/api/activities");
-   
-    if (res.ok) {
-      const activities = await res.json();
+    if (session.user?.dean) {
+      const res = await fetch("/api/activities");
+    
+      if (res.ok) {
+        const activities = await res.json();
 
+        return {
+          props: { activities }
+        };
+      };
+
+      const { message } = await res.json();
       return {
-        props: {activities}
+        error: new Error(message)
+      };
+    } else {
+      return {
+        error: new Error("Acceso denegado. Uso exclusivo del Decano."),
+        status: 401
       };
     };
-
-    const { message } = await res.json();
-    return {
-      error: new Error(message)
-    };
-};
+  };
 </script>
 <script lang="ts">
   import type { DeanActivities } from "$interfaces/activities";
@@ -37,5 +44,5 @@
 {/each}
 
 {#each activities.divisions_activities as division_activities}
-  <ResumeRank rank="Division" rank_activities={division_activities} />
+  <ResumeRank rank="División" rank_activities={division_activities} />
 {/each}

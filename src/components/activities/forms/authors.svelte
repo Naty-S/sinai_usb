@@ -8,13 +8,33 @@
   
   import type { activity_form_ctx, kinds } from "$types/forms";
 
+  import * as api from "$lib/api";
+
   import Input from "$components/forms/input.svelte";
   import Select from "$components/forms/select.svelte";
+  import Modal from "$components/modal.svelte";
 
   const param = $page.params.activity;
   const kind = param as kinds;
   const tipo_actividad = param as autor_tipo_actividad_enum;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
+
+  let professors: { id: number, nombre: string }[] = [];
+  let action = { info: '', code: '' };
+
+  onMount(async () => {
+    const res = await api.get("/api/professors");
+
+    if (res.ok) {
+      const res_json = await res.clone().json();
+      professors = res_json.map((p: profesor) => ({ id: p.id, nombre: p.perfil }));
+
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
+    };
+  });
 
   const add_author_usb = function () {
     const init_author = {
@@ -60,20 +80,6 @@
   $: student_out = function (i: number) { return $form.autores_externos[i].es_estudiante }
   $: tutor_usb = function (i: number) { return $form.autores_usb[i].es_tutor }
   $: tutor_out = function (i: number) { return $form.autores_externos[i].es_tutor }
-
-  let professors: { id: number, nombre: string }[] = [];
-  onMount(async () => {
-    try {      
-      const res = await fetch("/api/professors");
-
-      if (res.ok) {
-        const res_json = await res.clone().json();
-        professors = res_json.map((p: profesor) => ({ id: p.id, nombre: p.perfil }));
-      };
-    } catch (error) {      
-      throw error;
-    };
-  });
 
   $: $form.autores_usb.map(a => {
     if (!a.es_estudiante) {
@@ -259,5 +265,21 @@
       </button>
     {/if}
   </div>
-  
 </div>
+
+{#if action.info !== ''}
+  <Modal
+    id="error"
+    title="Error. {action.code}"
+    close_text="Ok"
+    align="center"
+    is_active={action.info !== ''}
+    close={() => location.replace($page.url.pathname)}
+  >
+    <p>
+      Hubo un problema al intentar realizar la acción por favor vuelva a intentar
+      o contáctese con algún administrador.
+    </p>
+    <span class="ui red text">Detalles: {action.info}</span>
+  </Modal>
+{/if}

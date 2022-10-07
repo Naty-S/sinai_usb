@@ -3,42 +3,42 @@
 
   import type { profesor } from "@prisma/client";
 
-  import { goto } from "$app/navigation";
   import { page, session } from "$app/stores";
 
+  import * as api from "$lib/api";
+
   import Modal from "$components/modal.svelte";
+import { goto } from "$app/navigation";
 
   let show_validate = false;
   let show_reject = false;
   let actual_prof_email = '';
   let actual_prof_name = '';
   let new_professors: profesor[] = [];
+  let action = { info: '', code: '' };
+
+  $: user = $session.user;
+  $: validated = $page.url.searchParams.get("validado");
 
   onMount(async () => {
-    try {      
-      const res = await fetch("/api/professors");
-  
-      if (res.ok) {
-        const res_json = await res.clone().json();
+    const res = await api.get("/api/professors");
 
-        if ($session.user?.dean) {
-          new_professors = res_json.filter((p: profesor) => !p.activo);
+    if (res.ok) {
+      const professors = await res.clone().json();
+      new_professors = professors.filter((p: profesor) => !p.activo && (p.id !== 0));
 
-        } else if ($session.user?.professor) {
-          new_professors = res_json.filter((p: profesor) => !p.activo &&
-            $session.user?.professor?.coord_chief?.departments.includes(p.departamento)
-          );
-        } else {
-          console.log("ERROR: no logged in")
-        };
+      if (user?.professor) {
+        
+        new_professors = professors.filter((p: profesor) => !p.activo && (p.id !== 0) &&
+          user?.professor?.coord_chief?.departments.includes(p.departamento)
+        );
       };
-    } catch (error) {      
-      throw error;
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
     };
   });
-
-  $: validated = Boolean($page.url.searchParams.get("validado"));
-  $: rejected = Boolean($page.url.searchParams.get("rechazado"));
 
   const popup_validate = function (prof_email: string, prof_name: string) {
     show_validate = true;
@@ -47,27 +47,22 @@
   };
 
   const confirm_validate = async function () {
-    try {      
-      const res = await fetch(`/api/professor/${actual_prof_email}`, {
-        method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          new: {
-            activo: true,
-          },
-          pathname: $page.url.pathname
-        })
-      });
-  
-      if (res.ok) {
-        show_validate = false;
-        goto(res.url);
-      };
-    } catch (error) {      
-      throw error;
+    const res = await api.patch(`/api/professor/${actual_prof_email}`,
+      {
+        new: { activo: true },
+        pathname: $page.url.pathname
+      }
+    );
+
+    show_validate = false;
+
+    if (res.ok) {
+      goto(res.url);
+
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
     };
   };
 
@@ -78,24 +73,19 @@
   };
 
   const confirm_reject = async function () {
-    try {      
-      const res = await fetch(`/api/professor/${actual_prof_email}`, {
-        method: "DELETE",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          url: $page.url
-        })
-      });
-  
-      if (res.ok) {
-        show_reject = false;
-        goto(res.url);
-      };
-    } catch (error) {      
-      throw error;
+    const res = await api.del(`/api/professor/${actual_prof_email}`);
+
+    show_reject = false;
+
+    if (res.ok) {
+      const { action, professor } = await res.json();
+      action.code = action;
+      action.info = professor;
+
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
     };
   };
 
@@ -109,7 +99,7 @@
     `;
     const subject = "Rechazo solicitud ingreso al sistema del SINAI";
 
-    window.location.href = "mailto:12-11250@usb.ve"
+    window.location.href = "mailto:" + action.code
       + "?subject=" + encodeURIComponent(subject)
       + "&body=" + encodeURIComponent(msg);
 
@@ -119,29 +109,25 @@
 
 <h2>Lista de profesores pendientes por validar</h2>
 
-if Dean => todos
-else if coordinador => los de su dpto
-else => no puede entrar aqui
-
-<div id="new_professors" class="ui fluid styled accordion" uk-accordion="multiple: false">
+<div id="new_professors" class="ui fluid styled accordion" uk-accordion>
   {#each new_professors as p}
     <div id="new_professor_{p.id}">
       <div class="uk-accordion-title title">
         <div class="ui grid">
           <div class="ten wide column">
-            {p.perfil}. ({p.activo ? "Activo" : "No Activo"} - {p.confirmado ? "Confirmado" : "No Confirmado"})
+            {p.perfil}.
           </div>
           <div class="six wide right aligned column">
             <button
               type="button"
-              class="ui blue small button"
+              class="ui primary small button"
               on:click={() => popup_validate(p.correo, p.perfil)}
             >
               Validar
             </button>
             <button
               type="button"
-              class="ui red small button"
+              class="ui negative small button"
               on:click={() => popup_reject(p.correo, p.perfil)}
             >
               Rechazar
@@ -170,27 +156,27 @@ else => no puede entrar aqui
 
 {#if validated}
   <Modal
-    id="validated_{actual_prof_email}"
+    id="validated_{validated}"
     title="Validar Profesor"
     close_text="Ok"
     align="center"
-    is_active={validated}
+    is_active={Boolean(validated)}
     close={() => location.replace($page.url.pathname)}
   >
-  <p>Profesor "{actual_prof_name}"</p>
-  <p>Validado con exito!!!</p>
+  <p>Profesor <span class="ui primary text">"{validated}"</span></p>
+  <p>Validado con éxito!!!</p>
   </Modal>
 {/if}
-{#if rejected}
+{#if action.code === "rejected"}
   <Modal
-    id="rejected_{actual_prof_email}"
+    id="rejected_{action.info}"
     title="Rechazar Profesor"
     close_text="Ok"
     align="center"
-    is_active={rejected}
+    is_active={action.code === "rejected"}
     close={send_rejection_mail}
   >
-  <p>Profesor "{actual_prof_name}", RECHAZADO!!!</p>
+  <p>Profesor <span class="ui primary text">"{action.info}"</span>, RECHAZADO!!!</p>
   </Modal>
 {/if}
 {#if show_validate}
@@ -203,8 +189,8 @@ else => no puede entrar aqui
     close={() => show_validate = false}
     confirm={confirm_validate}
   >
-    <p>Esta seguro(a) que quiere VALIDAR a este Profesor?</p>
-    <p>"{actual_prof_name}"</p>
+    <p>Está seguro(a) que quiere VALIDAR a este Profesor?</p>
+    <span class="ui primary text">"{actual_prof_name}"</span>
   </Modal>
 {/if}
 {#if show_reject}
@@ -218,9 +204,25 @@ else => no puede entrar aqui
     confirm={confirm_reject}
   >
     <p><span class="ui large red text">
-      Esta accion eliminara de forma permanente al Profesor del sistema!!!
+      Ésta acción eliminara de forma permanente al Profesor del sistema!!!
     </span></p>
-    <p>Esta seguro(a) que quiere RECHAZAR a este Profesor?</p>
-    <p>"{actual_prof_name}"</p>
+    <p>Está seguro(a) que quiere RECHAZAR a este Profesor?</p>
+    <span class="ui primary text">"{actual_prof_name}"</span>
+  </Modal>
+{/if}
+{#if action.info !== ''}
+  <Modal
+    id="error"
+    title="Error. {action.code}"
+    close_text="Ok"
+    align="center"
+    is_active={action.info !== ''}
+    close={() => location.replace($page.url.pathname)}
+  >
+    <p>
+      Hubo un problema al intentar realizar la acción por favor vuelva a intentar
+      o contáctese con algún administrador.
+    </p>
+    <span class="ui red text">Detalles: {action.info}</span>
   </Modal>
 {/if}

@@ -1,22 +1,11 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { Prisma } from "@prisma/client";
 
-import { prisma } from "$api/_api";
+import { prisma, handle_error } from "$api/_api";
 
 
-export const post: RequestHandler = async ({ request }) => {
+export const post: RequestHandler = async function ({ request }) {
 
   const _data = await request.json();
-  const data_usuario = {
-    login: _data.professor.correo,
-    pass: _data.cedula, // TODO encriptar
-    // padded: 
-  };
-  const data_ppi = {
-    ..._data.ppi,
-    profesor: _data.professor.cedula,
-    // activo: 
-  };
 
   let status = 303;
   let headers = {
@@ -24,26 +13,39 @@ export const post: RequestHandler = async ({ request }) => {
   };
 
   try {
+    const data_usuario = {
+      login: _data.professor.correo,
+      pass: _data.professor.cedula.toString(), // TODO encriptar
+      // padded: 
+    };
+
     await prisma.usuario.create({ data: data_usuario });
-    await prisma.profesor.create({ data: _data.professor });
-    await prisma.ppi.create({ data: data_ppi });
+    const new_p = await prisma.profesor.create({ data: _data.professor });
+
+    const data_pei = {
+      ..._data.pei,
+      profesor: new_p.id,
+      // activo: 
+    };
+    await prisma.pei.create({ data: data_pei });
+
+    const coord = await prisma.departamento.findUniqueOrThrow({
+      where: { id: _data.professor.departamento },
+      select: { jefe: true }
+    });
 
     status = 303;
     headers = {
-      location: "/registro?exito=true"
+      location: "/sinai/registro?exito=true&coord=" + coord.jefe
     };
-  } catch (error) {
-    // TODO: 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      // The .code property can be accessed in a type-safe manner
-      // https://www.prisma.io/docs/reference/api-reference/error-reference
-      if (error.code === 'P1012') {
-        console.log(
-          'There is a unique constraint violation, a new user cannot be created with this email'
-        );
-      };
+  } catch (error: any) {
+    const message = await handle_error(error);
+    const code = error.code ? "&code=" + error.code : '';
+
+    status = 303;
+    headers = {
+      location: "/sinai/registro?error=" + message + code
     };
-    throw error;
   };
 
   return {

@@ -1,14 +1,14 @@
-import type { User } from "$interfaces/auth";
+import type { profesor } from "@prisma/client";
 
 
-export const init = function (data: any) {
+export const init = function (p: profesor) {
   return {
-      perfil: data.profile
-    , categoria: data.category
-    , dedicacion: data.dedication
-    , diploma_tipo: data.diploma
-    , diploma_universidad: data.diploma_university
-    , url: data.page
-    , lineas_investigacion: data.research_lines || ['']
+      perfil: p.perfil
+    , categoria: p.categoria
+    , dedicacion: p.dedicacion
+    , diploma_tipo: p.diploma_tipo
+    , diploma_universidad: p.diploma_universidad
+    , url: p.url
+    , lineas_investigacion: p.lineas_investigacion || ['']
   };
 };

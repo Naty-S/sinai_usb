@@ -46,10 +46,11 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
     , creation_success: false
   };
 
-  let info;
   const init_date = function (date?: Date): Date {
     return date ? format_date(date, "yyyy-MM-dd") as unknown as Date : new Date("yyyy-MM-dd");
   };
+
+  let info;
 
   switch (kind) {
     case "articulo_revista":

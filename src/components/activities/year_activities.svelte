@@ -5,6 +5,9 @@
   import type { YearActivities } from "$interfaces/activities";
   
   import { format_date } from "$utils/formatting";
+  
+  import * as api from "$lib/api";
+
   import Modal from "$components/modal.svelte";
   import KindInfo from "./kind_info.svelte";
   
@@ -14,6 +17,13 @@
 
   const activities = Object.entries(year_activities.kind_activities);
 
+  let show_validate = false;
+  let show_invalidate = false;
+  let show_delete = false;
+  let actual_act_id = -1;
+  let actual_act_title = '';
+  let action = { info: '', code: '' };
+
   $: user = $session.user;
   $: professor = user?.professor;
   $: is_chief = professor?.coord_chief || professor?.is_dep_representative || professor?.is_dep_chief;
@@ -22,20 +32,13 @@
     return (user?.dean || (is_chief && user?.email !== act.creada_por));
   };
 
-  const can_modify = function (act: Activity) {
+  const can_modify = function () {
     return user?.dean || !is_chief;
   };
 
-  const can_delete = function (act: Activity) {
+  const can_delete = function () {
     return user?.dean || !is_chief;
   };
-
-  let show_validate = false;
-  let show_invalidate = false;
-  let show_delete = false;
-  let actual_act_id = -1;
-  let actual_act_title = '';
-  let success = { action: '' };
 
   const popup_validate = function (act_id: number, act_title: string) {
     show_validate = true;
@@ -44,22 +47,19 @@
   };
 
   const confirm_validate = async function () {
-    try {      
-      const res = await fetch(`/api/activities/validate/${actual_act_id}`, {
-        method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ validado_por: user?.email })
-      });
-  
-      if (res.ok) {
-        success = await res.clone().json();
-        show_validate = false;
-      };
-    } catch (error) {      
-      throw error;
+    const res = await api.patch(`/api/activities/validate/${actual_act_id}`,
+      { validado_por: user?.email }
+    );
+
+    if (res.ok) {
+      const { code } = await res.json();
+      action.code = code;
+      show_validate = false;
+
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
     };
   };
 
@@ -70,18 +70,17 @@
   };
 
   const confirm_invalidate = async function () {
-    try {      
-      const res = await fetch(`/api/activities/invalidate/${actual_act_id}`, {
-        method: "PATCH",
-        credentials: "include"
-      });
-  
-      if (res.ok) {
-        success = await res.clone().json();
-        show_invalidate = false;
-      };
-    } catch (error) {      
-      throw error;
+    const res = await api.patch(`/api/activities/invalidate/${actual_act_id}`, null);
+
+    if (res.ok) {
+      const { code } = await res.json();
+      action.code = code;
+      show_invalidate = false;
+
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
     };
   };
 
@@ -92,18 +91,17 @@
   };
 
   const confirm_delete = async function () {
-    try {      
-      const res = await fetch(`/api/activities/delete/${actual_act_id}`, {
-        method: "DELETE",
-        credentials: "include"
-      });
-  
-      if (res.ok) {
-        success = await res.clone().json();
-        show_delete = false;
-      };
-    } catch (error) {
-      throw error;
+    const res = await api.del(`/api/activities/delete/${actual_act_id}`);
+
+    if (res.ok) {
+      const { code } = await res.json();
+      action.code = code;
+      show_delete = false;
+
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
     };
   };
 </script>
@@ -155,7 +153,7 @@
               </div>
               {#if editable}
                 <div class="uk-margin-small">
-                  {#if can_modify(act)}
+                  {#if can_modify()}
                     <a
                       href="/sinai/actividades/modificar/{act.kind_name}/{act.id}" 
                       class="ui green small button"
@@ -182,7 +180,7 @@
                       </button>
                     {/if}
                   {/if}
-                  {#if can_delete(act)}
+                  {#if can_delete()}
                     <button
                       type="button"
                       class="ui red small button"
@@ -211,20 +209,20 @@
     close={() => show_validate = false}
     confirm={confirm_validate}
   >
-    <p>Esta seguro(a) que quiere VALIDAR esta actividad?</p>
+    <p>Está seguro(a) que quiere VALIDAR ésta actividad?</p>
     <p>"{actual_act_title}"</p>
   </Modal>
 {/if}
-{#if success.action === "Validated"}
+{#if action.code === "validated"}
   <Modal
     id="{actual_act_id}_validated"
     title="Validar Actividad"
     align="center"
-    is_active={success.action === "Validated"}
+    is_active={action.code === "validated"}
     close_text="Cerrar"
-    close={() => { success.action = ''; location.reload(); }}
+    close={() => { action.code = ''; location.reload(); }}
   >
-    <p>Actividad Validada con Exito !!!</p>
+    <p>Actividad Validada con Éxito !!!</p>
   </Modal>
 {/if}
 
@@ -242,16 +240,16 @@
     <p>"{actual_act_title}"</p>
   </Modal>
 {/if}
-{#if success.action === "Invalidated"}
+{#if action.code === "invalidated"}
   <Modal
-    id="{actual_act_id}_validated"
+    id="{actual_act_id}_invalidated"
     title="Desvalidar Actividad"
     align="center"
-    is_active={success.action === "Invalidated"}
+    is_active={action.code === "invalidated"}
     close_text="Cerrar"
-    close={() => { success.action = ''; location.reload(); }}
+    close={() => { action.code = ''; location.reload(); }}
   >
-    <p>Actividad Desvalidada con Exito !!!</p>
+    <p>Actividad Desvalidada con Éxito !!!</p>
   </Modal>
 {/if}
 
@@ -265,19 +263,36 @@
     close={() => show_delete = false}
     confirm={confirm_delete}
   >
-    <p>Esta seguro(a) que quiere ELIMINAR esta actividad?</p>
+    <p>Está seguro(a) que quiere ELIMINAR ésta actividad?</p>
     <p>"{actual_act_title}"</p>
   </Modal>
 {/if}
-{#if success.action === "Deleted"}
+{#if action.code === "deleted"}
   <Modal
     id="{actual_act_id}_deleted"
     title="Eliminar Actividad"
     align="center"
-    is_active={success.action === "Deleted"}
+    is_active={action.code === "deleted"}
     close_text="Cerrar"
-    close={() => { success.action = ''; location.reload(); }}
+    close={() => { action.code = ''; location.reload(); }}
   >
-    <p>Actividad Eliminada con Exito !!!</p>
+    <p>Actividad Eliminada con Éxito !!!</p>
+  </Modal>
+{/if}
+
+{#if action.info !== ''}
+  <Modal
+    id="error"
+    title="Error. {action.code}"
+    close_text="Ok"
+    align="center"
+    is_active={action.info !== ''}
+    close={() => location.reload()}
+  >
+    <p>
+      Hubo un problema al intentar realizar la acción por favor vuelva a intentar
+      o contáctese con algún administrador.
+    </p>
+    <span class="ui red text">Detalles: {action.info}</span>
   </Modal>
 {/if}

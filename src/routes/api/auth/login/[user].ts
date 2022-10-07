@@ -1,9 +1,9 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { Prisma } from "@prisma/client";
 
 import type { User } from "$interfaces/auth";
 
-import { prisma } from "$api/_api";
+import { handle_error, prisma } from "$api/_api";
+
 
 /**
  * 
@@ -27,6 +27,7 @@ export const post: RequestHandler = async function({ request, params }) {
         profesor: {
           include: {
             pei: { orderBy: { anio: "desc" }, take: 1 },
+            ppi: { orderBy: { anio: "desc" }, take: 1 },
             grupos_investigacion: true,
             historico_grupos: {
               select: {
@@ -116,21 +117,18 @@ export const post: RequestHandler = async function({ request, params }) {
             grupos_investigacion: professor.grupos_investigacion
           , historico_grupos: professor.historico_grupos
         }
-        , pei_number: professor.pei[0].numero || ''
-        , pei_level: professor.pei[0].nivel || ''
+        , pei_number: professor.pei[0].numero
+        , pei_level: professor.pei[0].nivel
+        , ppi_number: professor.ppi[0].numero
+        , ppi_level: professor.ppi[0].nivel
         , is_dep_chief: professor._count.jefe_departamentos > 0
         , is_dep_representative: professor._count.representante_departamentos > 0
         , coord_chief
         , division_chief
       };
 
-    } else if (_user.administrador) {
-      console.log("Admin, todas las actividades")
-
-      user.dean = _user.administrador.nombre;
-      
     } else {
-      console.log("No es profesor ni admin")
+      user.dean = _user.administrador?.nombre;
     };
 
     const jwt = Buffer.from(JSON.stringify(user)).toString("base64");
@@ -143,18 +141,11 @@ export const post: RequestHandler = async function({ request, params }) {
     };
     body = user;
 
-  } catch (error) {
-    // TODO: 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      // The .code property can be accessed in a type-safe manner
-      // https://www.prisma.io/docs/reference/api-reference/error-reference
-      if (error.code === 'P1012') {
-        console.log(
-          'There is a unique constraint violation, a new user cannot be created with this email'
-        );
-      };
-    };
-    throw error;
+  } catch (error: any) {
+    const message = await handle_error(error);
+    const code = error.code || '';
+
+    body = { message, code };
   };
 
   return {
