@@ -34,7 +34,7 @@ const capitulo_libro = yup.object().shape({
   aceptado: yup.boolean().typeError("No es booleano")
   , articulo_invitado: yup.boolean().typeError("No es booleano")
   , ciudad: yup.string().required("Requerido")
-  , editores: yup.array(yup.string())
+  , editores: yup.array(yup.string().required("Requerido")).min(1, "Ingrese al menos 1 editor")
   , editorial: yup.string().required("Requerido")
   , fecha: yup.date().transform(parseDate).typeError("Requerido")
   , isbn: yup.string().required("Requerido")
