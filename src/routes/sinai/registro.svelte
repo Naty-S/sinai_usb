@@ -1,3 +1,8 @@
+<script lang="ts" context="module">
+  import { redirect } from "$lib/shared/session";
+  
+  export const load = redirect;
+</script>
 <script lang="ts">
   import { onMount, setContext } from "svelte";
   import { createForm, key } from "svelte-forms-lib";
@@ -7,7 +12,7 @@
     profesor_condicion_enum,
     profesor_dedicacion_enum,
     profesor_diploma_tipo_enum,
-    ppi_nivel_enum
+    pei_nivel_enum
   } from "@prisma/client";
 
   import { page } from "$app/stores";
@@ -17,7 +22,9 @@
   import { init } from "$lib/shared/forms/auth/register/init";
   import { validation } from "$lib/shared/forms/auth/register/validation";
   import { submit } from "$lib/shared/forms/auth/register/submit";
+  import * as api from "$lib/api";
 
+  import Modal from "$components/modal.svelte";
   import ActionsButtons from "$components/forms/actions_buttons.svelte";
   import Input from "$components/forms/input.svelte";
   import Select from "$components/forms/select.svelte";
@@ -28,7 +35,11 @@
   const formProps = { initialValues, onSubmit, validationSchema };
   const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
 
+  let action = { info: '', code: '' };
+
   $: registered = Boolean($page.url.searchParams.get("exito"));
+  $: no_registered = $page.url.searchParams.get("error");
+  $: err_code = $page.url.searchParams.get("code");
 
   setContext(key, {
     form, errors, handleChange
@@ -37,14 +48,14 @@
   let departments: Department[] = [];
 
   onMount(async () => {
-    const res = await fetch("/api/departments");
+    const res = await api.get("/api/departments");
 
-    try {      
-      if (res.ok) {
-        departments = await res.clone().json();
-      };
-    } catch (error) {      
-      throw error;
+    if (res.ok) {
+      departments = await res.clone().json();
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
     };
   });
 </script>
@@ -57,7 +68,7 @@
   </p>
 {:else}
   <form class="ui large form" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
-    <div class="two inline fields">
+    <div id="name" class="two inline fields">
       <Input
         label="Primer Nombre"
         name="professor.nombre1"
@@ -73,7 +84,7 @@
         class="field"
       />
     </div>
-    <div class="two inline fields">
+    <div id="surname" class="two inline fields">
       <Input
         label="Primer Apellido"
         name="professor.apellido1"
@@ -98,7 +109,7 @@
     />
     <div class="three inline fields">
       <Input
-        label="Cédula "
+        label="Cédula"
         name="professor.cedula"
         placeholder={"12345678"}
         bind:value={$form.professor.cedula}
@@ -145,28 +156,28 @@
       />
     </div>
     <div class="field">
-      <label for="">PPI</label>
+      <label for="">PEI</label>
       <div class="three inline fields">
         <Input
           type="number"
           label="Numero"
           name="numero"
-          bind:value={$form.ppi.numero}
-          error={$errors.ppi.numero}
+          bind:value={$form.pei.numero}
+          error={$errors.pei.numero}
           class="required field"
         />
         <Input
           label="Anio"
           name="anio"
-          bind:value={$form.ppi.anio}
-          error={$errors.ppi.anio}
+          bind:value={$form.pei.anio}
+          error={$errors.pei.anio}
           class="required field"
         />
         <Select
           label="Nivel"
-          name="ppi.nivel"
-          bind:value={$form.ppi.nivel}
-          options={Object.entries(ppi_nivel_enum).map(([_, nivel]) => ({ val: nivel, name: nivel }))}
+          name="pei.nivel"
+          bind:value={$form.pei.nivel}
+          options={Object.entries(pei_nivel_enum).map(([_, nivel]) => ({ val: nivel, name: nivel }))}
           class="inline field"
         />
       </div>
@@ -205,4 +216,37 @@
 
     <ActionsButtons action="Registrarse" />
   </form>
+{/if}
+
+{#if no_registered}
+  <Modal
+    id="no_registered"
+    title="Error. {err_code}"
+    close_text="Ok"
+    align="center"
+    is_active={Boolean(no_registered)}
+    close={() => location.replace($page.url.pathname)}
+  >
+    <p>
+      Hubo un problema al intentar registrarse por favor vuelva a intentar
+      o contáctese con algún administrador.
+    </p>
+    <span class="ui red text">Detalles: {no_registered}</span>
+  </Modal>
+{/if}
+{#if action.info !== ''}
+  <Modal
+    id="error"
+    title="Error. {action.code}"
+    close_text="Ok"
+    align="center"
+    is_active={action.info !== ''}
+    close={() => location.replace($page.url.pathname)}
+  >
+    <p>
+      Hubo un problema al cargar el formulario, recargue la página 
+      o contáctese con algún administrador.
+    </p>
+    <span class="ui red text">Detalles: {action.info}</span>
+  </Modal>
 {/if}

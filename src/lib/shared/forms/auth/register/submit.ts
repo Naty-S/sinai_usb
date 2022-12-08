@@ -1,38 +1,35 @@
 import { goto } from "$app/navigation";
 
+import * as api from "$lib/api";
+
 
 export const submit = function () {
   return async function (data: any) {
 
     data.professor.departamento = Number(data.professor.departamento);
     data.professor.cedula = Number(data.professor.cedula);
+    data.pei.numero = data.pei.numero.toString();
 
     // register
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
+    const res = await api.post("/api/auth/register", data);
 
-    // send email to coord
-    const msg = `El Profesor ${data.professor.nombre1} ${data.professor.apellido1}, ha
-     solicitado ser validado en el sistema del Sinai para poder ingresar, por favor ingrese
-     con el siguiente link para revisar la solicitud.
-     https://www.did.usb.ve/sinai/login?validar_profesor=${data.professor.correo}
-    `;
-    const subject = `Validar Nuevo Profesor,
-      ${data.professor.nombre1} ${data.professor.apellido1}, C.I. ${data.professor.cedula}
-    `;
+    if (res.url.includes("exito") && res.url.includes("coord")) {
+      const coord = res.url.split("=")[3];
 
-    window.location.href = "mailto:12-11250@usb.ve"
-      + "?subject=" + encodeURIComponent(subject)
-      + "&body=" + encodeURIComponent(msg);
-
-    if (res.ok) {
-      goto(res.url);
+      // send email to coord
+      const msg = `El Profesor ${data.professor.nombre1} ${data.professor.apellido1}, ha
+       solicitado ser validado en el sistema del Sinai para poder ingresar, por favor
+       ingrese en el sistema para revisar la solicitud.
+      `;
+      const subject = `Validar Nuevo Profesor,
+        ${data.professor.nombre1} ${data.professor.apellido1}, C.I. ${data.professor.cedula}
+      `;
+  
+      window.location.href = "mailto:" + coord
+        + "?subject=" + encodeURIComponent(subject)
+        + "&body=" + encodeURIComponent(msg);
     };
+
+    goto(res.url);
   };
 };

@@ -1,5 +1,4 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { Prisma } from "@prisma/client";
 
 import type { EntityActivities } from "$interfaces/activities";
 import type { Activity } from "$types/activities";
@@ -8,7 +7,8 @@ import { format_activity_kind } from "$utils/formatting";
 import { acts_kinds_by_year } from "$utils/grouping";
 import { count_acts_kinds_by_year } from "$utils/maths";
 
-import { prisma } from "../../_api";
+import { handle_error, prisma } from "$api/_api";
+
 
 /**
  * This function its called when the '/sinai/actividades/profesor' page its loaded
@@ -16,7 +16,6 @@ import { prisma } from "../../_api";
  * 
  * Manages the load of the data for the activites to be displayed for the professor
  * 
- * @param param0 - 
  * @returns {} The status code and the activities grouped by year and kind
  */
 export const get: RequestHandler = async function({ params }) {
@@ -31,6 +30,16 @@ export const get: RequestHandler = async function({ params }) {
         creada_por: params.email
       },
       include: {
+        logs_operaciones_actividades: {
+          select: {
+            profesor: true,
+            Profesor: { select: { correo: true } },
+            fecha: true,
+            hora: true
+          },
+          where: { operacion: "Modificacion" },
+          orderBy: { fecha: "desc" }
+        },
         actividades_grupos: {
           select: {
             Grupo: {
@@ -78,18 +87,11 @@ export const get: RequestHandler = async function({ params }) {
     status = 200;
     body = entityActivities;
 
-  } catch (error) {
-    // TODO: 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      // The .code property can be accessed in a type-safe manner
-      // https://www.prisma.io/docs/reference/api-reference/error-reference
-      if (error.code === 'P1012') {
-        console.log(
-          'There is a unique constraint violation, a new user cannot be created with this email'
-        );
-      };
-    };
-    throw error;
+  } catch (error: any) {
+    const message = await handle_error(error);
+    const code = error.code || '';
+
+    throw new Error(message + ' ' + code);
   };
 
   return {

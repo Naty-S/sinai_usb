@@ -1,11 +1,12 @@
 <script lang="ts" context="module">
 	import type { Load } from "@sveltejs/kit";
 
+  // https://kit.svelte.dev/docs/loading
 	export const load: Load = ({ error, status }) => {
 		return {
 			props: { error, status }
-		}
-	}
+		};
+	};
 </script>
 
 <script lang="ts">
@@ -13,7 +14,7 @@
 
 	export let error: Error;
 	export let status: number;
-	</script>
+</script>
 
 <svelte:head>
 	<title>{status}</title>

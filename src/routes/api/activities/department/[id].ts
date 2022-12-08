@@ -1,15 +1,11 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { Prisma } from "@prisma/client";
 
 import type { DepActivities } from "$interfaces/activities";
-import { prisma } from "$api/_api";
+import { handle_error, prisma } from "$api/_api";
 import { format_activity_kind } from "$utils/formatting";
 
 
-/**
- * 
- */
-export const get: RequestHandler = async function ({ request, params }) {
+export const get: RequestHandler = async function ({ params }) {
   
   let status = 500;
   let body = {};
@@ -25,7 +21,7 @@ export const get: RequestHandler = async function ({ request, params }) {
       }
     });
     
-    const professors: {correo: string}[] = await prisma.profesor.findMany({
+    const professors: { correo: string }[] = await prisma.profesor.findMany({
       where: {
         departamento: Number(params.id)
       },
@@ -50,6 +46,15 @@ export const get: RequestHandler = async function ({ request, params }) {
           },
           actividades: {
             include: {
+              logs_operaciones_actividades: {
+                select: {
+                  Profesor: { select: { correo: true } },
+                  fecha: true,
+                  hora: true
+                },
+                where: { operacion: "Modificacion" },
+                orderBy: { fecha: "desc" }
+              },
               actividades_grupos: {
                 select: {
                   Grupo: {
@@ -104,18 +109,11 @@ export const get: RequestHandler = async function ({ request, params }) {
     status = 200;
     body = dep_activities;
 
-  } catch (error) {
-    // TODO: 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      // The .code property can be accessed in a type-safe manner
-      // https://www.prisma.io/docs/reference/api-reference/error-reference
-      if (error.code === 'P1012') {
-        console.log(
-          'There is a unique constraint violation, a new user cannot be created with this email'
-        );
-      };
-    };
-    throw error;
+  } catch (error: any) {
+    const message = await handle_error(error);
+    const code = error.code || '';
+
+    throw new Error(message + ' ' + code);
   };
 
   return {

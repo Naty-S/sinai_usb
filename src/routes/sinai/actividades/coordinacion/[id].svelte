@@ -2,28 +2,39 @@
   import type { Load } from "@sveltejs/kit";
 
   // https://kit.svelte.dev/docs/loading
-  export const load: Load = async ({ fetch, params }) => {    
-    const res = await fetch(`/api/activities/coordination/${params.id}`);
+  export const load: Load = async ({ fetch, params, session }) => {
 
-    if (res.ok) {
-      const coord_activities: CoordActivities = await res.json();
+    if (session.user?.professor?.coord_chief) {
 
+      const res = await fetch(`/api/activities/coordination/${params.id}`);
+  
+      if (res.ok) {
+        const coord_activities: CoordActivities = await res.json();
+  
+        return {
+          props: {coord_activities}
+        };
+      };
+  
+      const { message } = await res.json();
       return {
-        props: {coord_activities}
+        error: new Error(message)
+      };
+    } else {
+      return {
+        error: new Error("Acceso denegado. Inicie sesión como Coordinador"),
+        status: 401
       };
     };
-
-    const { message } = await res.json();
-    return {
-      error: new Error(message)
-    }
-};
+  };
 </script>
 <script lang="ts">
   import type { CoordActivities } from "$interfaces/activities";
 
   import ResumeEntity from "$components/activities/resume_entity.svelte";
   import ResumeRank from "$components/activities/resume_rank.svelte";
+
+  import Err from "../../../__error.svelte";
 
   export let coord_activities: CoordActivities;
 
@@ -49,5 +60,6 @@
   {/each}
 
 {:else}
-  ERROR
+  <!-- This should not happen -->
+  <Err error={new Error("Actividades para la coordinacion no encontradas.")} status={500} />
 {/if}

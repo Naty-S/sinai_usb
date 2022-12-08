@@ -1,10 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import type { autor_externo, autor_usb } from "@prisma/client";
-import { Prisma } from "@prisma/client";
 
-import { prisma } from "$api/_api";
-
-import type { Activity } from "$types/activities";
+import { handle_error, prisma } from "$api/_api";
 
 import { format_activity_kind } from "$utils/formatting";
 
@@ -52,23 +49,16 @@ export const get: RequestHandler = async function ({ params }) {
       }
     });
 
-    const activity: Activity = format_activity_kind(act);
+    const activity = format_activity_kind(act);
 
     status = 200;
     body = activity;
 
-  } catch (error) {
-    // TODO: 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      // The .code property can be accessed in a type-safe manner
-      // https://www.prisma.io/docs/reference/api-reference/error-reference
-      if (error.code === 'P1012') {
-        console.log(
-          'There is a unique constraint violation, a new user cannot be created with this email'
-        );
-      };
-    };
-    throw error;
+  } catch (error: any) {
+    const message = await handle_error(error);
+    const code = error.code || '';
+
+    body = { message, code };
   };
 
   return {
@@ -201,23 +191,17 @@ export const patch: RequestHandler = async function ({ request, params }) {
       data
     });
 
-    status = 303;
     headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}?act_modified=true`
+      location: `/sinai/actividades/profesor/${data.creada_por}?modificada=true`
     };
 
-  } catch (error) {
-    // TODO: 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      // The .code property can be accessed in a type-safe manner
-      // https://www.prisma.io/docs/reference/api-reference/error-reference
-      if (error.code === 'P1012') {
-        console.log(
-          'There is a unique constraint violation, a new user cannot be created with this email'
-        );
-      };
+  } catch (error: any) {
+    const message = await handle_error(error);
+    const code = error.code ? "&code=" + error.code : '';
+
+    headers = {
+      location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
     };
-    throw error;
   };
 
   return {

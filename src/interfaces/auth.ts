@@ -7,51 +7,49 @@ export interface User {
   email: string;
   pending_professors: boolean;
   dean?: string;
-  professor?: {
-    id_card: number;
-    name1: string;
-    name2?: string | null;
-    surname1: string;
-    surname2?: string | null;
-    category: string;
-    dedication: string;
-    department: {
+  professor?: Professor;
+};
+
+export interface Professor {
+  id: number;
+  id_card: number;
+  name1: string;
+  name2?: string | null;
+  surname1: string;
+  surname2?: string | null;
+  department: {
+    id: number;
+    name: string;
+    coordination: {
       id: number;
-      name: string;
-      coordination: {
-        id: number;
-        nombre: string;
-      };
-      division: {
-        id: number;
-        nombre: string;
-      };
+      nombre: string;
     };
-    groups: {
-      grupos_investigacion: grupo_investigacion[],
-      historico_grupos: {
-        Grupo: grupo_investigacion;
-        inicio: Date;
-        fin: Date | null;
-      }[]
-    };
-    diploma: string;
-    diploma_university: string;
-    ppi_number?: number | null;
-    ppi_level?: string | null;
-    profile: string;
-    page?: string | null;
-    research_lines: Array<string>;
-    is_dep_chief: boolean;
-    is_dep_representative: boolean;
-    coord_chief?: {
+    division: {
       id: number;
-      name: string;
-      departments: number[];
+      nombre: string;
     };
-    division_chief?: {
-      id: number;
-      name: string;
-    };
+  };
+  groups: {
+    grupos_investigacion: grupo_investigacion[],
+    historico_grupos: {
+      Grupo: grupo_investigacion;
+      inicio: Date;
+      fin: Date | null;
+    }[]
+  };
+  pei_number?: string | null;
+  pei_level?: string | null;
+  ppi_number?: number | null;
+  ppi_level?: string | null;
+  is_dep_chief: boolean;
+  is_dep_representative: boolean;
+  coord_chief?: {
+    id: number;
+    name: string;
+    departments: number[];
+  };
+  division_chief?: {
+    id: number;
+    name: string;
   };
 };

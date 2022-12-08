@@ -21,22 +21,25 @@ export const group_by = function (prop: string, acts: Activity[], detailed?: boo
 
     if (!acc[key]) {
       acc[key] = []
-    }
+    };
 
-    acc[key].push(act)
+    acc[key].push(act);
 
-    return acc
-  }, {})
+    return acc;
+  }, {});
 };
+
 
 // group kinds of activities by year
 export const acts_kinds_by_year = function (acts: Activity[], detailed?: boolean): YearActivities[] {
 
-  return Object.entries(group_by("fecha_creacion", acts))
-    .map(([_year, _acts]) => {
-      return {
-        year: Number(_year),
-        kind_activities: group_by("kind_name", _acts, detailed)
-      };
-    });
-}
+  const acts_group = Object.entries(group_by("fecha_creacion", acts));
+  const year_acts = acts_group.map(([_year, _acts]) => (
+    {
+      year: Number(_year),
+      kind_activities: group_by("kind_name", _acts, detailed)
+    }
+  ));
+
+  return year_acts.reverse();
+};

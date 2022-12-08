@@ -1,9 +1,8 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { Prisma } from "@prisma/client";
 
 import type { CoordActivities, DepActivities, GroupActivities } from "$interfaces/activities";
 import { format_activity_kind } from "$utils/formatting";
-import { prisma } from "$api/_api";
+import { handle_error, prisma } from "$api/_api";
 
 
 export const get: RequestHandler = async function ({ request, params }) {
@@ -27,7 +26,12 @@ export const get: RequestHandler = async function ({ request, params }) {
       }
     });
 
-    let coordination_activities: CoordActivities;
+    let coordination_activities: CoordActivities = {
+      coordination: {
+        id: coordination.id,
+        name: coordination.nombre
+      }
+    };
 
     if (params.id === '4') { // Coordination just manages groups "Integración e Información"
       const groups = await prisma.grupo_investigacion.findMany({
@@ -38,6 +42,15 @@ export const get: RequestHandler = async function ({ request, params }) {
             select: {
               Actividad: {
                 include: {
+                  logs_operaciones_actividades: {
+                    select: {
+                      Profesor: { select: { correo: true } },
+                      fecha: true,
+                      hora: true
+                    },
+                    where: { operacion: "Modificacion" },
+                    orderBy: { fecha: "desc" }
+                  },
                   actividades_grupos: {
                     select: {
                       Grupo: {
@@ -83,13 +96,7 @@ export const get: RequestHandler = async function ({ request, params }) {
         }
       });
 
-      coordination_activities = {
-        coordination: {
-          id: coordination.id,
-          name: coordination.nombre
-        },
-        groups_activities
-      };
+      coordination_activities.groups_activities = groups_activities;
 
     } else {
       const departments_activities: DepActivities[] = await Promise.all(
@@ -99,30 +106,17 @@ export const get: RequestHandler = async function ({ request, params }) {
         })
       );
 
-      coordination_activities = {
-        coordination: {
-          id: coordination.id,
-          name: coordination.nombre
-        },
-        departments_activities
-      };
+      coordination_activities.departments_activities = departments_activities;
     };
 
     status = 200;
     body = coordination_activities;
 
-  } catch (error) {
-    // TODO: 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      // The .code property can be accessed in a type-safe manner
-      // https://www.prisma.io/docs/reference/api-reference/error-reference
-      if (error.code === 'P1012') {
-        console.log(
-          'There is a unique constraint violation, a new user cannot be created with this email'
-        );
-      };
-    };
-    throw error;
+  } catch (error: any) {
+    const message = await handle_error(error);
+    const code = error.code || '';
+
+    throw new Error(message + ' ' + code);
   };
 
   return {

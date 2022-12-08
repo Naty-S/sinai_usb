@@ -1,6 +1,8 @@
 import type { actividad_form, kinds } from "$types/forms";
 import { goto } from "$app/navigation";
 
+import * as api from "$lib/api";
+
 
 export const submit = function (kind: kinds, update: boolean = false, id?: string) {
   return async function (data: actividad_form<typeof kind>) {
@@ -52,27 +54,11 @@ export const submit = function (kind: kinds, update: boolean = false, id?: strin
     let res: Response;
 
     if (update) {
-      res = await fetch(`/api/activities/modify/${kind}/${id}`, {
-        method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-      });
+      res = await api.patch(`/api/activities/modify/${kind}/${id}`, data);
     } else {
-      res = await fetch(`/api/activities/create/${kind}`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      });
+      res = await api.post(`/api/activities/create/${kind}`, data);
     };
     
-    if (res.ok) {
-      goto(res.url);
-    };
+    goto(res.url);
   };
 }

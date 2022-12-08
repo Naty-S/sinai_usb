@@ -1,7 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { Prisma } from "@prisma/client";
 
-import { prisma } from "$api/_api";
+import { handle_error, prisma } from "$api/_api";
 
 
 export const post: RequestHandler = async ({ request, params }) => {
@@ -36,22 +35,16 @@ export const post: RequestHandler = async ({ request, params }) => {
   try {
     await prisma.actividad.create({ data });
 
-    status = 303;
     headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}?act_created=true`
+      location: `/sinai/actividades/profesor/${data.creada_por}?creada=true`
     };
-  } catch (error) {
-    // TODO: 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      // The .code property can be accessed in a type-safe manner
-      // https://www.prisma.io/docs/reference/api-reference/error-reference
-      if (error.code === 'P1012') {
-        console.log(
-          'There is a unique constraint violation, a new user cannot be created with this email'
-        );
-      };
+  } catch (error: any) {
+    const message = await handle_error(error);
+    const code = error.code ? "&code=" + error.code : '';
+
+    headers = {
+      location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
     };
-    throw error;
   };
 
   return {

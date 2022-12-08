@@ -9,7 +9,7 @@ export const init = function () {
       apellido1: '',
       apellido2: null,
       cedula: '',
-      correo: '',
+      correo: "@usb.ve",
       sexo: 'F',
       categoria: "Agregado",
       condicion: "Contratado",
@@ -22,9 +22,9 @@ export const init = function () {
       url: null,
       // grupos_investigacion: [],
     },
-    ppi: {
+    pei: {
       anio: 2022,
-      nivel: "Candidato",
+      nivel: "A",
       numero: 0,
     }
   };

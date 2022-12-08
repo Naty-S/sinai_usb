@@ -62,11 +62,11 @@
 
 	<!-- svelte-ignore a11y-autofocus -->
 	<div class="center aligned actions">
-		<button class="ui button" on:click={close}>
+		<button type="button" class="ui button" on:click={close}>
 			{close_text}
 		</button>
 		{#if ok_text !== ''}
-			<button class="ui positive button" on:click={confirm}>
+			<button type="button" class="ui positive button" on:click={confirm}>
 				{ok_text}
 			</button>
 		{/if}

@@ -8,13 +8,33 @@
   
   import type { activity_form_ctx, kinds } from "$types/forms";
 
+  import * as api from "$lib/api";
+
   import Input from "$components/forms/input.svelte";
   import Select from "$components/forms/select.svelte";
+  import Modal from "$components/modal.svelte";
 
   const param = $page.params.activity;
   const kind = param as kinds;
   const tipo_actividad = param as autor_tipo_actividad_enum;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
+
+  let professors: { id: number, nombre: string }[] = [];
+  let action = { info: '', code: '' };
+
+  onMount(async () => {
+    const res = await api.get("/api/professors");
+
+    if (res.ok) {
+      const res_json = await res.clone().json();
+      professors = res_json.map((p: profesor) => ({ id: p.id, nombre: p.perfil }));
+
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
+    };
+  });
 
   const add_author_usb = function () {
     const init_author = {
@@ -32,8 +52,8 @@
 	};
 
 	const remove_author_usb = function (i: number) {
-    $form.autores_usb = $form.autores_usb.filter( (_, j) => j !== i );
-    $errors.autores_usb = $errors.autores_usb.filter( (_, j) => j !== i );
+    $form.autores_usb.splice(i, 1);
+    $errors.autores_usb.splice(i, 1);
   };
 
 	const add_author_out = function () {
@@ -52,28 +72,14 @@
 	};
 
 	const remove_author_out = function (i: number) {
-    $form.autores_externos = $form.autores_externos.filter( (_, j) => j !== i);
-    $errors.autores_externos = $errors.autores_externos.filter( (_, j) => j !== i);
+    $form.autores_externos.splice(i, 1);
+    $errors.autores_externos.splice(i, 1);
   };
 
   $: student_usb = function (i: number) { return $form.autores_usb[i].es_estudiante }
   $: student_out = function (i: number) { return $form.autores_externos[i].es_estudiante }
   $: tutor_usb = function (i: number) { return $form.autores_usb[i].es_tutor }
   $: tutor_out = function (i: number) { return $form.autores_externos[i].es_tutor }
-
-  let professors: { id: number, nombre: string }[] = [];
-  onMount(async () => {
-    const res = await fetch("/api/professors");
-
-    try {      
-      if (res.ok) {
-        const res_json = await res.clone().json();
-        professors = res_json.map((p: profesor) => ({ id: p.id, nombre: p.perfil }));
-      };
-    } catch (error) {      
-      throw error;
-    };
-  });
 
   $: $form.autores_usb.map(a => {
     if (!a.es_estudiante) {
@@ -142,7 +148,7 @@
           />
         {/if}
 
-        <button class="ui red button" on:click={() => remove_author_usb(i)}>
+        <button type="button" class="ui red button" on:click={() => remove_author_usb(i)}>
           Elminar
         </button>
       </div>
@@ -167,11 +173,11 @@
       {/if}
     {/each}
 
-    <button class="ui blue button" on:click|preventDefault={add_author_usb}>
+    <button type="button" class="ui blue button" on:click|preventDefault={add_author_usb}>
       Agregar
     </button>
     {#if $form.autores_usb.length > 0}
-      <button class="ui red button" on:click={() => $form.autores_usb = []}>
+      <button type="button" class="ui red button" on:click={() => $form.autores_usb = []}>
         Limpiar
       </button>
     {/if}
@@ -244,20 +250,36 @@
           />
         {/if}
 
-        <button class="ui red button" on:click={() => remove_author_out(i)}>
+        <button type="button" class="ui red button" on:click={() => remove_author_out(i)}>
           Elminar
         </button>
       </div>
     {/each}
     
-    <button class="ui blue button" on:click|preventDefault={add_author_out}>
+    <button type="button" class="ui blue button" on:click|preventDefault={add_author_out}>
       Agregar
     </button>
     {#if $form.autores_externos.length > 0}      
-      <button class="ui red button" on:click={() => $form.autores_externos = []}>
+      <button type="button" class="ui red button" on:click={() => $form.autores_externos = []}>
         Limpiar
       </button>
     {/if}
   </div>
-  
 </div>
+
+{#if action.info !== ''}
+  <Modal
+    id="error"
+    title="Error. {action.code}"
+    close_text="Ok"
+    align="center"
+    is_active={action.info !== ''}
+    close={() => location.replace($page.url.pathname)}
+  >
+    <p>
+      Hubo un problema al intentar realizar la acción por favor vuelva a intentar
+      o contáctese con algún administrador.
+    </p>
+    <span class="ui red text">Detalles: {action.info}</span>
+  </Modal>
+{/if}
