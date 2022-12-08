@@ -16,7 +16,7 @@
 
   const act = $page.params.activity;
   const kind = act as kinds;
-  const ctx = act ? kind : '';
+  const ctx = act ? kind : ''; // TODO: 
   const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 

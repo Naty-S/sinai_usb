@@ -10,7 +10,7 @@
 
   const act = $page.params.activity;
   const kind = act as kinds;
-  const ctx = act ? kind : '';
+  const ctx = act ? kind : ''; // TODO:
   const { form, errors }: activity_form_ctx<any> = getContext(key);
 
   const add = function () {
@@ -42,7 +42,7 @@
           bind:value={$form.lineas_investigacion[i]}
           class="ten wide field"
         />
-          <!-- error={$errors.lineas_investigacion[i]} -->
+          <!-- TODO: error={$errors.lineas_investigacion[i]} -->
         <button type="button" class="ui red button" on:click={() => remove(i)}>
           Elminar
         </button>

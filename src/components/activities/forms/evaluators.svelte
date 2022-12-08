@@ -1,16 +1,12 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";
-
-  import { page } from "$app/stores";
   
-  import type { activity_form_ctx, kinds } from "$types/forms";
+  import type { activity_form_ctx } from "$types/forms";
 
   import Input from "$components/forms/input.svelte";
 
-  const param = $page.params.activity;
-  const kind = "informe_tecnico" /* param */ as kinds;
-  const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
+  const { form, errors }: activity_form_ctx<"informe_tecnico"> = getContext(key);
 
   const add_evaluator = function () {
     $form.informe_tecnico.evaluadores = $form.informe_tecnico.evaluadores.concat(['']);
