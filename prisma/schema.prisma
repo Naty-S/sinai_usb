@@ -217,18 +217,18 @@ model profesor {
   apellido2            String?
   activo               Boolean                    @default(false)
   confirmado           Boolean                    @default(false) // confirmacion de proyecto?
-  sexo                 profesor_sexo_enum
   categoria            profesor_categoria_enum
   condicion            profesor_condicion_enum
   dedicacion           profesor_dedicacion_enum
+  departamento         Int
   diploma_tipo         profesor_diploma_tipo_enum
   diploma_universidad  String
-  departamento         Int
   extension            Int?
   fecha_contrato       DateTime?                  @db.Date
   fecha_ingreso        DateTime?                  @db.Date
   lineas_investigacion String[]
   perfil               String
+  sexo                 profesor_sexo_enum
   url                  String?
 
   // Postgres relations
@@ -236,7 +236,7 @@ model profesor {
 
   // Prisma relations
   actividades_validadas        actividad[]
-  autores                      autor_usb[]
+  autor_actividades                      autor_usb[]
   convocatorias_pei            convocatoria_pei[]
   coordinacion                 coordinacion?
   datos_informe                datos_informe[]
@@ -317,9 +317,9 @@ model convocatoria_pei {
   id       Int                          @id @default(autoincrement())
   profesor Int
   anio     Int?
+  aplica   Boolean                      @default(false)
   mes      meses_enum?
   nivel    convocatoria_pei_nivel_enum?
-  aplica   Boolean                      @default(false)
 
   // Postgres relations
   Profesor profesor @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -404,6 +404,13 @@ model historico_profesor_nomina {
   @@index([profesor])
 }
 
+model periodo_bra {
+  id     Int      @id @default(0)
+  fin    DateTime @db.Date
+  inicio DateTime @db.Date
+  activo Boolean  @default(false)
+}
+
 model pei {
   id       Int             @id @default(autoincrement())
   profesor Int
@@ -476,6 +483,15 @@ model red_grupo_investigacion {
   @@index([red])
 }
 
+model errors_log {
+  id      Int      @id @default(autoincrement())
+  causa   String
+  mensaje String
+  codigo  String?
+  campos  String[]
+  fecha   DateTime @db.Date
+}
+
 //
 // Actividades
 //
@@ -536,7 +552,7 @@ model log_operacion_actividad {
 
   // Postgres relations
   Profesor  profesor  @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: NoAction, onUpdate: Cascade) // TODO: on del set null?
 
   @@index([actividad])
   @@index([profesor])
@@ -870,23 +886,6 @@ model log_usuario {
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 // TODO: Evaluar posibilidad de agregar el `@id`
 model defensa {
-  anio                 Int?
-  carrera              String?
-  estudiante_apellidos String?
-  estudiante_nombres   String?
-  fecha                DateTime? @db.Date
-  titulo               String?
-  tutor_correo         String?
-  tutor_nombre         String?
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-// TODO:
-// Evaluar posibilidad de agregar el `@id`
-// Evaluar posibilidad de eliminar la tabla, no tiene datos provenientes de la base de datos vieja
-model defensa_temp {
   anio                 Int?
   carrera              String?
   estudiante_apellidos String?
