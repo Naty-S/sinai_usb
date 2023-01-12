@@ -551,8 +551,8 @@ model log_operacion_actividad {
   tabla     String
 
   // Postgres relations
-  Profesor  profesor  @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Actividad actividad @relation(fields: [actividad], references: [id], onDelete: NoAction, onUpdate: Cascade) // TODO: on del set null?
+  Profesor  profesor  @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([actividad])
   @@index([profesor])
@@ -687,7 +687,7 @@ model evento {
   ciudad        String
   fecha         DateTime              @db.Date
   institucion   String? // Institución que financia o patrocina
-  internacional Boolean               @default(false) // no esta en el form, se dedude del pais?
+  internacional Boolean               @default(false) // no esta en el form, se deduce del pais?
   modalidad     evento_modalidad_enum
   nombre        String
   pais          String
