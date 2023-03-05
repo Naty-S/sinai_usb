@@ -30,16 +30,6 @@ export const get: RequestHandler = async function({ params }) {
         creada_por: params.email
       },
       include: {
-        logs_operaciones_actividades: {
-          select: {
-            profesor: true,
-            Profesor: { select: { correo: true } },
-            fecha: true,
-            hora: true
-          },
-          where: { operacion: "Modificacion" },
-          orderBy: { fecha: "desc" }
-        },
         actividades_grupos: {
           select: {
             Grupo: {
@@ -74,10 +64,22 @@ export const get: RequestHandler = async function({ params }) {
     const professor = await prisma.profesor.findUniqueOrThrow({
       where: {
         correo: params.email
+      },
+      include: {
+        logs_operaciones_actividades: {
+          select: {
+            actividad: true,
+            Profesor: { select: { correo: true } },
+            fecha: true,
+            hora: true
+          },
+          where: { operacion: "Modificacion", actividad: { in: _acts.map(a => a.id)} },
+          orderBy: [{ fecha: "desc" }, { hora: "desc" }]//, take: 1
+        }
       }
     })
 
-    const activities: Activity[] = _acts.map(a => format_activity_kind(a));
+    const activities: Activity[] = _acts.map(a => format_activity_kind(a, professor.logs_operaciones_actividades));
     const entityActivities: EntityActivities = {
       entity: `Prof. ${professor.apellido1}, ${professor.nombre1}`,
       by_year: acts_kinds_by_year(activities, true),

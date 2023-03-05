@@ -543,7 +543,7 @@ model actividad {
 
 model log_operacion_actividad {
   id        Int                                    @id @default(autoincrement())
-  actividad Int?
+  actividad Int
   profesor  Int
   fecha     DateTime?                              @db.Date
   hora      DateTime?                              @db.Time(6)

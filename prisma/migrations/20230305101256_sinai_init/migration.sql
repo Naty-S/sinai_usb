@@ -317,7 +317,7 @@ CREATE TABLE "actividad" (
 -- CreateTable
 CREATE TABLE "log_operacion_actividad" (
     "id" SERIAL NOT NULL,
-    "actividad" INTEGER,
+    "actividad" INTEGER NOT NULL,
     "profesor" INTEGER NOT NULL,
     "fecha" DATE,
     "hora" TIME(6),
