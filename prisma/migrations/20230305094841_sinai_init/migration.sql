@@ -2,7 +2,7 @@
 CREATE TYPE "articulo_revista_estado_enum" AS ENUM ('Aceptado en Vias de Publicacion', 'Publicado');
 
 -- CreateEnum
-CREATE TYPE "autor_tipo_actividad_enum" AS ENUM ('articulo_revista', 'capitulo_libro', 'composicion', 'evento', 'exposicion', 'grabacion', 'informe', 'libro', 'memoria', 'partitura', 'patente', 'premio', 'premio_bienal', 'proyecto_investigacion', 'proyecto_de_grado', 'recital');
+CREATE TYPE "autor_tipo_actividad_enum" AS ENUM ('articulo_revista', 'capitulo_libro', 'composicion', 'evento', 'exposicion', 'grabacion', 'informe_tecnico', 'libro', 'memoria', 'partitura', 'patente', 'premio', 'premio_bienal', 'proyecto_investigacion', 'proyecto_grado', 'recital');
 
 -- CreateEnum
 CREATE TYPE "composicion_categoria_enum" AS ENUM ('Composicion', 'Arreglo', 'Ejecucion');
@@ -85,18 +85,18 @@ CREATE TABLE "profesor" (
     "apellido2" TEXT,
     "activo" BOOLEAN NOT NULL DEFAULT false,
     "confirmado" BOOLEAN NOT NULL DEFAULT false,
-    "sexo" "profesor_sexo_enum" NOT NULL,
     "categoria" "profesor_categoria_enum" NOT NULL,
     "condicion" "profesor_condicion_enum" NOT NULL,
     "dedicacion" "profesor_dedicacion_enum" NOT NULL,
+    "departamento" INTEGER NOT NULL,
     "diploma_tipo" "profesor_diploma_tipo_enum" NOT NULL,
     "diploma_universidad" TEXT NOT NULL,
-    "departamento" INTEGER NOT NULL,
     "extension" INTEGER,
     "fecha_contrato" DATE,
     "fecha_ingreso" DATE,
     "lineas_investigacion" TEXT[],
     "perfil" TEXT NOT NULL,
+    "sexo" "profesor_sexo_enum" NOT NULL,
     "url" TEXT,
 
     CONSTRAINT "profesor_pkey" PRIMARY KEY ("id")
@@ -148,9 +148,9 @@ CREATE TABLE "convocatoria_pei" (
     "id" SERIAL NOT NULL,
     "profesor" INTEGER NOT NULL,
     "anio" INTEGER,
+    "aplica" BOOLEAN NOT NULL DEFAULT false,
     "mes" "meses_enum",
     "nivel" "convocatoria_pei_nivel_enum",
-    "aplica" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "convocatoria_pei_pkey" PRIMARY KEY ("id")
 );
@@ -179,34 +179,46 @@ CREATE TABLE "grupo_investigacion" (
 
 -- CreateTable
 CREATE TABLE "historico_profesor_departamento" (
+    "id" SERIAL NOT NULL,
     "profesor" INTEGER NOT NULL,
     "departamento" INTEGER NOT NULL,
     "cargo" "historico_profesor_departamento_cargo_enum" NOT NULL DEFAULT 'jefe',
     "fin" DATE,
     "inicio" DATE NOT NULL,
 
-    CONSTRAINT "historico_profesor_departamento_pkey" PRIMARY KEY ("profesor","departamento","inicio")
+    CONSTRAINT "historico_profesor_departamento_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "historico_profesor_grupo" (
+CREATE TABLE "historico_profesor_grupo_investigacion" (
+    "id" SERIAL NOT NULL,
     "profesor" INTEGER NOT NULL,
     "grupo" INTEGER NOT NULL,
     "fin" DATE,
     "inicio" DATE NOT NULL,
 
-    CONSTRAINT "historico_profesor_grupo_pkey" PRIMARY KEY ("profesor","grupo","inicio")
+    CONSTRAINT "historico_profesor_grupo_investigacion_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "historico_profesor_nomina" (
     "id" SERIAL NOT NULL,
     "profesor" INTEGER NOT NULL,
-    "fin" DATE,
-    "inicio" DATE NOT NULL,
+    "fecha_egreso" DATE,
+    "fecha_ingreso" DATE NOT NULL,
     "tipo_personal" "historico_profesor_nomina_tipo_personal_enum" NOT NULL,
 
     CONSTRAINT "historico_profesor_nomina_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "periodo_bra" (
+    "id" INTEGER NOT NULL DEFAULT 0,
+    "activo" BOOLEAN NOT NULL DEFAULT false,
+    "fin" DATE NOT NULL,
+    "inicio" DATE NOT NULL,
+
+    CONSTRAINT "periodo_bra_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -238,8 +250,8 @@ CREATE TABLE "ppi" (
 -- CreateTable
 CREATE TABLE "personal_administrativo" (
     "id" SERIAL NOT NULL,
-    "login" TEXT NOT NULL,
     "cargo" TEXT,
+    "login" TEXT NOT NULL,
     "unidad" TEXT NOT NULL,
 
     CONSTRAINT "personal_administrativo_pkey" PRIMARY KEY ("id")
@@ -248,29 +260,41 @@ CREATE TABLE "personal_administrativo" (
 -- CreateTable
 CREATE TABLE "personal_coordinacion" (
     "id" SERIAL NOT NULL,
-    "login" TEXT NOT NULL,
-    "coordinacion" INTEGER NOT NULL,
     "acceso" INTEGER,
     "cargo" "personal_coordinacion_cargo_enum",
+    "coordinacion" INTEGER NOT NULL,
+    "login" TEXT NOT NULL,
 
     CONSTRAINT "personal_coordinacion_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "red" (
+CREATE TABLE "red_academica" (
     "id" SERIAL NOT NULL,
     "correo" TEXT NOT NULL,
     "nombre" TEXT NOT NULL,
 
-    CONSTRAINT "red_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "red_academica_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "red_grupo_investigacion" (
+CREATE TABLE "red_academica_grupo_investigacion" (
     "red" INTEGER NOT NULL,
     "grupo" INTEGER NOT NULL,
 
-    CONSTRAINT "red_grupo_investigacion_pkey" PRIMARY KEY ("red","grupo")
+    CONSTRAINT "red_academica_grupo_investigacion_pkey" PRIMARY KEY ("red","grupo")
+);
+
+-- CreateTable
+CREATE TABLE "errors_log" (
+    "id" SERIAL NOT NULL,
+    "campos" TEXT[],
+    "causa" TEXT NOT NULL,
+    "codigo" TEXT,
+    "fecha" DATE NOT NULL,
+    "mensaje" TEXT NOT NULL,
+
+    CONSTRAINT "errors_log_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -293,7 +317,7 @@ CREATE TABLE "actividad" (
 -- CreateTable
 CREATE TABLE "log_operacion_actividad" (
     "id" SERIAL NOT NULL,
-    "actividad" INTEGER NOT NULL,
+    "actividad" INTEGER,
     "profesor" INTEGER NOT NULL,
     "fecha" DATE,
     "hora" TIME(6),
@@ -440,7 +464,7 @@ CREATE TABLE "grabacion" (
     "editorial" TEXT NOT NULL,
     "fecha" DATE NOT NULL,
     "financiado_por" TEXT,
-    "jurado" TEXT NOT NULL,
+    "jurado" TEXT,
     "nacional" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "grabacion_pkey" PRIMARY KEY ("actividad")
@@ -597,18 +621,6 @@ CREATE TABLE "defensa" (
     "tutor_nombre" TEXT
 );
 
--- CreateTable
-CREATE TABLE "defensa_temp" (
-    "anio" INTEGER,
-    "carrera" TEXT,
-    "estudiante_apellidos" TEXT,
-    "estudiante_nombres" TEXT,
-    "fecha" DATE,
-    "titulo" TEXT,
-    "tutor_correo" TEXT,
-    "tutor_nombre" TEXT
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "profesor_correo_idx" ON "profesor"("correo");
 
@@ -655,10 +667,10 @@ CREATE INDEX "historico_profesor_departamento_departamento_idx" ON "historico_pr
 CREATE INDEX "historico_profesor_departamento_profesor_idx" ON "historico_profesor_departamento"("profesor");
 
 -- CreateIndex
-CREATE INDEX "historico_profesor_grupo_grupo_idx" ON "historico_profesor_grupo"("grupo");
+CREATE INDEX "historico_profesor_grupo_investigacion_grupo_idx" ON "historico_profesor_grupo_investigacion"("grupo");
 
 -- CreateIndex
-CREATE INDEX "historico_profesor_grupo_profesor_idx" ON "historico_profesor_grupo"("profesor");
+CREATE INDEX "historico_profesor_grupo_investigacion_profesor_idx" ON "historico_profesor_grupo_investigacion"("profesor");
 
 -- CreateIndex
 CREATE INDEX "historico_profesor_nomina_profesor_idx" ON "historico_profesor_nomina"("profesor");
@@ -673,10 +685,10 @@ CREATE INDEX "ppi_profesor_idx" ON "ppi"("profesor");
 CREATE INDEX "personal_coordinacion_coordinacion_idx" ON "personal_coordinacion"("coordinacion");
 
 -- CreateIndex
-CREATE INDEX "red_grupo_investigacion_grupo_idx" ON "red_grupo_investigacion"("grupo");
+CREATE INDEX "red_academica_grupo_investigacion_grupo_idx" ON "red_academica_grupo_investigacion"("grupo");
 
 -- CreateIndex
-CREATE INDEX "red_grupo_investigacion_red_idx" ON "red_grupo_investigacion"("red");
+CREATE INDEX "red_academica_grupo_investigacion_red_idx" ON "red_academica_grupo_investigacion"("red");
 
 -- CreateIndex
 CREATE INDEX "actividad_creada_por_idx" ON "actividad"("creada_por");
@@ -745,7 +757,7 @@ ALTER TABLE "departamento" ADD CONSTRAINT "departamento_division_fkey" FOREIGN K
 ALTER TABLE "administrador" ADD CONSTRAINT "administrador_login_fkey" FOREIGN KEY ("login") REFERENCES "usuario"("login") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "convocatoria_pei" ADD CONSTRAINT "convocatoria_pei_profesor_fkey" FOREIGN KEY ("profesor") REFERENCES "profesor"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "convocatoria_pei" ADD CONSTRAINT "convocatoria_pei_profesor_fkey" FOREIGN KEY ("profesor") REFERENCES "profesor"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "datos_informe" ADD CONSTRAINT "datos_informe_profesor_fkey" FOREIGN KEY ("profesor") REFERENCES "profesor"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
@@ -763,10 +775,10 @@ ALTER TABLE "historico_profesor_departamento" ADD CONSTRAINT "historico_profesor
 ALTER TABLE "historico_profesor_departamento" ADD CONSTRAINT "historico_profesor_departamento_departamento_fkey" FOREIGN KEY ("departamento") REFERENCES "departamento"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "historico_profesor_grupo" ADD CONSTRAINT "historico_profesor_grupo_profesor_fkey" FOREIGN KEY ("profesor") REFERENCES "profesor"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "historico_profesor_grupo_investigacion" ADD CONSTRAINT "historico_profesor_grupo_investigacion_profesor_fkey" FOREIGN KEY ("profesor") REFERENCES "profesor"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "historico_profesor_grupo" ADD CONSTRAINT "historico_profesor_grupo_grupo_fkey" FOREIGN KEY ("grupo") REFERENCES "grupo_investigacion"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "historico_profesor_grupo_investigacion" ADD CONSTRAINT "historico_profesor_grupo_investigacion_grupo_fkey" FOREIGN KEY ("grupo") REFERENCES "grupo_investigacion"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "historico_profesor_nomina" ADD CONSTRAINT "historico_profesor_nomina_profesor_fkey" FOREIGN KEY ("profesor") REFERENCES "profesor"("cedula") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -781,10 +793,10 @@ ALTER TABLE "ppi" ADD CONSTRAINT "ppi_profesor_fkey" FOREIGN KEY ("profesor") RE
 ALTER TABLE "personal_coordinacion" ADD CONSTRAINT "personal_coordinacion_coordinacion_fkey" FOREIGN KEY ("coordinacion") REFERENCES "coordinacion"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "red_grupo_investigacion" ADD CONSTRAINT "red_grupo_investigacion_grupo_fkey" FOREIGN KEY ("grupo") REFERENCES "grupo_investigacion"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "red_academica_grupo_investigacion" ADD CONSTRAINT "red_academica_grupo_investigacion_grupo_fkey" FOREIGN KEY ("grupo") REFERENCES "grupo_investigacion"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "red_grupo_investigacion" ADD CONSTRAINT "red_grupo_investigacion_red_fkey" FOREIGN KEY ("red") REFERENCES "red"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "red_academica_grupo_investigacion" ADD CONSTRAINT "red_academica_grupo_investigacion_red_fkey" FOREIGN KEY ("red") REFERENCES "red_academica"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "actividad" ADD CONSTRAINT "actividad_creada_por_fkey" FOREIGN KEY ("creada_por") REFERENCES "usuario"("login") ON DELETE NO ACTION ON UPDATE CASCADE;
@@ -796,13 +808,10 @@ ALTER TABLE "actividad" ADD CONSTRAINT "actividad_validado_por_fkey" FOREIGN KEY
 ALTER TABLE "log_operacion_actividad" ADD CONSTRAINT "log_operacion_actividad_profesor_fkey" FOREIGN KEY ("profesor") REFERENCES "profesor"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "log_operacion_actividad" ADD CONSTRAINT "log_operacion_actividad_actividad_fkey" FOREIGN KEY ("actividad") REFERENCES "actividad"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "actividad_grupo_investigacion" ADD CONSTRAINT "actividad_grupo_investigacion_grupo_fkey" FOREIGN KEY ("grupo") REFERENCES "grupo_investigacion"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "actividad_grupo_investigacion" ADD CONSTRAINT "actividad_grupo_investigacion_actividad_fkey" FOREIGN KEY ("actividad") REFERENCES "actividad"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "actividad_grupo_investigacion" ADD CONSTRAINT "actividad_grupo_investigacion_actividad_fkey" FOREIGN KEY ("actividad") REFERENCES "actividad"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "autor_externo" ADD CONSTRAINT "autor_externo_actividad_fkey" FOREIGN KEY ("actividad") REFERENCES "actividad"("id") ON DELETE CASCADE ON UPDATE CASCADE;
