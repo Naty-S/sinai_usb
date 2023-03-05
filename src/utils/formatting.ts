@@ -41,7 +41,7 @@ export const format_date = function (date: Date | string, format: string = "long
  * @param activity - 
  * @returns {Activity} - 
  */
-export const format_activity_kind = function (activity: any): Activity {
+export const format_activity_kind = function (activity: any, logs?: any): Activity {
   let kind_name = "ACTIVIDAD INVALIDA";
   let kind_info;
 
@@ -85,9 +85,9 @@ export const format_activity_kind = function (activity: any): Activity {
   });
 
   let actions_log: ActivityActionLog[] = [];
-  
-  if (activity.logs_operaciones_actividades?.length > 0) {
-    actions_log = activity.logs_operaciones_actividades.map((l: any) => ({
+
+  if (logs?.length > 0) {
+    actions_log = logs.map((l: any) => ({
       professor: l.Profesor.correo,
       date: l.fecha,
       time: l.hora
@@ -95,7 +95,6 @@ export const format_activity_kind = function (activity: any): Activity {
   };
 
   delete activity["actividades_grupos"];
-  delete activity["logs_operaciones_actividades"];
 
   const act: Activity = {
     ...activity,

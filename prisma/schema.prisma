@@ -198,12 +198,12 @@ model usuario {
   padded Int?
 
   // Prisma relations
-  actividades     actividad[]
-  administrador   administrador?
-  autores         autor_usb[]
-  profesor        profesor?
+  actividades   actividad[]
+  administrador administrador?
+  autores       autor_usb[]
+  profesor      profesor?
 
-  logs_usuario    log_usuario[] @ignore
+  logs_usuario  log_usuario[]  @ignore
 }
 
 model profesor {
@@ -236,18 +236,18 @@ model profesor {
 
   // Prisma relations
   actividades_validadas        actividad[]
-  autor_actividades                      autor_usb[]
+  autor_actividades            autor_usb[]
   convocatorias_pei            convocatoria_pei[]
   coordinacion                 coordinacion?
   datos_informe                datos_informe[]
+  jefe_departamentos           departamento[]                           @relation("departamento_jefe_fkey")
+  representante_departamentos  departamento[]                           @relation("departamento_representante_fkey")
   division                     division?
-  jefe_departamentos           departamento[]                      @relation("departamento_jefe_fkey")
+  grupos_investigacion         grupo_investigacion[]
   historico_departamentos      historico_profesor_departamento[]
-  historico_grupos             historico_profesor_grupo[]
+  historico_grupos             historico_profesor_grupo_investigacion[]
   historico_nomina             historico_profesor_nomina[]
   logs_operaciones_actividades log_operacion_actividad[]
-  representante_departamentos  departamento[]                      @relation("departamento_representante_fkey")
-  grupos_investigacion         grupo_investigacion[]
   pei                          pei[]
   ppi                          ppi[]
 }
@@ -354,13 +354,14 @@ model grupo_investigacion {
 
   // Prisma relations
   actividades_grupos          actividad_grupo_investigacion[]
-  historico_profesores_grupos historico_profesor_grupo[]
-  redes_grupos                red_grupo_investigacion[]
+  historico_profesores_grupos historico_profesor_grupo_investigacion[]
+  redes_grupos                red_academica_grupo_investigacion[]
 
   @@index([responsable])
 }
 
 model historico_profesor_departamento {
+  id           Int                                        @id @default(autoincrement())
   profesor     Int
   departamento Int
   cargo        historico_profesor_departamento_cargo_enum @default(jefe)
@@ -371,12 +372,12 @@ model historico_profesor_departamento {
   Departamento departamento @relation(fields: [departamento], references: [id], onDelete: NoAction, onUpdate: Cascade)
   Profesor     profesor     @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@id([profesor, departamento, inicio])
   @@index([departamento])
   @@index([profesor])
 }
 
-model historico_profesor_grupo {
+model historico_profesor_grupo_investigacion {
+  id       Int       @id @default(autoincrement())
   profesor Int
   grupo    Int
   fin      DateTime? @db.Date
@@ -386,7 +387,6 @@ model historico_profesor_grupo {
   Grupo    grupo_investigacion @relation(fields: [grupo], references: [id], onDelete: NoAction, onUpdate: Cascade)
   Profesor profesor            @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@id([profesor, grupo, inicio])
   @@index([grupo])
   @@index([profesor])
 }
@@ -394,8 +394,8 @@ model historico_profesor_grupo {
 model historico_profesor_nomina {
   id            Int                                          @id @default(autoincrement())
   profesor      Int
-  fin           DateTime?                                    @db.Date
-  inicio        DateTime                                     @db.Date
+  fecha_egreso  DateTime?                                    @db.Date
+  fecha_ingreso DateTime                                     @db.Date
   tipo_personal historico_profesor_nomina_tipo_personal_enum
 
   // Postgres relations
@@ -406,11 +406,12 @@ model historico_profesor_nomina {
 
 model periodo_bra {
   id     Int      @id @default(0)
+  activo Boolean  @default(false)
   fin    DateTime @db.Date
   inicio DateTime @db.Date
-  activo Boolean  @default(false)
 }
 
+// Ranking actual de profesores
 model pei {
   id       Int             @id @default(autoincrement())
   profesor Int
@@ -427,6 +428,7 @@ model pei {
   @@index([profesor])
 }
 
+// Ranking antiguo de profesores
 model ppi {
   id       Int             @id @default(autoincrement())
   profesor Int // cedula
@@ -443,17 +445,17 @@ model ppi {
 
 model personal_administrativo {
   id     Int     @id @default(autoincrement())
-  login  String
   cargo  String?
+  login  String
   unidad String
 }
 
 model personal_coordinacion {
   id           Int                               @id @default(autoincrement())
-  login        String
-  coordinacion Int
   acceso       Int?
   cargo        personal_coordinacion_cargo_enum?
+  coordinacion Int
+  login        String
 
   // Postgres relations
   coordinaciones coordinacion @relation(fields: [coordinacion], references: [id], onDelete: NoAction, onUpdate: Cascade)
@@ -461,22 +463,22 @@ model personal_coordinacion {
   @@index([coordinacion])
 }
 
-model red {
+model red_academica {
   id     Int    @id @default(autoincrement())
   correo String
   nombre String
 
   // Prisma relations
-  redes_grupos red_grupo_investigacion[]
+  redes_grupos red_academica_grupo_investigacion[]
 }
 
-model red_grupo_investigacion {
+model red_academica_grupo_investigacion {
   red   Int
   grupo Int
 
-  // Postgres relations
+  // Prisma relations
   Grupo grupo_investigacion @relation(fields: [grupo], references: [id], onDelete: NoAction, onUpdate: Cascade)
-  Red   red                 @relation(fields: [red], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Red   red_academica       @relation(fields: [red], references: [id], onDelete: NoAction, onUpdate: Cascade)
 
   @@id([red, grupo])
   @@index([grupo])
@@ -485,11 +487,11 @@ model red_grupo_investigacion {
 
 model errors_log {
   id      Int      @id @default(autoincrement())
-  causa   String
-  mensaje String
-  codigo  String?
   campos  String[]
+  causa   String
+  codigo  String?
   fecha   DateTime @db.Date
+  mensaje String
 }
 
 //
@@ -526,7 +528,6 @@ model actividad {
   grabacion                    grabacion?
   informe_tecnico              informe_tecnico?
   libro                        libro?
-  logs_operaciones_actividades log_operacion_actividad[]
   memoria                      memoria?
   partitura                    partitura?
   patente                      patente?
@@ -551,7 +552,6 @@ model log_operacion_actividad {
   tabla     String
 
   // Postgres relations
-  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: NoAction, onUpdate: Cascade) // TODO: on del set null?
   Profesor  profesor  @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([actividad])
@@ -565,7 +565,6 @@ model actividad_grupo_investigacion {
   // Postgres relations
   Actividad actividad           @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Grupo     grupo_investigacion @relation(fields: [grupo], references: [id], onDelete: NoAction, onUpdate: Cascade)
-
 
   @@id([actividad, grupo])
   @@index([actividad])

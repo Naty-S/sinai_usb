@@ -128,7 +128,10 @@
           name="autores_usb[{i}].es_ponente"
           bind:value={$form.autores_usb[i].es_ponente}
           class="three wide field"
-        />                
+        />
+        
+        <!-- TODO: #81 -->
+        
         {#if !tutor_usb(i)}
           <Input
             type="checkbox"
