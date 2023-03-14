@@ -4,6 +4,7 @@
   // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params }) => {    
     const res1 = await fetch(`/api/activities/professor/${params.email}`);
+    // periodo bra busca las actividades en las que ha participado?
     const res2 = await fetch(`/api/professor/${params.email}`);
     const res3 = await fetch("/api/bra");
 

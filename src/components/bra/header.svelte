@@ -27,13 +27,17 @@
       <div class="column"><strong>Vista:</strong> Bono BRA</div>
     </div>
   
-    <div class="four column row">
+    <div class="three column row">
       <div class="column"><strong>Categoría:</strong> {profile.categoria}</div>
       <div class="column"><strong>Dedicación:</strong> {profile.dedicacion}</div>
       <div class="column"><strong>Último Diploma:</strong> {profile.diploma_tipo}</div>
-      <div class="column"><strong>Num. PPI:</strong> {professor?.ppi_number}</div>
     </div>
-  
+    
+    <div class="two column row">
+      <div class="column"><strong>Num. PPI:</strong> {professor?.ppi_number}</div>
+      <div class="column"><strong>Num. PEI:</strong> {professor?.pei_number}</div>
+    </div>
+
     <div class="one column row">
       <div class="column"><strong>Responsable de los Grupos de Investigación:</strong>
         {professor?.groups.grupos_investigacion.map(g => g.nombre).join(". ")}

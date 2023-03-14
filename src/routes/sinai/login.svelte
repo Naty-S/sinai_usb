@@ -24,7 +24,7 @@
       
       if ($session.user?.professor) {
         goto(`/sinai/actividades/profesor/${$session.user.email}`);
-        
+      
       } else { // Dean
         goto("/sinai/actividades");
       };

@@ -43,6 +43,9 @@
 
 <svelte:window on:scroll={fix_on_top} on:resize={fit_menu} />
 
+<!-- height 15vh
+modificar para todo ente centrado entre el top y bottom del letter head
+-->
 <nav
   id="navabar"
   class="uk-navbar-container uk-position-z-index uk-width-1-1 {fixed}"
@@ -67,7 +70,7 @@
             />
           </li>
         {:else}
-          <li class="uk-margin-large-top">
+          <li class="uk-margin-medium-top">
             <a id="login" href="/sinai/login" class="ui primary tiny button">
               Iniciar sesion
             </a>
