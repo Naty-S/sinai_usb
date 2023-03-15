@@ -5,7 +5,7 @@
   import Letterhead from "./letterhead/index.svelte";
 	import MenuDropdown from "./menu.svelte";
   import ModifyBraPeriodModal from "./modify_bra_period_modal.svelte";
-  import bkg from "$lib/assets/letterhead_bkg.png";
+  import bkg from "$assets/letterhead_bkg.png";
 
   let show_create = false;
   let show_modify_bra = false;

@@ -12,7 +12,7 @@
       "type": "image/ico"
     },
     {
-      "src": "$lib/assets/icons/logo-80.png",
+      "src": "$assets/icons/logo-80.png",
       "sizes": "80x80",
       "type": "image/png"
     }
