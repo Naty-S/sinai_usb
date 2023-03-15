@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-import PrismaClient, { get_known_error } from "$lib/prisma";
+import PrismaClient, { get_known_error } from "$lib/server/prisma";
 
 
 export const prisma = new PrismaClient();
