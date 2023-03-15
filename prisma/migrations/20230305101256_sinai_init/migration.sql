@@ -736,6 +736,9 @@ CREATE INDEX "documento_actividad_idx" ON "documento"("actividad");
 ALTER TABLE "profesor" ADD CONSTRAINT "profesor_correo_fkey" FOREIGN KEY ("correo") REFERENCES "usuario"("login") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "profesor" ADD CONSTRAINT "profesor_departamento_fkey" FOREIGN KEY ("departamento") REFERENCES "departamento"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "coordinacion" ADD CONSTRAINT "coordinacion_jefe_fkey" FOREIGN KEY ("jefe") REFERENCES "profesor"("correo") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey

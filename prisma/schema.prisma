@@ -232,7 +232,9 @@ model profesor {
   url                  String?
 
   // Postgres relations
-  usuarios usuario @relation(fields: [correo], references: [login], onDelete: Cascade, onUpdate: Cascade)
+  Usuario      usuario @relation(fields: [correo], references: [login], onDelete: Cascade, onUpdate: Cascade)
+  Departamento departamento @relation(fields: [departamento], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
 
   // Prisma relations
   actividades_validadas        actividad[]
@@ -297,6 +299,7 @@ model departamento {
 
   // Prisma relations
   datos_informe        datos_informe[]
+  profesores           profesor[]
   historico_profesores historico_profesor_departamento[] @ignore
 
   @@index([coordinacion])
