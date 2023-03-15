@@ -4,7 +4,7 @@
   Registro de nuevo profesor
 -->
 <script lang="ts" context="module">
-  import { redirect } from "$lib/shared/session";
+  import { redirect } from "$lib/utils/session";
   
   export const load = redirect;
 </script>
@@ -24,9 +24,9 @@
 
   import type { Department } from "$lib/interfaces/departments";
 
-  import { init } from "$lib/shared/forms/auth/register/init";
-  import { validation } from "$lib/shared/forms/auth/register/validation";
-  import { submit } from "$lib/shared/forms/auth/register/submit";
+  import { init } from "$lib/utils/forms/auth/register/init";
+  import { validation } from "$lib/utils/forms/auth/register/validation";
+  import { submit } from "$lib/utils/forms/auth/register/submit";
   import * as api from "$lib/api";
 
   import Modal from "$lib/components/modal.svelte";

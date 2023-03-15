@@ -39,9 +39,9 @@
 
   import { session, page } from "$app/stores";
 
-  import { init } from "$lib/shared/forms/profile/init";
-  import { validation } from "$lib/shared/forms/profile/validation";
-  import { submit } from "$lib/shared/forms/profile/submit";
+  import { init } from "$lib/utils/forms/profile/init";
+  import { validation } from "$lib/utils/forms/profile/validation";
+  import { submit } from "$lib/utils/forms/profile/submit";
 
   import Modal from "$lib/components/modal.svelte";
   import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";

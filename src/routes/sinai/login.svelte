@@ -1,6 +1,6 @@
 <!-- TODO:  -->
 <script lang="ts" context="module">
-  import { redirect } from "$lib/shared/session";
+  import { redirect } from "$lib/utils/session";
   
   export const load = redirect;
 
