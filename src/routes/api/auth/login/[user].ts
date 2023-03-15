@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { User } from "$interfaces/auth";
+import type { User } from "$lib/interfaces/auth";
 
 import { handle_error, prisma } from "$api/_api";
 

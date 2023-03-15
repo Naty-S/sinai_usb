@@ -37,7 +37,7 @@
   import type {
     EntityActivities,
     YearActivities as YearActivitiesT
-  } from "$interfaces/activities";
+  } from "$lib/interfaces/activities";
 
   import { format_date } from "$utils/formatting";
 

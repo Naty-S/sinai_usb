@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { CoordActivities, DeanActivities, DivisionActivities } from "$interfaces/activities";
+import type { CoordActivities, DeanActivities, DivisionActivities } from "$lib/interfaces/activities";
 import { handle_error, prisma } from "$api/_api";
 
 

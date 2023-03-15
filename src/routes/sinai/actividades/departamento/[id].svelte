@@ -37,7 +37,7 @@
 <script lang="ts">
   import { page } from "$app/stores";
 
-  import type { DepActivities } from "$interfaces/activities";
+  import type { DepActivities } from "$lib/interfaces/activities";
   
   import ResumeEntity from "$lib/components/activities/resume_entity.svelte";
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";

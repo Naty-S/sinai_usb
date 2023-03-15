@@ -1,4 +1,4 @@
-import type { YearActivities } from "$interfaces/activities";
+import type { YearActivities } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
 import { map_to_detailed_kind } from "$utils/mappings";

@@ -22,7 +22,7 @@
 
   import { page } from "$app/stores";
 
-  import type { Department } from "$interfaces/departments";
+  import type { Department } from "$lib/interfaces/departments";
 
   import { init } from "$lib/shared/forms/auth/register/init";
   import { validation } from "$lib/shared/forms/auth/register/validation";

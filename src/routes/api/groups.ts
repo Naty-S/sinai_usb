@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { Group } from "$interfaces/groups";
+import type { Group } from "$lib/interfaces/groups";
 import { handle_error, prisma } from "$api/_api";
 
 

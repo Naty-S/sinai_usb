@@ -44,7 +44,7 @@
 <script lang="ts">
   import { page } from "$app/stores";
 
-  import type { EntityActivities } from "$interfaces/activities";
+  import type { EntityActivities } from "$lib/interfaces/activities";
 
 	import Modal from '$lib/components/modal.svelte';
   import ActivitiesModal from "$lib/components/navbar/activities_modal.svelte";

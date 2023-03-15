@@ -32,7 +32,7 @@
   };
 </script>
 <script lang="ts">
-  import type { DeanActivities } from "$interfaces/activities";
+  import type { DeanActivities } from "$lib/interfaces/activities";
 
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";
 

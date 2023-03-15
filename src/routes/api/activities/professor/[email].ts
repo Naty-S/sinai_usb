@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { EntityActivities } from "$interfaces/activities";
+import type { EntityActivities } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
 import { format_activity_kind } from "$utils/formatting";

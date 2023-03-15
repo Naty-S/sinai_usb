@@ -9,7 +9,7 @@
     , DepActivities
     , DivisionActivities
     , GroupActivities
-  } from "$interfaces/activities";
+  } from "$lib/interfaces/activities";
   
   import ResumeTable from "./resume_table.svelte";
   

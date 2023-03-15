@@ -1,7 +1,7 @@
 <script lang="ts">
   import { session } from "$app/stores";
   
-  import type { User } from "$interfaces/auth";
+  import type { User } from "$lib/interfaces/auth";
   
   import Sinai from "./sinai.svelte";
 	import LogoUSB from './logo_usb.svelte';

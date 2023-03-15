@@ -29,7 +29,7 @@
   };
 </script>
 <script lang="ts">
-  import type { CoordActivities } from "$interfaces/activities";
+  import type { CoordActivities } from "$lib/interfaces/activities";
 
   import ResumeEntity from "$lib/components/activities/resume_entity.svelte";
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";

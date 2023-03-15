@@ -1,7 +1,7 @@
 /// <reference types="@sveltejs/kit" />
 
-import type { Group } from "$interfaces/groups";
-import type { ActivityActionLog } from "$interfaces/logs";
+import type { Group } from "$lib/interfaces/groups";
+import type { ActivityActionLog } from "$lib/interfaces/logs";
 import type {
   actividad,
   autor_externo,

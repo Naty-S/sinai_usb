@@ -5,7 +5,7 @@
   import { page } from "$app/stores";
   
   import type { activity_form_ctx, kinds } from "$lib/types/forms";
-  import type { Group } from "$interfaces/groups";
+  import type { Group } from "$lib/interfaces/groups";
 
   import * as api from "$lib/api";
 

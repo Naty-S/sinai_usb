@@ -1,6 +1,6 @@
 import type { Activity } from "$lib/types/activities";
-import type { ActivityActionLog } from "$interfaces/logs";
-import type { Group } from "$interfaces/groups";
+import type { ActivityActionLog } from "$lib/interfaces/logs";
+import type { Group } from "$lib/interfaces/groups";
 
 import { parse, isDate } from "date-fns";
 

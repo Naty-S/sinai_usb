@@ -2,7 +2,7 @@
   import { session } from "$app/stores";
   
   import type { Activity } from "$lib/types/activities";
-  import type { YearActivities } from "$interfaces/activities";
+  import type { YearActivities } from "$lib/interfaces/activities";
   
   import { format_date } from "$utils/formatting";
   
