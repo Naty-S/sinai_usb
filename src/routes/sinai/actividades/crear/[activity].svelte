@@ -10,7 +10,7 @@
   import { validation } from "$lib/shared/forms/activities/validation";
   import { submit } from "$lib/shared/forms/activities/submit";
 
-  import ActivityForm from "$components/forms/activity.svelte";
+  import ActivityForm from "$lib/components/forms/activity.svelte";
 
   const activity = $page.params.activity;
   const kind = activity as kinds;

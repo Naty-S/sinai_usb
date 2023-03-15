@@ -8,7 +8,6 @@ const config = {
 		alias: {
 			$api: path.resolve('./src/routes/api'),
 			$assets: path.resolve('./src/assets'),
-			$components: path.resolve('./src/components'),
 			$types: path.resolve('./src/types'),
 			$interfaces: path.resolve('./src/interfaces'),
 			$utils: path.resolve('./src/utils'),

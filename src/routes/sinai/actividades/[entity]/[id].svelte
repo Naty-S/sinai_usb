@@ -46,10 +46,10 @@
 
   import type { EntityActivities } from "$interfaces/activities";
 
-	import Modal from '$components/modal.svelte';
-  import ActivitiesModal from "$components/navbar/activities_modal.svelte";
-  import YearActivities from "$components/activities/year_activities.svelte";
-  import ResumeTable from "$components/activities/resume_table.svelte";
+	import Modal from '$lib/components/modal.svelte';
+  import ActivitiesModal from "$lib/components/navbar/activities_modal.svelte";
+  import YearActivities from "$lib/components/activities/year_activities.svelte";
+  import ResumeTable from "$lib/components/activities/resume_table.svelte";
 
   export let activities: EntityActivities;
 

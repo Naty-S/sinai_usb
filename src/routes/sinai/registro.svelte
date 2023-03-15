@@ -1,3 +1,8 @@
+<!--
+  www.sinai.did.usb.ve/sinai/registro
+
+  Registro de nuevo profesor
+-->
 <script lang="ts" context="module">
   import { redirect } from "$lib/shared/session";
   
@@ -24,11 +29,12 @@
   import { submit } from "$lib/shared/forms/auth/register/submit";
   import * as api from "$lib/api";
 
-  import Modal from "$components/modal.svelte";
-  import ActionsButtons from "$components/forms/actions_buttons.svelte";
-  import Input from "$components/forms/input.svelte";
-  import Select from "$components/forms/select.svelte";
+  import Modal from "$lib/components/modal.svelte";
+  import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";
+  import Input from "$lib/components/forms/input.svelte";
+  import Select from "$lib/components/forms/select.svelte";
 
+  // Config form
   const initialValues = init();
   const onSubmit = submit();
   const validationSchema = validation();
@@ -37,6 +43,7 @@
 
   let action = { info: '', code: '' };
 
+  // Keep cheking return code when submit form
   $: registered = Boolean($page.url.searchParams.get("exito"));
   $: no_registered = $page.url.searchParams.get("error");
   $: err_code = $page.url.searchParams.get("code");
@@ -45,6 +52,7 @@
     form, errors, handleChange
   });
 
+  // Fetch department data
   let departments: Department[] = [];
 
   onMount(async () => {

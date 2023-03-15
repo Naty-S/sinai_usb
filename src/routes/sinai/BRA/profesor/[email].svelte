@@ -41,9 +41,9 @@
 
   import { format_date } from "$utils/formatting";
 
-  import YearActivities from "$components/activities/year_activities.svelte";
-  import BraHeader from "$components/bra/header.svelte";
-  import Notifications from "$components/notifications.svelte";
+  import YearActivities from "$lib/components/activities/year_activities.svelte";
+  import BraHeader from "$lib/components/bra/header.svelte";
+  import Notifications from "$lib/components/notifications.svelte";
 
   export let prof_activities: EntityActivities;
   export let profile: profesor;

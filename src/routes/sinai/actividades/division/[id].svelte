@@ -31,7 +31,7 @@
 <script lang="ts">
   import type { DivisionActivities } from "$interfaces/activities";
 
-  import ResumeRank from "$components/activities/resume_rank.svelte";
+  import ResumeRank from "$lib/components/activities/resume_rank.svelte";
 
   export let division_activities: DivisionActivities;
 

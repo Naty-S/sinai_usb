@@ -7,7 +7,7 @@
 
   import * as api from "$lib/api";
 
-  import Modal from "$components/modal.svelte";
+  import Modal from "$lib/components/modal.svelte";
 import { goto } from "$app/navigation";
 
   let show_validate = false;

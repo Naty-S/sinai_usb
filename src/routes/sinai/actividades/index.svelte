@@ -34,7 +34,7 @@
 <script lang="ts">
   import type { DeanActivities } from "$interfaces/activities";
 
-  import ResumeRank from "$components/activities/resume_rank.svelte";
+  import ResumeRank from "$lib/components/activities/resume_rank.svelte";
 
   export let activities: DeanActivities;
 </script>
