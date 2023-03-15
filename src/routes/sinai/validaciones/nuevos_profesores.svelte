@@ -1,25 +1,33 @@
+<!-- 
+  Shows professors pedding to be validates.
+
+  If Dean, displays all professors.
+  If department chief, displays professor for that department.
+ -->
 <script lang="ts">
   import { onMount } from "svelte";
 
   import type { profesor } from "@prisma/client";
 
   import { page, session } from "$app/stores";
+  import { goto } from "$app/navigation";
 
   import * as api from "$lib/api";
 
   import Modal from "$lib/components/modal.svelte";
-import { goto } from "$app/navigation";
 
+  
   let show_validate = false;
   let show_reject = false;
   let actual_prof_email = '';
   let actual_prof_name = '';
-  let new_professors: profesor[] = [];
+  let new_professors: profesor[] = []; // includes Departamento: {nombre: string} from prisma relation
   let action = { info: '', code: '' };
 
   $: user = $session.user;
   $: validated = $page.url.searchParams.get("validado");
 
+  // Fetch new professors data
   onMount(async () => {
     const res = await api.get("/api/professors");
 
@@ -109,9 +117,10 @@ import { goto } from "$app/navigation";
 
 <h2>Lista de profesores pendientes por validar</h2>
 
-<div id="new_professors" class="ui fluid styled accordion" uk-accordion>
+<div id="new_professors" class="ui fluid styled accordion" uk-accordion="animation: false;">
   {#each new_professors as p}
-    <div id="new_professor_{p.id}">
+    <section id="new_professor_{p.id}">
+      
       <div class="uk-accordion-title title">
         <div class="ui grid">
           <div class="ten wide column">
@@ -135,22 +144,53 @@ import { goto } from "$app/navigation";
           </div>
         </div>
       </div>
+      
       <div class="uk-accordion-content">
         <div class="content">
-          Nombres: {p.nombre1}{p.nombre2 ? p.nombre2 + ' ' : ''}.
-          Apellidos: {p.apellido1}{p.apellido2 ? p.apellido2 + ' ' : ''}.
-          Cedula: {p.cedula}. Correo: {p.correo}.
-          Categoria: {p.categoria}.
-          Condicion: {p.condicion}.
-          Dedicacion: {p.dedicacion}.
-          Ultimo diploma: {p.diploma_tipo.replaceAll('_', '')}.
-          Universidad donde lo obtuvo: {p.diploma_universidad}.
-          Departamento: {p.departamento}.
-          Lineas de investigacion: {p.lineas_investigacion.join(", ")}.
-          URL: {p.url ? p.url : ''}
+          <div class="ui centered grid container">
+            <div class="two column row">
+              <div class="column">
+                <strong>Nombres:</strong> {p.nombre1} {p.nombre2 ? p.nombre2 + ' ' : ''}
+              </div>
+              <div class="column">
+                <strong>Apellidos:</strong> {p.apellido1} {p.apellido2 ? p.apellido2 + ' ' : ''}
+              </div>
+            </div>
+            <div class="two column row">
+              <div class="column"><strong>Cédula:</strong> {p.cedula}</div>
+              <div class="column"><strong>Correo:</strong> {p.correo}</div>
+            </div>
+            <div class="three column row">
+              <div class="column"><strong>Categoría:</strong> {p.categoria}</div>
+              <div class="column"><strong>Condición:</strong> {p.condicion}</div>
+              <div class="column"><strong>Dedicación:</strong> {p.dedicacion}</div>
+            </div>
+            <div class="two column row">
+              <div class="column">
+                <strong>Último diploma:</strong> {p.diploma_tipo.replaceAll('_', '')}
+              </div>
+              <div class="column">
+                <strong>Universidad donde lo obtuvo:</strong> {p.diploma_universidad}
+              </div>
+            </div>
+            <div class="one column row">
+              <div class="column">
+                <strong>Departamento:</strong> {p.Departamento.nombre}
+              </div>
+            </div>
+            <div class="one column row">
+              <div class="column">
+                <strong>Líneas de investigación:</strong>
+                {p.lineas_investigacion.join(", ")}
+              </div>
+            </div>
+            <div class="one column row">
+              <div class="column"><strong>URL:</strong> {p.url ? p.url : ''}</div>
+            </div>
+          </div>
         </div>
       </div>      
-    </div>
+    </section>
   {/each}
 </div>
 
