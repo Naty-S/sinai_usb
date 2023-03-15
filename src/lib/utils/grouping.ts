@@ -1,7 +1,7 @@
 import type { YearActivities } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
-import { map_to_detailed_kind } from "$utils/mappings";
+import { map_to_detailed_kind } from "$lib/utils/mappings";
 
 /**
  * Groups activities by the given prop.

@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
 import type { CoordActivities, DepActivities, GroupActivities } from "$lib/interfaces/activities";
-import { format_activity_kind } from "$utils/formatting";
+import { format_activity_kind } from "$lib/utils/formatting";
 import { handle_error, prisma } from "$api/_api";
 
 

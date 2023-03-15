@@ -7,8 +7,8 @@
 
   import ResumeTable from "./resume_table.svelte";
 
-  import { count_acts_kinds } from "$utils/maths";
-  import { map_to_detailed_kind } from "$utils/mappings";
+  import { count_acts_kinds } from "$lib/utils/maths";
+  import { map_to_detailed_kind } from "$lib/utils/mappings";
 
   export let entity: string;
   export let entity_activities: ProfessorActivities[] | GroupActivities[];

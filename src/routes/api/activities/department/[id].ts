@@ -2,7 +2,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 
 import type { DepActivities } from "$lib/interfaces/activities";
 import { handle_error, prisma } from "$api/_api";
-import { format_activity_kind } from "$utils/formatting";
+import { format_activity_kind } from "$lib/utils/formatting";
 
 
 export const get: RequestHandler = async function ({ params }) {

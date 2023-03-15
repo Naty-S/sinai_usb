@@ -13,8 +13,8 @@
   
   import ResumeTable from "./resume_table.svelte";
   
-  import { acts_kinds_by_year } from "$utils/grouping";
-  import { count_acts_kinds_by_year } from "$utils/maths";
+  import { acts_kinds_by_year } from "$lib/utils/grouping";
+  import { count_acts_kinds_by_year } from "$lib/utils/maths";
 
   export let rank: string;
   export let rank_activities: CoordActivities | DivisionActivities | DepActivities | GroupActivities;

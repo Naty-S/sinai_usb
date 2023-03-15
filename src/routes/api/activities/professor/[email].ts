@@ -3,9 +3,9 @@ import type { RequestHandler } from "@sveltejs/kit";
 import type { EntityActivities } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
-import { format_activity_kind } from "$utils/formatting";
-import { acts_kinds_by_year } from "$utils/grouping";
-import { count_acts_kinds_by_year } from "$utils/maths";
+import { format_activity_kind } from "$lib/utils/formatting";
+import { acts_kinds_by_year } from "$lib/utils/grouping";
+import { count_acts_kinds_by_year } from "$lib/utils/maths";
 
 import { handle_error, prisma } from "$api/_api";
 

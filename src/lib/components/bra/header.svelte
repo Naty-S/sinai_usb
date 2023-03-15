@@ -3,7 +3,7 @@
 
   import { session } from "$app/stores";
 
-  import { format_date } from "$utils/formatting";
+  import { format_date } from "$lib/utils/formatting";
 
   export let profile: profesor;
   export let period = '';

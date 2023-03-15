@@ -39,7 +39,7 @@
     YearActivities as YearActivitiesT
   } from "$lib/interfaces/activities";
 
-  import { format_date } from "$utils/formatting";
+  import { format_date } from "$lib/utils/formatting";
 
   import YearActivities from "$lib/components/activities/year_activities.svelte";
   import BraHeader from "$lib/components/bra/header.svelte";

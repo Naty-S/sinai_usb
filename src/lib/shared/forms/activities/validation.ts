@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 import type { kinds } from "$lib/types/forms";
 
-import { parse_date } from "$utils/formatting";
+import { parse_date } from "$lib/utils/formatting";
 
 
 // TODO: regexs?

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   
-  import { format_date } from "$utils/formatting";
+  import { format_date } from "$lib/utils/formatting";
 
   import * as api from "$lib/api";
 

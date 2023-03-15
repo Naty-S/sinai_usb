@@ -1,7 +1,7 @@
 import type { ActivitiesCounts } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
-import { group_by, acts_kinds_by_year } from "$utils/grouping";
+import { group_by, acts_kinds_by_year } from "$lib/utils/grouping";
 
 /**
  * count kinds of activities by year

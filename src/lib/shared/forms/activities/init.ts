@@ -20,7 +20,7 @@ import type {
   recital,
 } from "@prisma/client";
 
-import { format_date } from "$utils/formatting";
+import { format_date } from "$lib/utils/formatting";
 
 
 export const init = function (kind: kinds, user: User, data?: Activity): actividad_form<typeof kind> {

@@ -7,7 +7,7 @@
 -->
 <script lang="ts">
   import type { ActivityKind } from "$lib/types/activities";
-  import { format_date } from "$utils/formatting";
+  import { format_date } from "$lib/utils/formatting";
 
   export let activity: ActivityKind;
   export let kind: string;
