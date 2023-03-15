@@ -1,7 +1,7 @@
 <script lang="ts">
   import { session } from "$app/stores";
   
-  import type { Activity } from "$types/activities";
+  import type { Activity } from "$lib/types/activities";
   import type { YearActivities } from "$interfaces/activities";
   
   import { format_date } from "$utils/formatting";

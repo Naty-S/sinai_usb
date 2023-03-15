@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import type { kinds } from "$types/forms";
+import type { kinds } from "$lib/types/forms";
 
 import { parse_date } from "$utils/formatting";
 

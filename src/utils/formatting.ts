@@ -1,4 +1,4 @@
-import type { Activity } from "$types/activities";
+import type { Activity } from "$lib/types/activities";
 import type { ActivityActionLog } from "$interfaces/logs";
 import type { Group } from "$interfaces/groups";
 

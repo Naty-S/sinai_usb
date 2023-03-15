@@ -1,6 +1,6 @@
 /// <reference types="@sveltejs/kit" />
 
-import type { Activity } from "$types/activities"
+import type { Activity } from "$lib/types/activities"
 import type { Group } from "./groups"
 
 

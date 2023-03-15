@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { submenu_item } from "$types/menu";
+	import type { submenu_item } from "$lib/types/menu";
 
   export let name: string;
   export let items: submenu_item[];

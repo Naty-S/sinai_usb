@@ -4,7 +4,7 @@
 
   import { page, session } from "$app/stores";
 
-  import type { kinds } from "$types/forms";
+  import type { kinds } from "$lib/types/forms";
 
   import { init } from "$lib/shared/forms/activities/init";
   import { validation } from "$lib/shared/forms/activities/validation";

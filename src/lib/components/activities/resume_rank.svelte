@@ -3,7 +3,7 @@
   Show's activities resume table for coordination, department or division
  -->
 <script lang="ts">
-  import type { Activity } from "$types/activities";
+  import type { Activity } from "$lib/types/activities";
   import type {
     CoordActivities
     , DepActivities

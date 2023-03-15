@@ -17,8 +17,6 @@
 			"$assets/*": ["src/assets/*"],
 			"$lib": ["src/lib"],
 			"$lib/*": ["src/lib/*"],
-			"$types": ["src/types"],
-			"$types/*": ["src/types/*"],
 			"$interfaces": ["src/interfaces"],
 			"$interfaces/*": ["src/interfaces/*"],
 			"$utils": ["src/utils"],

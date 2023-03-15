@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
 import type { EntityActivities } from "$interfaces/activities";
-import type { Activity } from "$types/activities";
+import type { Activity } from "$lib/types/activities";
 
 import { format_activity_kind } from "$utils/formatting";
 import { acts_kinds_by_year } from "$utils/grouping";

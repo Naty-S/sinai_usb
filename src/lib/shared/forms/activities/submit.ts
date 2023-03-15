@@ -1,4 +1,4 @@
-import type { actividad_form, kinds } from "$types/forms";
+import type { actividad_form, kinds } from "$lib/types/forms";
 import { goto } from "$app/navigation";
 
 import * as api from "$lib/api";

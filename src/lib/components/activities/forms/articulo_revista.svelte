@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { activity_form_ctx, kinds } from "$types/forms";
+  import type { activity_form_ctx, kinds } from "$lib/types/forms";
 
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";

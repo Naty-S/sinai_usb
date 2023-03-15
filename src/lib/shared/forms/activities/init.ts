@@ -1,6 +1,6 @@
 import type { User } from "$interfaces/auth";
-import type { Activity } from "$types/activities";
-import type { activity, actividad_form, kinds } from "$types/forms";
+import type { Activity } from "$lib/types/activities";
+import type { activity, actividad_form, kinds } from "$lib/types/forms";
 import type {
   articulo_revista,
   capitulo_libro,

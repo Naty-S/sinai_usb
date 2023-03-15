@@ -4,7 +4,7 @@
   
   import { page } from "$app/stores";
 
-  import type { activity_form_ctx, kinds } from "$types/forms";
+  import type { activity_form_ctx, kinds } from "$lib/types/forms";
 
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";

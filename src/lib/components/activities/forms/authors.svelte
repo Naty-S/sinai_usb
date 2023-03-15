@@ -6,7 +6,7 @@
 
   import { page } from "$app/stores";
   
-  import type { activity_form_ctx, kinds } from "$types/forms";
+  import type { activity_form_ctx, kinds } from "$lib/types/forms";
 
   import * as api from "$lib/api";
 

@@ -3,7 +3,7 @@ import { goto } from "$app/navigation";
 
   import { session } from "$app/stores";
   
-	import type { submenu_item } from "$types/menu";
+	import type { submenu_item } from "$lib/types/menu";
 
   import * as api from "$lib/api";
 

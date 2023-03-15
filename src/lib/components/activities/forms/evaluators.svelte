@@ -2,7 +2,7 @@
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";
   
-  import type { activity_form_ctx } from "$types/forms";
+  import type { activity_form_ctx } from "$lib/types/forms";
 
   import Input from "$lib/components/forms/input.svelte";
 
