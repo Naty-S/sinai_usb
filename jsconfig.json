@@ -24,9 +24,7 @@
 			"$interfaces": ["src/interfaces"],
 			"$interfaces/*": ["src/interfaces/*"],
 			"$utils": ["src/utils"],
-			"$utils/*": ["src/utils/*"],
-			"$stores": ["src/stores"],
-			"$stores/*": ["src/stores/*"],
+			"$utils/*": ["src/utils/*"]
 		}
 	}
 }
