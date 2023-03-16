@@ -1,16 +1,12 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";
-  
-  import { page } from "$app/stores";
-  
-  import type { activity_form_ctx, kinds } from "$types/forms";
+    
+  import type { activity_form_ctx } from "$types/forms";
 
   import Input from "$components/forms/input.svelte";
 
-  const param = $page.params.activity;
-  const kind = "capitulo_libro" // param as kinds;
-  const { form, errors, handleChange }: activity_form_ctx<"capitulo_libro"> = getContext(key);
+  const { form, errors }: activity_form_ctx<"capitulo_libro"> = getContext(key);
 
   const add_editor = function () {
     $form.capitulo_libro.editores = $form.capitulo_libro.editores.concat(['']);

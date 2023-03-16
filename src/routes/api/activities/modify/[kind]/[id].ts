@@ -81,11 +81,14 @@ export const patch: RequestHandler = async function ({ request, params }) {
 
   let actividades_grupos_create: { grupo: number }[] = [];
   let actividades_grupos_delete: { actividad: number, grupo: number }[] = [];
+  
   _data.actividades_grupos.forEach((group: { old: string, new: string }) => {
     if (group.old !== '?' && group.old !== group.new) {
+      
       actividades_grupos_create.push({
         grupo: Number(group.new)
       });
+      
       actividades_grupos_delete.push({
         actividad: Number(params.id),
         grupo: Number(group.old)
@@ -183,6 +186,8 @@ export const patch: RequestHandler = async function ({ request, params }) {
         )
       }
     };
+
+    data.fecha_ultima_modificacion = new Date();
 
     await prisma.actividad.update({
       where: {
