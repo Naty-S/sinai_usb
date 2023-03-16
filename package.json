@@ -37,6 +37,7 @@
 		"date-fns": "^2.29.2",
 		"print-js": "^1.6.0",
 		"svelte-forms-lib": "^2.0.1",
+		"util.inherits": "^1.0.3",
 		"yup": "^0.32.11"
 	}
 }
