@@ -14,6 +14,17 @@ const config = {
 			$utils: path.resolve('./src/utils'),
 			$stores: path.resolve('./src/stores'),
 		},
+	},
+	server: {
+		strictPort: true,
+		// watch: {
+		// 	usePolling: process.env.USE_POLLING,
+		// },
+		hmr: {
+			clientPort: 3000
+		},
+		host: '0.0.0.0',
+		port: 3000,
 	}
 };
 
