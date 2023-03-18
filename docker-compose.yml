@@ -49,7 +49,7 @@ services:
         delay: 5s
         window: 120s
     build:
-      context: ./db
+      context: ./prisma/db
       args:
         - DB_DUMP: ${DB_DUMP}
     env_file:

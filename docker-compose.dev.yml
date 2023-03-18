@@ -35,7 +35,7 @@ services:
     image: postgres-dev:14
     hostname: postgres
     build:
-      context: ./db
+      context: ./prisma/db
       args:
         - DB_DUMP: ${DB_DUMP}
     env_file:
