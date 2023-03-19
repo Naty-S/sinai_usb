@@ -34,10 +34,6 @@ services:
     container_name: postgres-dev
     image: postgres-dev:14
     hostname: postgres
-    build:
-      context: ./prisma/db
-      args:
-        - DB_DUMP=${DB_DUMP}
     env_file:
       - .env
     ports:
@@ -49,6 +45,7 @@ services:
       PGDATA: ${PG_DATA}
     volumes:
       - pgdata-dev:${PG_DATA}
+      - ./prisma/db/sinai.gz:/var/lib/postgresql/
 
 
   ##

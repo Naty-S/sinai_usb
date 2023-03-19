@@ -48,10 +48,6 @@ services:
         condition: always
         delay: 5s
         window: 120s
-    build:
-      context: ./prisma/db
-      args:
-        - DB_DUMP=${DB_DUMP}
     env_file:
       - .env
     ports:
@@ -63,6 +59,7 @@ services:
       PGDATA: ${PG_DATA}
     volumes:
       - pgdata:${PG_DATA}
+      - ./prisma/db/sinai.gz:/var/lib/postgresql/
 
 
   ##
