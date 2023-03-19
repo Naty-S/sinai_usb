@@ -3,7 +3,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { handle_error, prisma } from "$api/_api";
 
 
-export const get: RequestHandler = async function () {
+export const GET: RequestHandler = async function () {
   
   let status = 500;
   let body = {};
