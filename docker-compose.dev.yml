@@ -13,9 +13,9 @@ services:
     env_file:
       - .env
     links:
-      - postgres-dev
+      - postgres
     depends_on:
-      - postgres-dev
+      - postgres
     environment:
       - NODE_ENV=development
       - DATABASE_URL=${DATABASE_URL}
@@ -30,9 +30,9 @@ services:
 
   ## Execute and run the Postgres database container on port 5432. 
   # Access the database, set the environment
-  postgres-dev:
-    container_name: postgres-dev
-    image: postgres-dev:14
+  postgres:
+    container_name: postgres
+    image: postgres:14
     hostname: postgres
     env_file:
       - .env
@@ -44,13 +44,13 @@ services:
       POSTGRES_DB: ${PG_DB}
       PGDATA: ${PG_DATA}
     volumes:
-      - pgdata-dev:${PG_DATA}
-      - ./prisma/db/sinai.gz:/var/lib/postgresql/
+      - pgdata:${PG_DATA}
+      - ./prisma/db/sinai.gz:/var/lib/postgresql/sinai.gz
 
 
   ##
-  nginx-dev:
-    container_name: nginx-dev
+  nginx:
+    container_name: nginx
     image: nginx
     command: [ "nginx", "-g", "daemon off;" ]
     env_file:
@@ -68,5 +68,5 @@ services:
 
 
 volumes:
-  pgdata-dev:
+  pgdata:
   docker_node_modules-dev:
