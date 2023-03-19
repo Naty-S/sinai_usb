@@ -15,8 +15,8 @@
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.22.2",
-		"@sveltejs/adapter-node": "^1.0.0-next.79",
-		"@sveltejs/kit": "^1.0.0-next.367",
+		"@sveltejs/adapter-node": "^1.0.0-next.86",
+		"@sveltejs/kit": "^1.0.0-next.405",
 		"eslint": "^8.16.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^4.0.0",
@@ -26,7 +26,7 @@
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.7.1",
 		"typescript": "^4.7.4",
-		"vite": "^2.9.13"
+		"vite": "^3.2.5"
 	},
 	"type": "module",
 	"dependencies": {
