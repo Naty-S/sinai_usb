@@ -3,7 +3,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { handle_error, prisma } from "$api/_api";
 
 
-export const del: RequestHandler = async ({ params }) => {
+export const DELETE: RequestHandler = async ({ params }) => {
 
   let status = 500;
   let body = {};

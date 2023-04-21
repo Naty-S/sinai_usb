@@ -59,10 +59,6 @@
 		animation: fade 0.4s;
 	}
 
-	:global(html).dark .fade {
-		background-color: rgba(0, 0, 0, 0.3);
-	}
-
 	@keyframes fade {
 		from {
 			opacity: 0;

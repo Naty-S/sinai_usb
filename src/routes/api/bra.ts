@@ -3,7 +3,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { handle_error, prisma } from "$api/_api";
 
 
-export const get: RequestHandler = async function () {
+export const GET: RequestHandler = async function () {
   
   let status = 500;
   let body = {};
@@ -29,7 +29,7 @@ export const get: RequestHandler = async function () {
   };
 };
 
-export const patch: RequestHandler = async function ({ request }) {
+export const PATCH: RequestHandler = async function ({ request }) {
 
   const data = await request.json();
   data.activo = Boolean(data.activo);

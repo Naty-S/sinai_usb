@@ -4,7 +4,7 @@ import type { CoordActivities, DeanActivities, DivisionActivities } from "$inter
 import { handle_error, prisma } from "$api/_api";
 
 
-export const get: RequestHandler = async ({ request, params }) => {
+export const GET: RequestHandler = async ({ request, params }) => {
 
   let status = 500;
   let body = {};

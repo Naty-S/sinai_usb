@@ -3,7 +3,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { handle_error, prisma } from "$api/_api";
 
 
-export const post: RequestHandler = async ({ request, params }) => {
+export const POST: RequestHandler = async ({ request, params }) => {
 
   const _data = await request.json();
   const data = {
