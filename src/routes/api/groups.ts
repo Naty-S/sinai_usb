@@ -4,7 +4,7 @@ import type { Group } from "$interfaces/groups";
 import { handle_error, prisma } from "$api/_api";
 
 
-export const get: RequestHandler = async () => {
+export const GET: RequestHandler = async () => {
   
   let status = 500;
   let body = {};

@@ -6,7 +6,7 @@ import { handle_error, prisma } from "$api/_api";
 import { format_activity_kind } from "$utils/formatting";
 
 
-export const get: RequestHandler = async function ({ params }) {
+export const GET: RequestHandler = async function ({ params }) {
 
   let status = 500;
   let body = {};
@@ -67,7 +67,7 @@ export const get: RequestHandler = async function ({ params }) {
   };
 };
 
-export const patch: RequestHandler = async function ({ request, params }) {
+export const PATCH: RequestHandler = async function ({ request, params }) {
 
   const _data = await request.json();
 

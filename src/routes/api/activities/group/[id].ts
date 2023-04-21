@@ -7,7 +7,7 @@ import { count_acts_kinds_by_year } from "$utils/maths";
 import { handle_error, prisma } from "$api/_api";
 
 
-export const get: RequestHandler = async function ({ params }) {
+export const GET: RequestHandler = async function ({ params }) {
   
   let status = 500;
   let body = {};

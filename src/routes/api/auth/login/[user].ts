@@ -8,7 +8,7 @@ import { handle_error, prisma } from "$api/_api";
 /**
  * 
  */
-export const post: RequestHandler = async function({ request, params }) {
+export const POST: RequestHandler = async function({ request, params }) {
 
   const _data = await request.json();
   console.log('login user. _data:', _data);
