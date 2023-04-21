@@ -13,6 +13,7 @@ const config = {
 			$interfaces: path.resolve('./src/interfaces'),
 			$utils: path.resolve('./src/utils'),
 			$stores: path.resolve('./src/stores'),
+			".prisma/client/index-browser": "./node_modules/.prisma/client/index-browser.js"
 		},
 	},
 	server: {
