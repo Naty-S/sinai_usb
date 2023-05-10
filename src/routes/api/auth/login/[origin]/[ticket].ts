@@ -3,7 +3,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 import type { User } from "$interfaces/auth";
 
 import f from "node-fetch";
-import https from "https"
+import gent from "https-agent";
 import { CAS_BASE_URL, CAS_VALIDATE_URL } from "$lib/api";
 import { handle_error, prisma } from "$api/_api";
 
@@ -26,14 +26,14 @@ export const GET: RequestHandler = async function({ params }) {
     const CAS_SERVICE_URL = `${CAS_SERVICE_BASE_URL}%2Flogin`;
     const dst_verify = `${CAS_BASE_URL}${CAS_VALIDATE_URL}?service=${CAS_SERVICE_URL}&ticket=${cas_ticket}`;
 
-    const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+    const httpsAgent = gent({ rejectUnauthorized: false });
     const cas_verify = await f(dst_verify, { agent: httpsAgent });
 
     const cas_username = await cas_verify.text();
     const username = cas_username.split('cas:user')[1].slice(1, -2);
 
     const _user = await prisma.usuario.findUniqueOrThrow({
-      where: { login: username },
+      where: { login: username + "@usb.ve" },
       include: {
         administrador: true,
         profesor: {
@@ -140,7 +140,7 @@ export const GET: RequestHandler = async function({ params }) {
       };
 
     } else {
-      user.dean = _user.administrador?.nombre || "Dean";
+      user.dean = _user.administrador?.nombre;
     };
 
     const jwt = Buffer.from(JSON.stringify(user)).toString("base64");

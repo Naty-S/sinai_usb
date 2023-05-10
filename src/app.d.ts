@@ -17,3 +17,6 @@ declare global {
 		// interface Stuff {}
 	};
 };
+
+
+declare module "https-agent";

@@ -41,6 +41,8 @@
       <Register />
     {:else if $page.url.pathname === "/sinai/login"}
       <Login />
+    {:else if !user}
+      {goto("/sinai/login")}
     {:else if $page.error}
       <Err error={$page.error} status={$page.status} />
     {:else}
