@@ -1,14 +1,15 @@
 <script lang="ts">
+	import type { Department } from "$interfaces/departments";
   import { onMount } from "svelte";
 
   import type { profesor } from "@prisma/client";
 
+  import { goto } from "$app/navigation";
   import { page, session } from "$app/stores";
 
   import * as api from "$lib/api";
 
   import Modal from "$components/modal.svelte";
-import { goto } from "$app/navigation";
 
   let show_validate = false;
   let show_reject = false;
@@ -16,15 +17,20 @@ import { goto } from "$app/navigation";
   let actual_prof_name = '';
   let new_professors: profesor[] = [];
   let action = { info: '', code: '' };
+  let departments: Department[];
 
   $: user = $session.user;
   $: validated = $page.url.searchParams.get("validado");
 
   onMount(async () => {
     const res = await api.get("/api/professors");
+    const res2 = await api.get("/api/departments");
 
-    if (res.ok) {
+    if (res.ok && res2.ok) {
+      
       const professors = await res.clone().json();
+      departments = await res2.clone().json();
+
       new_professors = professors.filter((p: profesor) => !p.activo && (p.id !== 0));
 
       if (user?.professor) {
@@ -137,17 +143,80 @@ import { goto } from "$app/navigation";
       </div>
       <div class="uk-accordion-content">
         <div class="content">
-          Nombres: {p.nombre1}{p.nombre2 ? p.nombre2 + ' ' : ''}.
-          Apellidos: {p.apellido1}{p.apellido2 ? p.apellido2 + ' ' : ''}.
-          Cedula: {p.cedula}. Correo: {p.correo}.
-          Categoria: {p.categoria}.
-          Condicion: {p.condicion}.
-          Dedicacion: {p.dedicacion}.
-          Ultimo diploma: {p.diploma_tipo.replaceAll('_', '')}.
-          Universidad donde lo obtuvo: {p.diploma_universidad}.
-          Departamento: {p.departamento}.
-          Lineas de investigacion: {p.lineas_investigacion.join(", ")}.
-          URL: {p.url ? p.url : ''}
+          <div class="ui list">
+            <div class="item">
+              <i class="id badge icon"/>
+              <div class="content">
+                Nombres: {p.nombre1} {p.nombre2 ? p.nombre2 + ' ' : ''}
+              </div>
+            </div>
+            <div class="item">
+              <i class="id badge icon"/>
+              <div class="content">
+                Apellidos: {p.apellido1} {p.apellido2 ? p.apellido2 : ''}
+              </div>
+            </div>
+            <div class="item">
+              <i class="id card icon"/>
+              <div class="content">
+                Cedula: {p.cedula}.
+              </div>
+            </div>
+            <div class="item">
+              <i class="envelope icon"/>
+              <div class="content">
+                Correo: {p.correo}.
+              </div>
+            </div>
+            <div class="item">
+              <i class="id card icon"/>
+              <div class="content">
+                Departamento: {departments.find(d => d.id == p.departamento)?.nombre}.
+              </div>
+            </div>
+            <div class="item">
+              <i class="tag icon"/>
+              <div class="content">
+                Categoria: {p.categoria}.
+              </div>
+            </div>
+            <div class="item">
+              <i class="tag icon"/>
+              <div class="content">
+                Condicion: {p.condicion}.
+              </div>
+            </div>
+            <div class="item">
+              <i class="tag icon"/>
+              <div class="content">
+                Dedicacion: {p.dedicacion}.
+              </div>
+            </div>
+            <div class="item">
+              <i class="graduation cap icon"/>
+              <div class="content">
+                Ultimo diploma: {p.diploma_tipo.replaceAll('_', '')}.
+              </div>
+            </div>
+            <div class="item">
+              <i class="university icon"/>
+              <div class="content">
+                Universidad donde lo obtuvo: {p.diploma_universidad}.
+              </div>
+            </div>
+            <div class="item">
+              <i class="searchengin icon"/>
+              <div class="content">
+                Lineas de investigacion: {p.lineas_investigacion.join(", ")}.
+              </div>
+            </div>
+            <div class="item">
+              <i class="linkify icon"/>
+              <div class="content">
+                {p.url ? p.url : ''}
+              </div>
+            </div>
+          </div>
         </div>
       </div>      
     </div>
