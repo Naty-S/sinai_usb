@@ -1,7 +1,8 @@
 import type { Load } from "@sveltejs/kit";
 
-import { CAS_LOGIN_URL } from "$lib/api";
 import * as cookie from "cookie";
+
+import { CAS_LOGIN_URL } from "$lib/api";
 
 
 /**
@@ -23,7 +24,7 @@ export const redirect: Load = async function ({ fetch, session, url }) {
   } else if (session.user?.dean) {
     return {
       status: 302,
-      redirect: "/sinai/validaciones/nuevos_profesores"
+      redirect: "/sinai/actividades"
     };
   } else if (!session.user && !["login", "registro"].some(path => url.pathname.includes(path))) {
     return {

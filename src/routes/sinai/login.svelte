@@ -10,7 +10,7 @@
   import { session, page } from "$app/stores";
 
   
-  $: if ($page.url.searchParams.has("validated")) { onMount(async () => {
+  $: if ($page.url.searchParams.has("validated")) { onMount( () => {
     
       const jwt = $page.url.searchParams.get("validated");
       const user = jwt ? JSON.parse(jwt) : null;

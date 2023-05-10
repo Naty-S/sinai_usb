@@ -28,12 +28,12 @@
   $: professor = user?.professor;
   $: is_chief = professor?.coord_chief || professor?.is_dep_representative || professor?.is_dep_chief;
 
-  const can_validate = function (act: Activity) {
-    return (user?.dean || (is_chief && user?.email !== act.creada_por));
+  const can_validate = function (act: Activity, kind: string) {
+    return (user?.dean || (is_chief && user?.email !== act.creada_por))&& kind !== "ACTIVIDAD INVALIDA";
   };
 
-  const can_modify = function () {
-    return user?.dean || !is_chief;
+  const can_modify = function (kind: string) {
+    return (user?.dean || !is_chief) && kind !== "ACTIVIDAD INVALIDA";
   };
 
   const can_delete = function () {
@@ -153,7 +153,7 @@
               </div>
               {#if editable}
                 <div class="uk-margin-small">
-                  {#if can_modify()}
+                  {#if can_modify(kind)}
                     <a
                       href="/sinai/actividades/modificar/{act.kind_name}/{act.id}" 
                       class="ui green small button"
@@ -161,7 +161,7 @@
                       Modificar
                     </a>
                   {/if}
-                  {#if can_validate(act)}
+                  {#if can_validate(act, kind)}
                     {#if !act.validado_por && !act.fecha_validacion}
                       <button
                         type="button"

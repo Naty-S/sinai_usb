@@ -10,7 +10,7 @@
 
     const user = session.user;
     
-    if (user?.professor?.is_dep_chief || user?.professor?.is_dep_representative) {
+    if (user?.professor?.is_dep_chief || user?.professor?.is_dep_representative || session.user?.dean) {
 
       const res = await fetch(`/api/activities/department/${params.id}`);
      
@@ -28,7 +28,7 @@
       };
     } else {
       return {
-        error: new Error("Acceso denegado. Inicie sesión como jefe o representante."),
+        error: new Error("Acceso denegado. Inicie sesión como jefe o representante de Departamento o Decano."),
         status: 401
       };
     };
