@@ -1,6 +1,7 @@
 import type { Load } from "@sveltejs/kit";
 
-import * as api from "$lib/api";
+import { CAS_LOGIN_URL } from "$lib/api";
+import * as cookie from "cookie";
 
 
 /**
@@ -12,7 +13,7 @@ import * as api from "$lib/api";
  *    - /sinai/login    -> redirects to dst login
  *    - /sinai/registro -> display page
  */
-export const redirect: Load = async function ({ session, url }) {
+export const redirect: Load = async function ({ fetch, session, url }) {
 
   if (session.user?.professor) {
     return {
@@ -31,15 +32,35 @@ export const redirect: Load = async function ({ session, url }) {
     };
   } else if (!session.user && url.searchParams.has("ticket")) {
 
+    const origin = url.origin.split("://")[1];
     const cas_ticket = url.searchParams.get("ticket");
+    const login = await fetch(`/api/auth/login/${origin}/${cas_ticket}`);
+    
+    if (login.ok) {
+      const cookies = cookie.parse(login.headers.get("set-cookie") || '');
+      const jwt = cookies.jwt && Buffer.from(cookies.jwt, "base64").toString("utf-8");
+
+      return {
+        status: 302,
+        redirect: `/sinai/login?validated=${jwt}`
+      }
+    } else {
+      const { message } = await login.json();
+      return {
+        error: new Error(message)
+      };
+    };
+
+
+  } else if (!session.user && url.pathname.includes("login") && !url.searchParams.has("validated")) {
+
+    const origin = url.origin.split("://")[1];
+    const CAS_SERVICE_BASE_URL = `http%3A%2F%2F${origin}%2Fsinai`;
+    const CAS_SERVICE_URL = `${CAS_SERVICE_BASE_URL}%2Flogin`;
 
     return {
-      status: 200
-    };
-  } else if (!session.user && url.pathname.includes("login")) {
-    return {
       status: 302,
-      redirect: "https://secure.dst.usb.ve/login?service=http%3A%2F%2Flocalhost:3000%2Fsinai%2Flogin"
+      redirect: `${CAS_LOGIN_URL}?service=${CAS_SERVICE_URL}`
     };
   } else {
     return {

@@ -54,23 +54,24 @@ import { goto } from "$app/navigation";
 
   $: if (professor) {
     options = [
-      {href: void_link, click: () => {}, name: "Cambiar Contraseña"},
+      // {href: void_link, click: () => {}, name: "Cambiar Contraseña"},
       {href: `/sinai/perfil/${user?.email}`, click: () => {}, name: "Cambiar Perfil"}
     ];
   } else if (user?.dean) {
     options = [
-      { href: void_link, click: () => {}, name: "Modificar Profesores"},
+      // { href: void_link, click: () => {}, name: "Modificar Profesores"},
       {href: void_link, click: () => show_modify_bra_period(), name: "Modificar Periodo BRA"}
     ];
   };
 
   const logout = async function () {
+
     await api.post("/api/auth/logout", null);
 
     $session.user = null;
 
-    goto("/sinai/login");
-  };
+    goto("https://secure.dst.usb.ve/logout")
+  };  
 </script>
 
 <a
@@ -126,7 +127,7 @@ import { goto } from "$app/navigation";
     /> -->
     <Submenu name="Mis Grupos" items={groups} />
     <Submenu name="Opciones" items={options} />
-    <Submenu name="Ayuda" items={[]} />
+    <!-- <Submenu name="Ayuda" items={[]} /> -->
     <li>
       <button type="button" class="ui red button" on:click={logout}>
         Salir

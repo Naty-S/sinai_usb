@@ -12,21 +12,6 @@ export const handle: Handle = async function ({ event, resolve }) {
 	// set user
 	event.locals.user = jwt ? JSON.parse(jwt) : null;
 
-	// Apply CORS header for API routes
-	// if (event.url.pathname.startsWith('/api')) {
-		// Required for CORS to work
-		if (event.request.method === 'OPTIONS') {
-			return new Response(null, {
-				headers: {
-					'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE',
-					'Access-Control-Allow-Origin': '*',
-				}
-			});
-		}
-
-		response.headers.append('Access-Control-Allow-Origin', `*`);
-	// }
-
 	return response;
 };
 
