@@ -6,7 +6,7 @@ import { CAS_LOGIN_URL } from "$lib/api";
 
 
 /**
- * Redirects on page load according if the user its logged in or not
+ * Redirects on page load accordingly if the user its logged in or not
  * 
  * used in routes:
  *    - /               -> redirects

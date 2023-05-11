@@ -1,5 +1,5 @@
 <!--
-  Redirects according if the user its logged in or not from `www.sinai.did.usb.ve/sinai`
+  Show options for login, register or public inquiries
 -->
 <script lang="ts" context="module">
   import { redirect } from "$lib/utils/session";

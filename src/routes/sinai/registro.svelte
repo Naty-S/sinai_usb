@@ -41,19 +41,18 @@
   const formProps = { initialValues, onSubmit, validationSchema };
   const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
 
-  let action = { info: '', code: '' };
+  setContext(key, {
+    form, errors, handleChange
+  });
 
   // Keep cheking return code when submit form
   $: registered = Boolean($page.url.searchParams.get("exito"));
   $: no_registered = $page.url.searchParams.get("error");
   $: err_code = $page.url.searchParams.get("code");
 
-  setContext(key, {
-    form, errors, handleChange
-  });
-
   // Fetch department data
   let departments: Department[] = [];
+  let action = { info: '', code: '' };
 
   onMount(async () => {
     const res = await api.get("/api/departments");
@@ -237,11 +236,12 @@
   >
     <p>
       Hubo un problema al intentar registrarse por favor vuelva a intentar
-      o contáctese con algún administrador.
+      o contáctese con algún administrador proporcionando el código del error.
     </p>
     <span class="ui red text">Detalles: {no_registered}</span>
   </Modal>
 {/if}
+
 {#if action.info !== ''}
   <Modal
     id="error"
@@ -253,7 +253,7 @@
   >
     <p>
       Hubo un problema al cargar el formulario, recargue la página 
-      o contáctese con algún administrador.
+      o contáctese con algún administrador proporcionando el código del error.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
   </Modal>

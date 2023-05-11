@@ -1,6 +1,12 @@
+/* 
+ * Helper for request
+ */
+
+
 type Method = "GET" | "POST" | "PATCH" | "DELETE";
 
 
+/** */
 const request = async function (method: Method, endpoint: string, data?: any) {
 
   const opts: any = { method, credentials: "same-origin" };

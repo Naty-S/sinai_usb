@@ -1,7 +1,6 @@
 <script lang="ts" context="module">
 	import type { Load } from "@sveltejs/kit";
 
-  // https://kit.svelte.dev/docs/loading
 	export const load: Load = ({ error, status }) => {
 		return {
 			props: { error, status }
