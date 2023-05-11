@@ -89,7 +89,7 @@
 </script>
 
 <h2 class="ui blue header uk-text-center">
-  {entity}s con Actividades ({entities_with_acts.length})
+  {entity == "Grupo" ? "Grupos" : "Profesores"} con Actividades ({entities_with_acts.length})
 </h2>
 <div class="uk-text-center">
   Nota: A continuacion se muestran los totales de las actividades ingresadas en el sistema

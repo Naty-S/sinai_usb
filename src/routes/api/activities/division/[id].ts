@@ -4,7 +4,7 @@ import type { DepActivities, DivisionActivities } from "$lib/interfaces/activiti
 import { handle_error, prisma } from "$api/_api";
 
 
-export const get: RequestHandler = async function ({ request, params }) {
+export const GET: RequestHandler = async function ({ request, params }) {
   
   let status = 500;
   let body = {};

@@ -5,7 +5,7 @@ import { format_activity_kind } from "$lib/utils/formatting";
 import { handle_error, prisma } from "$api/_api";
 
 
-export const get: RequestHandler = async function ({ request, params }) {
+export const GET: RequestHandler = async function ({ request, params }) {
   
   let status = 500;
   let body = {};

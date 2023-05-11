@@ -12,10 +12,10 @@
       const res = await fetch("/api/activities");
     
       if (res.ok) {
-        const activities = await res.json();
+        const entities = await res.json();
 
         return {
-          props: { activities }
+          props: { entities }
         };
       };
 
@@ -34,15 +34,44 @@
 <script lang="ts">
   import type { DeanActivities } from "$lib/interfaces/activities";
 
-  import ResumeRank from "$lib/components/activities/resume_rank.svelte";
-
-  export let activities: DeanActivities;
+	import { goto } from "$app/navigation";
+  
+  export let entities: DeanActivities;
 </script>
 
-{#each activities.coordinations_activities as coord_activities}
-  <ResumeRank rank="Coordinacion" rank_activities={coord_activities} />
-{/each}
 
-{#each activities.divisions_activities as division_activities}
-  <ResumeRank rank="División" rank_activities={division_activities} />
-{/each}
+<h2 class="ui blue header uk-text-center">
+  Coordinaciones
+</h2>
+<div class="ui middle aligned divided animated big list">
+  {#each entities.coordinations as coord}
+    <div class="item">
+      <div class="right floated content">
+        <button type="button" class="ui button" on:click={() => goto(`/sinai/actividades/coordinacion/${coord.id}`)}>
+          Ver resúmen de actividades
+        </button>
+      </div>
+      <div class="content">
+        {coord.nombre}
+      </div>
+    </div>
+  {/each}
+</div>
+
+<h2 class="ui blue header uk-text-center">
+  Divisiones
+</h2>
+<div class="ui middle aligned divided animated big list">
+  {#each entities.divisions as division}
+    <div class="item">
+      <div class="right floated content">
+        <button type="button" class="ui button" on:click={() => goto(`/sinai/actividades/division/${division.id}`)}>
+          Ver resúmen de actividades
+        </button>
+      </div>
+      <div class="content">
+        {division.nombre}
+      </div>
+    </div>
+  {/each}
+</div>

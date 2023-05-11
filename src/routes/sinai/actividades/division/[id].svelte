@@ -4,7 +4,7 @@
   // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params, session }) => {
 
-    if (session.user?.professor?.division_chief) {
+    if (session.user?.professor?.division_chief || session.user?.dean) {
 
       const res = await fetch(`/api/activities/division/${params.id}`);
   
@@ -22,7 +22,7 @@
       };
     } else {
       return {
-        error: new Error("Acceso denegado. Inicie sesión como jefe de División."),
+        error: new Error("Acceso denegado. Inicie sesión como jefe de División o Decano."),
         status: 401
       };
     };

@@ -4,6 +4,11 @@ import type { Activity } from "$lib/types/activities"
 import type { Group } from "./groups"
 
 
+export interface Entity {
+  id: number,
+  name: string
+};
+
 export interface YearActivities {
   year: number,
   kind_activities: Record<string, Activity[]>
@@ -39,31 +44,28 @@ export interface GroupActivities {
 };
 
 export interface DepActivities {
-  department: {
-    id: number,
-    name: string
-  },
+  department: Entity,
   professors_activities: ProfessorActivities[]
 };
 
 export interface CoordActivities {
-  coordination: {
-    id: number,
-    name: string
-  },
+  coordination: Entity,
   departments_activities?: DepActivities[]
   groups_activities?: GroupActivities[]
 };
 
 export interface DivisionActivities {
-  division: {
-    id: number,
-    name: string
-  },
+  division: Entity,
   departments_activities: DepActivities[]
 };
 
 export interface DeanActivities {
-  coordinations_activities: CoordActivities[],
-  divisions_activities: DivisionActivities[]
+  coordinations: {
+    id: number,
+    nombre: string
+  }[],
+  divisions: {
+    id: number,
+    nombre: string
+  }[]
 };

@@ -4,7 +4,7 @@
   // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params, session }) => {
 
-    if (session.user?.professor?.coord_chief) {
+    if (session.user?.professor?.coord_chief || session.user?.dean) {
 
       const res = await fetch(`/api/activities/coordination/${params.id}`);
   
@@ -22,7 +22,7 @@
       };
     } else {
       return {
-        error: new Error("Acceso denegado. Inicie sesión como Coordinador"),
+        error: new Error("Acceso denegado. Inicie sesión como Coordinador o Decano"),
         status: 401
       };
     };

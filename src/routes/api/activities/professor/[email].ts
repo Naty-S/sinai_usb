@@ -18,7 +18,7 @@ import { handle_error, prisma } from "$api/_api";
  * 
  * @returns {} The status code and the activities grouped by year and kind
  */
-export const get: RequestHandler = async function({ params }) {
+export const GET: RequestHandler = async function({ params }) {
 
   let status = 500;
   let body = {};

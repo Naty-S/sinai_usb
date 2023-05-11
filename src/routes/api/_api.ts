@@ -65,7 +65,7 @@ export const handle_error = async function (error: any) {
       data.campos = error.meta.target;
     };
 
-    console.log(data);
+    console.log("_api error data: ", data);
     await prisma.errors_log.create({ data });
   };
 
