@@ -9,11 +9,7 @@ export const GET: RequestHandler = async function () {
   let body = {};
 
   try {
-    const professors = await prisma.profesor.findMany({
-      include: {
-        Departamento: { select: { nombre: true } }
-      }
-    });
+    const professors = await prisma.profesor.findMany();
 
     status = 200;
     body = professors;
