@@ -1,4 +1,5 @@
 <!-- 
+	@component
 	Loader animation when the data its being fetched and processed
  -->
 <script>

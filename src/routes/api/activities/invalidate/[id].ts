@@ -3,6 +3,16 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { handle_error, prisma } from "$api/_api";
 
 
+/**
+ * Updates activity as invalidated.
+ * 
+ * Fields updated:
+ *    - last modification date `fecha_ultima_modificacion`
+ *    - validation date `fecha_ultima_modificacion`
+ *    - user who validated `validado_por`
+ *
+ * @returns The code `invalidated`
+*/
 export const PATCH: RequestHandler = async ({ params }) => {
 
   let status = 500;

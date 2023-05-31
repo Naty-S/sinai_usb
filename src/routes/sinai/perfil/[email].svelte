@@ -1,7 +1,9 @@
+<!--
+  Display professor's profile for modify.
+-->
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
 
-  // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params, session }) => {
 
     if (session.user?.professor) {

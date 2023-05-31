@@ -5,6 +5,9 @@ import { handle_error, prisma } from "$api/_api";
 import { format_activity_kind } from "$lib/utils/formatting";
 
 
+/**
+ * Query department's activities and professor with they activities
+*/
 export const GET: RequestHandler = async function ({ params }) {
   
   let status = 500;

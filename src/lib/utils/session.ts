@@ -9,8 +9,8 @@ import { CAS_LOGIN_URL } from "$lib/api";
  * Redirects on page load accordingly if the user its logged in or not
  * 
  * used in routes:
- *    - /               -> redirects
- *    - /sinai          -> redirects
+ *    - /               -> redirects to login
+ *    - /sinai          -> redirects to login
  *    - /sinai/login    -> redirects to dst login
  *    - /sinai/registro -> display page
  */

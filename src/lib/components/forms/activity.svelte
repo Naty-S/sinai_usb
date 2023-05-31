@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Activity form layout
+ -->
 <script lang="ts">
   import ArticuloRevista from "$lib/components/activities/forms/articulo_revista.svelte";
 	import CapituloLibro from "$lib/components/activities/forms/capitulo_libro.svelte";

@@ -1,7 +1,5 @@
 <!--
-  www.sinai.did.usb.ve/sinai/registro
-
-  Registro de nuevo profesor
+  New professor register page
 -->
 <script lang="ts" context="module">
   import { redirect } from "$lib/utils/session";
@@ -50,7 +48,7 @@
   $: no_registered = $page.url.searchParams.get("error");
   $: err_code = $page.url.searchParams.get("code");
 
-  // Fetch department data
+  // Fetch departments data
   let departments: Department[] = [];
   let action = { info: '', code: '' };
 

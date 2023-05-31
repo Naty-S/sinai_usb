@@ -1,6 +1,5 @@
 <!-- 
-  @component
-  Shows the departament activities resume.
+  Departament activities resume page
  -->
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";

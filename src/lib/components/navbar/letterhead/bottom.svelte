@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Renders bottom section of letterhead
+ -->
 <script lang="ts">
   import { session } from "$app/stores";
   

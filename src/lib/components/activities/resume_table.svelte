@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Kinds activities count resume table
+ -->
 <script lang="ts">
   import type { ActivitiesCounts } from "$lib/interfaces/activities";
 

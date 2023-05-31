@@ -3,6 +3,15 @@
 import type { grupo_investigacion } from "@prisma/client";
 
 
+/**
+ * User data
+ * If the logged in user its the Dean it can't have professor data
+ * 
+ * - `email`
+ * - `pending_professors`
+ * - `dean` (optional)
+ * - `professor` (optional)
+ */
 export interface User {
   email: string;
   pending_professors: boolean;
@@ -10,6 +19,9 @@ export interface User {
   professor?: Professor;
 };
 
+/**
+ * User data as professor
+ */
 export interface Professor {
   id: number;
   id_card: number;

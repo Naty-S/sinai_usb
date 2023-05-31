@@ -72,6 +72,18 @@ export const GET: RequestHandler = async function({ params }) {
       }
     });
 
+    // if (_user.profesor && !_user.profesor.activo) {
+    //   return {
+    //     status,
+    //     headers,
+    //     body: {
+    //       message: "Usted no se encuentra activo en el sistema.\
+    //         Por favor comuniquese con su coordinador para activarse en el SINAI.",
+    //       code: 404
+    //     }
+    //   }
+    // }
+
     const pending_professor = await prisma.profesor.findFirst({
       where: {
         activo: { equals: false }

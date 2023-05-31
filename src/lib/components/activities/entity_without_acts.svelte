@@ -1,3 +1,8 @@
+<!-- 
+	@component
+  Professors or Groups who do not have activities created.
+  Can only be seen by Coordinations and Departments
+ -->
 <script lang="ts">
   import type { ActivitiesCounts, ProfessorActivities, GroupActivities } from "$lib/interfaces/activities";
 
@@ -33,7 +38,7 @@
     });
 
   } else {
-    throw new Error(`Esta entidad: ${entity} no es permitida en esta pagina`);
+    throw new Error(`Esta entidad: ${entity} no es permitida en esta página`);
   };
 </script>
 

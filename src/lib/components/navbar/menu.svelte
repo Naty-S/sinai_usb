@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Navbar menu
+ -->
 <script lang="ts">
 import { goto } from "$app/navigation";
 
@@ -14,17 +18,21 @@ import { goto } from "$app/navigation";
 
   const void_link = "javascript:void(0)";
 
-  let views: submenu_item[] = [];
-  let options: submenu_item[] = [];
-
   $: user = $session.user;
   $: professor = user?.professor;  
 
-  $: resume_link = professor ? `profesor/${user?.email}` : '';
+  $: resume_link = professor ? `profesor/${user?.email}` : `decano/${user?.email}`;
   $: bra = `/sinai/BRA/profesor/${user?.email}`;
   $: coord = `/sinai/actividades/coordinacion/${user?.professor?.coord_chief?.id}`;
   $: dep = `/sinai/actividades/departamento/${user?.professor?.department.id}`;
   $: division = `/sinai/actividades/division/${user?.professor?.division_chief?.id}`;
+
+  $: activities = [
+    {href: `/sinai/actividades/${resume_link}`, click: () => {}, name: "Revisar Mis Actividades"},
+    {href: void_link, click: () => show_create(), name: "Ingresar Nueva Actividad"}
+  ];
+  let views: submenu_item[] = [];
+  let options: submenu_item[] = [];
 
   $: groups = professor?.groups.historico_grupos.filter(g => !g.fin).map(g => (
     {
@@ -58,6 +66,11 @@ import { goto } from "$app/navigation";
       {href: `/sinai/perfil/${user?.email}`, click: () => {}, name: "Cambiar Perfil"}
     ];
   } else if (user?.dean) {
+
+    activities.push(
+      {href: "/sinai/actividades", click: () => {}, name: "Resumen de Actividades"},
+    );
+
     options = [
       // { href: void_link, click: () => {}, name: "Modificar Profesores"},
       {href: void_link, click: () => show_modify_bra_period(), name: "Modificar Periodo BRA"}
@@ -92,13 +105,12 @@ import { goto } from "$app/navigation";
     class="uk-navbar-dropdown-nav uk-nav-default uk-nav-divider"
     uk-nav
   >
-    <Submenu
-      name="Actividades"
-      items={[
-        {href: `/sinai/actividades/${resume_link}`, click: () => {}, name: "Revisar Mis Actividades"},
-        {href: void_link, click: () => show_create(), name: "Ingresar Nueva Actividad"}
-      ]}
-    />
+    <Submenu name="Actividades" items={activities} />
+    <Submenu name="Vistas" items={views} />
+    <Submenu name="Mis Grupos" items={groups} />
+    <Submenu name="Opciones" items={options} />
+    <!-- <Submenu name="Ayuda" items={[]} /> -->
+    
     <!-- TODO: desired use cases -->
     <!-- <Submenu
       name="Consultas"
@@ -107,8 +119,6 @@ import { goto } from "$app/navigation";
         {href: void_link, click: () => {}, name: "Predeterminadas"}
       ]}
     /> -->
-    <Submenu name="Vistas" items={views} />
-    <!-- TODO: desired use cases -->
     <!-- <Submenu
       name="Constancias"
       items={[
@@ -116,7 +126,6 @@ import { goto } from "$app/navigation";
         {href: void_link, click: () => {}, name: "Grupos"}
       ]}
     /> -->
-    <!-- TODO: desired use cases -->
     <!-- <Submenu
       name="Evaluaciones"
       items={[
@@ -125,9 +134,6 @@ import { goto } from "$app/navigation";
         {href: void_link, click: () => {}, name: "GID"}
       ]}
     /> -->
-    <Submenu name="Mis Grupos" items={groups} />
-    <Submenu name="Opciones" items={options} />
-    <!-- <Submenu name="Ayuda" items={[]} /> -->
     <li>
       <button type="button" class="ui red button" on:click={logout}>
         Salir

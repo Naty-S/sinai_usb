@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Professor research lines section form
+ -->
 <script lang="ts">
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";
@@ -10,7 +14,7 @@
 
   const act = $page.params.activity;
   const kind = act as kinds;
-  const ctx = act ? kind : ''; // TODO:
+  const ctx = act ? kind : '';
   const { form, errors }: activity_form_ctx<any> = getContext(key);
 
   const add = function () {

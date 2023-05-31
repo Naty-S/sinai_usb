@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Header for BRA page
+ -->
 <script lang="ts">
   import type { profesor } from "@prisma/client";
 

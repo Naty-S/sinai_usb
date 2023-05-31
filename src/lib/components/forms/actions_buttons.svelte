@@ -1,3 +1,12 @@
+<!-- 
+	@component
+  Form action buttons
+  - Action
+    + Create
+    + Modify
+  - Reset form
+  - Go back to previous page
+ -->
 <script lang="ts">
   import { goto, afterNavigate } from "$app/navigation";
 

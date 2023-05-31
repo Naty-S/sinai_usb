@@ -198,10 +198,12 @@ model usuario {
   padded Int?
 
   // Prisma relations
-  actividades   actividad[]
-  administrador administrador?
-  autores       autor_usb[]
-  profesor      profesor?
+  actividades                  actividad[]     @relation("actividad_creada_por_fkey")
+  validaciones                 actividad[]     @relation("actividad_validado_por_fkey")
+  administrador                administrador?
+  autores                      autor_usb[]
+  profesor                     profesor?
+  logs_operaciones_actividades log_operacion_actividad[]
 
   logs_usuario  log_usuario[]  @ignore
 }
@@ -232,12 +234,10 @@ model profesor {
   url                  String?
 
   // Postgres relations
-  Usuario      usuario @relation(fields: [correo], references: [login], onDelete: Cascade, onUpdate: Cascade)
-  Departamento departamento @relation(fields: [departamento], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  Usuario      usuario      @relation(fields: [correo], references: [login], onDelete: Cascade, onUpdate: Cascade)
 
 
   // Prisma relations
-  actividades_validadas        actividad[]
   autor_actividades            autor_usb[]
   convocatorias_pei            convocatoria_pei[]
   coordinacion                 coordinacion?
@@ -249,7 +249,6 @@ model profesor {
   historico_departamentos      historico_profesor_departamento[]
   historico_grupos             historico_profesor_grupo_investigacion[]
   historico_nomina             historico_profesor_nomina[]
-  logs_operaciones_actividades log_operacion_actividad[]
   pei                          pei[]
   ppi                          ppi[]
 }
@@ -299,7 +298,6 @@ model departamento {
 
   // Prisma relations
   datos_informe        datos_informe[]
-  profesores           profesor[]
   historico_profesores historico_profesor_departamento[] @ignore
 
   @@index([coordinacion])
@@ -515,8 +513,8 @@ model actividad {
   titulo                    String
 
   // Postgres relations
-  Ingresada_por usuario   @relation(fields: [creada_por], references: [login], onDelete: NoAction, onUpdate: Cascade)
-  Validado_por  profesor? @relation(fields: [validado_por], references: [correo], onDelete: NoAction, onUpdate: Cascade)
+  Ingresada_por usuario   @relation("actividad_creada_por_fkey", fields: [creada_por], references: [login], onDelete: NoAction, onUpdate: Cascade)
+  Validado_por  usuario?  @relation("actividad_validado_por_fkey", fields: [validado_por], references: [login], onDelete: NoAction, onUpdate: Cascade)
 
   // Prisma relations
   actividades_grupos           actividad_grupo_investigacion[]
@@ -547,7 +545,7 @@ model actividad {
 model log_operacion_actividad {
   id        Int                                    @id @default(autoincrement())
   actividad Int
-  profesor  Int
+  usuario   String
   fecha     DateTime?                              @db.Date
   hora      DateTime?                              @db.Time(6)
   operacion log_operacion_actividad_operacion_enum @default(Modificacion)
@@ -555,10 +553,10 @@ model log_operacion_actividad {
   tabla     String
 
   // Postgres relations
-  Profesor  profesor  @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Usuario  usuario  @relation(fields: [usuario], references: [login], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([actividad])
-  @@index([profesor])
+  @@index([usuario])
 }
 
 model actividad_grupo_investigacion {

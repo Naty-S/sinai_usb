@@ -2,6 +2,8 @@ import * as yup from "yup";
 
 
 export const validation = function () {
+
+  // Regular expressions validation
   // acentos = À-ÿ
   // ñ = \u00f1
   // Ñ = \u00d1
@@ -15,10 +17,6 @@ export const validation = function () {
   // ppi years from 1997 until current year
   const years_count = new Date().getFullYear() - 1996;
   const pei_years = Array.from({ length: years_count }, (_, i) => (i + 1997).toString());
-
-  const not_req_word = yup.lazy(value => !value ? yup.string().nullable() :
-    yup.string().matches(one_word, "Escriba un solo nombre sin espacios")
-  )
 
   return yup.object().shape({
     professor: yup.object().shape({
@@ -46,8 +44,7 @@ export const validation = function () {
           then: yup.string().nullable(),
           otherwise: yup.string().matches(url, "Formato invalido")
         })
-      ),
-      // grupos_investigacion: [],
+      )
     }),
     pei: yup.object().shape({
       anio: yup.string().required("Requerido").oneOf(pei_years, "Ingrese un año entre 1997 y el actual"),

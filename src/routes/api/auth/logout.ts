@@ -1,6 +1,9 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
 
+/**
+ * Logout user. Delete cookie.
+*/
 export const POST: RequestHandler = async () => {
   return {
     headers: {

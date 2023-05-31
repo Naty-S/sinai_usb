@@ -4,7 +4,13 @@ const PrismaClient = Prisma?.PrismaClient || PrismaAll?.PrismaClient;
 export default PrismaClient;
 
 
-export const get_known_error = function (error: PrismaAll.Prisma.PrismaClientKnownRequestError) {
+/**
+ * Describes error code for humans
+ * 
+ * @param error - Prisma error instance
+ * @returns Error description
+ */
+export const get_known_error = function (error: PrismaAll.Prisma.PrismaClientKnownRequestError): string {
   switch (error.code) {
     //  Commons errors
     case "P1000":

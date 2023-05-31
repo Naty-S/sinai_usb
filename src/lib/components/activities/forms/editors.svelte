@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Editors activity form
+ -->
 <script lang="ts">
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";

@@ -13,8 +13,8 @@ import { parse, isDate } from "date-fns";
  * Used to display the activity's description and current date
  * 
  * @param {Date | string} date - The date to format
- * @param {string} format - 
- * @returns {string} The formated date
+ * @param {string} format - `long` (default), `yyyy-MM-dd`, `long-day`
+ * @returns The formated date
  */
 export const format_date = function (date: Date | string, format: string = "long"): string {
 
@@ -37,13 +37,15 @@ export const format_date = function (date: Date | string, format: string = "long
 };
 
 /**
+ * Format the raw activity data into the actual data to display
  * 
- * @param activity - 
- * @returns {Activity} - 
+ * @param activity - Raw activity data
+ * @param logs - Log info, CRUD operations executed in activities by professors
+ * @returns Activity data with groups, kinds and logs info
  */
 export const format_activity_kind = function (activity: any, logs?: any): Activity {
   let kind_name = "ACTIVIDAD INVALIDA";
-  let kind_info;
+  let kind_data;
 
   const kinds = [
     "articulo_revista"
@@ -73,7 +75,7 @@ export const format_activity_kind = function (activity: any, logs?: any): Activi
 
     } else {
       kind_name = kind;
-      kind_info = activity[_kind];
+      kind_data = activity[_kind];
     };
   });
 
@@ -88,7 +90,7 @@ export const format_activity_kind = function (activity: any, logs?: any): Activi
 
   if (logs?.length > 0) {
     actions_log = logs.map((l: any) => ({
-      professor: l.Profesor.correo,
+      user: l.Usuario.login,
       date: l.fecha,
       time: l.hora
     }));
@@ -100,13 +102,21 @@ export const format_activity_kind = function (activity: any, logs?: any): Activi
     ...activity,
     groups,
     kind_name,
-    kind_info,
+    kind_data,
     actions_log
   };
 
   return act;
 };
 
+
+/**
+ * Parse date to check for validation in activities forms
+ * 
+ * @param value Not used, needed for the function that uses this function
+ * @param originalValue - Original date value
+ * @returns Parsed date for validation in activities forms
+ */
 export const parse_date = function (value: any, originalValue: any) {
   const parsed_date = isDate(originalValue) || originalValue === null
     ? originalValue

@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Form field error card
+ -->
 <script lang="ts">
   export let error: any;
 </script>

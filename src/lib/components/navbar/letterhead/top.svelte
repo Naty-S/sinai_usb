@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Renders top section of letterhead
+ -->
 <svg id="top_drawing" viewBox="0 0 1440 74">
   <filter id="top_border" x=0 y=0 filterUnits="userSpaceOnUse">
     <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur"/>

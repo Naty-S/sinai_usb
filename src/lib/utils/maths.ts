@@ -4,11 +4,11 @@ import type { Activity } from "$lib/types/activities";
 import { group_by, acts_kinds_by_year } from "$lib/utils/grouping";
 
 /**
- * count kinds of activities by year
+ * Count kinds of activities by year
  * 
- * @param acts 
- * @param detailed 
- * @returns 
+ * @param {Activity[]} acts - Activities
+ * @param {boolean} detailed - Detailed kind
+ * @returns Activities by kind with count
  */
 export const count_acts_kinds_by_year = function (acts: Activity[], detailed?: boolean): ActivitiesCounts[] {
 
@@ -38,9 +38,9 @@ export const count_acts_kinds_by_year = function (acts: Activity[], detailed?: b
 /**
  * Count activities kinds
  * 
- * @param acts 
- * @param detailed 
- * @returns 
+ * @param {Activity[]} acts - Activities
+ * @param {boolean} detailed - Detailed kind
+ * @returns Count of each activity kind
  */
 export const count_acts_kinds = function (acts: Activity[], detailed?: boolean): { count: number }[] {
 

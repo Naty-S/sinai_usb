@@ -1,3 +1,12 @@
+<!-- 
+	@component
+  Form inputs
+  - text (default)
+  - radio
+  - checkbox
+  - date
+  - number
+ -->
 <script lang="ts">
   import type { activity_form_ctx, kinds } from "$lib/types/forms";
 
@@ -16,7 +25,7 @@
 
   const act = $page.params.activity;
   const kind = act as kinds;
-  const ctx = act ? kind : ''; // TODO: 
+  const ctx = act ? kind : '';
   const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 

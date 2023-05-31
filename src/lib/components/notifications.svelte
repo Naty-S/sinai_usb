@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Notification card
+ -->
 <script lang="ts">
   export let header_msg: string;
 </script>

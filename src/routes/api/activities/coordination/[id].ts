@@ -1,12 +1,21 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
+import { env } from "$env/dynamic/private";
+
 import type { CoordActivities, DepActivities, GroupActivities } from "$lib/interfaces/activities";
 import { format_activity_kind } from "$lib/utils/formatting";
 import { handle_error, prisma } from "$api/_api";
 
 
+/**
+ * Query coorditanion's and asociated deparments or groups activities.
+ * 
+ * Coordination `4 (Integración e Información)` only manages groups
+*/
 export const GET: RequestHandler = async function ({ request, params }) {
   
+  const origin = env.NODE_ENV == "development" ? "http://localhost:3000" : env.NGINX_PROXY_PASS;
+
   let status = 500;
   let body = {};
 
@@ -33,7 +42,7 @@ export const GET: RequestHandler = async function ({ request, params }) {
       }
     };
 
-    if (params.id === '4') { // Coordination just manages groups "Integración e Información"
+    if (params.id === '4') {
       const groups = await prisma.grupo_investigacion.findMany({
         select: {
           id: true,
@@ -92,7 +101,7 @@ export const GET: RequestHandler = async function ({ request, params }) {
     } else {
       const departments_activities: DepActivities[] = await Promise.all(
         coordination.departamentos.map(async d =>{
-          const r = await fetch(`${new URL(request.url).origin}/api/activities/department/${d.id}`);
+          const r = await fetch(`${origin}/api/activities/department/${d.id}`);
           return await r.json();
         })
       );

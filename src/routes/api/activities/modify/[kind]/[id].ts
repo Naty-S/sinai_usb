@@ -6,6 +6,9 @@ import { handle_error, prisma } from "$api/_api";
 import { format_activity_kind } from "$lib/utils/formatting";
 
 
+/**
+ * Query activity data
+*/
 export const GET: RequestHandler = async function ({ params }) {
 
   let status = 500;
@@ -67,8 +70,13 @@ export const GET: RequestHandler = async function ({ params }) {
   };
 };
 
+/**
+ * Update activity data
+ * 
+ * @returns Redirects to same page with `modificada`
+*/
 export const PATCH: RequestHandler = async function ({ request, params }) {
-
+  console.log("patch")
   const _data = await request.json();
 
   const data = {
@@ -196,16 +204,43 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       data
     });
 
+    // await prisma.log_operacion_actividad.create({
+    //   data: {
+    //     actividad: Number(params.id),
+    //     profesor: ,
+    //     fecha,
+    //     hora,
+    //     operacion: "Modificacion",
+    //     sql: e.query,
+    //     tabla: kind
+    //   }
+    // })
+
     headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}?modificada=true`
+      location: `/sinai/actividades`
     };
+    // if (data.user_rank == "professor") {
+    //   headers = {
+    //     location: `/sinai/actividades/profesor/${data.creada_por}?modificada=true`
+    //   };
+    // } else {
+    //   headers = {
+    //     location: `/sinai/actividades/decano/${data.creada_por}?modificada=true`
+    //   };
+    // };
 
   } catch (error: any) {
     const message = await handle_error(error);
     const code = error.code ? "&code=" + error.code : '';
 
-    headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
+    if (data.user_rank == "professor") {
+      headers = {
+        location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
+      };
+    } else {
+      headers = {
+        location: `/sinai/actividades/decano/${data.creada_por}?error=` + message + code
+      };
     };
   };
 

@@ -1,4 +1,6 @@
 <!--
+  @component
+  USB SVG logo
   Converted to svg from png with: https://convertio.co/es 
   png image source from: http://www.usb.ve/home/node/39
 -->

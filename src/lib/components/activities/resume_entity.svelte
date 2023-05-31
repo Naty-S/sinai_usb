@@ -1,6 +1,6 @@
 <!-- 
   @component
-  Show's activities resume table for professors or groups
+  Activities count resume table for professors or groups
  -->
 <script lang="ts">
   import type { ProfessorActivities, GroupActivities } from "$lib/interfaces/activities";
@@ -9,7 +9,7 @@
   import EntityWithoutActs from "./entity_without_acts.svelte";
 
   export let entity: string;
-  export let entity_activities: ProfessorActivities[] | GroupActivities[]; // TODO?: Add Dep, Coord & Division
+  export let entity_activities: ProfessorActivities[] | GroupActivities[];
 
 </script>
 

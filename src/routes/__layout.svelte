@@ -1,4 +1,6 @@
-<!-- Apply code to all `routes` files -->
+<!--
+  Apply code to all `routes` files
+ -->
 <script lang="ts">
   import { goto } from "$app/navigation";
 	import { navigating, session, page } from "$app/stores";

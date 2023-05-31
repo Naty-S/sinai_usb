@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Form dropdown select
+ -->
 <script lang="ts">
   import type { activity_form_ctx, kinds } from "$lib/types/forms";
 
