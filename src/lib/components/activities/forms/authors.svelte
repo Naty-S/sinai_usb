@@ -31,7 +31,7 @@
 
     if (res.ok) {
       const res_json = await res.clone().json();
-      professors = res_json.map((p: profesor) => ({ id: p.id, nombre: p.perfil }));
+      professors = res_json.filter((p: profesor) => p.activo).map((p: profesor) => ({ id: p.id, nombre: p.perfil }));
 
     } else {
       const { message, code } = await res.json();

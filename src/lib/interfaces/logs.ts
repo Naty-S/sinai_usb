@@ -5,7 +5,7 @@
  * Activity data about the action performed in it.
  * Actions: create, modify data, validate, invalidate
  * 
- * - `professor`: The user who performed the action
+ * - `user`: The user who performed the action
  * - `date`
  * - `time`
  */

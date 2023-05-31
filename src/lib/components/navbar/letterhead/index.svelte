@@ -1,5 +1,11 @@
-<!-- https://css-tricks.com/svg-path-syntax-illustrated-guide/ -->
-<!-- https://yqnn.github.io/svg-path-editor/ -->
+<!-- 
+  @component
+  Renders letterhead
+
+  SVG references:
+  * https://css-tricks.com/svg-path-syntax-illustrated-guide/
+  * https://yqnn.github.io/svg-path-editor/
+-->
 <script lang="ts">
   import Top from "./top.svelte";
   import Bottom from "./bottom.svelte";

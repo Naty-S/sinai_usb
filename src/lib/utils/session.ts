@@ -51,8 +51,6 @@ export const redirect: Load = async function ({ fetch, session, url }) {
         error: new Error(message)
       };
     };
-
-
   } else if (!session.user && url.pathname.includes("login") && !url.searchParams.has("validated")) {
 
     const origin = url.origin.split("://")[1];

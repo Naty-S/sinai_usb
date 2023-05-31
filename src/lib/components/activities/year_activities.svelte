@@ -25,6 +25,7 @@
   let show_invalidate = false;
   let show_delete = false;
   let actual_act_id = -1;
+  let actual_act_kind = '';
   let actual_act_title = '';
   let action = { info: '', code: '' };
 
@@ -36,23 +37,24 @@
     return (user?.dean || (is_chief && user?.email !== act.creada_por))&& kind !== "ACTIVIDAD INVALIDA";
   };
 
-  const can_modify = function (kind: string) {
-    return (user?.dean || !is_chief) && kind !== "ACTIVIDAD INVALIDA";
+  const can_modify = function (act: Activity, kind: string) {
+    return user?.email === act.creada_por && kind !== "ACTIVIDAD INVALIDA";
   };
 
-  const can_delete = function () {
-    return user?.dean || !is_chief;
+  const can_delete = function (act: Activity) {
+    return user?.dean || (user?.email === act.creada_por);
   };
 
-  const popup_validate = function (act_id: number, act_title: string) {
+  const popup_validate = function (act_id: number, act_kind: string, act_title: string) {
     show_validate = true;
     actual_act_id = act_id;
+    actual_act_kind = act_kind;
     actual_act_title = act_title;
   };
 
   const confirm_validate = async function () {
     const res = await api.patch(`/api/activities/validate/${actual_act_id}`,
-      { validado_por: user?.email }
+      { validado_por: user?.email, kind: actual_act_kind }
     );
 
     if (res.ok) {
@@ -95,7 +97,9 @@
   };
 
   const confirm_delete = async function () {
-    const res = await api.del(`/api/activities/delete/${actual_act_id}`);
+    const res = await api.del(`/api/activities/delete/${actual_act_id}`,
+      { user: user?.email, kind: actual_act_kind }
+    );
 
     if (res.ok) {
       const { code } = await res.json();
@@ -147,7 +151,7 @@
                     {#if act.actions_log[0]}
                       (Modificado recientemente por {act.actions_log[0].user}
                       el {format_date(act.actions_log[0].date, "long-day")}
-                      a las {act.actions_log[0].time}).
+                      a las {format_date(act.actions_log[0].time, "time")}).
                     {/if}
                     {#if act.validado_por && act.fecha_validacion}
                       (Validada por {act.validado_por} el {format_date(act.fecha_validacion, "long-day")}).
@@ -157,7 +161,7 @@
               </div>
               {#if editable}
                 <div class="uk-margin-small">
-                  {#if can_modify(kind)}
+                  {#if can_modify(act, kind)}
                     <a
                       href="/sinai/actividades/modificar/{act.kind_name}/{act.id}" 
                       class="ui green small button"
@@ -170,7 +174,7 @@
                       <button
                         type="button"
                         class="ui blue small button"
-                        on:click={() => popup_validate(act.id, act.titulo)}
+                        on:click={() => popup_validate(act.id, kind, act.titulo)}
                       >
                         Validar
                       </button>
@@ -184,7 +188,7 @@
                       </button>
                     {/if}
                   {/if}
-                  {#if can_delete()}
+                  {#if can_delete(act)}
                     <button
                       type="button"
                       class="ui red small button"

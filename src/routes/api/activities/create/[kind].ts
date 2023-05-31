@@ -38,19 +38,25 @@ export const POST: RequestHandler = async ({ request, params }) => {
   };
 
   try {
-    await prisma.actividad.create({ data });
+    const act = await prisma.actividad.create({ data });
 
-    // await prisma.log_operacion_actividad.create({
-    //   data: {
-    //     actividad: Number(params.id),
-    //     profesor: ,
-    //     fecha,
-    //     hora,
-    //     operacion: "Ingreso",
-    //     sql: e.query,
-    //     tabla: kind
-    //   }
-    // })
+    const date = new Date();
+
+    await prisma.log_operacion_actividad.create({
+      data: {
+        actividad: act.id,
+        usuario: data.creada_por,
+        fecha: date,
+        hora: date,
+        operacion: "Ingreso",
+        sql: `INSERT INTO actividad VALUES (${JSON.stringify(data.actividad)});
+              INSERT INTO ${params.kind} VALUES (${JSON.stringify(data[params.kind])});
+              INSERT INTO actividad_grupo_investigacion VALUES (${JSON.stringify(data.actividades_grupos)});
+              INSERT INTO autor_usb VALUES (${JSON.stringify(data.autores_usb)});
+              INSERT INTO autor_externo VALUES (${JSON.stringify(data.autores_externos)});`,
+        tabla: params.kind
+      }
+    })
 
     if (data.user_rank == "professor") {
       headers = {

@@ -31,7 +31,7 @@ export const PATCH: RequestHandler = async ({ params }) => {
     });
 
     status = 200;
-    body = { action: "invalidated" };
+    body = { code: "invalidated" };
 
   } catch (error: any) {
     const message = await handle_error(error);

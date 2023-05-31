@@ -5,7 +5,7 @@ export default PrismaClient;
 
 
 /**
- * Describes error code for humans
+ * Describes error code. Maps the prisma code to its meaning.
  * 
  * @param error - Prisma error instance
  * @returns Error description

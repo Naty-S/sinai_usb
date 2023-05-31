@@ -8,34 +8,33 @@ import { handle_error, prisma } from "$api/_api";
  * 
  * @returns The code `deleted`
 */
-export const DELETE: RequestHandler = async ({ params }) => {
+export const DELETE: RequestHandler = async ({ request, params }) => {
+
+  const _data = await request.json();
 
   let status = 500;
   let body = {};
 
   try {
-
-    await prisma.actividad.delete({
+    const act = await prisma.actividad.delete({
       where: {
         id: Number(params.id)
       }
     });
 
     const date = new Date();
-    const fecha = date;
-    const hora = date;
 
-    // await prisma.log_operacion_actividad.create({
-    //   data: {
-    //     actividad: Number(params.id),
-    //     profesor: ,
-    //     fecha,
-    //     hora,
-    //     operacion: "Eliminacion",
-    //     sql: e.query,
-    //     tabla: kind
-    //   }
-    // })
+    await prisma.log_operacion_actividad.create({
+      data: {
+        actividad: Number(params.id),
+        usuario: _data.user,
+        fecha: date,
+        hora: date,
+        operacion: "Eliminacion",
+        sql: `DELETE FROM actividad WHERE ${JSON.stringify(act)};`,
+        tabla: _data.kind
+      }
+    })
 
     status = 200;
     body = { code: "deleted" };

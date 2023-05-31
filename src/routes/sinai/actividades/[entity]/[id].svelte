@@ -40,7 +40,7 @@
   };
 </script>
 <script lang="ts">
-  import { page } from "$app/stores";
+  import { page, session } from "$app/stores";
 
   import type { EntityActivities } from "$lib/interfaces/activities";
 
@@ -57,6 +57,7 @@
   $: act_modified = Boolean($page.url.searchParams.get("modificada"));
   $: err = $page.url.searchParams.get("error");
   $: err_code = $page.url.searchParams.get("code");
+  $: editable = $page.params.entity !== "grupo" || $session.user?.dean !== undefined;
 
   let show_create = false;
 </script>
@@ -73,11 +74,10 @@
 
 <!-- Display activities by year -->
 {#each activities.by_year as year_activities}
-  <YearActivities {year_activities} editable/>
+  <YearActivities {year_activities} {editable}/>
 {/each}
 
 {#if $page.params.entity === "profesor"} 
-<!-- TODO: footer? -->
   <div class="uk-text-center">
     <p>
       Nota: Las actividades ingresadas en el Sistema podrán ser consultadas públicamente
@@ -98,7 +98,7 @@
     align="center"
     is_active={act_created}
     close={() => act_created = false}
-    confirm={() => { act_created = false; location.replace($page.url.pathname); show_create = true; }}
+    confirm={() => { act_created = false; show_create = true; }}
   >
     <p>Desea ingresar otra actividad?</p>
   </Modal>

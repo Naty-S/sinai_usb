@@ -76,7 +76,7 @@ export const GET: RequestHandler = async function ({ params }) {
  * @returns Redirects to same page with `modificada`
 */
 export const PATCH: RequestHandler = async function ({ request, params }) {
-  console.log("patch")
+
   const _data = await request.json();
 
   const data = {
@@ -204,30 +204,33 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       data
     });
 
-    // await prisma.log_operacion_actividad.create({
-    //   data: {
-    //     actividad: Number(params.id),
-    //     profesor: ,
-    //     fecha,
-    //     hora,
-    //     operacion: "Modificacion",
-    //     sql: e.query,
-    //     tabla: kind
-    //   }
-    // })
+    const date = new Date();
 
-    headers = {
-      location: `/sinai/actividades`
+    await prisma.log_operacion_actividad.create({
+      data: {
+        actividad: Number(params.id),
+        usuario: _data.user,
+        fecha: date,
+        hora: date,
+        operacion: "Modificacion",
+        sql: `UPDATE actividad SET (${JSON.stringify(data.actividad)}) WHERE id=${params.id};
+              UPDATE ${params.kind} SET (${JSON.stringify(data[params.kind])}) WHERE id=${params.id};
+              UPDATE actividad_grupo_investigacion SET (${JSON.stringify(data.actividades_grupos)}) WHERE id=${params.id};
+              UPDATE autor_usb SET (${JSON.stringify(data.autores_usb)}) WHERE id=${params.id};
+              UPDATE autor_externo SET (${JSON.stringify(data.autores_externos)}) WHERE id=${params.id};`,
+        tabla: params.kind
+      }
+    })
+
+    if (data.user_rank == "professor") {
+      headers = {
+        location: `/sinai/actividades/profesor/${data.creada_por}?modificada=true`
+      };
+    } else {
+      headers = {
+        location: `/sinai/actividades/decano/${data.creada_por}?modificada=true`
+      };
     };
-    // if (data.user_rank == "professor") {
-    //   headers = {
-    //     location: `/sinai/actividades/profesor/${data.creada_por}?modificada=true`
-    //   };
-    // } else {
-    //   headers = {
-    //     location: `/sinai/actividades/decano/${data.creada_por}?modificada=true`
-    //   };
-    // };
 
   } catch (error: any) {
     const message = await handle_error(error);

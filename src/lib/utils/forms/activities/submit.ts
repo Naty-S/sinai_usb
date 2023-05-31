@@ -20,6 +20,7 @@ export const submit = function (kind: kinds, update: boolean = false, id?: strin
 
       case "evento":
         data.evento.internacional = data.evento.pais !== "Venezuela";
+        data.evento.fecha = new Date(data.evento.fecha);
         break;
 
       case "informe_tecnico":
@@ -54,9 +55,7 @@ export const submit = function (kind: kinds, update: boolean = false, id?: strin
     let res: Response;
 
     if (update) {
-      console.log("modificar")
       res = await api.patch(`/api/activities/modify/${kind}/${id}`, data);
-
     } else {
       res = await api.post(`/api/activities/create/${kind}`, data);
     };

@@ -48,7 +48,7 @@
     {:else if $page.error}
       <Err error={$page.error} status={$page.status} />
     {:else}
-      {goto("/sinai/login")}
+      {goto("/sinai")}
     {/if}
     
     <ToTop />

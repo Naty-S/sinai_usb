@@ -25,8 +25,8 @@
   const resume_total_counts = zip(...resume_kinds_counts.map(ac => ac.counts.map(c => c.count))).map(sum);
 </script>
 
-<!-- TODO: 'sortable' not work -->
-<div id="resume_table" class="uk-margin uk-overflow-auto"> <!-- class="uk-overflow-auto"> <<- si se coloca no puedo colocar 'ui'  -->
+<!-- class="uk-overflow-auto" not compatible with fomantic ui -->
+<div id="resume_table" class="uk-margin uk-overflow-auto">
   <table class="ui {n_column} celled striped small table">
     <thead class="center aligned">
       <tr>

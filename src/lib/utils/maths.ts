@@ -44,7 +44,6 @@ export const count_acts_kinds_by_year = function (acts: Activity[], detailed?: b
  */
 export const count_acts_kinds = function (acts: Activity[], detailed?: boolean): { count: number }[] {
 
-  // TODO: global var
   const kinds = [
     "ACTIVIDAD INVALIDA"
     , "Publicaciones en Revistas Indexadas en el SCI-SSCI-ARTS"

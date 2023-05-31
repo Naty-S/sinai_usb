@@ -43,9 +43,10 @@
     form, errors, handleChange
   });
 
-  // Keep cheking return code when submit form
+  // Codes returned by submiting form
   $: registered = Boolean($page.url.searchParams.get("exito"));
-  $: no_registered = $page.url.searchParams.get("error");
+  $: not_active = Boolean($page.url.searchParams.get("no_activo"));
+  $: err = $page.url.searchParams.get("error");
   $: err_code = $page.url.searchParams.get("code");
 
   // Fetch departments data
@@ -70,6 +71,11 @@
     Se ha registrado de forma exitosa en el sistema del Sinai. <br/>
     Se le ha notificado al coordinador de su departamento para que sea activado en el 
     sistema y pueda ingresar.
+  </p>
+{:else if not_active}
+  <p class="uk-text-center">
+    Usted NO se encuentra activo en el sistema. <br/>
+    Por favor comuniquese con su coordinador para activarse en el SINAI.
   </p>
 {:else}
   <form class="ui large form" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
@@ -223,20 +229,20 @@
   </form>
 {/if}
 
-{#if no_registered}
+{#if err}
   <Modal
     id="no_registered"
     title="Error. {err_code}"
     close_text="Ok"
     align="center"
-    is_active={Boolean(no_registered)}
+    is_active={Boolean(err)}
     close={() => location.replace($page.url.pathname)}
   >
     <p>
       Hubo un problema al intentar registrarse por favor vuelva a intentar
       o contáctese con algún administrador proporcionando el código del error.
     </p>
-    <span class="ui red text">Detalles: {no_registered}</span>
+    <span class="ui red text">Detalles: {err}</span>
   </Modal>
 {/if}
 

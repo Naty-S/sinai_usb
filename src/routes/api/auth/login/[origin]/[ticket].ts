@@ -16,6 +16,10 @@ import { handle_error, prisma } from "$api/_api";
  * 3. Find user in database
  * 4. Create User type with info
  * 5. Create cookie with user
+ * 
+ * If the user is not registered redirects to register page
+ * 
+ * If the user is registered but not active redirects to register page and notify of status
  */
 export const GET: RequestHandler = async function({ params }) {
 
@@ -38,7 +42,7 @@ export const GET: RequestHandler = async function({ params }) {
     const cas_username = await cas_verify.text();
     const username = cas_username.split('cas:user')[1].slice(1, -2);
 
-    const _user = await prisma.usuario.findUniqueOrThrow({
+    const _user = await prisma.usuario.findUnique({
       where: { login: username + "@usb.ve" },
       include: {
         administrador: true,
@@ -72,17 +76,19 @@ export const GET: RequestHandler = async function({ params }) {
       }
     });
 
-    // if (_user.profesor && !_user.profesor.activo) {
-    //   return {
-    //     status,
-    //     headers,
-    //     body: {
-    //       message: "Usted no se encuentra activo en el sistema.\
-    //         Por favor comuniquese con su coordinador para activarse en el SINAI.",
-    //       code: 404
-    //     }
-    //   }
-    // }
+    if (!_user) {
+      return {
+        status: 302,
+        location: "/sinai/registro",
+      }
+    }
+
+    if (_user.profesor && !_user.profesor.activo) {
+      return {
+        status: 302,
+        location: "/sinai/registro?no_activo=true",
+      }
+    }
 
     const pending_professor = await prisma.profesor.findFirst({
       where: {
@@ -167,7 +173,7 @@ export const GET: RequestHandler = async function({ params }) {
     // cookie expires in 24 hours = 86400 seg
     // must specify Domain so the cookie is propagated to subdomains
     headers = {
-      "set-cookie": `jwt=${jwt}; Path=/sinai; HttpOnly; Max-Age=86400;`// TODO Domain=/sinai;`
+      "set-cookie": `jwt=${jwt}; Path=/sinai; HttpOnly; Max-Age=86400;`// Domain=/sinai;`
     };
     body = user;
 

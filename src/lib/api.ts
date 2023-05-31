@@ -36,8 +36,8 @@ export const get = function (endpoint: string) {
   return request("GET", endpoint);
 };
 
-export const del = function (endpoint: string) {
-  return request("DELETE", endpoint);
+export const del = function (endpoint: string, data: any) {
+  return request("DELETE", endpoint, data);
 };
 
 export const post = function (endpoint: string, data: any) {

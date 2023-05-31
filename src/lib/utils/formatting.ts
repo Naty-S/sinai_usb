@@ -7,13 +7,15 @@ import { parse, isDate } from "date-fns";
 
 /**
  * Formats the date to specified format
- *    - `Month` `yyyy` (default)
- *    - `dd` de `Month` del `yyyy`
- *    - yyyy-MM-dd
+ *    - `long`: `Month` `yyyy` (default)
+ *    - `long-day`: `dd` de `Month` del `yyyy`
+ *    - `yyyy-MM-dd`
+ *    - `time`: hours:minutes:seconds
+ * 
  * Used to display the activity's description and current date
  * 
  * @param {Date | string} date - The date to format
- * @param {string} format - `long` (default), `yyyy-MM-dd`, `long-day`
+ * @param {string} format - `long` (default), `yyyy-MM-dd`, `long-day`, `time`
  * @returns The formated date
  */
 export const format_date = function (date: Date | string, format: string = "long"): string {
@@ -27,6 +29,9 @@ export const format_date = function (date: Date | string, format: string = "long
     
       case "yyyy-MM-dd":
         return _date.toLocaleDateString("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" });
+    
+      case "time":
+        return _date.toLocaleTimeString("en-GB");
     
       default: // "long"
         return _date.toLocaleDateString("es", { year: "numeric", month: "long" });

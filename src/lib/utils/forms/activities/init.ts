@@ -44,8 +44,16 @@ export const init = function (kind: kinds, user?: User, data?: Activity): activi
     , autores_externos: data?.autores_externos || []
     , autores_usb: data?.autores_usb || []
     , user_rank: user?.dean ? "dean" : "professor"
+    , user: user?.email || "usuario ficticio"
+    , kind
   };
 
+  /**
+   * Initialize the date so it can be displayed in the form
+   * 
+   * @param date - Date to initialize for display in form
+   * @returns Date with format accepted to be displayed in the form
+   */
   const init_date = function (date?: Date): Date {
     return date ? format_date(date, "yyyy-MM-dd") as unknown as Date : new Date("yyyy-MM-dd");
   };

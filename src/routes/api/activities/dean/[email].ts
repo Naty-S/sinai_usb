@@ -71,7 +71,7 @@ export const GET: RequestHandler = async function ({ params }) {
             hora: true
           },
           where: { operacion: "Modificacion", actividad: { in: _acts.map(a => a.id) } },
-          orderBy: [{ fecha: "desc" }, { hora: "desc" }]//, take: 1
+          orderBy: [{ fecha: "desc" }, { hora: "desc" }]
         }
       }
     })

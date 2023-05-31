@@ -48,7 +48,7 @@
 <svelte:window on:scroll={fix_on_top} on:resize={fit_menu} />
 
 <!-- height 15vh
-modificar para todo ente centrado entre el top y bottom del letter head
+modificar para que todo este centrado entre el top y bottom del letter head
 -->
 <nav
   id="navabar"

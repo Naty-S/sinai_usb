@@ -22,7 +22,7 @@
   let show_reject = false;
   let actual_prof_email = '';
   let actual_prof_name = '';
-  let new_professors: profesor[] = []; // includes Departamento: {nombre: string} from prisma relation
+  let new_professors: profesor[] = [];
   let action = { info: '', code: '' };
   let departments: Department[];
 
@@ -87,7 +87,7 @@
   };
 
   const confirm_reject = async function () {
-    const res = await api.del(`/api/professor/${actual_prof_email}`);
+    const res = await api.del(`/api/professor/${actual_prof_email}`, {user: user?.email});
 
     show_reject = false;
 

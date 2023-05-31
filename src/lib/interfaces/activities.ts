@@ -123,7 +123,14 @@ export interface DivisionActivities {
 };
 
 /**
- * Coordinations and divisions. 
+ * Coordinations and divisions.
+ * 
+ * - `coordinations`
+ *    + `id`
+ *    + `nombre`
+ * - `divisions`
+ *    + `id`
+ *    + `nombre`
  */
 export interface Ranks {
   coordinations: {

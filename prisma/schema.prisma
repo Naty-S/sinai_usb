@@ -667,7 +667,6 @@ model composicion {
 }
 
 // TODO: Evaluar posibilidad de eliminar, no tiene datos.
-// Verificar si se usa en el codigo viejo
 model documento {
   id          Int    @id @default(autoincrement())
   actividad   Int
@@ -687,7 +686,7 @@ model evento {
   ciudad        String
   fecha         DateTime              @db.Date
   institucion   String? // Institución que financia o patrocina
-  internacional Boolean               @default(false) // no esta en el form, se deduce del pais?
+  internacional Boolean               @default(false)
   modalidad     evento_modalidad_enum
   nombre        String
   pais          String
@@ -870,7 +869,8 @@ model recital {
 // Tablas no modificadas por el cliente
 //
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and 
+// can therefore currently not be handled by the Prisma Client.
 model log_usuario {
   login String
   hora  DateTime @db.Time(6)
@@ -883,7 +883,8 @@ model log_usuario {
   @@ignore
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and 
+// can therefore currently not be handled by the Prisma Client.
 // TODO: Evaluar posibilidad de agregar el `@id`
 model defensa {
   anio                 Int?

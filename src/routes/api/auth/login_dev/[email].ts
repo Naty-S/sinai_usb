@@ -24,7 +24,7 @@ export const GET: RequestHandler = async function ({ params, request }) {
 
   try {
 
-    const _user = await prisma.usuario.findUniqueOrThrow({
+    const _user = await prisma.usuario.findUnique({
       where: { login: params.email },
       include: {
         administrador: true,
@@ -58,15 +58,17 @@ export const GET: RequestHandler = async function ({ params, request }) {
       }
     });
 
-    if (!_user.profesor?.activo) {
+    if (!_user) {
       return {
-        status,
-        headers,
-        body: {
-          message: "Usted no se encuentra activo en el sistema.\
-            Por favor comuniquese con su coordinador para activarse en el SINAI.",
-          code: 404
-        }
+        status: 302,
+        location: "/sinai/registro",
+      }
+    }
+
+    if (_user.profesor && !_user.profesor.activo) {
+      return {
+        status: 302,
+        location: "/sinai/registro?no_activo=true",
       }
     }
 
@@ -154,7 +156,7 @@ export const GET: RequestHandler = async function ({ params, request }) {
     // cookie expires in 24 hours = 86400 seg
     // must specify Domain so the cookie is propagated to subdomains
     headers = {
-      "set-cookie": `jwt=${jwt}; Path=/sinai; HttpOnly; Max-Age=86400;`// TODO Domain=/sinai;`
+      "set-cookie": `jwt=${jwt}; Path=/sinai; HttpOnly; Max-Age=86400;`// Domain=/sinai;`
     };
     body = user;
 

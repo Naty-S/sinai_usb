@@ -96,6 +96,8 @@ export type activity = {
     new: string
   }[]
   , user_rank: "professor" | "dean"
+  , user: string
+  , kind: kinds
 };
 
 /**
