@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Proyecto de investigación activity form
+ -->
 <script lang="ts">
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";

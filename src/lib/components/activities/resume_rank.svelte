@@ -1,6 +1,6 @@
 <!-- 
   @component
-  Show's activities resume table for coordination, department or division
+  Activities count resume table for coordination, department or division
  -->
 <script lang="ts">
   import type { Activity } from "$lib/types/activities";

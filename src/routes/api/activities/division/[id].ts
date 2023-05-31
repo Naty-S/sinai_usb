@@ -1,11 +1,18 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
+import { env } from "$env/dynamic/private";
+
 import type { DepActivities, DivisionActivities } from "$lib/interfaces/activities";
 import { handle_error, prisma } from "$api/_api";
 
 
+/**
+ * Query division's activities
+*/
 export const GET: RequestHandler = async function ({ request, params }) {
   
+  const origin = env.NODE_ENV == "development" ? "http://localhost:3000" : env.NGINX_PROXY_PASS;
+
   let status = 500;
   let body = {};
 
@@ -27,7 +34,7 @@ export const GET: RequestHandler = async function ({ request, params }) {
 
     const departments_activities: DepActivities[] = await Promise.all(
       division.departamentos.map(async d =>{
-        const r = await fetch(`${new URL(request.url).origin}/api/activities/department/${d.id}`);
+        const r = await fetch(`${origin}/api/activities/department/${d.id}`);
         return await r.json();
       })
     );

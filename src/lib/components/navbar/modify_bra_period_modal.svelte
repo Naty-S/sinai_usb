@@ -1,3 +1,8 @@
+<!-- 
+	@component
+  Modal to modify BRA period
+  Only available for Dean
+ -->
 <script lang="ts">
   import { onMount } from "svelte";
   

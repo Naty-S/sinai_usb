@@ -19,8 +19,7 @@ export const init = function () {
       departamento: '2',
       perfil: '',
       lineas_investigacion: [],
-      url: null,
-      // grupos_investigacion: [],
+      url: null
     },
     pei: {
       anio: 2022,

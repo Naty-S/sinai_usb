@@ -3,6 +3,11 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { handle_error, prisma } from "$api/_api";
 
 
+/**
+ * Creates an activity
+ * 
+ * @returns Redirects to professor's dashboard with `creada`
+*/
 export const POST: RequestHandler = async ({ request, params }) => {
 
   const _data = await request.json();
@@ -35,15 +40,40 @@ export const POST: RequestHandler = async ({ request, params }) => {
   try {
     await prisma.actividad.create({ data });
 
-    headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}?creada=true`
+    // await prisma.log_operacion_actividad.create({
+    //   data: {
+    //     actividad: Number(params.id),
+    //     profesor: ,
+    //     fecha,
+    //     hora,
+    //     operacion: "Ingreso",
+    //     sql: e.query,
+    //     tabla: kind
+    //   }
+    // })
+
+    if (data.user_rank == "professor") {
+      headers = {
+        location: `/sinai/actividades/profesor/${data.creada_por}?creada=true`
+      };
+    } else {
+      headers = {
+        location: `/sinai/actividades/decano/${data.creada_por}?creada=true`
+      };
     };
+    
   } catch (error: any) {
     const message = await handle_error(error);
     const code = error.code ? "&code=" + error.code : '';
 
-    headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
+    if (data.user_rank == "professor") {
+      headers = {
+        location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
+      };
+    } else {
+      headers = {
+        location: `/sinai/actividades/decano/${data.creada_por}?error=` + message + code
+      };
     };
   };
 

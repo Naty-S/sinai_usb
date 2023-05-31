@@ -5,8 +5,6 @@ import type { kinds } from "$lib/types/forms";
 import { parse_date } from "$lib/utils/formatting";
 
 
-// TODO: regexs?
-
 const articulo_revista = yup.object().shape({
     articulo_invitado: yup.boolean().typeError("No es booleano")
   , con_estudiantes: yup.boolean().typeError("No es booleano")

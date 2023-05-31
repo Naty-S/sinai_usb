@@ -6,7 +6,7 @@ import * as api from "$lib/api";
 
 export const submit = function (kind: kinds, update: boolean = false, id?: string) {
   return async function (data: actividad_form<typeof kind>) {
-
+    
     switch (kind) {
       case "articulo_revista":
         const con_estudiantes = data.autores_usb?.some(a => a.es_estudiante) ||
@@ -54,7 +54,9 @@ export const submit = function (kind: kinds, update: boolean = false, id?: strin
     let res: Response;
 
     if (update) {
+      console.log("modificar")
       res = await api.patch(`/api/activities/modify/${kind}/${id}`, data);
+
     } else {
       res = await api.post(`/api/activities/create/${kind}`, data);
     };

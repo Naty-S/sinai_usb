@@ -11,17 +11,17 @@ import { handle_error, prisma } from "$api/_api";
 
 
 /**
- * Query professor's activities
+ * Query dean's activities
  * 
- * @returns The professor's activities grouped by year and kind
+ * @returns The dean's activities grouped by year and kind
  */
-export const GET: RequestHandler = async function({ params }) {
+export const GET: RequestHandler = async function ({ params }) {
 
   let status = 500;
   let body = {};
 
   try {
-    // Find professor's activities
+    // Find dean's activities
     const _acts = await prisma.actividad.findMany({
       where: {
         creada_por: params.email
@@ -76,15 +76,15 @@ export const GET: RequestHandler = async function({ params }) {
       }
     })
 
-    const professor = await prisma.profesor.findUniqueOrThrow({
+    const dean = await prisma.administrador.findUniqueOrThrow({
       where: {
-        correo: params.email
+        login: params.email
       }
     })
 
     const activities: Activity[] = _acts.map(a => format_activity_kind(a, user.logs_operaciones_actividades));
     const entityActivities: EntityActivities = {
-      entity: `Prof. ${professor.apellido1}, ${professor.nombre1}`,
+      entity: `Decano. ${dean.nombre}`,
       by_year: acts_kinds_by_year(activities, true),
       years_counts: count_acts_kinds_by_year(activities, true)
     };

@@ -1,21 +1,11 @@
 import type { ActivityKind } from "$lib/types/activities";
 import type {
   articulo_revista,
-  capitulo_libro,
-  composicion,
   evento,
-  exposicion,
-  grabacion,
-  informe_tecnico,
   libro,
-  memoria,
-  partitura,
   patente,
-  premio,
-  premio_bienal,
   proyecto_grado,
   proyecto_investigacion,
-  recital
 } from "@prisma/client";
 
 /**
@@ -23,19 +13,19 @@ import type {
  * 
  * @param {string} kind - The kind of the activity
  * @param {ActivityKind} act - Activity kind info
- * @returns {string} The detailed kind
+ * @returns The detailed kind
  */
 export const map_to_detailed_kind = function (kind: string, act: ActivityKind): string {
 
   if (act) {
     switch (kind) {
       case "articulo_revista":
-        const _act_kind = act as articulo_revista
+        const _articulo_revista = act as articulo_revista;
   
         const indexes = ["SCI", "SSCI", "SCIENCE CITATION INDEX", "SOCIAL SCIENCES CITATION INDEX"];
         const is_indexed = function (): boolean {
           return indexes.some(i => {
-            const index = _act_kind.indice;
+            const index = _articulo_revista.indice;
             if (index) {
               return index.toUpperCase().includes(i)
             };
@@ -46,7 +36,7 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         if (is_indexed()) {
           return "Publicaciones en Revistas Indexadas en el SCI-SSCI-ARTS"
   
-        } else if (_act_kind.indice && _act_kind.estado === "Publicado") {
+        } else if (_articulo_revista.indice && _articulo_revista.estado === "Publicado") {
           return "Publicaciones en Revistas Indexadas en Otros Indices"
   
           // TODO: No se sabe exactamente que condicion hace falta para diferenciarlo de la anterior.
@@ -56,10 +46,10 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
           //   // indice is not null & estado=publicado & indice!=todos los anteriores
           //   return "Publicaciones en Revistas Indexadas en Otros Indices Internacional"
   
-        } else if (!act.indice && act.estado === "Publicado") {
+        } else if (!_articulo_revista.indice && _articulo_revista.estado === "Publicado") {
           return "Publicaciones en Revistas Arbitradas No Indexadas"
   
-        } else if (act.estado === "Aceptado en Vias de Publicacion") {
+        } else if (_articulo_revista.estado as string === "Aceptado en Vias de Publicacion") {
           return "Articulos Aceptados en Vías de Publicación"
   
         } else {
@@ -73,16 +63,18 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         return "Composiciones Solicitadas por Orquestas Sinfonicas o Agrupaciones Reconocidas";
   
       case "evento":
-        if (act.modalidad === "Invitada" && act.pais === "Venezuela") {
+        const _evento = act as evento;
+
+        if (_evento.modalidad === "Invitada" && _evento.pais === "Venezuela") {
           return "Asistencia a Eventos Nacionales"
   
-        } else if (act.modalidad === "Invitada" && act.pais !== "Venezuela") {
+        } else if (_evento.modalidad === "Invitada" && _evento.pais !== "Venezuela") {
           return "Asistencia a Eventos Internacionales"
   
-        } else if (act.pais === "Venezuela") {
+        } else if (_evento.pais === "Venezuela") {
           return "Eventos en Venezuela"
   
-        } else if (act.pais !== "Venezuela") {
+        } else if (_evento.pais !== "Venezuela") {
           return "Eventos en el Exterior"
   
         } else {
@@ -99,10 +91,12 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         return "Informes Tecnicos";
   
       case "libro":
-        if (act.pais === "Venezuela") {
+        const _libro = act as libro;
+
+        if (_libro.pais === "Venezuela") {
           return "Libro Nacional"
   
-        } else if (act.pais !== "Venezuela") {
+        } else if (_libro.pais !== "Venezuela") {
           return "Libro Internacional"
   
         } else {
@@ -116,10 +110,12 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         return "Partituras, Video o CD's Publicados en Editoriales Reconocidas";
   
       case "patente":
-        if (act.pais === "Venezuela") {
+        const _patente = act as patente;
+
+        if (_patente.pais === "Venezuela") {
           return "Patentes Nacional"
   
-        } else if (act.pais !== "Venezuela") {
+        } else if (_patente.pais !== "Venezuela") {
           return "Patentes Internacional"
   
         } else {
@@ -133,25 +129,27 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         return "Trabajos Reconocidos o Premiados En Bienales, Salones, Concursos o Exposiciones";
   
       case "proyecto_grado":
-        if (act.nivel_academico === "Doctorado") {
+        const _proyecto_grado = act as proyecto_grado;
+
+        if (_proyecto_grado.nivel_academico === "Doctorado") {
           return "Tutoria de Tesis Doctorales"
   
-        } else if (act.nivel_academico === "Maestria") {
+        } else if (_proyecto_grado.nivel_academico === "Maestria") {
           return "Tutoria de Trabajos de Grado (Maestrias)"
   
-        } else if (act.nivel_academico === "Especializacion") {
+        } else if (_proyecto_grado.nivel_academico === "Especializacion") {
           return "Tutoria de Proyectos de Grado (Especializaciones)"
   
-        } else if (act.nivel_academico === "Postgrado") {
+        } else if (_proyecto_grado.nivel_academico === "Postgrado") {
           return "Proyectos de Grado (Postgrados)"
   
-        } else if (act.nivel_academico === "Licencitura") {
+        } else if (_proyecto_grado.nivel_academico === "Licencitura") {
           return "Tutoria de Proyectos de Grado (Licencituras)"
   
-        } else if (act.nivel_academico === "Ingenieria") {
+        } else if (_proyecto_grado.nivel_academico === "Ingenieria") {
           return "Tutoria de Proyectos de Grado (Ingenierias)"
   
-        } else if (act.nivel_academico === "Pasantia_Larga") {
+        } else if (_proyecto_grado.nivel_academico === "Pasantia_Larga") {
           return "Proyectos de Grado (Pasantias Largas)"
   
         } else {
@@ -159,9 +157,10 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         }
   
       case "proyecto_investigacion":
-  
-        const start = new Date(act.fecha_inicio);
-        start.setMonth(start.getMonth() + act.meses_duracion);
+        const _proyecto_investigacion = act as proyecto_investigacion;
+
+        const start = new Date(_proyecto_investigacion.fecha_inicio);
+        start.setMonth(start.getMonth() + _proyecto_investigacion.meses_duracion);
         const is_active = start >= new Date();
   
         if (is_active) {

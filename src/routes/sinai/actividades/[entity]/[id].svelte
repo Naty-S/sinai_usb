@@ -1,11 +1,9 @@
 <!-- 
-  @component
-  Display activities by year for professor or group
+  Display activities by year for dean, professor or group
  -->
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
-  // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params, session }) => {
 
     const { id } = params;
@@ -18,7 +16,7 @@
       professor?.coord_chief || professor?.division_chief
     ) {
 
-      const entity = params.entity === "grupo" ? "group" : "professor"
+      const entity = params.entity === "grupo" ? "group" : (params.entity === "decano" ? "dean" : "professor")
       const res = await fetch(`/api/activities/${entity}/${id}`);
      
       if (res.ok) {

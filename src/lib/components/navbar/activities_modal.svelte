@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Renders list of activities the user can create
+ -->
 <script lang="ts">
   import Modal from "../modal.svelte";
 

@@ -7,6 +7,11 @@ import { count_acts_kinds_by_year } from "$lib/utils/maths";
 import { handle_error, prisma } from "$api/_api";
 
 
+/**
+ * Query group's activities
+ * 
+ * @returns The group's activities grouped by year with count
+*/
 export const GET: RequestHandler = async function ({ params }) {
   
   let status = 500;

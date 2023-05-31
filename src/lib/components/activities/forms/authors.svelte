@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Activity authors section form
+ -->
 <script lang="ts">
   import { getContext, onMount } from "svelte";
   import { key } from "svelte-forms-lib";

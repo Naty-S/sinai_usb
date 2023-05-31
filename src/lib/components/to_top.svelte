@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  To top button. Goes to the top of the page
+ -->
 <script lang="ts">
   export let show_on_px = 150;
   

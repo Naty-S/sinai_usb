@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Observations activity section form
+ -->
 <script lang="ts">
   import type { activity_form_ctx, kinds } from "$lib/types/forms";
 

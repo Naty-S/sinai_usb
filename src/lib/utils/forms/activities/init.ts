@@ -23,11 +23,11 @@ import type {
 import { format_date } from "$lib/utils/formatting";
 
 
-export const init = function (kind: kinds, user: User, data?: Activity): actividad_form<typeof kind> {
+export const init = function (kind: kinds, user?: User, data?: Activity): actividad_form<typeof kind> {
 
   const act: activity = {
     actividad: {
-        creada_por: user.email
+        creada_por: (data ? (user?.dean ? data.creada_por : user?.email) : user?.email) || "usuario ficticio"
       , titulo: data?.titulo || ''
       , cuota: data?.cuota || 0
       , fecha_creacion: data?.fecha_creacion || new Date()
@@ -43,7 +43,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
         [{ old: '?', new: '1'}]
     , autores_externos: data?.autores_externos || []
     , autores_usb: data?.autores_usb || []
-    , creation_success: false
+    , user_rank: user?.dean ? "dean" : "professor"
   };
 
   const init_date = function (date?: Date): Date {
@@ -54,7 +54,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
 
   switch (kind) {
     case "articulo_revista":
-      info = data?.kind_info as articulo_revista;
+      info = data?.kind_data as articulo_revista;
 
       const articulo_revista: actividad_form<"articulo_revista"> = {
         ...act
@@ -77,7 +77,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return articulo_revista;
 
     case "capitulo_libro":
-      info = data?.kind_info as capitulo_libro;
+      info = data?.kind_data as capitulo_libro;
 
       const capitulo_libro: actividad_form<"capitulo_libro"> = {
         ...act
@@ -99,7 +99,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return capitulo_libro;
 
     case "composicion":
-      info = data?.kind_info as composicion;
+      info = data?.kind_data as composicion;
 
       const composicion: actividad_form<"composicion"> = {
         ...act
@@ -117,7 +117,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return composicion;
 
     case "evento":
-      info = data?.kind_info as evento;
+      info = data?.kind_data as evento;
 
       const evento: actividad_form<"evento"> = {
         ...act
@@ -135,7 +135,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return evento;
 
     case "exposicion":
-      info = data?.kind_info as exposicion;
+      info = data?.kind_data as exposicion;
 
       const exposicion: actividad_form<"exposicion"> = {
         ...act
@@ -153,7 +153,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return exposicion;
 
     case "grabacion":
-      info = data?.kind_info as grabacion;
+      info = data?.kind_data as grabacion;
 
       const grabacion: actividad_form<"grabacion"> = {
         ...act
@@ -171,7 +171,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return grabacion;
 
     case "informe_tecnico":
-      info = data?.kind_info as informe_tecnico;
+      info = data?.kind_data as informe_tecnico;
 
       const informe_tecnico: actividad_form<"informe_tecnico"> = {
         ...act
@@ -188,7 +188,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return informe_tecnico;
 
     case "libro":
-      info = data?.kind_info as libro;
+      info = data?.kind_data as libro;
 
       const libro: actividad_form<"libro"> = {
         ...act
@@ -205,7 +205,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return libro;
 
     case "memoria":
-      info = data?.kind_info as memoria;
+      info = data?.kind_data as memoria;
 
       const memoria: actividad_form<"memoria"> = {
         ...act
@@ -229,7 +229,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return memoria;
 
     case "partitura":
-      info = data?.kind_info as partitura;
+      info = data?.kind_data as partitura;
 
       const partitura: actividad_form<"partitura"> = {
         ...act
@@ -247,7 +247,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return partitura;
 
     case "patente":
-      info = data?.kind_info as patente;
+      info = data?.kind_data as patente;
 
       const patente: actividad_form<"patente"> = {
         ...act
@@ -262,7 +262,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return patente;
 
     case "premio":
-      info = data?.kind_info as premio;
+      info = data?.kind_data as premio;
 
       const premio: actividad_form<"premio"> = {
         ...act
@@ -275,7 +275,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return premio;
 
     case "premio_bienal":
-      info = data?.kind_info as premio_bienal;
+      info = data?.kind_data as premio_bienal;
 
       const premio_bienal: actividad_form<"premio_bienal"> = {
         ...act
@@ -294,7 +294,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return premio_bienal;
 
     case "proyecto_grado":
-      info = data?.kind_info as proyecto_grado;
+      info = data?.kind_data as proyecto_grado;
 
       const proyecto_grado: actividad_form<"proyecto_grado"> = {
         ...act
@@ -309,7 +309,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return proyecto_grado;
 
     case "proyecto_investigacion":
-      info = data?.kind_info as proyecto_investigacion;
+      info = data?.kind_data as proyecto_investigacion;
 
       const proyecto_investigacion: actividad_form<"proyecto_investigacion"> = {
         ...act
@@ -325,7 +325,7 @@ export const init = function (kind: kinds, user: User, data?: Activity): activid
       return proyecto_investigacion;
 
     case "recital":
-      info = data?.kind_info as recital;
+      info = data?.kind_data as recital;
 
       const recital: actividad_form<"recital"> = {
         ...act

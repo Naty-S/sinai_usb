@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Activities by year
+ -->
 <script lang="ts">
   import { session } from "$app/stores";
   
@@ -114,9 +118,9 @@
     
     {#each activities as [kind, acts]}
     <!-- Display activities kind -->
+      <h3>{kind}</h3>
+      
       {#each acts as act}
-        <h3>{kind}</h3>
-    
         <ol class="ui items">
           <div class="item">
             <li>
@@ -128,7 +132,7 @@
 
                 "{act.titulo}".
 
-                <KindInfo activity={act.kind_info} kind={act.kind_name} />
+                <KindInfo activity={act.kind_data} kind={act.kind_name} />
 
                 <span class="uk-text-emphasis">Realizada en el(los) Grupo(s)</span>:
                 {act.groups.map(g => g.nombre).join(", ")}.
@@ -141,7 +145,7 @@
                   <span class="ui red text">
                     (Creada por {act.creada_por} el {format_date(act.fecha_creacion, "long-day")}).
                     {#if act.actions_log[0]}
-                      (Modificado recientemente por {act.actions_log[0].professor}
+                      (Modificado recientemente por {act.actions_log[0].user}
                       el {format_date(act.actions_log[0].date, "long-day")}
                       a las {act.actions_log[0].time}).
                     {/if}

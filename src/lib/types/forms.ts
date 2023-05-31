@@ -24,6 +24,9 @@ import type {
 } from "@prisma/client";
 
 
+/**
+ * Kinds of activities
+ */
 export type kinds
   = "articulo_revista"
   | "capitulo_libro"
@@ -43,6 +46,7 @@ export type kinds
   | "recital"
 ;
 
+// Types used in the activity's form. Id field `actividad` not needed.
 type articulo_revista_form = Omit<articulo_revista, "actividad">;
 type capitulo_libro_form = Omit<capitulo_libro, "actividad">;
 type composicion_form = Omit<composicion, "actividad">;
@@ -60,6 +64,7 @@ type proyecto_grado_form = Omit<proyecto_grado, "actividad">;
 type proyecto_investigacion_form = Omit<proyecto_investigacion, "actividad">;
 type recital_form = Omit<recital, "actividad">;
 
+// 
 type actividades_form = {
     articulo_revista: articulo_revista_form
   , capitulo_libro: capitulo_libro_form
@@ -79,6 +84,9 @@ type actividades_form = {
   , recital: recital_form
 };
 
+/**
+ * Activity data to be stored in the DB
+ */
 export type activity = {
   actividad: Omit<actividad, "id">
   , autores_externos: Omit<autor_externo, "id" | "actividad">[]
@@ -87,13 +95,19 @@ export type activity = {
     old: string,
     new: string
   }[]
-  , creation_success: boolean
+  , user_rank: "professor" | "dean"
 };
 
+/**
+ * Activity form data
+ */
 export type actividad_form<kind extends kinds> = activity & Pick<actividades_form, kind>;
 
-// TODO: el ctx tambien esta en login y register
-// select, input more general
+/**
+ * Form context, propagates form data across components
+ * 
+ * TODO: Make select & input more general. ctx it's in login and register(research lines) too
+ */
 export type activity_form_ctx<kind extends kinds> = {
   form: Writable<actividad_form<kind>>,
   errors: Writable<actividad_form<kind>>,

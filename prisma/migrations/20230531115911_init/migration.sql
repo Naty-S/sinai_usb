@@ -318,7 +318,7 @@ CREATE TABLE "actividad" (
 CREATE TABLE "log_operacion_actividad" (
     "id" SERIAL NOT NULL,
     "actividad" INTEGER NOT NULL,
-    "profesor" INTEGER NOT NULL,
+    "usuario" TEXT NOT NULL,
     "fecha" DATE,
     "hora" TIME(6),
     "operacion" "log_operacion_actividad_operacion_enum" NOT NULL DEFAULT 'Modificacion',
@@ -700,7 +700,7 @@ CREATE INDEX "actividad_validado_por_idx" ON "actividad"("validado_por");
 CREATE INDEX "log_operacion_actividad_actividad_idx" ON "log_operacion_actividad"("actividad");
 
 -- CreateIndex
-CREATE INDEX "log_operacion_actividad_profesor_idx" ON "log_operacion_actividad"("profesor");
+CREATE INDEX "log_operacion_actividad_usuario_idx" ON "log_operacion_actividad"("usuario");
 
 -- CreateIndex
 CREATE INDEX "actividad_grupo_investigacion_actividad_idx" ON "actividad_grupo_investigacion"("actividad");
@@ -734,9 +734,6 @@ CREATE INDEX "documento_actividad_idx" ON "documento"("actividad");
 
 -- AddForeignKey
 ALTER TABLE "profesor" ADD CONSTRAINT "profesor_correo_fkey" FOREIGN KEY ("correo") REFERENCES "usuario"("login") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "profesor" ADD CONSTRAINT "profesor_departamento_fkey" FOREIGN KEY ("departamento") REFERENCES "departamento"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "coordinacion" ADD CONSTRAINT "coordinacion_jefe_fkey" FOREIGN KEY ("jefe") REFERENCES "profesor"("correo") ON DELETE NO ACTION ON UPDATE CASCADE;
@@ -805,10 +802,10 @@ ALTER TABLE "red_academica_grupo_investigacion" ADD CONSTRAINT "red_academica_gr
 ALTER TABLE "actividad" ADD CONSTRAINT "actividad_creada_por_fkey" FOREIGN KEY ("creada_por") REFERENCES "usuario"("login") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "actividad" ADD CONSTRAINT "actividad_validado_por_fkey" FOREIGN KEY ("validado_por") REFERENCES "profesor"("correo") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "actividad" ADD CONSTRAINT "actividad_validado_por_fkey" FOREIGN KEY ("validado_por") REFERENCES "usuario"("login") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "log_operacion_actividad" ADD CONSTRAINT "log_operacion_actividad_profesor_fkey" FOREIGN KEY ("profesor") REFERENCES "profesor"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "log_operacion_actividad" ADD CONSTRAINT "log_operacion_actividad_usuario_fkey" FOREIGN KEY ("usuario") REFERENCES "usuario"("login") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "actividad_grupo_investigacion" ADD CONSTRAINT "actividad_grupo_investigacion_grupo_fkey" FOREIGN KEY ("grupo") REFERENCES "grupo_investigacion"("id") ON DELETE NO ACTION ON UPDATE CASCADE;

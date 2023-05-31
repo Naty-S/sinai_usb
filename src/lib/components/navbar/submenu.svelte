@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Render items in the submenu
+ -->
 <script lang="ts">
 	import type { submenu_item } from "$lib/types/menu";
 

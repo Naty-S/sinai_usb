@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Countries and states dropdown selection
+ -->
 <script lang="ts">
   import type { activity_form_ctx, kinds } from "$lib/types/forms";
 

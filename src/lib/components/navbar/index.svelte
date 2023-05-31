@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Navbar
+ -->
 <script lang="ts">
   import { session } from "$app/stores";
 

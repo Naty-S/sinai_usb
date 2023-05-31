@@ -1,3 +1,6 @@
+<!-- 
+	Create activity form page
+ -->
 <script lang="ts">
   import { setContext } from "svelte";
   import { createForm, key } from "svelte-forms-lib";

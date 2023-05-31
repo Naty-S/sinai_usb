@@ -1,3 +1,8 @@
+<!-- 
+	@component
+  Professors or Groups who do have activities created, display kind activities count resume table.
+  Can only be seen by Coordinations and Departments
+ -->
 <script lang="ts">
   import type {
     ActivitiesCounts,
@@ -13,7 +18,6 @@
   export let entity: string;
   export let entity_activities: ProfessorActivities[] | GroupActivities[];
 
-  // TODO: global var
   const kinds = [
     "ACTIVIDAD INVALIDA"
     , "Publicaciones en Revistas Indexadas en el SCI-SSCI-ARTS"
@@ -54,7 +58,6 @@
     , "Recitales o Conciertos Arbitrados"
   ];
   const acts_kinds_headers = [entity].concat(kinds);
-  console.log(entity_activities.map(e => e.activities.map(a => map_to_detailed_kind(a.kind_name, a.kind_info))))
 
   let entities_with_acts;
   let entities_with_acts_counts: ActivitiesCounts[];

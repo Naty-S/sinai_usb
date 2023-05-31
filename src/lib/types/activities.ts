@@ -25,15 +25,22 @@ import type {
 } from "@prisma/client";
 
 
+/**
+ * Activity data, contains raw data from DB type `actividad` and
+ * authors, groups, kind data and info about the actions performed in the activity
+ */
 export type Activity = actividad & {
   autores_externos: autor_externo[],
   autores_usb: autor_usb[],
   groups: Group[],
   kind_name: string,
-  kind_info: ActivityKind,
+  kind_data: ActivityKind,
   actions_log: ActivityActionLog[]
 };
 
+/**
+ * Each kind of activity info
+ */
 export type ActivityKind
   = articulo_revista
   | capitulo_libro

@@ -1,3 +1,7 @@
+<!-- 
+	@component
+  Groups dropdown selection
+ -->
 <script lang="ts">
   import { getContext, onMount } from "svelte";
   import { key } from "svelte-forms-lib";
