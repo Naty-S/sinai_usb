@@ -4,8 +4,12 @@
   - Action
     + Create
     + Modify
+    + Register
   - Reset form
   - Go back to previous page
+
+  Props:
+  * `action`: string
  -->
 <script lang="ts">
   import { goto, afterNavigate } from "$app/navigation";

@@ -92,8 +92,8 @@
     show_reject = false;
 
     if (res.ok) {
-      const { action, professor } = await res.json();
-      action.code = action;
+      const { code, professor } = await res.json();
+      action.code = code;
       action.info = professor;
 
     } else {
@@ -289,13 +289,13 @@
     <span class="ui primary text">"{actual_prof_name}"</span>
   </Modal>
 {/if}
-{#if action.info !== ''}
+{#if action.info !== '' && action.code !== "rejected"}
   <Modal
     id="error"
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
+    is_active={action.info !== '' && action.code !== "rejected"}
     close={() => location.replace($page.url.pathname)}
   >
     <p>

@@ -1,17 +1,26 @@
 <!-- 
 	@component
   Form inputs
-  - text (default)
-  - radio
-  - checkbox
-  - date
-  - number
+
+  Props:
+  * `type`
+    - text (default)
+    - radio
+    - checkbox
+    - date
+    - number
+  * `label`: string
+  * `name`: string
+  * `placeholder`: string (optional)
+  * `value`: any
+  * `error`: any (optional)
  -->
 <script lang="ts">
   import type { activity_form_ctx, kinds } from "$lib/types/forms";
 
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";
+
   import { page } from "$app/stores";
 
   import ErrorMsg from "./error_msg.svelte";
@@ -25,8 +34,7 @@
 
   const act = $page.params.activity;
   const kind = act as kinds;
-  const ctx = act ? kind : '';
-  const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
+  const { handleChange }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
 <div class:error={error} {...$$props}>

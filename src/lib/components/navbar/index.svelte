@@ -79,7 +79,7 @@ modificar para que todo este centrado entre el top y bottom del letter head
               Iniciar sesion
             </a>
           </li>
-          <li class="uk-margin-large-top">
+          <li class="uk-margin-medium-top">
             <a id="register" href="/sinai/registro" class="ui primary tiny button">
               Registro
             </a>

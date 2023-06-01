@@ -25,6 +25,7 @@ export const submit = function (kind: kinds, update: boolean = false, id?: strin
 
       case "informe_tecnico":
         data.informe_tecnico.fecha_inicio = new Date(data.informe_tecnico.fecha_inicio);
+        data.informe_tecnico.meses_duracion = Number(data.informe_tecnico.meses_duracion);
         break;
 
       case "patente":
@@ -38,7 +39,8 @@ export const submit = function (kind: kinds, update: boolean = false, id?: strin
 
       case "proyecto_investigacion":
         data.proyecto_investigacion.fecha_inicio = new Date(data.proyecto_investigacion.fecha_inicio);
-        
+        data.proyecto_investigacion.meses_duracion = Number(data.proyecto_investigacion.meses_duracion);
+
         // TODO: Remove when fix confusion in db with 'institucion'
         data.proyecto_investigacion.monto = data.proyecto_investigacion.monto.toString();
         break;
