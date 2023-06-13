@@ -1,38 +1,69 @@
-# create-svelte
+# SINAI
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## Rqueriments
 
-## Creating a project
+* Docker
+* Nodejs
+* Git
 
-If you're seeing this, you've probably already done this step. Congrats!
+If you don't want to use Docker you need to install these aswell:
+* postgres 14
+* prisma
 
-```bash
-# create a new project in the current directory
-npm init svelte
 
-# create a new project in my-app
-npm init svelte my-app
-```
+## Install & Configuration
 
-## Developing
+1. install docker && nodejs && git
+2. clone repo: `git clone https://github.com/Naty-S/sinai_usb.git`
+3. set .env file: `cp .env.template .env`
+  * Change `DOCKER_APP_NAME`, `PG_DB`, `DB_DUMP` variables to use dev resources
+  * Change `PG_PORT` if you have postgres already running in the same port
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-```bash
-npm run dev
+## Set up Dev Environment
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+### With Docker
+1. Up docker dev container: `make up-dev`
+2. Enter postgres container: `docker compose -f docker-compose.dev.yml exec postgres sh`
+3. Enter postgres: `su - postgres`
+4. Seed db data: `gunzip -c sinai_dev.gz | psql sinai_dev`
+5. Exit container
 
-## Building
+**Use `make help` to see all docker commands available**
 
-To create a production version of your app:
+### Without Docker
+1. Install dependencies: `npm install`
+2. Enter postgres: `su - postgres`
+3. Create database: `createdb sinai_dev`
+4. Seed db data: `gunzip -c sinai_dev.gz | psql sinai_dev`
+5. Exit postgres
+6. Configure prisma client: `npx prisma generate`
+7. Run & Open app: `npm run dev -- --open`
 
-```bash
-npm run build
-```
 
-You can preview the production build with `npm run preview`.
+## Production Deployment
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+**Use production branch**: `git checkout production`
+
+1. Up docker dev container: `make up-dev`
+2. Enter postgres container: `docker compose -f docker-compose.yml exec postgres sh`
+3. Enter postgres: `su - postgres`
+4. Seed db data: `gunzip -c sinai.gz | psql sinai`
+5. Exit container
+
+### Test production (wihtout Docker)
+1. Build app: `npm run build`
+2. Preview: `npm run preview`
+
+### Update production deployment
+1. Pull changes: `git pull`
+2. Update docker container: `make update`
+
+
+## Backup DB data
+
+1. Enter postgres container: `docker compose -f docker-compose.yml exec postgres sh`
+2. Enter postgres: `su - postgres`
+3. Dump database: `pg_dump sinai | gzip > sinai.gz`
+4. Exit container
+5. Copy dump from container: `sudo docker cp postgres:/path/sinai.gz ./sinai.gz`
