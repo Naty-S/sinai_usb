@@ -21,10 +21,16 @@ export const GET: RequestHandler = async function({ params }) {
   let body = {};
 
   try {
+    const professor = await prisma.profesor.findUniqueOrThrow({
+      where: {
+        id: Number(params.id)
+      }
+    });
+
     // Find professor's activities
     const _acts = await prisma.actividad.findMany({
       where: {
-        creada_por: params.email
+        creada_por: professor.correo
       },
       include: {
         actividades_grupos: {
@@ -60,7 +66,7 @@ export const GET: RequestHandler = async function({ params }) {
 
     const user = await prisma.usuario.findUniqueOrThrow({
       where: {
-        login: params.email
+        login: professor.correo
       },
       include: {
         logs_operaciones_actividades: {
@@ -74,13 +80,7 @@ export const GET: RequestHandler = async function({ params }) {
           orderBy: [{ fecha: "desc" }, { hora: "desc" }]
         }
       }
-    })
-
-    const professor = await prisma.profesor.findUniqueOrThrow({
-      where: {
-        correo: params.email
-      }
-    })
+    });
 
     const activities: Activity[] = _acts.map(a => format_activity_kind(a, user.logs_operaciones_actividades));
     const entityActivities: EntityActivities = {

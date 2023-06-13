@@ -4,10 +4,12 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
 
-  export const load: Load = async ({ fetch, params, session }) => {
+  export const load: Load = async ({ fetch, session }) => {
 
-    if (session.user?.professor) {
-      const res = await fetch(`/api/professor/${params.email}`);
+    const professor = session.user?.professor;
+
+    if (professor) {
+      const res = await fetch(`/api/professor/${session.user?.email}`);
      
       if (res.ok) {
         const profile = await res.json();

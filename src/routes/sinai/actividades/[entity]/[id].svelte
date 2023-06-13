@@ -8,16 +8,16 @@
 
     const { id } = params;
     const user = session.user;
-    const professor = user?.professor
+    const professor = user?.professor;
     const prof_group = professor?.groups.historico_grupos.map(g => g.Grupo.id).includes(Number(id));
 
-    if (user?.email === id || prof_group || user?.dean ||
+    if (professor?.id === Number(id) || prof_group || user?.dean ||
       professor?.is_dep_chief || professor?.is_dep_representative ||
       professor?.coord_chief || professor?.division_chief
     ) {
 
       const entity = params.entity === "grupo" ? "group" : (params.entity === "decano" ? "dean" : "professor")
-      const res = await fetch(`/api/activities/${entity}/${id}`);
+      const res = await fetch(`/api/activities/${entity}/${user?.dean ? user.email : id}`);
      
       if (res.ok) {
         const activities = await res.json();

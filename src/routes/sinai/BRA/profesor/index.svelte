@@ -4,10 +4,14 @@
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
-  export const load: Load = async ({ fetch, params }) => {    
-    const res1 = await fetch(`/api/activities/professor/${params.email}`);
+  export const load: Load = async ({ fetch, session }) => {
+
+    const professor = session.user?.professor;
+
+    
+    const res1 = await fetch(`/api/activities/professor/${professor?.id}`);
     // TODO: confirmar. periodo bra busca las actividades en las que ha participado?
-    const res2 = await fetch(`/api/professor/${params.email}`);
+    const res2 = await fetch(`/api/professor/${session.user?.email}`);
     const res3 = await fetch("/api/bra");
 
     if (res1.ok && res2.ok && res3.ok) {
@@ -117,7 +121,6 @@
     <div class="right aligned column">Páginas: #</div>
   </div>
 
-  <!-- Display activities by year -->
   {#each period_activities as year_activities}
     <YearActivities {year_activities} />
   {/each}

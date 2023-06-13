@@ -61,6 +61,7 @@ export interface EntityActivities {
  * Professor data and related activities
  * 
  * - `professor`
+ *    + `id`
  *    + `email`
  *    + `name`
  *    + `surname`
@@ -68,6 +69,7 @@ export interface EntityActivities {
  */
 export interface ProfessorActivities {
   professor: {
+    id: number,
     email: string,
     name: string,
     surname: string

@@ -44,7 +44,7 @@ export const init = function (kind: kinds, user?: User, data?: Activity): activi
     , autores_externos: data?.autores_externos || []
     , autores_usb: data?.autores_usb || []
     , user_rank: user?.dean ? "dean" : "professor"
-    , user: user?.email || "usuario ficticio"
+    , user: user || {email: "usuario ficticio", pending_professors: false}
     , kind
   };
 
