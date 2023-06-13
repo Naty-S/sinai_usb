@@ -4,22 +4,29 @@
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
-  // https://kit.svelte.dev/docs/loading
-  export const load: Load = async ({ fetch, params }) => {
+  export const load: Load = async ({ fetch, params, session }) => {
 
-    const res = await fetch(`/api/activities/modify/${params.activity}/${params.id}`);
-   
-    if (res.ok) {
-      const activity_data = await res.json();
+    if (session.user) {
 
-      return {
-        props: { activity_data }
+      const res = await fetch(`/api/activities/modify/${params.activity}/${params.id}`);
+     
+      if (res.ok) {
+        const activity_data = await res.json();
+  
+        return {
+          props: { activity_data }
+        };
       };
-    };
-
-    const { message } = await res.json();
-    return {
-      error: new Error(message)
+  
+      const { message } = await res.json();
+      return {
+        error: new Error(message)
+      };
+    } else {
+      return {
+        error: new Error("Acceso denegado. Por favor inicie sesión"),
+        status: 401
+      };
     };
   };
 </script>

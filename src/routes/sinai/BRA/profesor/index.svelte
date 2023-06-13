@@ -8,31 +8,38 @@
 
     const professor = session.user?.professor;
 
-    
-    const res1 = await fetch(`/api/activities/professor/${professor?.id}`);
-    // TODO: confirmar. periodo bra busca las actividades en las que ha participado?
-    const res2 = await fetch(`/api/professor/${session.user?.email}`);
-    const res3 = await fetch("/api/bra");
+    if (professor) {
 
-    if (res1.ok && res2.ok && res3.ok) {
-      const prof_activities = await res1.json();
-      const profile = await res2.json();
-      const period = await res3.json();
-
-      return {
-        props: {
-          prof_activities,
-          profile,
-          period
-        }
+      const res1 = await fetch(`/api/activities/professor/${professor?.id}`);
+      // TODO: confirmar. periodo bra busca las actividades en las que ha participado?
+      const res2 = await fetch(`/api/professor/${session.user?.email}`);
+      const res3 = await fetch("/api/bra");
+  
+      if (res1.ok && res2.ok && res3.ok) {
+        const prof_activities = await res1.json();
+        const profile = await res2.json();
+        const period = await res3.json();
+  
+        return {
+          props: {
+            prof_activities,
+            profile,
+            period
+          }
+        };
       };
-    };
-
-    const { message: message1 } = await res1.json();
-    const { message: message2 } = await res2.json();
-    const { message: message3 } = await res3.json();
-    return {
-      error: new Error(message1 + "\n" + message2 + "\n" + message3)
+  
+      const { message: message1 } = await res1.json();
+      const { message: message2 } = await res2.json();
+      const { message: message3 } = await res3.json();
+      return {
+        error: new Error(message1 + "\n" + message2 + "\n" + message3)
+      };
+    } else {
+      return {
+        error: new Error("Acceso denegado. Inicie sesión como profesor."),
+        status: 401
+      };
     };
 };
 </script>

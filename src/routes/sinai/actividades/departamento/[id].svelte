@@ -4,7 +4,6 @@
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
-  // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params, session }) => {
 
     const user = session.user;

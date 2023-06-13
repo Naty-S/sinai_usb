@@ -4,7 +4,6 @@
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
-  // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, session }) => {
 
     if (session.user?.dean) {
@@ -47,7 +46,7 @@
     <div class="item">
       <div class="right floated content">
         <button type="button" class="ui button" on:click={() => goto(`/sinai/actividades/coordinacion/${coord.id}`)}>
-          Ver resúmen de actividades
+          Ver resumen de actividades
         </button>
       </div>
       <div class="content">
@@ -65,7 +64,7 @@
     <div class="item">
       <div class="right floated content">
         <button type="button" class="ui button" on:click={() => goto(`/sinai/actividades/division/${division.id}`)}>
-          Ver resúmen de actividades
+          Ver resumen de actividades
         </button>
       </div>
       <div class="content">
