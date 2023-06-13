@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
-
 import type { DepActivities } from "$lib/interfaces/activities";
+
 import { handle_error, prisma } from "$api/_api";
 import { format_activity_kind } from "$lib/utils/formatting";
 
@@ -42,6 +42,7 @@ export const GET: RequestHandler = async function ({ params }) {
         select: {
           profesor: {
             select: {
+              id: true,
               correo: true,
               nombre1: true,
               apellido1: true
@@ -88,14 +89,15 @@ export const GET: RequestHandler = async function ({ params }) {
         id: department.id,
         name: department.nombre
       },
-      professors_activities: professors_activities.map(p => {
+      professors_activities: professors_activities.map((p: any) => {
         return {
           professor: {
+            id: p.profesor.id,
             email: p.profesor.correo,
             name: p.profesor.nombre1,
             surname: p.profesor.apellido1
           },
-          activities: p.actividades.map(a => format_activity_kind(a))
+          activities: p.actividades.map((a: any) => format_activity_kind(a))
         };
       })
     };

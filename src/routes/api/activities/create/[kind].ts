@@ -6,7 +6,7 @@ import { handle_error, prisma } from "$api/_api";
 /**
  * Creates an activity
  * 
- * @returns Redirects to professor's dashboard with `creada`
+ * @returns Redirects to professor's or dean's dashboard with `creada`
 */
 export const POST: RequestHandler = async ({ request, params }) => {
 
@@ -45,7 +45,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
     await prisma.log_operacion_actividad.create({
       data: {
         actividad: act.id,
-        usuario: data.creada_por,
+        usuario: data.user.email,
         fecha: date,
         hora: date,
         operacion: "Ingreso",
@@ -60,11 +60,11 @@ export const POST: RequestHandler = async ({ request, params }) => {
 
     if (data.user_rank == "professor") {
       headers = {
-        location: `/sinai/actividades/profesor/${data.creada_por}?creada=true`
+        location: `/sinai/actividades/profesor/${data.user.professor.id}?creada=true`
       };
     } else {
       headers = {
-        location: `/sinai/actividades/decano/${data.creada_por}?creada=true`
+        location: "/sinai/actividades/decano/0?creada=true"
       };
     };
     
@@ -74,11 +74,11 @@ export const POST: RequestHandler = async ({ request, params }) => {
 
     if (data.user_rank == "professor") {
       headers = {
-        location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
+        location: `/sinai/actividades/profesor/${data.user.professor.id}?error=` + message + code
       };
     } else {
       headers = {
-        location: `/sinai/actividades/decano/${data.creada_por}?error=` + message + code
+        location: "/sinai/actividades/decano/0?error=" + message + code
       };
     };
   };

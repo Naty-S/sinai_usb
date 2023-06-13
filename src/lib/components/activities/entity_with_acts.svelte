@@ -80,7 +80,7 @@
     entities_with_acts = professors_activities.filter(p => p.activities.length > 0);
     entities_with_acts_counts = entities_with_acts.map( p => {
       return {
-        link: `/sinai/actividades/profesor/${p.professor.email}`,
+        link: `/sinai/actividades/profesor/${p.professor.id}`,
         kind: `${p.professor.name}, ${p.professor.surname}`,
         counts: count_acts_kinds(p.activities, true)
       };

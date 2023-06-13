@@ -209,7 +209,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
     await prisma.log_operacion_actividad.create({
       data: {
         actividad: Number(params.id),
-        usuario: _data.user,
+        usuario: _data.user.email,
         fecha: date,
         hora: date,
         operacion: "Modificacion",
@@ -224,11 +224,11 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
 
     if (data.user_rank == "professor") {
       headers = {
-        location: `/sinai/actividades/profesor/${data.creada_por}?modificada=true`
+        location: `/sinai/actividades/profesor/${data.user.professor.id}?modificada=true`
       };
     } else {
       headers = {
-        location: `/sinai/actividades/decano/${data.creada_por}?modificada=true`
+        location: "/sinai/actividades/decano/0?modificada=true"
       };
     };
 
@@ -238,11 +238,11 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
 
     if (data.user_rank == "professor") {
       headers = {
-        location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
+        location: `/sinai/actividades/profesor/${data.user.professor.id}?error=` + message + code
       };
     } else {
       headers = {
-        location: `/sinai/actividades/decano/${data.creada_por}?error=` + message + code
+        location: "/sinai/actividades/decano/0?error=" + message + code
       };
     };
   };

@@ -21,11 +21,11 @@ import { goto } from "$app/navigation";
   $: user = $session.user;
   $: professor = user?.professor;  
 
-  $: resume_link = professor ? `profesor/${user?.email}` : `decano/${user?.email}`;
-  $: bra = `/sinai/BRA/profesor/${user?.email}`;
-  $: coord = `/sinai/actividades/coordinacion/${user?.professor?.coord_chief?.id}`;
-  $: dep = `/sinai/actividades/departamento/${user?.professor?.department.id}`;
-  $: division = `/sinai/actividades/division/${user?.professor?.division_chief?.id}`;
+  $: resume_link = professor ? `profesor/${professor.id}` : `decano/0`;
+  $: bra = `/sinai/BRA/profesor/${professor?.id}`;
+  $: coord = `/sinai/actividades/coordinacion/${professor?.coord_chief?.id}`;
+  $: dep = `/sinai/actividades/departamento/${professor?.department.id}`;
+  $: division = `/sinai/actividades/division/${professor?.division_chief?.id}`;
 
   $: activities = [
     {href: `/sinai/actividades/${resume_link}`, click: () => {}, name: "Revisar Mis Actividades"},

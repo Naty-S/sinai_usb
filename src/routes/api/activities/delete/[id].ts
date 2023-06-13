@@ -27,7 +27,7 @@ export const DELETE: RequestHandler = async ({ request, params }) => {
     await prisma.log_operacion_actividad.create({
       data: {
         actividad: Number(params.id),
-        usuario: _data.user,
+        usuario: _data.user.email,
         fecha: date,
         hora: date,
         operacion: "Eliminacion",

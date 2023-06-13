@@ -16,22 +16,25 @@ import { CAS_LOGIN_URL } from "$lib/api";
  */
 export const redirect: Load = async function ({ fetch, session, url }) {
 
-  if (session.user?.professor) {
+  const user = session.user;
+  const professor = user?.professor;
+
+  if (professor) {
     return {
       status: 302,
-      redirect: `/sinai/actividades/profesor/${session.user.email}`
+      redirect: `/sinai/actividades/profesor/${professor.id}`
     };
-  } else if (session.user?.dean) {
+  } else if (user?.dean) {
     return {
       status: 302,
       redirect: "/sinai/actividades"
     };
-  } else if (!session.user && !["login", "registro"].some(path => url.pathname.includes(path))) {
+  } else if (!user && !["login", "registro"].some(path => url.pathname.includes(path))) {
     return {
       status: 302,
       redirect: "/sinai/login"
     };
-  } else if (!session.user && url.searchParams.has("ticket")) {
+  } else if (!user && url.searchParams.has("ticket")) {
 
     const origin = url.origin.split("://")[1];
     const cas_ticket = url.searchParams.get("ticket");
@@ -51,7 +54,7 @@ export const redirect: Load = async function ({ fetch, session, url }) {
         error: new Error(message)
       };
     };
-  } else if (!session.user && url.pathname.includes("login") && !url.searchParams.has("validated")) {
+  } else if (!user && url.pathname.includes("login") && !url.searchParams.has("validated")) {
 
     const origin = url.origin.split("://")[1];
     const CAS_SERVICE_BASE_URL = `http%3A%2F%2F${origin}%2Fsinai`;

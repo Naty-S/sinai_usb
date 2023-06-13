@@ -22,6 +22,7 @@ import type {
   proyecto_investigacion,
   recital,
 } from "@prisma/client";
+import type { User } from "$lib/interfaces/auth";
 
 
 /**
@@ -96,7 +97,7 @@ export type activity = {
     new: string
   }[]
   , user_rank: "professor" | "dean"
-  , user: string
+  , user: User
   , kind: kinds
 };
 

@@ -33,7 +33,7 @@
   //     $session.user = await res.clone().json();
       
   //     if ($session.user?.professor) {
-  //       goto(`/sinai/actividades/profesor/${$session.user.email}`);
+  //       goto(`/sinai/actividades/profesor/${$session.user.professor.id}`);
       
   //     } else { // Dean
   //       goto("/sinai/actividades");
