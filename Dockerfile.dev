@@ -19,7 +19,9 @@ COPY package*.json ./
 
 
 ## Install dependencies
+RUN apt-get update -y && apt-get install -y openssl
 RUN npm i
+RUN npm audit fix
 RUN npm fund
 
 
