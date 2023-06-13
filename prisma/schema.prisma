@@ -22,22 +22,22 @@ enum articulo_revista_estado_enum {
 }
 
 enum autor_tipo_actividad_enum {
-  Capitulo_Libro          @map("Capitulo Libro")
-  Composicion
-  Evento
-  Exposicion
-  Grabacion
-  Informe
-  Libro
-  Memoria
-  Partitura
-  Patente
-  Premio
-  Premio_Bienal           @map("Premio Bienal")
-  Proyecto_Investigacion  @map("Proyecto de Investigacion")
-  Proyecto_de_Grado       @map("Proyecto de Grado")
-  Recital
-  Revista
+  articulo_revista
+  capitulo_libro
+  composicion
+  evento
+  exposicion
+  grabacion
+  informe_tecnico
+  libro
+  memoria
+  partitura
+  patente
+  premio
+  premio_bienal
+  proyecto_investigacion
+  proyecto_grado
+  recital
 }
 
 enum composicion_categoria_enum {
@@ -198,12 +198,14 @@ model usuario {
   padded Int?
 
   // Prisma relations
-  actividades     actividad[]
-  administradores administrador?
-  profesores      profesor?
+  actividades                  actividad[]     @relation("actividad_creada_por_fkey")
+  validaciones                 actividad[]     @relation("actividad_validado_por_fkey")
+  administrador                administrador?
+  autores                      autor_usb[]
+  profesor                     profesor?
+  logs_operaciones_actividades log_operacion_actividad[]
 
-  autores      autor_usb[]
-  logs_usuario log_usuario[] @ignore
+  logs_usuario  log_usuario[]  @ignore
 }
 
 model profesor {
@@ -216,45 +218,44 @@ model profesor {
   apellido1            String
   apellido2            String?
   activo               Boolean                    @default(false)
-  confirmado           Boolean                    @default(false)
-  sexo                 profesor_sexo_enum
+  confirmado           Boolean                    @default(false) // confirmacion de proyecto?
   categoria            profesor_categoria_enum
   condicion            profesor_condicion_enum
   dedicacion           profesor_dedicacion_enum
+  departamento         Int
   diploma_tipo         profesor_diploma_tipo_enum
   diploma_universidad  String
-  departamento         Int?
   extension            Int?
   fecha_contrato       DateTime?                  @db.Date
   fecha_ingreso        DateTime?                  @db.Date
   lineas_investigacion String[]
   perfil               String
+  sexo                 profesor_sexo_enum
   url                  String?
 
   // Postgres relations
-  usuarios usuario @relation(fields: [correo], references: [login], onDelete: Cascade, onUpdate: Cascade)
+  Usuario      usuario      @relation(fields: [correo], references: [login], onDelete: Cascade, onUpdate: Cascade)
+
 
   // Prisma relations
-  actividades                  actividad[]
-  autores                      autor_usb[]
+  autor_actividades            autor_usb[]
   convocatorias_pei            convocatoria_pei[]
-  coordinaciones               coordinacion[]
+  coordinacion                 coordinacion?
   datos_informe                datos_informe[]
-  divisiones                   division[]
-  jefe_departamentos           departamento[]                    @relation("departamento_jefe_fkey")
-  historico_departamentos      historico_profesor_departamento[]
-  historico_grupos             historico_profesor_grupo[]
-  historico_nomina             historico_profesor_nomina[]
-  logs_operaciones_actividades log_operacion_actividad[]
-  representante_departamentos  departamento[]                    @relation("departamento_representante_fkey")
+  jefe_departamentos           departamento[]                           @relation("departamento_jefe_fkey")
+  representante_departamentos  departamento[]                           @relation("departamento_representante_fkey")
+  division                     division?
   grupos_investigacion         grupo_investigacion[]
+  historico_departamentos      historico_profesor_departamento[]
+  historico_grupos             historico_profesor_grupo_investigacion[]
+  historico_nomina             historico_profesor_nomina[]
   pei                          pei[]
   ppi                          ppi[]
 }
 
 model coordinacion {
   id     Int    @id @default(autoincrement())
-  jefe   String
+  jefe   String @unique(map: "coordinacion_jefe_idx")
   correo String
   nombre String
   siglas String
@@ -265,13 +266,11 @@ model coordinacion {
   // Prisma relations
   departamentos departamento[]
   personal      personal_coordinacion[]
-
-  @@index([jefe])
 }
 
 model division {
   id     Int    @id @default(autoincrement())
-  jefe   String
+  jefe   String @unique(map: "division_jefe_idx")
   nombre String
 
   // Postgres relations
@@ -279,8 +278,6 @@ model division {
 
   // Prisma relations
   departamentos departamento[]
-
-  @@index([jefe])
 }
 
 // TODO: Evaluar agregar campo para distinguir si es suplente o no el jefe y representante (se diferencia en el historico).
@@ -321,12 +318,12 @@ model convocatoria_pei {
   id       Int                          @id @default(autoincrement())
   profesor Int
   anio     Int?
+  aplica   Boolean                      @default(false)
   mes      meses_enum?
   nivel    convocatoria_pei_nivel_enum?
-  aplica   Boolean                      @default(false)
 
   // Postgres relations
-  Profesor profesor @relation(fields: [profesor], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Profesor profesor @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([profesor])
 }
@@ -358,13 +355,14 @@ model grupo_investigacion {
 
   // Prisma relations
   actividades_grupos          actividad_grupo_investigacion[]
-  historico_profesores_grupos historico_profesor_grupo[]
-  redes_grupos                red_grupo_investigacion[]
+  historico_profesores_grupos historico_profesor_grupo_investigacion[]
+  redes_grupos                red_academica_grupo_investigacion[]
 
   @@index([responsable])
 }
 
 model historico_profesor_departamento {
+  id           Int                                        @id @default(autoincrement())
   profesor     Int
   departamento Int
   cargo        historico_profesor_departamento_cargo_enum @default(jefe)
@@ -375,12 +373,12 @@ model historico_profesor_departamento {
   Departamento departamento @relation(fields: [departamento], references: [id], onDelete: NoAction, onUpdate: Cascade)
   Profesor     profesor     @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@id([profesor, departamento, inicio])
   @@index([departamento])
   @@index([profesor])
 }
 
-model historico_profesor_grupo {
+model historico_profesor_grupo_investigacion {
+  id       Int       @id @default(autoincrement())
   profesor Int
   grupo    Int
   fin      DateTime? @db.Date
@@ -390,7 +388,6 @@ model historico_profesor_grupo {
   Grupo    grupo_investigacion @relation(fields: [grupo], references: [id], onDelete: NoAction, onUpdate: Cascade)
   Profesor profesor            @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@id([profesor, grupo, inicio])
   @@index([grupo])
   @@index([profesor])
 }
@@ -398,8 +395,8 @@ model historico_profesor_grupo {
 model historico_profesor_nomina {
   id            Int                                          @id @default(autoincrement())
   profesor      Int
-  fin           DateTime?                                    @db.Date
-  inicio        DateTime                                     @db.Date
+  fecha_egreso  DateTime?                                    @db.Date
+  fecha_ingreso DateTime                                     @db.Date
   tipo_personal historico_profesor_nomina_tipo_personal_enum
 
   // Postgres relations
@@ -408,6 +405,14 @@ model historico_profesor_nomina {
   @@index([profesor])
 }
 
+model periodo_bra {
+  id     Int      @id @default(0)
+  activo Boolean  @default(false)
+  fin    DateTime @db.Date
+  inicio DateTime @db.Date
+}
+
+// Ranking actual de profesores
 model pei {
   id       Int             @id @default(autoincrement())
   profesor Int
@@ -424,6 +429,7 @@ model pei {
   @@index([profesor])
 }
 
+// Ranking antiguo de profesores
 model ppi {
   id       Int             @id @default(autoincrement())
   profesor Int // cedula
@@ -440,17 +446,17 @@ model ppi {
 
 model personal_administrativo {
   id     Int     @id @default(autoincrement())
-  login  String
   cargo  String?
+  login  String
   unidad String
 }
 
 model personal_coordinacion {
   id           Int                               @id @default(autoincrement())
-  login        String
-  coordinacion Int
   acceso       Int?
   cargo        personal_coordinacion_cargo_enum?
+  coordinacion Int
+  login        String
 
   // Postgres relations
   coordinaciones coordinacion @relation(fields: [coordinacion], references: [id], onDelete: NoAction, onUpdate: Cascade)
@@ -458,26 +464,35 @@ model personal_coordinacion {
   @@index([coordinacion])
 }
 
-model red {
+model red_academica {
   id     Int    @id @default(autoincrement())
   correo String
   nombre String
 
   // Prisma relations
-  redes_grupos red_grupo_investigacion[]
+  redes_grupos red_academica_grupo_investigacion[]
 }
 
-model red_grupo_investigacion {
+model red_academica_grupo_investigacion {
   red   Int
   grupo Int
 
-  // Postgres relations
+  // Prisma relations
   Grupo grupo_investigacion @relation(fields: [grupo], references: [id], onDelete: NoAction, onUpdate: Cascade)
-  Red   red                 @relation(fields: [red], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Red   red_academica       @relation(fields: [red], references: [id], onDelete: NoAction, onUpdate: Cascade)
 
   @@id([red, grupo])
   @@index([grupo])
   @@index([red])
+}
+
+model errors_log {
+  id      Int      @id @default(autoincrement())
+  campos  String[]
+  causa   String
+  codigo  String?
+  fecha   DateTime @db.Date
+  mensaje String
 }
 
 //
@@ -488,7 +503,7 @@ model actividad {
   id                        Int       @id @default(autoincrement())
   creada_por                String
   validado_por              String?
-  cuota                     Int?
+  cuota                     Int
   descripcion               String?
   fecha_creacion            DateTime  @db.Date
   fecha_ultima_modificacion DateTime  @updatedAt @db.Date
@@ -498,31 +513,30 @@ model actividad {
   titulo                    String
 
   // Postgres relations
-  Ingresada_por usuario   @relation(fields: [creada_por], references: [login], onDelete: NoAction, onUpdate: Cascade)
-  Validado_por  profesor? @relation(fields: [validado_por], references: [correo], onDelete: NoAction, onUpdate: Cascade)
+  Ingresada_por usuario   @relation("actividad_creada_por_fkey", fields: [creada_por], references: [login], onDelete: NoAction, onUpdate: Cascade)
+  Validado_por  usuario?  @relation("actividad_validado_por_fkey", fields: [validado_por], references: [login], onDelete: NoAction, onUpdate: Cascade)
 
   // Prisma relations
   actividades_grupos           actividad_grupo_investigacion[]
   autores_externos             autor_externo[]
   autores_usb                  autor_usb[]
-  articulos_revistas           articulo_revista?
-  capitulos_libros             capitulo_libro?
-  composiciones                composicion?
+  articulo_revista             articulo_revista?
+  capitulo_libro               capitulo_libro?
+  composicion                  composicion?
   documentos                   documento[]
-  eventos                      evento?
-  exposiciones                 exposicion?
-  grabaciones                  grabacion?
-  informes_tecnicos            informe_tecnico?
-  libros                       libro?
-  logs_operaciones_actividades log_operacion_actividad[]
-  memorias                     memoria?
-  partituras                   partitura?
-  patentes                     patente?
-  premios                      premio?
-  premios_bienales             premio_bienal?
-  proyectos_grado              proyecto_grado?
-  proyectos_investigacion      proyecto_investigacion?
-  recitales                    recital?
+  evento                       evento?
+  exposicion                   exposicion?
+  grabacion                    grabacion?
+  informe_tecnico              informe_tecnico?
+  libro                        libro?
+  memoria                      memoria?
+  partitura                    partitura?
+  patente                      patente?
+  premio                       premio?
+  premio_bienal                premio_bienal?
+  proyecto_grado               proyecto_grado?
+  proyecto_investigacion       proyecto_investigacion?
+  recital                      recital?
 
   @@index([creada_por])
   @@index([validado_por])
@@ -531,7 +545,7 @@ model actividad {
 model log_operacion_actividad {
   id        Int                                    @id @default(autoincrement())
   actividad Int
-  profesor  Int
+  usuario   String
   fecha     DateTime?                              @db.Date
   hora      DateTime?                              @db.Time(6)
   operacion log_operacion_actividad_operacion_enum @default(Modificacion)
@@ -539,11 +553,10 @@ model log_operacion_actividad {
   tabla     String
 
   // Postgres relations
-  Profesor  profesor  @relation(fields: [profesor], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Usuario  usuario  @relation(fields: [usuario], references: [login], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([actividad])
-  @@index([profesor])
+  @@index([usuario])
 }
 
 model actividad_grupo_investigacion {
@@ -551,9 +564,8 @@ model actividad_grupo_investigacion {
   grupo     Int
 
   // Postgres relations
-  Actividad actividad           @relation(fields: [actividad], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Actividad actividad           @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Grupo     grupo_investigacion @relation(fields: [grupo], references: [id], onDelete: NoAction, onUpdate: Cascade)
-
 
   @@id([actividad, grupo])
   @@index([actividad])
@@ -609,11 +621,11 @@ model articulo_revista {
   articulo_invitado Boolean                      @default(false)
   con_estudiantes   Boolean                      @default(false)
   estado            articulo_revista_estado_enum
-  fecha_publicacion DateTime                     @db.Date
+  fecha_publicacion DateTime?                    @db.Date
   indice            String?
   pag_final         String
   pag_inicial       String
-  paginas           Int? // cantidad de paginas
+  paginas           Int // cantidad de paginas
   revista           String // Nombre de la Revista Arbitrada
   volumen           String
 
@@ -655,7 +667,6 @@ model composicion {
 }
 
 // TODO: Evaluar posibilidad de eliminar, no tiene datos.
-// Verificar si se usa en el codigo viejo
 model documento {
   id          Int    @id @default(autoincrement())
   actividad   Int
@@ -675,7 +686,7 @@ model evento {
   ciudad        String
   fecha         DateTime              @db.Date
   institucion   String? // Institución que financia o patrocina
-  internacional Boolean               @default(false) // no esta en el form, se dedude del pais?
+  internacional Boolean               @default(false)
   modalidad     evento_modalidad_enum
   nombre        String
   pais          String
@@ -707,7 +718,7 @@ model grabacion {
   editorial      String
   fecha          DateTime                 @db.Date
   financiado_por String?
-  jurado         String // Jurado, Árbitro o Comité Editorial
+  jurado         String? // Jurado, Árbitro o Comité Editorial
   nacional       Boolean                  @default(true)
 
   // Postgres relations
@@ -717,7 +728,7 @@ model grabacion {
 model informe_tecnico {
   actividad      Int      @id
   confidencial   Boolean  @default(false) // Contrato de Confidencialidad
-  evaluacion_did Boolean  @default(false) // Informe de evaluacion en DID
+  evaluacion_did Boolean  @default(false) // Informe de evaluacion en DID. Evaluado por el DID
   evaluadores    String[]
   fecha_inicio   DateTime @db.Date
   institucion    String // inst que financia
@@ -858,7 +869,8 @@ model recital {
 // Tablas no modificadas por el cliente
 //
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and 
+// can therefore currently not be handled by the Prisma Client.
 model log_usuario {
   login String
   hora  DateTime @db.Time(6)
@@ -871,26 +883,10 @@ model log_usuario {
   @@ignore
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and 
+// can therefore currently not be handled by the Prisma Client.
 // TODO: Evaluar posibilidad de agregar el `@id`
 model defensa {
-  anio                 Int?
-  carrera              String?
-  estudiante_apellidos String?
-  estudiante_nombres   String?
-  fecha                DateTime? @db.Date
-  titulo               String?
-  tutor_correo         String?
-  tutor_nombre         String?
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-// TODO:
-// Evaluar posibilidad de agregar el `@id`
-// Evaluar posibilidad de eliminar la tabla, no tiene datos provenientes de la base de datos vieja
-model defensa_temp {
   anio                 Int?
   carrera              String?
   estudiante_apellidos String?
