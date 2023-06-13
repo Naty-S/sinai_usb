@@ -2,9 +2,6 @@ import type { RequestHandler } from "@sveltejs/kit";
 
 import type { User } from "$lib/interfaces/auth";
 
-import nodeFetch from "node-fetch";
-import httpsAgent from "https-agent";
-import { CAS_BASE_URL, CAS_VALIDATE_URL } from "$lib/api";
 import { handle_error, prisma } from "$api/_api";
 
 
@@ -19,8 +16,7 @@ import { handle_error, prisma } from "$api/_api";
  */
 export const GET: RequestHandler = async function ({ params, request }) {
 
-  const cas_ticket = params.ticket;
-  const origin = params.origin;
+  const _data = await request.json();
 
   let status = 500;
   let headers = {};
@@ -155,7 +151,7 @@ export const GET: RequestHandler = async function ({ params, request }) {
     };
 
     const jwt = Buffer.from(JSON.stringify(user)).toString("base64");
-    
+
     status = 200;
     // cookie expires in 24 hours = 86400 seg
     // must specify Domain so the cookie is propagated to subdomains
