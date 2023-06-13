@@ -21,7 +21,7 @@ import { handle_error, prisma } from "$api/_api";
  * 
  * If the user is registered but not active redirects to register page and notify of status
  */
-export const GET: RequestHandler = async function ({ params }) {
+export const GET: RequestHandler = async function({ params }) {
 
   const cas_ticket = params.ticket;
   const origin = params.origin;
@@ -97,25 +97,24 @@ export const GET: RequestHandler = async function ({ params }) {
     });
 
     const professor = _user.profesor;
-
+    
     const user: User = {
       email: _user.login,
       pending_professors: pending_professor !== null
     };
 
     if (professor) {
-
+      
       const coord_chief = professor.coordinacion ?
-        {
-          id: professor.coordinacion.id
-          , name: professor.coordinacion.nombre
-          , departments: professor.coordinacion.departamentos.map(d => d.id)
+        { id: professor.coordinacion.id
+        , name: professor.coordinacion.nombre
+        , departments: professor.coordinacion.departamentos.map(d => d.id)
         } : undefined
-        ;
+      ;
       const division_chief = professor.division ?
         { id: professor.division.id, name: professor.division.nombre }
         : undefined
-        ;
+      ;
       const professor_department = await prisma.departamento.findUniqueOrThrow({
         where: {
           id: professor.departamento
@@ -138,20 +137,20 @@ export const GET: RequestHandler = async function ({ params }) {
       });
 
       user.professor = {
-        id: professor.id
+          id: professor.id
         , id_card: professor.cedula
         , name1: professor.nombre1
         , name2: professor.nombre2
         , surname1: professor.apellido1
         , surname2: professor.apellido2
         , department: {
-          id: professor.departamento
+            id: professor.departamento
           , name: professor_department.nombre
           , coordination: professor_department.Coordinacion
           , division: professor_department.Division
         }
         , groups: {
-          grupos_investigacion: professor.grupos_investigacion
+            grupos_investigacion: professor.grupos_investigacion
           , historico_grupos: professor.historico_grupos
         }
         , pei_number: professor.pei[0].numero
@@ -169,7 +168,7 @@ export const GET: RequestHandler = async function ({ params }) {
     };
 
     const jwt = Buffer.from(JSON.stringify(user)).toString("base64");
-
+    
     status = 200;
     // cookie expires in 24 hours = 86400 seg
     // must specify Domain so the cookie is propagated to subdomains
