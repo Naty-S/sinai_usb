@@ -1,6 +1,19 @@
 <!-- 
 	Create activity form page
  -->
+<script context="module" lang="ts">
+  import type { Load } from "@sveltejs/kit";
+
+  export const load: Load = async ({ session }) => {
+
+    if (!session.user) {
+      return {
+        error: new Error("Acceso denegado. Por favor inicie sesión"),
+        status: 401
+      };
+    };
+  };
+</script>
 <script lang="ts">
   import { setContext } from "svelte";
   import { createForm, key } from "svelte-forms-lib";

@@ -13,6 +13,7 @@
 
 <script lang="ts">
 	import { dev } from "$app/env";
+	import { goto } from "$app/navigation";
 
 	export let error: Error;
 	export let status: number;
@@ -25,7 +26,11 @@
 <div class="error">
 	<h1>{status}</h1>
 
-	<p>{error.message}</p>
+	<p><strong>{error.message}</strong></p>
+
+  <button type="button" class="ui positive button" on:click={() => goto("/sinai")}>
+    Volver a la página principal
+  </button>
 
 	{#if dev && error.stack}
 		<pre>{error.stack}</pre>

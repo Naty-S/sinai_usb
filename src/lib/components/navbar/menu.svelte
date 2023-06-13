@@ -62,8 +62,7 @@ import { goto } from "$app/navigation";
 
   $: if (professor) {
     options = [
-      // {href: void_link, click: () => {}, name: "Cambiar Contraseña"},
-      {href: `/sinai/perfil/${user?.email}`, click: () => {}, name: "Cambiar Perfil"}
+      {href: "/sinai/perfil", click: () => {}, name: "Cambiar Perfil"}
     ];
   } else if (user?.dean) {
 

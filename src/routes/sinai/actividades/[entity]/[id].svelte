@@ -33,7 +33,7 @@
       };
     } else {
       return {
-        error: new Error("Acceso denegado."),
+        error: new Error("Acceso denegado. Inicie sesión"),
         status: 401
       };
     }

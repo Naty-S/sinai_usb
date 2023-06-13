@@ -4,7 +4,6 @@
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
-  // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params, session }) => {
 
     if (session.user?.professor?.division_chief || session.user?.dean) {

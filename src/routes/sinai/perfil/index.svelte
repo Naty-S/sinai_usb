@@ -25,7 +25,7 @@
       };
     } else {
       return {
-        error: new Error("Acceso denegado. Inicie sesion como profesor."),
+        error: new Error("Acceso denegado. Inicie sesión como profesor."),
         status: 401
       };
     };

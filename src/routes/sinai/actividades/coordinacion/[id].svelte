@@ -64,5 +64,5 @@
 
 {:else}
   <!-- This should not happen -->
-  <Err error={new Error("Actividades para la coordinacion no encontradas.")} status={500} />
+  <Err error={new Error("Actividades para la coordinación no encontradas.")} status={500} />
 {/if}

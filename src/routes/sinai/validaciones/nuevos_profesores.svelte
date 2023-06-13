@@ -31,26 +31,32 @@
 
   // Fetch new professors data
   onMount(async () => {
-    const res = await api.get("/api/professors");
-    const res2 = await api.get("/api/departments");
 
-    if (res.ok && res2.ok) {
-      
-      const professors = await res.clone().json();
-      departments = await res2.clone().json();
+    if (user?.dean || user?.professor?.coord_chief) {
 
-      new_professors = professors.filter((p: profesor) => !p.activo && (p.id !== 0));
+      const res = await api.get("/api/professors");
+      const res2 = await api.get("/api/departments");
 
-      if (user?.professor) {
+      if (res.ok && res2.ok) {
         
-        new_professors = professors.filter((p: profesor) => !p.activo && (p.id !== 0) &&
-          user?.professor?.coord_chief?.departments.includes(p.departamento)
-        );
+        const professors = await res.clone().json();
+        departments = await res2.clone().json();
+
+        new_professors = professors.filter((p: profesor) => !p.activo && (p.id !== 0));
+
+        if (user?.professor) {
+          
+          new_professors = professors.filter((p: profesor) => !p.activo && (p.id !== 0) &&
+            user?.professor?.coord_chief?.departments.includes(p.departamento)
+          );
+        };
+      } else {
+        const { message, code } = await res.json();
+        action.info = message;
+        action.code = code;
       };
     } else {
-      const { message, code } = await res.json();
-      action.info = message;
-      action.code = code;
+      goto("/sinai");
     };
   });
 
@@ -105,15 +111,15 @@
 
   const send_rejection_mail = function () {
 
-    const msg = `Usted ha sido rechazado para ingresar al sistema del SIANI, por las siguientes
+    const msg = `Usted ha sido rechazado para ingresar al sistema del SINAI, por las siguientes
      razones ...
 
      Por favor vuelva a solicitar su ingreso en el siguiente link:
-     https://www.did.usb.ve/sinai/registro
+     https://www.sinai.usb.ve/sinai/registro
     `;
     const subject = "Rechazo solicitud ingreso al sistema del SINAI";
 
-    window.location.href = "mailto:" + action.code
+    window.location.href = "mailto:" + action.info
       + "?subject=" + encodeURIComponent(subject)
       + "&body=" + encodeURIComponent(msg);
 
