@@ -1,11 +1,9 @@
 <!-- 
-  @component
-  Display activities by year for professor or group
+  Display activities by year for dean, professor or group
  -->
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
-  // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params, session }) => {
 
     const { id } = params;
@@ -18,7 +16,7 @@
       professor?.coord_chief || professor?.division_chief
     ) {
 
-      const entity = params.entity === "grupo" ? "group" : "professor"
+      const entity = params.entity === "grupo" ? "group" : (params.entity === "decano" ? "dean" : "professor")
       const res = await fetch(`/api/activities/${entity}/${id}`);
      
       if (res.ok) {
@@ -42,14 +40,14 @@
   };
 </script>
 <script lang="ts">
-  import { page } from "$app/stores";
+  import { page, session } from "$app/stores";
 
-  import type { EntityActivities } from "$interfaces/activities";
+  import type { EntityActivities } from "$lib/interfaces/activities";
 
-	import Modal from '$components/modal.svelte';
-  import ActivitiesModal from "$components/navbar/activities_modal.svelte";
-  import YearActivities from "$components/activities/year_activities.svelte";
-  import ResumeTable from "$components/activities/resume_table.svelte";
+	import Modal from '$lib/components/modal.svelte';
+  import ActivitiesModal from "$lib/components/navbar/activities_modal.svelte";
+  import YearActivities from "$lib/components/activities/year_activities.svelte";
+  import ResumeTable from "$lib/components/activities/resume_table.svelte";
 
   export let activities: EntityActivities;
 
@@ -59,6 +57,7 @@
   $: act_modified = Boolean($page.url.searchParams.get("modificada"));
   $: err = $page.url.searchParams.get("error");
   $: err_code = $page.url.searchParams.get("code");
+  $: editable = $page.params.entity !== "grupo" || $session.user?.dean !== undefined;
 
   let show_create = false;
 </script>
@@ -75,11 +74,10 @@
 
 <!-- Display activities by year -->
 {#each activities.by_year as year_activities}
-  <YearActivities {year_activities} editable/>
+  <YearActivities {year_activities} {editable}/>
 {/each}
 
 {#if $page.params.entity === "profesor"} 
-<!-- TODO: footer? -->
   <div class="uk-text-center">
     <p>
       Nota: Las actividades ingresadas en el Sistema podrán ser consultadas públicamente
@@ -100,7 +98,7 @@
     align="center"
     is_active={act_created}
     close={() => act_created = false}
-    confirm={() => { act_created = false; location.replace($page.url.pathname); show_create = true; }}
+    confirm={() => { act_created = false; show_create = true; }}
   >
     <p>Desea ingresar otra actividad?</p>
   </Modal>

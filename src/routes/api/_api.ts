@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-import PrismaClient, { get_known_error } from "$lib/prisma";
+import PrismaClient, { get_known_error } from "$lib/server/prisma";
 
 
 export const prisma = new PrismaClient();
@@ -12,7 +12,7 @@ export const prisma = new PrismaClient();
  * https://www.prisma.io/docs/reference/api-reference/error-reference
  * 
  * @param error
- * @returns {string} Human readable message
+ * @returns Human readable message
  */
 export const handle_error = async function (error: any) {
   

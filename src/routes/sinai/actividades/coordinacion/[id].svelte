@@ -1,3 +1,6 @@
+<!-- 
+	Coordination activities resume page
+ -->
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
@@ -29,10 +32,10 @@
   };
 </script>
 <script lang="ts">
-  import type { CoordActivities } from "$interfaces/activities";
+  import type { CoordActivities } from "$lib/interfaces/activities";
 
-  import ResumeEntity from "$components/activities/resume_entity.svelte";
-  import ResumeRank from "$components/activities/resume_rank.svelte";
+  import ResumeEntity from "$lib/components/activities/resume_entity.svelte";
+  import ResumeRank from "$lib/components/activities/resume_rank.svelte";
 
   import Err from "../../../__error.svelte";
 

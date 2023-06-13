@@ -1,5 +1,5 @@
 /// <reference types="@sveltejs/kit" />
-import { User } from "$interfaces/auth";
+import { User } from "$lib/interfaces/auth";
 
 
 // See https://kit.svelte.dev/docs/types#app

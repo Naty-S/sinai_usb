@@ -1,9 +1,14 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { Department } from "$interfaces/departments";
+import type { Department } from "$lib/interfaces/departments";
 import { handle_error, prisma } from "$api/_api";
 
 
+/**
+ * Query all departments
+ * 
+ * @returns {id: number, nombre: string}
+*/
 export const GET: RequestHandler = async function () {
   
   let status = 500;

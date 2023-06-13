@@ -3,6 +3,9 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { handle_error, prisma } from "$api/_api";
 
 
+/**
+ * Query loged in professor data
+*/
 export const GET: RequestHandler = async function ({ params }) {
   
   let status = 500;
@@ -30,6 +33,14 @@ export const GET: RequestHandler = async function ({ params }) {
   };
 };
 
+/**
+ * Updates professor data
+ * 
+ * If the user its the professor means profile modified,
+ * else the user its the Dean validating a professor register request
+ * 
+ * @returns Redirects the user to the same page with `action` executed `modificado` or `validado`
+*/
 export const PATCH: RequestHandler = async function ({ request, params }) {
 
   const _data = await request.json();
@@ -64,6 +75,11 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
   };
 };
 
+/**
+ * Rejects professor register request. Deletes professor data entry.
+ * 
+ * @returns The code `rejected` and professor email as `professor`
+*/
 export const DELETE: RequestHandler = async function ({ params }) {
 
   let status = 500;
@@ -73,7 +89,7 @@ export const DELETE: RequestHandler = async function ({ params }) {
     await prisma.usuario.delete({ where: { login: params.email } });
 
     status = 200;
-    body = { action: "rejected", professor: params.email };
+    body = { code: "rejected", professor: params.email };
 
   } catch (error: any) {
     const message = await handle_error(error);

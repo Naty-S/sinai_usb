@@ -3,6 +3,9 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { handle_error, prisma } from "$api/_api";
 
 
+/**
+ * Query actual BRA period
+*/
 export const GET: RequestHandler = async function () {
   
   let status = 500;
@@ -29,6 +32,11 @@ export const GET: RequestHandler = async function () {
   };
 };
 
+/**
+ * Updates BRA period.
+ * 
+ * @returns The code `BRA Modified`
+*/
 export const PATCH: RequestHandler = async function ({ request }) {
 
   const data = await request.json();

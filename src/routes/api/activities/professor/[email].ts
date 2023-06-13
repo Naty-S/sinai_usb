@@ -1,22 +1,19 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { EntityActivities } from "$interfaces/activities";
-import type { Activity } from "$types/activities";
+import type { EntityActivities } from "$lib/interfaces/activities";
+import type { Activity } from "$lib/types/activities";
 
-import { format_activity_kind } from "$utils/formatting";
-import { acts_kinds_by_year } from "$utils/grouping";
-import { count_acts_kinds_by_year } from "$utils/maths";
+import { format_activity_kind } from "$lib/utils/formatting";
+import { acts_kinds_by_year } from "$lib/utils/grouping";
+import { count_acts_kinds_by_year } from "$lib/utils/maths";
 
 import { handle_error, prisma } from "$api/_api";
 
 
 /**
- * This function its called when the '/sinai/actividades/profesor' page its loaded
- * (see 'load' function in 'routes/sinai/actividades/profesor.svelte')
+ * Query professor's activities
  * 
- * Manages the load of the data for the activites to be displayed for the professor
- * 
- * @returns {} The status code and the activities grouped by year and kind
+ * @returns The professor's activities grouped by year and kind
  */
 export const GET: RequestHandler = async function({ params }) {
 
@@ -61,25 +58,31 @@ export const GET: RequestHandler = async function({ params }) {
       }
     });
 
-    const professor = await prisma.profesor.findUniqueOrThrow({
+    const user = await prisma.usuario.findUniqueOrThrow({
       where: {
-        correo: params.email
+        login: params.email
       },
       include: {
         logs_operaciones_actividades: {
           select: {
             actividad: true,
-            Profesor: { select: { correo: true } },
+            Usuario: { select: { login: true } },
             fecha: true,
             hora: true
           },
-          where: { operacion: "Modificacion", actividad: { in: _acts.map(a => a.id)} },
-          orderBy: [{ fecha: "desc" }, { hora: "desc" }]//, take: 1
+          where: { operacion: "Modificacion", actividad: { in: _acts.map(a => a.id) } },
+          orderBy: [{ fecha: "desc" }, { hora: "desc" }]
         }
       }
     })
 
-    const activities: Activity[] = _acts.map(a => format_activity_kind(a, professor.logs_operaciones_actividades));
+    const professor = await prisma.profesor.findUniqueOrThrow({
+      where: {
+        correo: params.email
+      }
+    })
+
+    const activities: Activity[] = _acts.map(a => format_activity_kind(a, user.logs_operaciones_actividades));
     const entityActivities: EntityActivities = {
       entity: `Prof. ${professor.apellido1}, ${professor.nombre1}`,
       by_year: acts_kinds_by_year(activities, true),

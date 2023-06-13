@@ -3,9 +3,12 @@ import type { autor_externo, autor_usb } from "@prisma/client";
 
 import { handle_error, prisma } from "$api/_api";
 
-import { format_activity_kind } from "$utils/formatting";
+import { format_activity_kind } from "$lib/utils/formatting";
 
 
+/**
+ * Query activity data
+*/
 export const GET: RequestHandler = async function ({ params }) {
 
   let status = 500;
@@ -67,6 +70,11 @@ export const GET: RequestHandler = async function ({ params }) {
   };
 };
 
+/**
+ * Update activity data
+ * 
+ * @returns Redirects to same page with `modificada`
+*/
 export const PATCH: RequestHandler = async function ({ request, params }) {
 
   const _data = await request.json();
@@ -196,16 +204,46 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       data
     });
 
-    headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}?modificada=true`
+    const date = new Date();
+
+    await prisma.log_operacion_actividad.create({
+      data: {
+        actividad: Number(params.id),
+        usuario: _data.user,
+        fecha: date,
+        hora: date,
+        operacion: "Modificacion",
+        sql: `UPDATE actividad SET (${JSON.stringify(data.actividad)}) WHERE id=${params.id};
+              UPDATE ${params.kind} SET (${JSON.stringify(data[params.kind])}) WHERE id=${params.id};
+              UPDATE actividad_grupo_investigacion SET (${JSON.stringify(data.actividades_grupos)}) WHERE id=${params.id};
+              UPDATE autor_usb SET (${JSON.stringify(data.autores_usb)}) WHERE id=${params.id};
+              UPDATE autor_externo SET (${JSON.stringify(data.autores_externos)}) WHERE id=${params.id};`,
+        tabla: params.kind
+      }
+    })
+
+    if (data.user_rank == "professor") {
+      headers = {
+        location: `/sinai/actividades/profesor/${data.creada_por}?modificada=true`
+      };
+    } else {
+      headers = {
+        location: `/sinai/actividades/decano/${data.creada_por}?modificada=true`
+      };
     };
 
   } catch (error: any) {
     const message = await handle_error(error);
     const code = error.code ? "&code=" + error.code : '';
 
-    headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
+    if (data.user_rank == "professor") {
+      headers = {
+        location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
+      };
+    } else {
+      headers = {
+        location: `/sinai/actividades/decano/${data.creada_por}?error=` + message + code
+      };
     };
   };
 

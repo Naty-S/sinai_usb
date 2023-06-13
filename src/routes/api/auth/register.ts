@@ -3,6 +3,12 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { prisma, handle_error } from "$api/_api";
 
 
+/**
+ * Register new professor.
+ * Manual validation its required to allow login.
+ * 
+ * @returns Redirects to same page with `exito` and `coord (coodrination chief)`
+*/
 export const POST: RequestHandler = async function ({ request }) {
 
   const _data = await request.json();
@@ -15,8 +21,7 @@ export const POST: RequestHandler = async function ({ request }) {
   try {
     const data_usuario = {
       login: _data.professor.correo,
-      pass: _data.professor.cedula.toString(), // TODO encriptar
-      // padded: 
+      pass: _data.professor.cedula.toString(),
     };
 
     await prisma.usuario.create({ data: data_usuario });
@@ -25,7 +30,6 @@ export const POST: RequestHandler = async function ({ request }) {
     const data_pei = {
       ..._data.pei,
       profesor: new_p.id,
-      // activo: 
     };
     await prisma.pei.create({ data: data_pei });
 

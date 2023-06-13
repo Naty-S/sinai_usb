@@ -3,6 +3,11 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { handle_error, prisma } from "$api/_api";
 
 
+/**
+ * Creates an activity
+ * 
+ * @returns Redirects to professor's dashboard with `creada`
+*/
 export const POST: RequestHandler = async ({ request, params }) => {
 
   const _data = await request.json();
@@ -33,17 +38,48 @@ export const POST: RequestHandler = async ({ request, params }) => {
   };
 
   try {
-    await prisma.actividad.create({ data });
+    const act = await prisma.actividad.create({ data });
 
-    headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}?creada=true`
+    const date = new Date();
+
+    await prisma.log_operacion_actividad.create({
+      data: {
+        actividad: act.id,
+        usuario: data.creada_por,
+        fecha: date,
+        hora: date,
+        operacion: "Ingreso",
+        sql: `INSERT INTO actividad VALUES (${JSON.stringify(data.actividad)});
+              INSERT INTO ${params.kind} VALUES (${JSON.stringify(data[params.kind])});
+              INSERT INTO actividad_grupo_investigacion VALUES (${JSON.stringify(data.actividades_grupos)});
+              INSERT INTO autor_usb VALUES (${JSON.stringify(data.autores_usb)});
+              INSERT INTO autor_externo VALUES (${JSON.stringify(data.autores_externos)});`,
+        tabla: params.kind
+      }
+    })
+
+    if (data.user_rank == "professor") {
+      headers = {
+        location: `/sinai/actividades/profesor/${data.creada_por}?creada=true`
+      };
+    } else {
+      headers = {
+        location: `/sinai/actividades/decano/${data.creada_por}?creada=true`
+      };
     };
+    
   } catch (error: any) {
     const message = await handle_error(error);
     const code = error.code ? "&code=" + error.code : '';
 
-    headers = {
-      location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
+    if (data.user_rank == "professor") {
+      headers = {
+        location: `/sinai/actividades/profesor/${data.creada_por}?error=` + message + code
+      };
+    } else {
+      headers = {
+        location: `/sinai/actividades/decano/${data.creada_por}?error=` + message + code
+      };
     };
   };
 

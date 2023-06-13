@@ -3,6 +3,9 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { handle_error, prisma } from "$api/_api";
 
 
+/**
+ * Query all professors
+*/
 export const GET: RequestHandler = async function () {
   
   let status = 500;

@@ -1,12 +1,14 @@
-<!-- Apply code to all `routes` files -->
+<!--
+  Apply code to all `routes` files
+ -->
 <script lang="ts">
   import { goto } from "$app/navigation";
 	import { navigating, session, page } from "$app/stores";
 
-  import Navbar from "$components/navbar/index.svelte";
-  import Loader from "$components/loader.svelte";
-  import Notifications from "$components/notifications.svelte";
-  import ToTop from "$components/to_top.svelte";
+  import Navbar from "$lib/components/navbar/index.svelte";
+  import Loader from "$lib/components/loader.svelte";
+  import Notifications from "$lib/components/notifications.svelte";
+  import ToTop from "$lib/components/to_top.svelte";
   
   import Login from "./sinai/login.svelte";
   import Register from "./sinai/registro.svelte";
@@ -46,7 +48,7 @@
     {:else if $page.error}
       <Err error={$page.error} status={$page.status} />
     {:else}
-      {goto("/sinai/login")}
+      {goto("/sinai")}
     {/if}
     
     <ToTop />

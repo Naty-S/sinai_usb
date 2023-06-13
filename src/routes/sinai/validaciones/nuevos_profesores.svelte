@@ -1,5 +1,11 @@
+<!-- 
+  Shows professors pedding to be validates.
+
+  If Dean, displays all professors.
+  If department chief, displays professor for that department.
+ -->
 <script lang="ts">
-	import type { Department } from "$interfaces/departments";
+	import type { Department } from "$lib/interfaces/departments";
   import { onMount } from "svelte";
 
   import type { profesor } from "@prisma/client";
@@ -9,8 +15,9 @@
 
   import * as api from "$lib/api";
 
-  import Modal from "$components/modal.svelte";
+  import Modal from "$lib/components/modal.svelte";
 
+  
   let show_validate = false;
   let show_reject = false;
   let actual_prof_email = '';
@@ -22,6 +29,7 @@
   $: user = $session.user;
   $: validated = $page.url.searchParams.get("validado");
 
+  // Fetch new professors data
   onMount(async () => {
     const res = await api.get("/api/professors");
     const res2 = await api.get("/api/departments");
@@ -79,13 +87,13 @@
   };
 
   const confirm_reject = async function () {
-    const res = await api.del(`/api/professor/${actual_prof_email}`);
+    const res = await api.del(`/api/professor/${actual_prof_email}`, {user: user?.email});
 
     show_reject = false;
 
     if (res.ok) {
-      const { action, professor } = await res.json();
-      action.code = action;
+      const { code, professor } = await res.json();
+      action.code = code;
       action.info = professor;
 
     } else {
@@ -115,9 +123,10 @@
 
 <h2>Lista de profesores pendientes por validar</h2>
 
-<div id="new_professors" class="ui fluid styled accordion" uk-accordion>
+<div id="new_professors" class="ui fluid styled accordion" uk-accordion="animation: false;">
   {#each new_professors as p}
-    <div id="new_professor_{p.id}">
+    <section id="new_professor_{p.id}">
+      
       <div class="uk-accordion-title title">
         <div class="ui grid">
           <div class="ten wide column">
@@ -141,6 +150,7 @@
           </div>
         </div>
       </div>
+      
       <div class="uk-accordion-content">
         <div class="content">
           <div class="ui list">
@@ -219,7 +229,7 @@
           </div>
         </div>
       </div>      
-    </div>
+    </section>
   {/each}
 </div>
 
@@ -279,13 +289,13 @@
     <span class="ui primary text">"{actual_prof_name}"</span>
   </Modal>
 {/if}
-{#if action.info !== ''}
+{#if action.info !== '' && action.code !== "rejected"}
   <Modal
     id="error"
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
+    is_active={action.info !== '' && action.code !== "rejected"}
     close={() => location.replace($page.url.pathname)}
   >
     <p>

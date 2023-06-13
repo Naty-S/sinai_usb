@@ -1,5 +1,4 @@
 <!-- 
-  @component
   Shows all activities for the Dean
  -->
 <script context="module" lang="ts">
@@ -12,10 +11,10 @@
       const res = await fetch("/api/activities");
     
       if (res.ok) {
-        const entities = await res.json();
+        const ranks = await res.json();
 
         return {
-          props: { entities }
+          props: { ranks }
         };
       };
 
@@ -32,11 +31,11 @@
   };
 </script>
 <script lang="ts">
-  import type { DeanActivities } from "$interfaces/activities";
+  import type { Ranks } from "$lib/interfaces/activities";
 
 	import { goto } from "$app/navigation";
   
-  export let entities: DeanActivities;
+  export let ranks: Ranks;
 </script>
 
 
@@ -44,7 +43,7 @@
   Coordinaciones
 </h2>
 <div class="ui middle aligned divided animated big list">
-  {#each entities.coordinations as coord}
+  {#each ranks.coordinations as coord}
     <div class="item">
       <div class="right floated content">
         <button type="button" class="ui button" on:click={() => goto(`/sinai/actividades/coordinacion/${coord.id}`)}>
@@ -62,7 +61,7 @@
   Divisiones
 </h2>
 <div class="ui middle aligned divided animated big list">
-  {#each entities.divisions as division}
+  {#each ranks.divisions as division}
     <div class="item">
       <div class="right floated content">
         <button type="button" class="ui button" on:click={() => goto(`/sinai/actividades/division/${division.id}`)}>

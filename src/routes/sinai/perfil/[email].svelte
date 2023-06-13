@@ -1,7 +1,9 @@
+<!--
+  Display professor's profile for modify.
+-->
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
 
-  // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params, session }) => {
 
     if (session.user?.professor) {
@@ -39,16 +41,16 @@
 
   import { session, page } from "$app/stores";
 
-  import { init } from "$lib/shared/forms/profile/init";
-  import { validation } from "$lib/shared/forms/profile/validation";
-  import { submit } from "$lib/shared/forms/profile/submit";
+  import { init } from "$lib/utils/forms/profile/init";
+  import { validation } from "$lib/utils/forms/profile/validation";
+  import { submit } from "$lib/utils/forms/profile/submit";
 
-  import Modal from "$components/modal.svelte";
-  import ActionsButtons from "$components/forms/actions_buttons.svelte";
-  import Input from "$components/forms/input.svelte";
-  import Select from "$components/forms/select.svelte";
+  import Modal from "$lib/components/modal.svelte";
+  import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";
+  import Input from "$lib/components/forms/input.svelte";
+  import Select from "$lib/components/forms/select.svelte";
 
-  import ResearchLines from "$components/forms/profile/research_lines.svelte";
+  import ResearchLines from "$lib/components/forms/profile/research_lines.svelte";
 
   export let profile;
   

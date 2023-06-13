@@ -1,16 +1,19 @@
+<!-- 
+	Create activity form page
+ -->
 <script lang="ts">
   import { setContext } from "svelte";
   import { createForm, key } from "svelte-forms-lib";
 
   import { page, session } from "$app/stores";
 
-  import type { kinds } from "$types/forms";
+  import type { kinds } from "$lib/types/forms";
 
-  import { init } from "$lib/shared/forms/activities/init";
-  import { validation } from "$lib/shared/forms/activities/validation";
-  import { submit } from "$lib/shared/forms/activities/submit";
+  import { init } from "$lib/utils/forms/activities/init";
+  import { validation } from "$lib/utils/forms/activities/validation";
+  import { submit } from "$lib/utils/forms/activities/submit";
 
-  import ActivityForm from "$components/forms/activity.svelte";
+  import ActivityForm from "$lib/components/forms/activity.svelte";
 
   const activity = $page.params.activity;
   const kind = activity as kinds;

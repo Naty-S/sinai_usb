@@ -1,3 +1,6 @@
+<!-- 
+	Division actities resume page
+ -->
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
@@ -29,9 +32,9 @@
   };
 </script>
 <script lang="ts">
-  import type { DivisionActivities } from "$interfaces/activities";
+  import type { DivisionActivities } from "$lib/interfaces/activities";
 
-  import ResumeRank from "$components/activities/resume_rank.svelte";
+  import ResumeRank from "$lib/components/activities/resume_rank.svelte";
 
   export let division_activities: DivisionActivities;
 

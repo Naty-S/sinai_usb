@@ -1,10 +1,13 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { DeanActivities } from "$interfaces/activities";
+import type { Ranks } from "$lib/interfaces/activities";
 import { handle_error, prisma } from "$api/_api";
 
 
-export const GET: RequestHandler = async ({ request, locals }) => {
+/**
+ * Query coordinations & divisions for display in Dean dashboard
+*/
+export const GET: RequestHandler = async function () {
 
   let status = 500;
   let body = {};
@@ -24,7 +27,7 @@ export const GET: RequestHandler = async ({ request, locals }) => {
       }
     });
 
-    const entities: DeanActivities = {
+    const entities: Ranks = {
       coordinations,
       divisions
     };

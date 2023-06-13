@@ -1,10 +1,12 @@
+<!--
+  Display professor's BRA resume.
+-->
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
-  // https://kit.svelte.dev/docs/loading
   export const load: Load = async ({ fetch, params }) => {    
     const res1 = await fetch(`/api/activities/professor/${params.email}`);
-    // periodo bra busca las actividades en las que ha participado?
+    // TODO: confirmar. periodo bra busca las actividades en las que ha participado?
     const res2 = await fetch(`/api/professor/${params.email}`);
     const res3 = await fetch("/api/bra");
 
@@ -37,13 +39,13 @@
   import type {
     EntityActivities,
     YearActivities as YearActivitiesT
-  } from "$interfaces/activities";
+  } from "$lib/interfaces/activities";
 
-  import { format_date } from "$utils/formatting";
+  import { format_date } from "$lib/utils/formatting";
 
-  import YearActivities from "$components/activities/year_activities.svelte";
-  import BraHeader from "$components/bra/header.svelte";
-  import Notifications from "$components/notifications.svelte";
+  import YearActivities from "$lib/components/activities/year_activities.svelte";
+  import BraHeader from "$lib/components/bra/header.svelte";
+  import Notifications from "$lib/components/notifications.svelte";
 
   export let prof_activities: EntityActivities;
   export let profile: profesor;

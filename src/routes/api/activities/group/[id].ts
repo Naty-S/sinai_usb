@@ -1,12 +1,17 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import { format_activity_kind } from "$utils/formatting";
-import { acts_kinds_by_year } from "$utils/grouping";
-import { count_acts_kinds_by_year } from "$utils/maths";
+import { format_activity_kind } from "$lib/utils/formatting";
+import { acts_kinds_by_year } from "$lib/utils/grouping";
+import { count_acts_kinds_by_year } from "$lib/utils/maths";
 
 import { handle_error, prisma } from "$api/_api";
 
 
+/**
+ * Query group's activities
+ * 
+ * @returns The group's activities grouped by year with count
+*/
 export const GET: RequestHandler = async function ({ params }) {
   
   let status = 500;
