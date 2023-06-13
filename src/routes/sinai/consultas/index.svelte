@@ -1,5 +1,5 @@
 <!-- 
   @component
-  Consultas externas, no necesita login?
+  Consultas publicas
  -->
 <!-- TODO: #51 -->

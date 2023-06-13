@@ -124,8 +124,8 @@
     <!-- Display activities kind -->
       <h3>{kind}</h3>
       
-      {#each acts as act}
-        <ol class="ui items">
+      <ol class="ui items">
+        {#each acts as act}
           <div class="item">
             <li>
               <div class="content">
@@ -201,8 +201,8 @@
               {/if}
             </li>
           </div>
-        </ol>
-      {/each}
+        {/each}
+      </ol>
     {/each}
   </div>
 {/if}

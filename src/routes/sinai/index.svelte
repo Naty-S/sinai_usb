@@ -6,3 +6,5 @@
   
   export const load = redirect;
 </script>
+
+consultas

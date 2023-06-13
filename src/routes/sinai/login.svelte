@@ -13,39 +13,39 @@
   import * as api from "$lib/api";
 
   
-  $: if ($page.url.searchParams.has("validated")) { onMount( () => {
-    
+  $: if ($page.url.searchParams.has("validated")) {
+    onMount(() => {
       const jwt = $page.url.searchParams.get("validated");
       const user = jwt ? JSON.parse(jwt) : null;
 
       $session.user = user;
-    })
+    });
   };
 
-  // const is_err = false;
-  // let email = '';
+  const is_err = false;
+  let email = '';
 
-  // const login_dev = async function () {
+  const login_dev = async function () {
 
-  //   const res = await api.post("/api/auth/login_dev/" + email, { email });
+    const res = await api.get("/api/auth/login_dev/" + email);
 
-  //   if (res.ok) {
-  //     $session.user = await res.clone().json();
+    if (res.ok) {
+      $session.user = await res.clone().json();
       
-  //     if ($session.user?.professor) {
-  //       goto(`/sinai/actividades/profesor/${$session.user.professor.id}`);
+      if ($session.user?.professor) {
+        goto(`/sinai/actividades/profesor/${$session.user.professor.id}`);
       
-  //     } else { // Dean
-  //       goto("/sinai/actividades");
-  //     };
-  //   } else {
-  //     const { message } = await res.clone().json();
-  //     console.log(message)
-  //   };
-  // };
+      } else { // Dean
+        goto("/sinai/actividades");
+      };
+    } else {
+      const { message } = await res.clone().json();
+      console.log(message)
+    };
+  };
 </script>
 
-<!-- <form class="ui large form" class:error="{is_err}">
+<form class="ui large form" class:error="{is_err}">
 
   <div class="required field" class:error="{is_err}">
     <label for="">Correo</label>
@@ -53,6 +53,6 @@
   </div>
 
   <button type="submit" class="ui blue button" on:click|preventDefault={login_dev}>
-    Iniciar Sesion
+    Iniciar Sesión
   </button>
-</form> -->
+</form>

@@ -116,7 +116,7 @@
 </script>
 
 {#if !period.activo}
-  <Notifications header_msg="La convocatoria BRA aun no esta activa" />
+  <Notifications header_msg="La convocatoria BRA aún no está activa" />
 {/if}
 
 <div id="bra" class="uk-margin">

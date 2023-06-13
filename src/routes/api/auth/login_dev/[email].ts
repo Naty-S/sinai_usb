@@ -6,17 +6,10 @@ import { handle_error, prisma } from "$api/_api";
 
 
 /**
- * Login the user.
+ * Login the user in dev mode.
  * 
- * 1. Verify DST CAS ticket
- * 2. Parse username
- * 3. Find user in database
- * 4. Create User type with info
- * 5. Create cookie with user
  */
-export const GET: RequestHandler = async function ({ params, request }) {
-
-  const _data = await request.json();
+export const GET: RequestHandler = async function ({ params }) {
 
   let status = 500;
   let headers = {};

@@ -5,6 +5,7 @@
 <script lang="ts">
 import { goto } from "$app/navigation";
 
+	import { dev } from "$app/env";
   import { session } from "$app/stores";
   
 	import type { submenu_item } from "$lib/types/menu";
@@ -22,7 +23,7 @@ import { goto } from "$app/navigation";
   $: professor = user?.professor;  
 
   $: resume_link = professor ? `profesor/${professor.id}` : `decano/0`;
-  $: bra = `/sinai/BRA/profesor/${professor?.id}`;
+  $: bra = "/sinai/BRA/profesor";
   $: coord = `/sinai/actividades/coordinacion/${professor?.coord_chief?.id}`;
   $: dep = `/sinai/actividades/departamento/${professor?.department.id}`;
   $: division = `/sinai/actividades/division/${professor?.division_chief?.id}`;
@@ -81,8 +82,12 @@ import { goto } from "$app/navigation";
     await api.post("/api/auth/logout", null);
 
     $session.user = null;
-
-    goto("https://secure.dst.usb.ve/logout")
+  
+    if (dev) {
+      goto("/sinai");
+    } else {
+      goto("https://secure.dst.usb.ve/logout");
+    };
   };  
 </script>
 

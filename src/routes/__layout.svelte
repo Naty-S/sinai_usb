@@ -10,6 +10,7 @@
   import Notifications from "$lib/components/notifications.svelte";
   import ToTop from "$lib/components/to_top.svelte";
   
+  import Index from "./sinai/index.svelte";
   import Login from "./sinai/login.svelte";
   import Register from "./sinai/registro.svelte";
   import Err from "./__error.svelte";
@@ -27,7 +28,13 @@
   {#if $navigating}
     <Loader />
   {:else}
-    {#if user && !["login", "registro"].some(path => $page.url.pathname.includes(path))}
+    {#if $page.error}
+      <Err error={$page.error} status={$page.status} />
+    {:else if $page.url.pathname === "/sinai/registro"}
+      <Register />
+    {:else if $page.url.pathname === "/sinai/login"}
+      <Login />
+    {:else if user}
 
       {#if user.pending_professors && (user.dean || user.professor?.coord_chief)}
         <Notifications header_msg="Hay profesores pendientes por validar" >
@@ -38,17 +45,8 @@
       {/if}
 
       <slot />
-
-    {:else if $page.url.pathname === "/sinai/registro"}
-      <Register />
-    {:else if $page.url.pathname === "/sinai/login"}
-      <Login />
-    {:else if !user}
-      {goto("/sinai/login")}
-    {:else if $page.error}
-      <Err error={$page.error} status={$page.status} />
     {:else}
-      {goto("/sinai")}
+      <Index />
     {/if}
     
     <ToTop />
