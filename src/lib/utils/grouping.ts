@@ -47,5 +47,5 @@ export const acts_kinds_by_year = function (acts: Activity[], detailed?: boolean
     }
   ));
 
-  return year_acts.reverse();
+  return year_acts;
 };
