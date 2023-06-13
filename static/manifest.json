@@ -1,0 +1,20 @@
+{
+  "background_color": "#ffffff",
+  "theme_color": "#2f6388",
+  "name": "Sistema de Informacion de Actividades de Investigacion",
+  "short_name": "SINAI",
+  "display": "minimal-ui",
+  "start_url": "/sinai/",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "16x16",
+      "type": "image/ico"
+    },
+    {
+      "src": "../src/lib/assets/icons/logo-80.png",
+      "sizes": "80x80",
+      "type": "image/png"
+    }
+  ]
+}
