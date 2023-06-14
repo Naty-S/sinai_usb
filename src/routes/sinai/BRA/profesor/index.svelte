@@ -31,9 +31,9 @@
   
       const { message: message1 } = await res1.json();
       const { message: message2 } = await res2.json();
-      const { message: message3 } = await res3.json();
+      const { message: message3, code } = await res3.json();
       return {
-        error: new Error(message1 + "\n" + message2 + "\n" + message3)
+        error: new Error(message1 + "\n" + message2 + "\n" + code + ' ' + message3)
       };
     } else {
       return {

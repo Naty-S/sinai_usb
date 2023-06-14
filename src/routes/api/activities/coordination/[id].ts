@@ -116,7 +116,7 @@ export const GET: RequestHandler = async function ({ request, params }) {
     const message = await handle_error(error);
     const code = error.code || '';
 
-    throw new Error(message + ' ' + code);
+    throw new Error(code + ' ' + message);
   };
 
   return {

@@ -50,9 +50,9 @@ export const redirect: Load = async function ({ fetch, session, url }) {
         redirect: `/sinai/login?validated=${jwt}`
       }
     } else {
-      const { message } = await login.json();
+      const { message, code } = await login.json();
       return {
-        error: new Error(message)
+        error: new Error(code + ' ' + message)
       };
     };
   } else if (!user && url.pathname.includes("login") && !url.searchParams.has("validated") && !dev) {

@@ -36,7 +36,6 @@
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";
 
   export let division_activities: DivisionActivities;
-
 </script>
 
 <ResumeRank rank="División" rank_activities={division_activities} />

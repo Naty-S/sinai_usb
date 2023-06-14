@@ -11,13 +11,15 @@
     const professor = user?.professor;
     const prof_group = professor?.groups.historico_grupos.map(g => g.Grupo.id).includes(Number(id));
 
+    // si es decano que ve otros prof no mostrar las del decano
     if (professor?.id === Number(id) || prof_group || user?.dean ||
       professor?.is_dep_chief || professor?.is_dep_representative ||
       professor?.coord_chief || professor?.division_chief
     ) {
 
       const entity = params.entity === "grupo" ? "group" : (params.entity === "decano" ? "dean" : "professor")
-      const res = await fetch(`/api/activities/${entity}/${user?.dean ? user.email : id}`);
+      const api = user?.dean ? `/api/activities/dean/${user?.email}` : `/api/activities/${entity}/${id}`;
+      const res = await fetch(api);
      
       if (res.ok) {
         const activities = await res.json();

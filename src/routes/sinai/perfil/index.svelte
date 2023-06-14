@@ -68,6 +68,8 @@
 
   $: professor = $session.user?.professor;
   $: modified = Boolean($page.url.searchParams.get("modificado"));
+  $: err = $page.url.searchParams.get("error");
+  $: err_code = $page.url.searchParams.get("code");
 </script>
 
 <form id="profile_form" class="ui large form" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
@@ -180,5 +182,22 @@
     close={() => location.replace($page.url.pathname)}
   >
     <p>Perfil modificado con éxito!!!</p>
+  </Modal>
+{/if}
+
+{#if err}
+  <Modal
+    id="error"
+    title="Error. {err_code}"
+    close_text="Ok"
+    align="center"
+    is_active={Boolean(err)}
+    close={() => location.replace($page.url.pathname)}
+  >
+    <p>
+      Hubo un problema al intentar modificar su perfil por favor vuelva a intentar
+      o contáctese con algún administrador.
+    </p>
+    <span class="ui red text">Detalles: {err}</span>
   </Modal>
 {/if}
