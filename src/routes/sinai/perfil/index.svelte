@@ -21,7 +21,8 @@
   
       const { message } = await res.json();
       return {
-        error: new Error(message)
+        error: new Error("Error al cargar los datos del perfil" + message),
+        status: 500
       };
     } else {
       return {
@@ -145,12 +146,18 @@
       <div class="column">Departamento: {professor?.department.name}</div>
     </div>
 
-    <div class="two column row">
-      <div class="column">Número del PPI: {professor?.ppi_number}</div>
-      <div class="column">Nivel: {professor?.ppi_level}</div>
-    </div>
+    {#if professor?.ppi_number && professor?.ppi_level}      
+      <div class="two column row">
+        <div class="column">Número del PPI: {professor?.ppi_number}</div>
+        <div class="column">Nivel: {professor?.ppi_level}</div>
+      </div>
+    {/if}
   </div>
-  <div>Aplica a PEI</div> <!-- TODO!!!! -->
+
+  <div>
+    Actualizar datos PEI
+  </div> <!-- TODO!!!! if pei -> update else -> add -->
+
   <div class="two inline required fields">
     <Select
       label="Último Diploma"
