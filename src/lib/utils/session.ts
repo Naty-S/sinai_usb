@@ -30,16 +30,10 @@ export const redirect: Load = async function ({ fetch, session, url }) {
       status: 302,
       redirect: "/sinai/actividades"
     };
-  } else if (!user && url.pathname.includes("login") && !url.searchParams.has("validated") && !dev) {
-    // If not loged in redirects to DST login from "/sinai/login"
-
-    const origin = url.origin.split("://")[1];
-    const CAS_SERVICE_BASE_URL = `http%3A%2F%2F${origin}%2Fsinai`;
-    const CAS_SERVICE_URL = `${CAS_SERVICE_BASE_URL}%2Flogin`;
-
+  } else if (!user && !url.pathname.includes("sinai")) { // Go to main page "/sinai"
     return {
       status: 302,
-      redirect: `${CAS_LOGIN_URL}?service=${CAS_SERVICE_URL}`
+      redirect: "/sinai"
     };
   } else if (!user && url.searchParams.has("ticket")) { // If login with DST success
 
@@ -56,15 +50,22 @@ export const redirect: Load = async function ({ fetch, session, url }) {
         redirect: `/sinai/login?validated=${jwt}`
       }
     } else {
-      const { message } = await login.json();
+      const { message, code } = await login.json();
       return {
-        error: new Error(message)
+        error: new Error("No se pudo validar al usuario.\n" + code + ' ' + message),
+        status: 500
       };
     };
-  } else if (!user && !url.pathname.includes("sinai")) { // Go to main page "/sinai"
+  } else if (!user && url.pathname.includes("login") && !url.searchParams.has("validated") && !dev) {
+    // If not loged in redirects to DST login from "/sinai/login"
+
+    const origin = url.origin.split("://")[1];
+    const CAS_SERVICE_BASE_URL = `http%3A%2F%2F${origin}%2Fsinai`;
+    const CAS_SERVICE_URL = `${CAS_SERVICE_BASE_URL}%2Flogin`;
+
     return {
       status: 302,
-      redirect: "/sinai"
+      redirect: `${CAS_LOGIN_URL}?service=${CAS_SERVICE_URL}`
     };
   } else {
     return {
