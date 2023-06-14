@@ -11,6 +11,7 @@
     const professor = user?.professor;
     const prof_group = professor?.groups.historico_grupos.map(g => g.Grupo.id).includes(Number(id));
 
+    // si es decano que ve otros prof no mostrar las del decano
     if (professor?.id === Number(id) || prof_group || user?.dean ||
       professor?.is_dep_chief || professor?.is_dep_representative ||
       professor?.coord_chief || professor?.division_chief
