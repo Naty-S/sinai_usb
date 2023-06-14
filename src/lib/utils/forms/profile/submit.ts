@@ -8,6 +8,12 @@ export const submit = function (email: string, pathname: string) {
     
     const res = await api.patch(`/api/professor/${email}`, { new: data, pathname });
 
-    goto(res.url);
+    if (res.ok) {
+      goto(res.url);
+
+    } else {
+      const { message, code } = await res.json();
+      goto(`${pathname}?error=${message}&code=${code}`);
+    };
   };
 };

@@ -11,7 +11,6 @@
     if (professor) {
 
       const res1 = await fetch(`/api/activities/professor/${professor?.id}`);
-      // TODO: confirmar. periodo bra busca las actividades en las que ha participado?
       const res2 = await fetch(`/api/professor/${session.user?.email}`);
       const res3 = await fetch("/api/bra");
   
@@ -31,9 +30,11 @@
   
       const { message: message1 } = await res1.json();
       const { message: message2 } = await res2.json();
-      const { message: message3 } = await res3.json();
+      const { message: message3, code } = await res3.json();
       return {
-        error: new Error(message1 + "\n" + message2 + "\n" + message3)
+        error: new Error(`Error al cargar los datos de:\nActividades: ${message1}\n\
+          Profesor: ${message2}\nPeriodo BRA: ${code} ${message3}`),
+        status: 500
       };
     } else {
       return {

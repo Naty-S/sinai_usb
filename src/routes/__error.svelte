@@ -16,7 +16,7 @@
 	import { goto } from "$app/navigation";
 
 	export let error: Error;
-	export let status: number;
+	export let status: number = 500;
 </script>
 
 <svelte:head>

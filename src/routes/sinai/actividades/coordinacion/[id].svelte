@@ -21,7 +21,8 @@
   
       const { message } = await res.json();
       return {
-        error: new Error(message)
+        error: new Error("Error al cargar las actividades de la Coordinación.\n" + message),
+        status: 500
       };
     } else {
       return {
