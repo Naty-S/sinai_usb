@@ -6,19 +6,19 @@
 
   export const load: Load = async ({ fetch, params, session }) => {
 
-    const { id } = params;
+    const { entity, id } = params;
     const user = session.user;
     const professor = user?.professor;
     const prof_group = professor?.groups.historico_grupos.map(g => g.Grupo.id).includes(Number(id));
 
-    // si es decano que ve otros prof no mostrar las del decano
     if (professor?.id === Number(id) || prof_group || user?.dean ||
       professor?.is_dep_chief || professor?.is_dep_representative ||
       professor?.coord_chief || professor?.division_chief
     ) {
 
-      const entity = params.entity === "grupo" ? "group" : (params.entity === "decano" ? "dean" : "professor")
-      const api = user?.dean ? `/api/activities/dean/${user?.email}` : `/api/activities/${entity}/${id}`;
+      const _entity = entity === "grupo" ? "group" : (entity === "decano" ? "dean" : "professor")
+      const api = user?.dean && _entity === "dean" ? `/api/activities/dean/${user?.email}`
+                                                  : `/api/activities/${_entity}/${id}`;
       const res = await fetch(api);
      
       if (res.ok) {
@@ -31,7 +31,8 @@
   
       const { message } = await res.json();
       return {
-        error: new Error(message)
+        error: new Error(`Error al cargar actividades del ${entity}.\n` + message),
+        status: 500
       };
     } else {
       return {
