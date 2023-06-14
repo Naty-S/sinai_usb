@@ -138,7 +138,7 @@ export const GET: RequestHandler = async function ({ params }) {
       });
 
       user.professor = {
-          id: professor.id
+        id: professor.id
         , id_card: professor.cedula
         , name1: professor.nombre1
         , name2: professor.nombre2
