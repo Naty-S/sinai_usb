@@ -21,7 +21,8 @@
   
       const { message } = await res.json();
       return {
-        error: new Error(message)
+        error: new Error("Error al cargar los datos del perfil" + message),
+        status: 500
       };
     } else {
       return {
@@ -39,6 +40,7 @@
       profesor_categoria_enum
     , profesor_dedicacion_enum
     , profesor_diploma_tipo_enum
+    , pei_nivel_enum
   } from "@prisma/client";
 
   import { session, page } from "$app/stores";
@@ -57,7 +59,7 @@
   export let profile;
   
   const initialValues = init(profile);
-  const onSubmit = submit($page.params.email, $page.url.pathname);
+  const onSubmit = submit($session.user?.email, $page.url.pathname);
   const validationSchema = validation();
   const formProps = { initialValues, onSubmit, validationSchema };
   const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
@@ -96,15 +98,15 @@
     <Input
       label="Perfil"
       name="perfil"
-      bind:value={$form.perfil}
-      error={$errors.perfil}
+      bind:value={$form.profile.perfil}
+      error={$errors.profile.perfil}
       class="required field"
     />
     <Input
       label="Página url"
       name="url"
-      bind:value={$form.url}
-      error={$errors.url}
+      bind:value={$form.profile.url}
+      error={$errors.profile.url}
       class="field"
     />
   </div>
@@ -121,14 +123,14 @@
     <Select
       label="Categoría"
       name="categoria"
-      bind:value={$form.categoria}
+      bind:value={$form.profile.categoria}
       options={Object.entries(profesor_categoria_enum).map(([_, cat]) => ({ val: cat, name: cat }))}
       class="inline field"
     />
     <Select
       label="Dedicación"
       name="dedicacion"
-      bind:value={$form.dedicacion}
+      bind:value={$form.profile.dedicacion}
       options={Object.entries(profesor_dedicacion_enum).map(([_, ded]) => ({ val: ded, name: ded }))}
       class="inline field"
     />
@@ -145,25 +147,55 @@
       <div class="column">Departamento: {professor?.department.name}</div>
     </div>
 
-    <div class="two column row">
-      <div class="column">Número del PPI: {professor?.ppi_number}</div>
-      <div class="column">Nivel: {professor?.ppi_level}</div>
+    {#if professor?.ppi_number && professor?.ppi_level}      
+      <div class="two column row">
+        <div class="column">Número del PPI: {professor?.ppi_number}</div>
+        <div class="column">Nivel: {professor?.ppi_level}</div>
+      </div>
+    {/if}
+  </div>
+
+  <div class="field">
+    <label for="">Actualizar datos PEI</label>
+    <div class="three inline fields">
+      <Input
+        type="number"
+        label="Numero"
+        name="numero"
+        bind:value={$form.pei.numero}
+        error={$errors.pei.numero}
+        class="required field"
+      />
+      <Input
+        label="Anio"
+        name="anio"
+        bind:value={$form.pei.anio}
+        error={$errors.pei.anio}
+        class="required field"
+      />
+      <Select
+        label="Nivel"
+        name="pei.nivel"
+        bind:value={$form.pei.nivel}
+        options={Object.entries(pei_nivel_enum).map(([_, nivel]) => ({ val: nivel, name: nivel }))}
+        class="inline field"
+      />
     </div>
   </div>
-  <div>Aplica a PEI</div> <!-- TODO!!!! -->
+
   <div class="two inline required fields">
     <Select
       label="Último Diploma"
       name="diploma_tipo"
-      bind:value={$form.diploma_tipo}
+      bind:value={$form.profile.diploma_tipo}
       options={Object.entries(profesor_diploma_tipo_enum).map(([_, d]) => ({ val: d, name: d }))}
       class="six wide inline field"
     />
     <Input
       label="Universidad del Diploma"
       name="diploma_universidad"
-      bind:value={$form.diploma_universidad}
-      error={$errors.diploma_universidad}
+      bind:value={$form.profile.diploma_universidad}
+      error={$errors.profile.diploma_universidad}
       class="ten wide required field"
     />
   </div>

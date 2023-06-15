@@ -13,7 +13,11 @@ export const GET: RequestHandler = async function ({ params }) {
 
   try {
     const professor = await prisma.profesor.findUniqueOrThrow({
-      where: { correo: params.email }
+      where: { correo: params.email },
+      include: {
+        ppi: { orderBy: { id: "desc" }, take: 1 },
+        pei: { orderBy: { id: "desc" }, take: 1 }
+      }
     });
 
     status = 200;
@@ -50,7 +54,13 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
   let body = {};
 
   try {
-    await prisma.profesor.update({ data: _data.new, where: { correo: params.email } });
+    const p = await prisma.profesor.update({
+      data: _data.new.profile,
+      where: { correo: params.email },
+    });
+
+    _data.new.pei.profesor = p.id;
+    await prisma.pei.create({ data: _data.new.pei });
 
     const action = _data.pathname.includes("perfil") ? "modificado" : "validado";
     

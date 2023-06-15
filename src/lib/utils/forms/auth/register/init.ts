@@ -9,7 +9,7 @@ export const init = function () {
       apellido1: '',
       apellido2: null,
       cedula: '',
-      correo: "@usb.ve",
+      correo: '',
       sexo: 'F',
       categoria: "Agregado",
       condicion: "Contratado",
