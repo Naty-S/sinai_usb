@@ -59,8 +59,12 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       where: { correo: params.email },
     });
 
-    _data.new.pei.profesor = p.id;
-    await prisma.pei.create({ data: _data.new.pei });
+    const pei = _data.new.pei;
+    if (pei) {
+
+      pei.profesor = p.id;
+      await prisma.pei.create({ data: pei });
+    };
 
     const action = _data.pathname.includes("perfil") ? "modificado" : "validado";
     
