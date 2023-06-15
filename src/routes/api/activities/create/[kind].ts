@@ -60,6 +60,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
       }
     })
 
+    console.log("data.user_rank: ", data.user_rank)
     if (data.user_rank == "professor") {
       headers = {
         location: `/sinai/actividades/profesor/${professor}?creada=true`

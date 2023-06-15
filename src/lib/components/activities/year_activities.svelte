@@ -69,9 +69,10 @@
     };
   };
 
-  const popup_invalidate = function (act_id: number, act_title: string) {
+  const popup_invalidate = function (act_id: number, act_kind: string, act_title: string) {
     show_invalidate = true
     actual_act_id = act_id;
+    actual_act_kind = act_kind;
     actual_act_title = act_title;
   };
 
@@ -90,9 +91,10 @@
     };
   };
 
-  const popup_delete = function (act_id: number, act_title: string) {
+  const popup_delete = function (act_id: number, act_kind: string, act_title: string) {
     show_delete = true;
     actual_act_id = act_id;
+    actual_act_kind = act_kind;
     actual_act_title = act_title;
   };
 
@@ -174,7 +176,7 @@
                       <button
                         type="button"
                         class="ui blue small button"
-                        on:click={() => popup_validate(act.id, kind, act.titulo)}
+                        on:click={() => popup_validate(act.id, act.kind_name, act.titulo)}
                       >
                         Validar
                       </button>
@@ -182,7 +184,7 @@
                       <button
                         type="button"
                         class="ui yellow small button"
-                        on:click={() => popup_invalidate(act.id, act.titulo)}
+                        on:click={() => popup_invalidate(act.id, act.kind_name, act.titulo)}
                       >
                         Desvalidar
                       </button>
@@ -192,7 +194,7 @@
                     <button
                       type="button"
                       class="ui red small button"
-                      on:click={() => popup_delete(act.id, act.titulo)}
+                      on:click={() => popup_delete(act.id, act.kind_name, act.titulo)}
                     >
                       Eliminar
                     </button>
