@@ -171,7 +171,7 @@
       <label for="">PEI</label>
       <div class="three inline fields">
         <Input
-          label="Numero"
+          label="Número"
           name="pei.numero"
           placeholder="v-xxxxxxxx-xx-xxxx"
           bind:value={$form.pei.numero}

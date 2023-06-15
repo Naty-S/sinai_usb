@@ -15,12 +15,12 @@
   {#if kind === "articulo_revista"}
 
     <u>{activity.revista}</u>.
-    <span class="uk-text-emphasis">Fecha de publicacion:</span> {format_date(activity.fecha_publicacion)}.
+    <span class="uk-text-emphasis">Fecha de publicación:</span> {format_date(activity.fecha_publicacion)}.
     {activity.indice ? "Indexada en el " + activity.indice + '.' : ''}
-    {activity.articulo_invitado ? "Articulo Invitado." : ''}
+    {activity.articulo_invitado ? "Artículo Invitado." : ''}
     <span class="uk-text-emphasis">{activity.estado}.</span>
     <span class="uk-text-emphasis">Vol.</span> {activity.volumen}, pp. {activity.pag_inicial} - {activity.pag_final}.
-    <span class="uk-text-emphasis">Paginas:</span> {activity.paginas}
+    <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}
     {activity.con_estudiantes ? "Con estudiantes." : ''}
 
   {:else if kind === "capitulo_libro"}
@@ -32,7 +32,7 @@
     {activity.ciudad}, {activity.pais}.
     {format_date(activity.fecha)}.
     <span class="uk-text-emphasis">ISBN:</span> {activity.isbn}.
-    {activity.articulo_invitado ? "Articulo Invitado." : ''}
+    {activity.articulo_invitado ? "Artículo Invitado." : ''}
     {activity.aceptado ? "Aceptado para publicación." : ''}
 
   {:else if kind === "composicion"}
@@ -40,7 +40,7 @@
     <u>Nombre del Evento: {activity.nombre_evento}</u>.
     {activity.ciudad}, {activity.pais}.
     {format_date(activity.fecha)}.
-    <span class="uk-text-emphasis">Categoria:</span> {activity.categoria}.
+    <span class="uk-text-emphasis">Categoría:</span> {activity.categoria}.
     <span class="uk-text-emphasis">Jurado:</span> {activity.jurado}.
     <span class="uk-text-emphasis">Financiado por:</span> {activity.financiado_por}.
 
@@ -58,7 +58,7 @@
     <u>Nombre del Evento: {activity.nombre_evento}</u>.
     {activity.ciudad}, {activity.pais}.
     {format_date(activity.fecha)}.
-    {activity.categoria ? "Categoria: " + activity.categoria + '.' : ''}
+    {activity.categoria ? "Categoría: " + activity.categoria + '.' : ''}
     {activity.organizado_por ? "Organizado por: " + activity.organizado_por + '.' : ''}
     {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
 
@@ -68,8 +68,8 @@
     {activity.nacional ? "Nacional." : "Internacional."}
     {format_date(activity.fecha)}.
     <span class="uk-text-emphasis">Jurado:</span> {activity.jurado || "Sin Jurado"}.
-    <span class="uk-text-emphasis">Categoria:</span> {activity.categoria}.
-    {activity.deposito_legal ? "Deposito legal: " + activity.deposito_legal + '.' : ''}
+    <span class="uk-text-emphasis">Categoría:</span> {activity.categoria}.
+    {activity.deposito_legal ? "Depósito legal: " + activity.deposito_legal + '.' : ''}
     {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
 
   {:else if kind === "informe_tecnico"}
@@ -97,7 +97,7 @@
     {activity.medio_publicacion ? activity.medio_publicacion + '.' : ''}
     {activity.formato === "Libro" || activity.formato === "Revista" ? "Vol. " : ''} {activity.volumen}
     pp. {activity.pag_inicial} - {activity.pag_final}.
-    <span class="uk-text-emphasis">Paginas:</span> {activity.paginas}.
+    <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}.
     {activity.con_estudiantes ? "Con estudiantes." : ''}
     <span class="uk-text-emphasis">ISBN:</span> {activity.isbn}.
     <span class="uk-text-emphasis">Tipo de Congreso:</span> {activity.tipo_congreso}.
@@ -108,36 +108,36 @@
     {activity.nacional ? "Nacional." : "Internacional."}
     {format_date(activity.fecha)}.
     <span class="uk-text-emphasis">Jurado:</span> {activity.jurado}.
-    <span class="uk-text-emphasis">Categoria:</span> {activity.categoria}.
+    <span class="uk-text-emphasis">Categoría:</span> {activity.categoria}.
     {activity.deposito_legal ? "Deposito legal: " + activity.deposito_legal + '.' : ''}
     {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
 
   {:else if kind === "patente"}
 
     {activity.pais}.
-    <span class="uk-text-emphasis">Numero:</span> {activity.numero}.
+    <span class="uk-text-emphasis">Número:</span> {activity.numero}.
     {format_date(activity.fecha_inicio)} - {format_date(activity.fecha_fin)}.
 
   {:else if kind === "premio"}
 
     {format_date(activity.fecha)}.
-    <span class="uk-text-emphasis">Institucion que otorga:</span> {activity.institucion}.
+    <span class="uk-text-emphasis">Institución que otorga:</span> {activity.institucion}.
 
   {:else if kind === "premio_bienal"}
 
     <u>Nombre del Evento: {activity.nombre_evento}</u>.
-    <span class="uk-text-emphasis">Titulo del premio:</span> "{activity.titulo_premio}".
+    <span class="uk-text-emphasis">Título del premio:</span> "{activity.titulo_premio}".
     {format_date(activity.fecha)}.
     {activity.ciudad}, {activity.pais}.
-    <span class="uk-text-emphasis">Categoria:</span> {activity.categoria}.
+    <span class="uk-text-emphasis">Categoría:</span> {activity.categoria}.
     {activity.organizado_por ? "Organizado por: " + activity.organizado_por + '.' : ''}
     {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
 
   {:else if kind === "proyecto_grado"}
 
-    <span class="uk-text-emphasis">Titulo Academico:</span> {activity.titulo_academico}.
-    <span class="uk-text-emphasis">Coordinación Academica:</span> {activity.coordinacion_academica}.
-    <span class="uk-text-emphasis">Nivel Academico:</span> {activity.nivel_academico}.
+    <span class="uk-text-emphasis">Título Académico:</span> {activity.titulo_academico}.
+    <span class="uk-text-emphasis">Coordinación Académica:</span> {activity.coordinacion_academica}.
+    <span class="uk-text-emphasis">Nivel Académico:</span> {activity.nivel_academico}.
     <span class="uk-text-emphasis">Fecha de Defensa:</span> {format_date(activity.fecha_defensa)}.
 
   {:else if kind === "proyecto_investigacion"}
@@ -159,7 +159,7 @@
 
 {:else}
   <span class="ui red text"><strong>
-    ESTA ACTIVIDAD SE INGRESO DE FORMA INCORRECTA Y SUS DATOS NO SON VALIDOS, LO QUE HACE
+    ESTA ACTIVIDAD SE INGRESO DE FORMA INCORRECTA Y SUS DATOS NO SON VÁLIDOS, LO QUE HACE
     IMPOSIBLE MODIFICARLA.
   </strong></span>
 {/if}

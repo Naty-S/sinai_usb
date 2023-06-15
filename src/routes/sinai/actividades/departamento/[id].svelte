@@ -56,7 +56,7 @@
 </div>
 
 <div class="uk-text-center">
-  Numero total de profesores de su departamento resgistrados en el sistema:
+  Número total de profesores de su departamento resgistrados en el sistema:
   ({dep_activities.professors_activities.length})
 </div>
 
