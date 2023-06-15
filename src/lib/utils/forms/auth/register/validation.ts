@@ -14,7 +14,7 @@ export const validation = function () {
   
   const deps_ids = Array.from({ length: 30 }, (_, i) => (i + 2).toString());
   
-  // ppi years from 1997 until current year
+  // pei years from 1997 until current year
   const years_count = new Date().getFullYear() - 1996;
   const pei_years = Array.from({ length: years_count }, (_, i) => (i + 1997).toString());
 

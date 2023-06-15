@@ -114,6 +114,7 @@
     <Input
       label="Perfil"
       name="professor.perfil"
+      placeholder="Apellido, Nombre"
       bind:value={$form.professor.perfil}
       error={$errors.professor.perfil}
       class="required field"
@@ -130,7 +131,7 @@
       <Input
         label="Correo"
         name="professor.correo"
-        placeholder="correo@usb.ve"
+        placeholder="USBID@usb.ve"
         bind:value={$form.professor.correo}
         error={$errors.professor.correo}
         class="required field"
