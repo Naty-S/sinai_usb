@@ -31,7 +31,9 @@
 
     if (res.ok) {
       const res_json = await res.clone().json();
-      professors = res_json.filter((p: profesor) => p.activo).map((p: profesor) => ({ id: p.id, nombre: p.perfil }));
+      professors = res_json.filter((p: profesor) => p.activo && p.id !== 0).map((p: profesor) => (
+        { id: p.id, nombre: `${p.nombre1} ${p.apellido1} - (${p.perfil})` }
+      ));
 
     } else {
       const { message, code } = await res.json();
@@ -56,8 +58,8 @@
 	};
 
 	const remove_author_usb = function (i: number) {
-    $form.autores_usb.splice(i, 1);
-    $errors.autores_usb.splice(i, 1);
+    $form.autores_usb = $form.autores_usb.filter((_, j) => j !== i);
+    $errors.autores_usb = $errors.autores_usb.filter((_, j) => j !== i);
   };
 
 	const add_author_out = function () {
@@ -76,8 +78,8 @@
 	};
 
 	const remove_author_out = function (i: number) {
-    $form.autores_externos.splice(i, 1);
-    $errors.autores_externos.splice(i, 1);
+    $form.autores_externos = $form.autores_externos.filter((_, j) => j !== i);
+    $errors.autores_externos = $errors.autores_externos.filter((_, j) => j !== i);
   };
 
   $: student_usb = function (i: number) { return $form.autores_usb[i].es_estudiante }

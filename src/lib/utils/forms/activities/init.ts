@@ -40,7 +40,7 @@ export const init = function (kind: kinds, user?: User, data?: Activity): activi
     }
     , actividades_grupos:
         data?.groups.map(g => ({ old: g.id.toString(), new: g.id.toString() })) ||
-        [{ old: '?', new: '1'}]
+        [{ old: '?', new: '0'}]
     , autores_externos: data?.autores_externos || []
     , autores_usb: data?.autores_usb || []
     , user_rank: user?.dean ? "dean" : "professor"

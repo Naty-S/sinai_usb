@@ -11,6 +11,8 @@ import { handle_error, prisma } from "$api/_api";
 export const POST: RequestHandler = async ({ request, params }) => {
 
   const _data = await request.json();
+
+  const professor = _data.user.professor?.id;
   const data = {
     ..._data.actividad,
     actividades_grupos: {
@@ -45,7 +47,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
     await prisma.log_operacion_actividad.create({
       data: {
         actividad: act.id,
-        usuario: data.user.email,
+        usuario: _data.user.email,
         fecha: date,
         hora: date,
         operacion: "Ingreso",
@@ -58,9 +60,9 @@ export const POST: RequestHandler = async ({ request, params }) => {
       }
     })
 
-    if (data.user_rank == "professor") {
+    if (_data.user_rank == "professor") {
       headers = {
-        location: `/sinai/actividades/profesor/${data.user.professor.id}?creada=true`
+        location: `/sinai/actividades/profesor/${professor}?creada=true`
       };
     } else {
       headers = {
@@ -74,7 +76,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
 
     if (data.user_rank == "professor") {
       headers = {
-        location: `/sinai/actividades/profesor/${data.user.professor.id}?error=` + message + code
+        location: `/sinai/actividades/profesor/${professor}?error=` + message + code
       };
     } else {
       headers = {

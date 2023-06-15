@@ -17,13 +17,15 @@ import { handle_error, prisma } from "$api/_api";
  */
 export const GET: RequestHandler = async function({ params }) {
 
+  const _id = Number(params.id);
+  
   let status = 500;
   let body = {};
 
   try {
     const professor = await prisma.profesor.findUniqueOrThrow({
       where: {
-        id: Number(params.id)
+        id: _id
       }
     });
 
@@ -64,6 +66,55 @@ export const GET: RequestHandler = async function({ params }) {
       }
     });
 
+    let all_acts = _acts;
+
+    // Find professor's activities where is author
+    const _acts_id_author = await prisma.autor_usb.findMany({
+      select: { actividad: true },
+      where: { profesor_id: _id }
+    });
+
+    if (_acts_id_author.length > 0) {
+
+      const _acts_author = await Promise.all(_acts_id_author.map(async a =>
+        await prisma.actividad.findUnique({
+          where: { id: a.actividad },
+          include: {
+            actividades_grupos: {
+              select: {
+                Grupo: {
+                  select: {
+                    id: true,
+                    nombre: true
+                  }
+                }
+              }
+            },
+            autores_usb: true,
+            autores_externos: true,
+            articulo_revista: true,
+            capitulo_libro: true,
+            composicion: true,
+            evento: true,
+            exposicion: true,
+            grabacion: true,
+            informe_tecnico: true,
+            libro: true,
+            memoria: true,
+            partitura: true,
+            patente: true,
+            premio: true,
+            premio_bienal: true,
+            proyecto_grado: true,
+            proyecto_investigacion: true,
+            recital: true
+          }
+        })
+      ));
+  
+      all_acts = _acts.concat(_acts_author)
+    }
+
     const user = await prisma.usuario.findUniqueOrThrow({
       where: {
         login: professor.correo
@@ -82,7 +133,7 @@ export const GET: RequestHandler = async function({ params }) {
       }
     });
 
-    const activities: Activity[] = _acts.map(a => format_activity_kind(a, user.logs_operaciones_actividades));
+    const activities: Activity[] = all_acts.map(a => format_activity_kind(a, user.logs_operaciones_actividades));
     const entityActivities: EntityActivities = {
       entity: `Prof. ${professor.apellido1}, ${professor.nombre1}`,
       by_year: acts_kinds_by_year(activities, true),
@@ -96,7 +147,7 @@ export const GET: RequestHandler = async function({ params }) {
     const message = await handle_error(error);
     const code = error.code || '';
 
-    throw new Error(message + ' ' + code);
+    throw new Error(code + ' ' + message);
   };
 
   return {

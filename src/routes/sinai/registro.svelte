@@ -114,6 +114,7 @@
     <Input
       label="Perfil"
       name="professor.perfil"
+      placeholder="Apellido, Nombre"
       bind:value={$form.professor.perfil}
       error={$errors.professor.perfil}
       class="required field"
@@ -130,7 +131,7 @@
       <Input
         label="Correo"
         name="professor.correo"
-        placeholder="correo@usb.ve"
+        placeholder="USBID@usb.ve"
         bind:value={$form.professor.correo}
         error={$errors.professor.correo}
         class="required field"
@@ -170,16 +171,16 @@
       <label for="">PEI</label>
       <div class="three inline fields">
         <Input
-          type="number"
-          label="Numero"
-          name="numero"
+          label="Número"
+          name="pei.numero"
+          placeholder="v-xxxxxxxx-xx-xxxx"
           bind:value={$form.pei.numero}
           error={$errors.pei.numero}
           class="required field"
         />
         <Input
           label="Anio"
-          name="anio"
+          name="pei.anio"
           bind:value={$form.pei.anio}
           error={$errors.pei.anio}
           class="required field"

@@ -79,6 +79,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
 
   const _data = await request.json();
 
+  const professor = _data.user.professor?.id;
   const data = {
     ..._data.actividad
   };
@@ -222,9 +223,9 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       }
     })
 
-    if (data.user_rank == "professor") {
+    if (_data.user_rank == "professor") {
       headers = {
-        location: `/sinai/actividades/profesor/${data.user.professor.id}?modificada=true`
+        location: `/sinai/actividades/profesor/${professor}?modificada=true`
       };
     } else {
       headers = {
@@ -238,7 +239,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
 
     if (data.user_rank == "professor") {
       headers = {
-        location: `/sinai/actividades/profesor/${data.user.professor.id}?error=` + message + code
+        location: `/sinai/actividades/profesor/${professor}?error=` + message + code
       };
     } else {
       headers = {

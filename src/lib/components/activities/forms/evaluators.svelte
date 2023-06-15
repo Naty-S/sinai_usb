@@ -18,8 +18,8 @@
 	};  
 
 	const remove_evaluator = function (i: number) {
-    $form.informe_tecnico.evaluadores.splice(i, 1);
-    $errors.informe_tecnico.evaluadores.splice(i, 1);
+    $form.informe_tecnico.evaluadores = $form.informe_tecnico.evaluadores.filter((_, j) => j !== i);
+    $errors.informe_tecnico.evaluadores = $errors.informe_tecnico.evaluadores.filter((_, j) => j !== i);
   };
 
 </script>

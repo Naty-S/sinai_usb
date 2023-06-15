@@ -18,36 +18,36 @@
   const { form, errors }: activity_form_ctx<any> = getContext(key);
 
   const add = function () {
-    $form.lineas_investigacion = $form.lineas_investigacion.concat(['']);
-		$errors.lineas_investigacion = $errors.lineas_investigacion.concat(['']);
+    $form.profile.lineas_investigacion = $form.profile.lineas_investigacion.concat(['']);
+		$errors.profile.lineas_investigacion = $errors.profile.lineas_investigacion.concat(['']);
 	};
 
 	const remove = function (i: number) {
-    $form.lineas_investigacion.splice(i, 1);
-    $errors.lineas_investigacion.splice(i, 1);
+    $form.profile.lineas_investigacion = $form.profile.lineas_investigacion.filter((_, j) => j !== i);
+    $errors.profile.lineas_investigacion = $errors.profile.lineas_investigacion.filter((_, j) => j !== i);
   };
 </script>
 
 <div class="required field">
   <label for="">Líneas de Investigación</label>
 
-  {#if $form.lineas_investigacion.length === 0 }
+  {#if $form.profile.lineas_investigacion.length === 0 }
     <div class="ui five wide field tiny negative message">
       Ingrese al menos 1 Línea de Investigación
     </div>
   {/if}
 
   <div class="field">
-    {#each $form.lineas_investigacion as r_line, i}
+    {#each $form.profile.lineas_investigacion as r_line, i}
       <div class="inline fields">
         <Input
           label=""
-          name="lineas_investigacion[{i}]"
-          bind:value={$form.lineas_investigacion[i]}
+          name="profile.lineas_investigacion[{i}]"
+          bind:value={$form.profile.lineas_investigacion[i]}
           class="ten wide field"
         />
-          <!-- TODO: error={$errors.lineas_investigacion[i]} -->
-        <button type="button" class="ui red button" on:click={() => remove(i)}>
+          <!-- TODO: error={$errors.profile.lineas_investigacion[i]} -->
+        <button type="button" class="ui red button" on:click|preventDefault={() => remove(i)}>
           Elminar
         </button>
       </div>
@@ -56,8 +56,8 @@
     <button type="button" class="ui blue button" on:click|preventDefault={add}>
       Agregar
     </button>
-    {#if $form.lineas_investigacion.length > 0}      
-      <button type="button" class="ui red button" on:click={() => $form.lineas_investigacion = []}>
+    {#if $form.profile.lineas_investigacion.length > 0}      
+      <button type="button" class="ui red button" on:click={() => $form.profile.lineas_investigacion = []}>
         Limpiar
       </button>
     {/if}

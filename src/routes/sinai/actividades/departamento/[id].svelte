@@ -7,8 +7,10 @@
   export const load: Load = async ({ fetch, params, session }) => {
 
     const user = session.user;
-    
-    if (user?.professor?.is_dep_chief || user?.professor?.is_dep_representative || session.user?.dean) {
+    const professor = user?.professor;
+
+    if (user?.dean || professor?.coord_chief ||
+        professor?.is_dep_chief || professor?.is_dep_representative) {
 
       const res = await fetch(`/api/activities/department/${params.id}`);
      
@@ -22,11 +24,13 @@
   
       const { message } = await res.json();
       return {
-        error: new Error(message)
+        error: new Error("Error al cargar las actividades del departamento.\n" + message),
+        status: 500
       };
     } else {
       return {
-        error: new Error("Acceso denegado. Inicie sesión como jefe o representante de Departamento o Decano."),
+        error: new Error("Acceso denegado. \
+          Inicie sesión como jefe o representante de Departamento, Coordinador o Decano."),
         status: 401
       };
     };
@@ -52,7 +56,7 @@
 </div>
 
 <div class="uk-text-center">
-  Numero total de profesores de su departamento resgistrados en el sistema:
+  Número total de profesores de su departamento resgistrados en el sistema:
   ({dep_activities.professors_activities.length})
 </div>
 

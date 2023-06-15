@@ -19,7 +19,8 @@
 
       const { message } = await res.json();
       return {
-        error: new Error(message)
+        error: new Error("Error al cargar las actividades.\n" + message),
+        status: 500
       };
     } else {
       return {

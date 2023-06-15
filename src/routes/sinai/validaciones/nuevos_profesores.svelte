@@ -175,7 +175,7 @@
             <div class="item">
               <i class="id card icon"/>
               <div class="content">
-                Cedula: {p.cedula}.
+                Cédula: {p.cedula}.
               </div>
             </div>
             <div class="item">
@@ -193,25 +193,25 @@
             <div class="item">
               <i class="tag icon"/>
               <div class="content">
-                Categoria: {p.categoria}.
+                Categoría: {p.categoria}.
               </div>
             </div>
             <div class="item">
               <i class="tag icon"/>
               <div class="content">
-                Condicion: {p.condicion}.
+                Condición: {p.condicion}.
               </div>
             </div>
             <div class="item">
               <i class="tag icon"/>
               <div class="content">
-                Dedicacion: {p.dedicacion}.
+                Dedicación: {p.dedicacion}.
               </div>
             </div>
             <div class="item">
               <i class="graduation cap icon"/>
               <div class="content">
-                Ultimo diploma: {p.diploma_tipo.replaceAll('_', '')}.
+                Último diploma: {p.diploma_tipo.replaceAll('_', '')}.
               </div>
             </div>
             <div class="item">
@@ -223,13 +223,13 @@
             <div class="item">
               <i class="searchengin icon"/>
               <div class="content">
-                Lineas de investigacion: {p.lineas_investigacion.join(", ")}.
+                Líneas de investigación: {p.lineas_investigacion.join(", ")}.
               </div>
             </div>
             <div class="item">
               <i class="linkify icon"/>
               <div class="content">
-                {p.url ? p.url : ''}
+                {p.url || ''}
               </div>
             </div>
           </div>
