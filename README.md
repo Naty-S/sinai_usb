@@ -66,4 +66,4 @@ If you don't want to use Docker you need to install these aswell:
 2. Enter postgres: `su - postgres`
 3. Dump database: `pg_dump sinai | gzip > sinai.gz`
 4. Exit container
-5. Copy dump from container: `sudo docker cp postgres:/path/sinai.gz ./sinai.gz`
+5. Copy dump from container: `sudo docker cp postgres:/var/lib/postgresql/sinai.gz ./sinai.gz`
