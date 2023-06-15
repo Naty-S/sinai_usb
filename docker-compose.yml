@@ -60,7 +60,6 @@ services:
     volumes:
       - pgdata:${PG_DATA}
       - ./prisma/db/sinai.gz:/var/lib/postgresql/sinai.gz
-      - ./prisma/db/sinai_dev.gz:/var/lib/postgresql/sinai_dev.gz
 
 
   ##

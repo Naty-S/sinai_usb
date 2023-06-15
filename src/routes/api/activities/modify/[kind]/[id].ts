@@ -79,7 +79,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
 
   const _data = await request.json();
 
-  const professor = _data.user.professor.id;
+  const professor = _data.user.professor?.id;
   const data = {
     ..._data.actividad
   };
@@ -223,7 +223,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       }
     })
 
-    if (data.user_rank == "professor") {
+    if (_data.user_rank == "professor") {
       headers = {
         location: `/sinai/actividades/profesor/${professor}?modificada=true`
       };

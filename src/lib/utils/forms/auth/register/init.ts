@@ -24,7 +24,7 @@ export const init = function () {
     pei: {
       anio: 2022,
       nivel: "A",
-      numero: 0,
+      numero: '',
     }
   };
 };

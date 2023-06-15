@@ -8,7 +8,6 @@ export const submit = function () {
 
     data.professor.departamento = Number(data.professor.departamento);
     data.professor.cedula = Number(data.professor.cedula);
-    data.pei.numero = data.pei.numero.toString();
 
     // register
     const res = await api.post("/api/auth/register", data);

@@ -17,9 +17,9 @@ export const init = function (p: profesor) {
     , 
     }
     , pei: {
-      anio: (pei.lenght && pei[0].anio) || 2022,
-      nivel: (pei.lenght && pei[0].nivel) || "A",
-      numero: (pei.lenght && pei[0].numero) || 0,
+      anio: pei[0]?.anio || 2022,
+      nivel: pei[0]?.nivel || "A",
+      numero: pei[0]?.numero || '',
     }
   };
 };

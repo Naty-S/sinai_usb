@@ -14,8 +14,8 @@ const articulo_revista = yup.object().shape({
   , pag_final: yup.string().required("Requerido")
   , pag_inicial: yup.string().required("Requerido")
   , paginas: yup.number().nullable()
-    .positive("Ingrese numero positivo")
-    .integer("Ingrese numero entero")
+    .positive("Ingrese número positivo")
+    .integer("Ingrese número entero")
     .min(1, "Minimo 1")
   , revista: yup.string().required("Requerido")
   , volumen: yup.string().required("Requerido")
@@ -89,8 +89,8 @@ const informe_tecnico = yup.object().shape({
   , fecha_inicio: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().required("Requerido")
   , meses_duracion: yup.number().required("Requerido")
-    .positive("Ingrese numero positivo")
-    .integer("Ingrese numero entero")
+    .positive("Ingrese número positivo")
+    .integer("Ingrese número entero")
     .min(1, "Minimo 1")
 });
 
@@ -114,8 +114,8 @@ const memoria = yup.object().shape({
   , pag_final: yup.string().nullable()
   , pag_inicial: yup.string().nullable()
   , paginas: yup.number().required("Requerido")
-    .positive("Ingrese numero positivo")
-    .integer("Ingrese numero entero")
+    .positive("Ingrese número positivo")
+    .integer("Ingrese número entero")
     .min(1, "Minimo 1")
   , pais: yup.string().required("Requerido")
   , tipo_congreso: yup.string().oneOf(["Nacional", "Internacional"])
@@ -183,8 +183,8 @@ const proyecto_investigacion = yup.object().shape({
   fecha_inicio: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().required("Requerido")
   , meses_duracion: yup.number().required("Requerido")
-    .positive("Ingrese numero positivo")
-    .integer("Ingrese numero entero")
+    .positive("Ingrese número positivo")
+    .integer("Ingrese número entero")
     .min(1, "Minimo 1")
   , moneda: yup.string().required("Requerido")
   , monto: yup.number().required("Requerido")
@@ -286,7 +286,7 @@ const autores_usb = yup.lazy(value => {
 });
 
 const groups = [
-  '?','1', '2', '3', '4', '6', '8', '9', "10", "11", "12", "13", "14", "15", "16", "17",
+  '?','0','1', '2', '3', '4', '6', '8', '9', "10", "11", "12", "13", "14", "15", "16", "17",
   "19", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "33", "34",
   "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48",
   "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62",
