@@ -47,8 +47,6 @@ export const init = function (kind: kinds, user?: User, data?: Activity): activi
     , user: user || {email: "usuario ficticio", pending_professors: false}
     , kind
   };
-  console.log("data.user_rank: ", act.user_rank)
-  console.log("user:", user)
 
   /**
    * Initialize the date so it can be displayed in the form

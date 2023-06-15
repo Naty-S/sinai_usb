@@ -47,7 +47,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
     await prisma.log_operacion_actividad.create({
       data: {
         actividad: act.id,
-        usuario: data.user.email,
+        usuario: _data.user.email,
         fecha: date,
         hora: date,
         operacion: "Ingreso",
@@ -60,8 +60,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
       }
     })
 
-    console.log("data.user_rank: ", data.user_rank)
-    if (data.user_rank == "professor") {
+    if (_data.user_rank == "professor") {
       headers = {
         location: `/sinai/actividades/profesor/${professor}?creada=true`
       };

@@ -223,8 +223,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       }
     })
 
-    console.log("data.user_rank: ", data.user_rank)
-    if (data.user_rank == "professor") {
+    if (_data.user_rank == "professor") {
       headers = {
         location: `/sinai/actividades/profesor/${professor}?modificada=true`
       };

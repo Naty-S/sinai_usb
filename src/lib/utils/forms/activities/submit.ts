@@ -56,7 +56,6 @@ export const submit = function (kind: kinds, update: boolean = false, id?: strin
 
     let res: Response;
 
-    console.log("data.user_rank: ", data.user_rank)
     if (update) {
       res = await api.patch(`/api/activities/modify/${kind}/${id}`, data);
     } else {
