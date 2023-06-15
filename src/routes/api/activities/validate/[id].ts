@@ -48,7 +48,7 @@ export const PATCH: RequestHandler = async ({ request, params }) => {
         sql: `UPDATE actividad SET (${JSON.stringify(data)}) WHERE id=${params.id};`,
         tabla: _data.kind
       }
-    })
+    });
 
     status = 200;
     body = { code: "validated" };

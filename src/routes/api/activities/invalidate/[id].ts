@@ -13,20 +13,37 @@ import { handle_error, prisma } from "$api/_api";
  *
  * @returns The code `invalidated`
 */
-export const PATCH: RequestHandler = async ({ params }) => {
+export const PATCH: RequestHandler = async ({ params, request }) => {
+
+  const _data = await request.json();
+  const data = {
+    fecha_ultima_modificacion: new Date(),
+    fecha_validacion: null,
+    validado_por: null
+  };
 
   let status = 500;
   let body = {};
 
   try {
     await prisma.actividad.update({
-      data: {
-        fecha_ultima_modificacion: new Date(),
-        fecha_validacion: null,
-        validado_por: null
-      },
+      data,
       where: {
         id: Number(params.id)
+      }
+    });
+
+    const date = new Date();
+
+    await prisma.log_operacion_actividad.create({
+      data: {
+        actividad: Number(params.id),
+        usuario: _data.invalidado_por,
+        fecha: date,
+        hora: date,
+        operacion: "Validacion",
+        sql: `UPDATE actividad SET (${JSON.stringify(data)}) WHERE id=${params.id};`,
+        tabla: _data.kind
       }
     });
 

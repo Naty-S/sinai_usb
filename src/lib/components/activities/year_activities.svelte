@@ -77,7 +77,9 @@
   };
 
   const confirm_invalidate = async function () {
-    const res = await api.patch(`/api/activities/invalidate/${actual_act_id}`, null);
+    const res = await api.patch(`/api/activities/invalidate/${actual_act_id}`,
+      { invalidado_por: user?.email, kind: actual_act_kind }
+    );
 
     if (res.ok) {
       const { code } = await res.json();
