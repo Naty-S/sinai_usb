@@ -37,7 +37,7 @@
   });
 
   const add_group = function () {
-    $form.actividades_grupos = $form.actividades_grupos.concat([{ old: '?', new: '1'}]);
+    $form.actividades_grupos = $form.actividades_grupos.concat([{ old: '?', new: '0'}]);
     $errors.actividades_grupos = $errors.actividades_grupos.concat([{ old: '', new: ''}]);
   };
 
