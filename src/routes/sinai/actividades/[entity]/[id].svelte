@@ -37,7 +37,7 @@
       };
     } else {
       return {
-        error: new Error("Acceso denegado. Inicie sesión"),
+        error: new Error("Acceso denegado. Inicie sesión con el usuario adecuado."),
         status: 401
       };
     }
