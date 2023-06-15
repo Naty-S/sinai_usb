@@ -38,7 +38,7 @@
     </div>
     
     <div class="two column row">
-      <div class="column"><strong>Num. PPI:</strong> {professor?.ppi_number}</div>
+      <div class="column"><strong>Num. PPI:</strong> {professor?.ppi_number || ''}</div>
       <div class="column"><strong>Num. PEI:</strong> {professor?.pei_number || ''}</div>
     </div>
 

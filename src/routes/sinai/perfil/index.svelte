@@ -85,26 +85,27 @@
   <div class="ui centered grid field">
     <div class="two column row">
       <div class="column">Nombre: {professor?.name1}</div>
-      <div class="column">Segundo Nombre: {professor?.name2}</div>
+      <div class="column">Segundo Nombre: {professor?.name2 || ''}</div>
     </div>
 
     <div class="two column row">
       <div class="column">Apellido: {professor?.surname1}</div>
-      <div class="column">Segundo Apellido: {professor?.surname2}</div>
+      <div class="column">Segundo Apellido: {professor?.surname2 || ''}</div>
     </div>
   </div>
 
   <div class="two inline fields">
     <Input
       label="Perfil"
-      name="perfil"
+      name="profile.perfil"
+      placeholder="Apellido, Nombre"
       bind:value={$form.profile.perfil}
       error={$errors.profile.perfil}
       class="required field"
     />
     <Input
       label="Página url"
-      name="url"
+      name="profile.url"
       bind:value={$form.profile.url}
       error={$errors.profile.url}
       class="field"
@@ -122,14 +123,14 @@
   <div class="two inline fields">
     <Select
       label="Categoría"
-      name="categoria"
+      name="profile.categoria"
       bind:value={$form.profile.categoria}
       options={Object.entries(profesor_categoria_enum).map(([_, cat]) => ({ val: cat, name: cat }))}
       class="inline field"
     />
     <Select
       label="Dedicación"
-      name="dedicacion"
+      name="profile.dedicacion"
       bind:value={$form.profile.dedicacion}
       options={Object.entries(profesor_dedicacion_enum).map(([_, ded]) => ({ val: ded, name: ded }))}
       class="inline field"
@@ -161,14 +162,14 @@
       <Input
         type="number"
         label="Numero"
-        name="numero"
+        name="pei.numero"
         bind:value={$form.pei.numero}
         error={$errors.pei.numero}
         class="required field"
       />
       <Input
         label="Anio"
-        name="anio"
+        name="pei.anio"
         bind:value={$form.pei.anio}
         error={$errors.pei.anio}
         class="required field"
@@ -186,14 +187,14 @@
   <div class="two inline required fields">
     <Select
       label="Último Diploma"
-      name="diploma_tipo"
+      name="profile.diploma_tipo"
       bind:value={$form.profile.diploma_tipo}
       options={Object.entries(profesor_diploma_tipo_enum).map(([_, d]) => ({ val: d, name: d }))}
       class="six wide inline field"
     />
     <Input
       label="Universidad del Diploma"
-      name="diploma_universidad"
+      name="profile.diploma_universidad"
       bind:value={$form.profile.diploma_universidad}
       error={$errors.profile.diploma_universidad}
       class="ten wide required field"
