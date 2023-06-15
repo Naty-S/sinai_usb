@@ -32,7 +32,10 @@
     if (res.ok) {
       const res_json = await res.clone().json();
       professors = res_json.filter((p: profesor) => p.activo && p.id !== 0).map((p: profesor) => (
-        { id: p.id, nombre: `${p.nombre1} ${p.apellido1} - (${p.perfil})` }
+        {
+          id: p.id,
+          nombre: p.perfil
+        }
       ));
 
     } else {
