@@ -20,7 +20,8 @@
   
       const { message } = await res.json();
       return {
-        error: new Error(message)
+        error: new Error("Error al cargar los datos de la actividad a modificar.\n" + message),
+        status: 500
       };
     } else {
       return {

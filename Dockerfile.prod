@@ -1,5 +1,5 @@
 ## Pull the Node.js Docker base image from https://hub.docker.com/_/node
-FROM node:18-slim AS build
+FROM node:lts-slim AS build
 
 
 ARG SERVER_NAME
