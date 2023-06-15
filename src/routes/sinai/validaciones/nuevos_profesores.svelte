@@ -69,7 +69,7 @@
   const confirm_validate = async function () {
     const res = await api.patch(`/api/professor/${actual_prof_email}`,
       {
-        new: { activo: true },
+        new: { profile: { activo: true } },
         pathname: $page.url.pathname
       }
     );
