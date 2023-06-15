@@ -79,7 +79,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
 
   const _data = await request.json();
 
-  const professor = _data.user.professor.id;
+  const professor = _data.user.professor?.id;
   const data = {
     ..._data.actividad
   };
