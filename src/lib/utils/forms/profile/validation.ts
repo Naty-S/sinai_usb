@@ -33,7 +33,7 @@ export const validation = function () {
     , pei: yup.object().shape({
       anio: yup.string().required("Requerido").oneOf(pei_years, "Ingrese un año entre 1997 y el actual"),
       nivel: yup.string().oneOf(["A", "B", "C"]),
-      numero: yup.number().required("Requerido"),
+      numero: yup.string().required("Requerido"),
     })
   });
 };

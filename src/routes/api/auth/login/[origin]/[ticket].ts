@@ -154,10 +154,10 @@ export const GET: RequestHandler = async function ({ params }) {
           grupos_investigacion: professor.grupos_investigacion
           , historico_grupos: professor.historico_grupos
         }
-        , pei_number: (professor.pei.length > 0 && professor.pei[0].numero) || null
-        , pei_level: (professor.pei.length > 0 && professor.pei[0].nivel) || null
-        , ppi_number: (professor.ppi.length > 0 && professor.ppi[0].numero) || null
-        , ppi_level: (professor.ppi.length > 0 && professor.ppi[0].nivel) || null
+        , pei_number: professor.pei[0]?.numero || null
+        , pei_level: professor.pei[0]?.nivel || null
+        , ppi_number: professor.ppi[0]?.numero || null
+        , ppi_level: professor.ppi[0]?.nivel || null
         , is_dep_chief: professor._count.jefe_departamentos > 0
         , is_dep_representative: professor._count.representante_departamentos > 0
         , coord_chief

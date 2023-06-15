@@ -229,7 +229,7 @@
             <div class="item">
               <i class="linkify icon"/>
               <div class="content">
-                {p.url ? p.url : ''}
+                {p.url || ''}
               </div>
             </div>
           </div>
