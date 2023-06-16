@@ -34,8 +34,7 @@
       professors = res_json.filter((p: profesor) => p.activo && p.id !== 0).map((p: profesor) => (
         {
           id: p.id,
-          peril: p.perfil,
-          nombre: `${p.nombre1} ${p.apellido1} - (${p.perfil})`
+          nombre: p.perfil
         }
       ));
 
