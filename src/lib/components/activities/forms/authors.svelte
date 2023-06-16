@@ -126,7 +126,7 @@
             label="Nombre Profesor"
             name="autores_usb[{i}].nombre"
             bind:value={$form.autores_usb[i].nombre}
-            options={professors.map(p => ({ val: p.perfil, name: p.nombre }))}
+            options={professors.map(p => ({ val: p.nombre, name: p.nombre }))}
             class="ten wide required field"
           />
         {/if}
