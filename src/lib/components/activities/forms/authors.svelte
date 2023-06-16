@@ -92,7 +92,7 @@
 
   $: $form.autores_usb.map(a => {
     if (!a.es_estudiante) {
-      a.profesor_id = professors.find(p => p.perfil === a.nombre)?.id || null;
+      a.profesor_id = professors.find(p => p.nombre === a.nombre)?.id || null;
     } else {
       a.profesor_id = null;
     };
