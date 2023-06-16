@@ -16,7 +16,7 @@ export const validation = function () {
 
   return yup.object().shape({
     profile: yup.object().shape({
-      perfil: yup.string().required("Requerido").matches(perfil, "Formato ivalido")
+      perfil: yup.string().required("Requerido").matches(perfil, "Formato inválido. Escriba su primer apellido y primer nombre")
     , categoria: yup.string().oneOf(["Agregado", "Asistente", "Asociado", "Instructor", "Titular"])
     , dedicacion: yup.string().oneOf(["Convencional", "Exclusiva", "Integral"])
     , diploma_tipo: yup.string().oneOf(["Lic_", "Ph_D_", "Doctor", "Magister", "Ing_"])
@@ -25,7 +25,7 @@ export const validation = function () {
         yup.string().when("url", {
           is: null,
           then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato invalido")
+          otherwise: yup.string().matches(url, "Formato inválido")
         })
     )
     , lineas_investigacion: yup.array(yup.string())

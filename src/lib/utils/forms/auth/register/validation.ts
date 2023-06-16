@@ -28,8 +28,8 @@ export const validation = function () {
       apellido2: yup.lazy(value => !value ? yup.string().nullable() :
         yup.string().matches(one_word, "Escriba un solo apellido sin espacios")
       ),
-      cedula: yup.string().required("Requerido").matches(cedula, "Formato invalido"),
-      correo: yup.string().required("Requerido").matches(/^[a-z]+@usb.ve$/, "Formato invalido"),
+      cedula: yup.string().required("Requerido").matches(cedula, "Formato inválido"),
+      correo: yup.string().required("Requerido").matches(/^[a-z]+@usb.ve$/, "Formato inválido"),
       sexo: yup.string().oneOf(['F', 'M']),
       categoria: yup.string().oneOf(["Agregado", "Asistente", "Asociado", "Instructor", "Titular"]),
       condicion: yup.string().oneOf(["Contratado", "Ordinario", "Jubilado"]),
@@ -37,12 +37,12 @@ export const validation = function () {
       diploma_tipo: yup.string().oneOf(["Lic_", "Ph_D_", "Doctor", "Magister", "Ing_"]),
       diploma_universidad: yup.string().required("Requerido"),
       departamento: yup.string().oneOf(deps_ids),
-      perfil: yup.string().required("Requerido").matches(perfil, "Formato ivalido"),
+      perfil: yup.string().required("Requerido").matches(perfil, "Formato inválido. Escriba su primer apellido y primer nombre"),
       url: yup.lazy(value => !value ? yup.string().nullable() : 
         yup.string().when("url", {
           is: null,
           then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato invalido")
+          otherwise: yup.string().matches(url, "Formato inválido")
         })
       )
     }),

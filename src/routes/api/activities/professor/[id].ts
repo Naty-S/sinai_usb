@@ -77,7 +77,7 @@ export const GET: RequestHandler = async function({ params }) {
     if (_acts_id_author.length > 0) {
 
       const _acts_author = await Promise.all(_acts_id_author.map(async a =>
-        await prisma.actividad.findUnique({
+        await prisma.actividad.findUniqueOrThrow({
           where: { id: a.actividad },
           include: {
             actividades_grupos: {

@@ -12,7 +12,7 @@ export const GET: RequestHandler = async function () {
   let body = {};
 
   try {
-    const professors = await prisma.profesor.findMany({ orderBy: { nombre1: "asc" } });
+    const professors = await prisma.profesor.findMany({ orderBy: { apellido1: "asc" } });
 
     status = 200;
     body = professors;

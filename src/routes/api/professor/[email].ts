@@ -60,10 +60,16 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
     });
 
     const pei = _data.new.pei;
-    if (pei) {
+    if (pei) { // Its professor
 
       pei.profesor = p.id;
       await prisma.pei.create({ data: pei });
+
+      // Update professor's profile name as author
+      await prisma.autor_usb.updateMany({
+        data: { nombre: p.perfil },
+        where: { profesor_id: p.id }
+      });
     };
 
     const action = _data.pathname.includes("perfil") ? "modificado" : "validado";

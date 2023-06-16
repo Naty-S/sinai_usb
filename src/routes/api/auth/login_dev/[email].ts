@@ -18,7 +18,7 @@ export const GET: RequestHandler = async function ({ params }) {
   try {
 
     const _user = await prisma.usuario.findUnique({
-      where: { login: params.email },
+      where: { login: params.email + "@usb.ve" },
       include: {
         administrador: true,
         profesor: {

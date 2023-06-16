@@ -210,7 +210,7 @@ const autores_externos = yup.lazy(value => {
           , es_estudiante: yup.boolean().typeError("No es booleano")
           , es_ponente: yup.boolean().typeError("No es booleano")
           , es_tutor: yup.boolean().typeError("No es booleano")
-          , correo: yup.string().email("Correo invalido").nullable()
+          , correo: yup.string().email("Correo inválido").nullable()
           , estudiante_carrera: yup.string().when("es_estudiante", {
             is: true,
             then: yup.string().nullable().required("Requerido"),
@@ -225,7 +225,7 @@ const autores_externos = yup.lazy(value => {
           , es_estudiante: yup.boolean().typeError("No es booleano")
           , es_ponente: yup.boolean().typeError("No es booleano")
           , es_tutor: yup.boolean().typeError("No es booleano")
-          , correo: yup.string().email("Correo invalido").nullable()
+          , correo: yup.string().email("Correo inválido").nullable()
           , estudiante_carrera: yup.string().when("es_estudiante", {
             is: true,
             then: yup.string().nullable().required("Requerido"),
@@ -248,7 +248,7 @@ const autores_usb = yup.lazy(value => {
           , es_estudiante: yup.boolean().typeError("No es booleano")
           , es_ponente: yup.boolean().typeError("No es booleano")
           , es_tutor: yup.boolean().typeError("No es booleano")
-          , correo: yup.string().email("Correo invalido").nullable()
+          , correo: yup.string().email("Correo inválido").nullable()
           , profesor_id: yup.number().when("es_tutor", {
             is: true,
             then: yup.number().required("Requerido"),
@@ -267,7 +267,7 @@ const autores_usb = yup.lazy(value => {
           , es_estudiante: yup.boolean().typeError("No es booleano")
           , es_ponente: yup.boolean().typeError("No es booleano")
           , es_tutor: yup.boolean().typeError("No es booleano")
-          , correo: yup.string().email("Correo invalido").nullable()
+          , correo: yup.string().email("Correo inválido").nullable()
           , profesor_id: yup.number().when("es_tutor", {
             is: true,
             then: yup.number().required("Requerido"),
