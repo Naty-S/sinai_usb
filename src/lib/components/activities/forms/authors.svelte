@@ -23,7 +23,7 @@
   const tipo_actividad = param as autor_tipo_actividad_enum;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 
-  let professors: { id: number, nombre: string }[] = [];
+  let professors: { id: number, perfil: string, nombre: string }[] = [];
   let action = { info: '', code: '' };
 
   onMount(async () => {
@@ -92,7 +92,7 @@
 
   $: $form.autores_usb.map(a => {
     if (!a.es_estudiante) {
-      a.profesor_id = professors.find(p => p.nombre === a.nombre)?.id || null;
+      a.profesor_id = professors.find(p => p.perfil === a.nombre)?.id || null;
     } else {
       a.profesor_id = null;
     };
