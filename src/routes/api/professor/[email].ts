@@ -60,10 +60,23 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
     });
 
     const pei = _data.new.pei;
-    if (pei) {
+    if (pei) { // Its professor
 
       pei.profesor = p.id;
       await prisma.pei.create({ data: pei });
+
+      // Update professor's profile name as author
+      const _acts_id_author = await prisma.autor_usb.findMany({
+        select: { actividad: true },
+        where: { profesor_id: p.id }
+      });
+
+      await Promise.all(_acts_id_author.map(async a =>
+        await prisma.autor_usb.update({
+          data: { nombre: p.perfil },
+          where: { id: a.actividad }
+        })
+      ));
     };
 
     const action = _data.pathname.includes("perfil") ? "modificado" : "validado";
