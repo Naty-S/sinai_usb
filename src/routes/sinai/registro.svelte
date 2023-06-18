@@ -39,19 +39,25 @@
   const formProps = { initialValues, onSubmit, validationSchema };
   const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
 
-  setContext(key, {
-    form, errors, handleChange
-  });
-
-  // Codes returned by submiting form
-  $: registered = Boolean($page.url.searchParams.get("exito"));
-  $: not_active = Boolean($page.url.searchParams.get("no_activo"));
-  $: err = $page.url.searchParams.get("error");
-  $: err_code = $page.url.searchParams.get("code");
-
-  // Fetch departments data
   let departments: Department[] = [];
   let action = { info: '', code: '' };
+  let registered = false;
+
+  const register = async function (e: any) {
+
+    const res = await handleSubmit(e);
+
+    if (res?.message) {
+      
+      action.info = res.message;
+      action.code = res.code;
+
+    } else {
+      registered = res;
+    };
+  };
+  
+  $: not_active = Boolean($page.url.searchParams.get("no_activo"));
 
   onMount(async () => {
     const res = await api.get("/api/departments");
@@ -64,21 +70,25 @@
       action.code = code;
     };
   });
+
+  setContext(key, {
+    form, errors, handleChange
+  });
 </script>
 
 {#if registered}
   <p class="uk-text-center">
-    Se ha registrado de forma exitosa en el sistema del Sinai. <br/>
+    Se ha registrado de forma exitosa en el sistema del SINAI. <br/>
     Se le ha notificado al coordinador de su departamento para que sea activado en el 
     sistema y pueda ingresar.
   </p>
 {:else if not_active}
   <p class="uk-text-center">
     Usted NO se encuentra activo en el sistema. <br/>
-    Por favor comuniquese con su coordinador para activarse en el SINAI.
+    Por favor comuníquese con su coordinador para activarse en el SINAI.
   </p>
 {:else}
-  <form class="ui large form" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
+  <form class="ui large form" on:submit|preventDefault={register} on:reset={handleReset}>
     <div id="name" class="two inline fields">
       <Input
         label="Primer Nombre"
@@ -230,23 +240,6 @@
   </form>
 {/if}
 
-{#if err}
-  <Modal
-    id="no_registered"
-    title="Error. {err_code}"
-    close_text="Ok"
-    align="center"
-    is_active={Boolean(err)}
-    close={() => location.replace($page.url.pathname)}
-  >
-    <p>
-      Hubo un problema al intentar registrarse por favor vuelva a intentar
-      o contáctese con algún administrador proporcionando el código del error.
-    </p>
-    <span class="ui red text">Detalles: {err}</span>
-  </Modal>
-{/if}
-
 {#if action.info !== ''}
   <Modal
     id="error"
@@ -257,7 +250,7 @@
     close={() => location.replace($page.url.pathname)}
   >
     <p>
-      Hubo un problema al cargar el formulario, recargue la página 
+      Hubo un problema al cargar el formulario o registro, recargue la página 
       o contáctese con algún administrador proporcionando el código del error.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>

@@ -28,7 +28,7 @@
 
 	<p><strong>{error.message}</strong></p>
 
-  <button type="button" class="ui positive button" on:click={() => goto("/sinai")}>
+  <button type="button" class="ui positive button" on:click={() => goto("/")}>
     Volver a la página principal
   </button>
 

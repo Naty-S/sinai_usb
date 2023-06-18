@@ -79,7 +79,7 @@ export const GET: RequestHandler = async function ({ params }) {
     if (!_user) {
       return {
         status: 302,
-        location: "/sinai/registro",
+        location: "/sinai?no_registro=true",
       }
     }
 

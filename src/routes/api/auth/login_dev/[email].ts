@@ -53,15 +53,17 @@ export const GET: RequestHandler = async function ({ params }) {
 
     if (!_user) {
       return {
-        status: 302,
-        location: "/sinai/registro",
+        status,
+        headers,
+        body: { message: "Usuario no encontrado." }
       }
     }
 
     if (_user.profesor && !_user.profesor.activo) {
       return {
-        status: 302,
-        location: "/sinai/registro?no_activo=true",
+        status,
+        headers,
+        body: { message: "El usuario no se encuentra activo." }
       }
     }
 

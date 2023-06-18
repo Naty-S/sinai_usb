@@ -10,6 +10,8 @@
 	import { goto } from "$app/navigation";
   import { session, page } from "$app/stores";
 
+	import Modal from "$lib/components/modal.svelte";
+
   import * as api from "$lib/api";
 
   
@@ -22,7 +24,7 @@
     });
   };
 
-  const is_err = false;
+  let err_info = '';
   let email = '';
 
   const login_dev = async function () {
@@ -40,14 +42,14 @@
       };
     } else {
       const { message } = await res.clone().json();
-      console.log(message)
+      err_info = message;
     };
   };
 </script>
 
-<form class="ui large form" class:error="{is_err}">
+<form class="ui large form">
 
-  <div class="required field" class:error="{is_err}">
+  <div class="required field">
     <label for="">Correo</label>
     <input type="email" bind:value={email}>
   </div>
@@ -56,3 +58,16 @@
     Iniciar Sesión
   </button>
 </form>
+
+{#if err_info !== ''}
+  <Modal
+    id="err_info"
+    title="Error al iniciar sesión"
+    close_text="Ok"
+    align="center"
+    is_active={err_info !== ''}
+    close={() => err_info = ''}
+  >
+    <span class="ui red text">Detalles: {err_info}</span>
+  </Modal>
+{/if}

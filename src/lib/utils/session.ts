@@ -41,18 +41,24 @@ export const redirect: Load = async function ({ fetch, session, url }) {
     const cas_ticket = url.searchParams.get("ticket");
     const login = await fetch(`/api/auth/login/${origin}/${cas_ticket}`);
     
-    if (login.ok) {
+    if (login.status === 302) {
+      return {
+        status: 302,
+        redirect: login.url
+      };
+    } else if (login.ok) {
       const cookies = cookie.parse(login.headers.get("set-cookie") || '');
       const jwt = cookies.jwt && Buffer.from(cookies.jwt, "base64").toString("utf-8");
 
       return {
         status: 302,
         redirect: `/sinai/login?validated=${jwt}`
-      }
+      };
     } else {
+      
       const { message, code } = await login.json();
       return {
-        error: new Error("No se pudo validar al usuario.\n" + code + ' ' + message),
+        error: new Error("No se pudo validar al usuario.\n" + code + '. ' + message),
         status: 500
       };
     };

@@ -14,9 +14,7 @@ export const POST: RequestHandler = async function ({ request }) {
   const _data = await request.json();
 
   let status = 303;
-  let headers = {
-    location: '/'
-  };
+  let body = {};
 
   try {
     const data_usuario = {
@@ -38,22 +36,18 @@ export const POST: RequestHandler = async function ({ request }) {
       select: { jefe: true }
     });
 
-    status = 303;
-    headers = {
-      location: "/sinai/registro?exito=true&coord=" + coord.jefe
-    };
+    status = 200;
+    body = { coord: coord.jefe };
+
   } catch (error: any) {
     const message = await handle_error(error);
-    const code = error.code ? "&code=" + error.code : '';
+    const code = error.code || '';
 
-    status = 303;
-    headers = {
-      location: "/sinai/registro?error=" + message + code
-    };
+    body = { message, code };
   };
 
   return {
     status,
-    headers
+    body
   };
 };
