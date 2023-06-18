@@ -26,6 +26,9 @@ services:
       - ./:/usr/var/${DOCKER_APP_NAME}
       # To avoid copying over local Node modules to Docker
       - docker_node_modules-dev:/usr/var/${DOCKER_APP_NAME}/node_modules
+      # Set timezone to host machine (Venezuela)
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 
   ## Execute and run the Postgres database container on port 5432. 
@@ -46,6 +49,9 @@ services:
     volumes:
       - pgdata:${PG_DATA}
       - ./prisma/db/sinai.gz:/var/lib/postgresql/sinai.gz
+      # Set timezone to host machine (Venezuela)
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 
   ##
