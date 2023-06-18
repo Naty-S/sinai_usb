@@ -18,9 +18,9 @@
         };
       };
   
-      const { message } = await res.json();
+      const { message,code } = await res.json();
       return {
-        error: new Error("Error al cargar las actividades de la División.\n" + message),
+        error: new Error(`Error al cargar las actividades de la División.\n${code}. ${message}`),
         status: 500
       };
     } else {

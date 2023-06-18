@@ -29,7 +29,7 @@
     const dep_activities = coord_activities.departments_activities;
     const groups_activities = coord_activities.groups_activities;
 
-    rank_name = coord_activities.coordination.name;
+    rank_name = coord_activities.coordination.nombre;
     rank_page = `/sinai/actividades/coordinacion/${coord_activities.coordination.id}`;
 
     if (dep_activities) {
@@ -48,7 +48,7 @@
     const division_activities = rank_activities as DivisionActivities;
     const dep_activities = division_activities.departments_activities;
     
-    rank_name = division_activities.division.name;
+    rank_name = division_activities.division.nombre;
     rank_page = `/sinai/actividades/division/${division_activities.division.id}`;
     activities = dep_activities.flatMap(d => d.professors_activities).flatMap(p => p.activities);
 
@@ -57,7 +57,7 @@
     const dep_activities = rank_activities as DepActivities;
     const professors_activities = dep_activities.professors_activities;
 
-    rank_name = dep_activities.department.name;
+    rank_name = dep_activities.department.nombre;
     rank_page = `/sinai/actividades/departamento/${dep_activities.department.id}`;
     activities = professors_activities.flatMap(p => p.activities);
 

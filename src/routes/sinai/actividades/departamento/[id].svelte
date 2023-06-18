@@ -22,9 +22,9 @@
         };
       };
   
-      const { message } = await res.json();
+      const { message, code } = await res.json();
       return {
-        error: new Error("Error al cargar las actividades del departamento.\n" + message),
+        error: new Error(`Error al cargar las actividades del departamento.\n${code}. ${message}`),
         status: 500
       };
     } else {

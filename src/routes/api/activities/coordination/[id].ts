@@ -38,7 +38,7 @@ export const GET: RequestHandler = async function ({ request, params }) {
     let coordination_activities: CoordActivities = {
       coordination: {
         id: coordination.id,
-        name: coordination.nombre
+        nombre: coordination.nombre
       }
     };
 
@@ -101,8 +101,12 @@ export const GET: RequestHandler = async function ({ request, params }) {
     } else {
       const departments_activities: DepActivities[] = await Promise.all(
         coordination.departamentos.map(async d =>{
+
           const r = await fetch(`${origin}/api/activities/department/${d.id}`);
-          return await r.json();
+          const r_json = await r.json()
+          
+          if (r.ok) return r_json;
+          else throw new Error(r_json.code + '. ' + r_json.message);
         })
       );
 
@@ -116,7 +120,7 @@ export const GET: RequestHandler = async function ({ request, params }) {
     const message = await handle_error(error);
     const code = error.code || '';
 
-    throw new Error(code + ' ' + message);
+    body = { message, code };
   };
 
   return {

@@ -5,6 +5,7 @@
     + Create
     + Modify
     + Register
+    + Search
   - Reset form
   - Go back to previous page
 
