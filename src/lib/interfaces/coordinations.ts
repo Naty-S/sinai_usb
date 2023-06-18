@@ -2,12 +2,12 @@
 
 
 /**
- * Department data
+ * Coordination data
  * 
  * - `id`
  * - `nombre`
  */
-export interface Department {
+export interface Coordination {
   id: number
   , nombre: string
 };

@@ -34,15 +34,19 @@ export const GET: RequestHandler = async function ({ request, params }) {
 
     const departments_activities: DepActivities[] = await Promise.all(
       division.departamentos.map(async d =>{
+
         const r = await fetch(`${origin}/api/activities/department/${d.id}`);
-        return await r.json();
+        const r_json = await r.json()
+
+        if (r.ok) return r_json;
+        else throw new Error(r_json.code + '. ' + r_json.message);
       })
     );
 
     const division_activities: DivisionActivities = {
       division: {
         id: division.id,
-        name: division.nombre
+        nombre: division.nombre
       },
       departments_activities
     };
@@ -55,7 +59,7 @@ export const GET: RequestHandler = async function ({ request, params }) {
     const message = await handle_error(error);
     const code = error.code || '';
 
-    throw new Error(code + ' ' + message);
+    body = { message, code };
   };
 
   return {

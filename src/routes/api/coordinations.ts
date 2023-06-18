@@ -1,17 +1,16 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { Ranks } from "$lib/interfaces/activities";
 import type { Coordination } from "$lib/interfaces/coordinations";
-import type { Division } from "$lib/interfaces/divisions";
-
 import { handle_error, prisma } from "$api/_api";
 
 
 /**
- * Query coordinations & divisions for display in Dean dashboard
+ * Query all coordinations
+ * 
+ * @returns {id: number, nombre: string}
 */
 export const GET: RequestHandler = async function () {
-
+  
   let status = 500;
   let body = {};
 
@@ -23,22 +22,11 @@ export const GET: RequestHandler = async function () {
       }
     });
 
-    const divisions: Division[] = await prisma.division.findMany({
-      select: {
-        id: true,
-        nombre: true
-      }
-    });
-
-    const entities: Ranks = {
-      coordinations,
-      divisions
-    };
-
     status = 200;
-    body = entities;
+    body = coordinations;
 
   } catch (error: any) {
+    
     const message = await handle_error(error);
     const code = error.code || '';
 

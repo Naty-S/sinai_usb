@@ -87,7 +87,7 @@ export const GET: RequestHandler = async function ({ params }) {
     const dep_activities: DepActivities = {
       department: {
         id: department.id,
-        name: department.nombre
+        nombre: department.nombre
       },
       professors_activities: professors_activities.map((p: any) => {
         return {
@@ -109,7 +109,7 @@ export const GET: RequestHandler = async function ({ params }) {
     const message = await handle_error(error);
     const code = error.code || '';
 
-    throw new Error(code + ' ' + message);
+    body = { message, code };
   };
 
   return {

@@ -1,19 +1,12 @@
 /// <reference types="@sveltejs/kit" />
 
 import type { Activity } from "$lib/types/activities"
+import type { Professor } from "./professors"
 import type { Group } from "./groups"
+import type { Department } from "./departments"
+import type { Division } from "./divisions"
+import type { Coordination } from "./coordinations"
 
-
-/**
- * Professor or group
- * 
- * - `id`
- * - `name`
- */
-export interface Entity {
-  id: number,
-  name: string
-};
 
 /**
  * Activities by year
@@ -61,19 +54,10 @@ export interface EntityActivities {
  * Professor data and related activities
  * 
  * - `professor`
- *    + `id`
- *    + `email`
- *    + `name`
- *    + `surname`
  * - `activities`
  */
 export interface ProfessorActivities {
-  professor: {
-    id: number,
-    email: string,
-    name: string,
-    surname: string
-  },
+  professor: Professor,
   activities: Activity[]
 };
 
@@ -95,7 +79,7 @@ export interface GroupActivities {
  * - `professors_activities`
  */
 export interface DepActivities {
-  department: Entity,
+  department: Department,
   professors_activities: ProfessorActivities[]
 };
 
@@ -108,7 +92,7 @@ export interface DepActivities {
  * - `groups_activities` (optional)
  */
 export interface CoordActivities {
-  coordination: Entity,
+  coordination: Coordination,
   departments_activities?: DepActivities[]
   groups_activities?: GroupActivities[]
 };
@@ -120,7 +104,7 @@ export interface CoordActivities {
  * - `departments_activities`
  */
 export interface DivisionActivities {
-  division: Entity,
+  division: Division,
   departments_activities: DepActivities[]
 };
 
@@ -128,19 +112,9 @@ export interface DivisionActivities {
  * Coordinations and divisions.
  * 
  * - `coordinations`
- *    + `id`
- *    + `nombre`
  * - `divisions`
- *    + `id`
- *    + `nombre`
  */
 export interface Ranks {
-  coordinations: {
-    id: number,
-    nombre: string
-  }[],
-  divisions: {
-    id: number,
-    nombre: string
-  }[]
+  coordinations: Coordination[],
+  divisions: Division[]
 };

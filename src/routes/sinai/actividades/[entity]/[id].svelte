@@ -30,9 +30,9 @@
         };
       };
   
-      const { message } = await res.json();
+      const { message, code } = await res.json();
       return {
-        error: new Error(`Error al cargar actividades del ${entity}.\n` + message),
+        error: new Error(`Error al cargar actividades del ${entity}.\n${code}. ${message}`),
         status: 500
       };
     } else {

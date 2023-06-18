@@ -28,12 +28,12 @@
         };
       };
   
-      const { message: message1 } = await res1.json();
-      const { message: message2 } = await res2.json();
-      const { message: message3, code } = await res3.json();
+      const { message: message1, code: code1 } = await res1.json();
+      const { message: message2, code: code2 } = await res2.json();
+      const { message: message3, code: code3 } = await res3.json();
       return {
-        error: new Error(`Error al cargar los datos de:\nActividades: ${message1}\n\
-          Profesor: ${message2}\nPeriodo BRA: ${code} ${message3}`),
+        error: new Error(`Error al cargar los datos de:\nActividades: ${code1}. ${message1}\n\
+          Profesor: ${code2}. ${message2}\nPeriodo BRA: ${code3}. ${message3}`),
         status: 500
       };
     } else {

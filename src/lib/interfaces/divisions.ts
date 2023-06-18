@@ -2,12 +2,12 @@
 
 
 /**
- * Department data
+ * Division data
  * 
  * - `id`
  * - `nombre`
  */
-export interface Department {
+export interface Division {
   id: number
   , nombre: string
 };

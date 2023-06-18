@@ -6,5 +6,8 @@
   
   export const load = redirect;
 </script>
+<script lang="ts">
+  import Consultas from "./consultas/index.svelte";
+</script>
 
-consultas
+<Consultas />
