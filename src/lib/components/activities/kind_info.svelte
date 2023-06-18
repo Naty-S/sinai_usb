@@ -1,8 +1,14 @@
 <!--
   @component
   Display the information of the activity according of the kind
+
+  Props:
+  * `activity`: ActivityKind
+  * `kind`: string
  -->
 <script lang="ts">
+  import { session } from "$app/stores";
+
   import type { ActivityKind } from "$lib/types/activities";
   import { format_date } from "$lib/utils/formatting";
 
@@ -18,7 +24,7 @@
     <span class="uk-text-emphasis">Fecha de publicación:</span> {format_date(activity.fecha_publicacion)}.
     {activity.indice ? "Indexada en el " + activity.indice + '.' : ''}
     {activity.articulo_invitado ? "Artículo Invitado." : ''}
-    <span class="uk-text-emphasis">{activity.estado}.</span>
+    <span class="uk-text-emphasis">{activity.estado.replaceAll('_', ' ')}.</span>
     <span class="uk-text-emphasis">Vol.</span> {activity.volumen}, pp. {activity.pag_inicial} - {activity.pag_final}.
     <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}
     {activity.con_estudiantes ? "Con estudiantes." : ''}
@@ -42,7 +48,7 @@
     {format_date(activity.fecha)}.
     <span class="uk-text-emphasis">Categoría:</span> {activity.categoria}.
     <span class="uk-text-emphasis">Jurado:</span> {activity.jurado}.
-    <span class="uk-text-emphasis">Financiado por:</span> {activity.financiado_por}.
+    <span class="uk-text-emphasis">Financiado por:</span> {activity.financiado_por || ''}.
 
   {:else if kind === "evento"}
 
@@ -50,7 +56,7 @@
     <u>{activity.nombre}</u>.
     {activity.ciudad}, {activity.pais}.
     {format_date(activity.fecha)}.
-    {activity.institucion ? "Financiamiento: " + activity.institucion + '.' : ''}
+    <span class="uk-text-emphasis">Financiamiento:</span> {activity.institucion || ''}.
     {activity.internacional ? "Internacional" : "Nacional"}.
     
   {:else if kind === "exposicion"}
@@ -58,9 +64,9 @@
     <u>Nombre del Evento: {activity.nombre_evento}</u>.
     {activity.ciudad}, {activity.pais}.
     {format_date(activity.fecha)}.
-    {activity.categoria ? "Categoría: " + activity.categoria + '.' : ''}
-    {activity.organizado_por ? "Organizado por: " + activity.organizado_por + '.' : ''}
-    {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
+    <span class="uk-text-emphasis">Categoría:</span> {activity.categoria || ''}.
+    <span class="uk-text-emphasis">Organizado por:</span> {activity.organizado_por || ''}.
+    <span class="uk-text-emphasis">Financiado por:</span> {activity.financiado_por || ''}.
 
   {:else if kind === "grabacion"}
     
@@ -68,9 +74,9 @@
     {activity.nacional ? "Nacional." : "Internacional."}
     {format_date(activity.fecha)}.
     <span class="uk-text-emphasis">Jurado:</span> {activity.jurado || "Sin Jurado"}.
-    <span class="uk-text-emphasis">Categoría:</span> {activity.categoria}.
-    {activity.deposito_legal ? "Depósito legal: " + activity.deposito_legal + '.' : ''}
-    {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
+    <span class="uk-text-emphasis">Categoría:</span> {activity.categoria.replaceAll('_', ' ')}.
+    <span class="uk-text-emphasis">Depósito legal:</span> {activity.deposito_legal || ''}.
+    <span class="uk-text-emphasis">Financiado por:</span> {activity.financiado_por || ''}.
 
   {:else if kind === "informe_tecnico"}
     
@@ -96,10 +102,10 @@
     {activity.formato}.
     {activity.medio_publicacion ? activity.medio_publicacion + '.' : ''}
     {activity.formato === "Libro" || activity.formato === "Revista" ? "Vol. " : ''} {activity.volumen}
-    pp. {activity.pag_inicial} - {activity.pag_final}.
+    pp. {activity.pag_inicial || ''} - {activity.pag_final || ''}.
     <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}.
     {activity.con_estudiantes ? "Con estudiantes." : ''}
-    <span class="uk-text-emphasis">ISBN:</span> {activity.isbn}.
+    <span class="uk-text-emphasis">ISBN:</span> {activity.isbn || ''}.
     <span class="uk-text-emphasis">Tipo de Congreso:</span> {activity.tipo_congreso}.
 
   {:else if kind === "partitura"}
@@ -107,10 +113,10 @@
     <u>{activity.editorial}</u>.
     {activity.nacional ? "Nacional." : "Internacional."}
     {format_date(activity.fecha)}.
-    <span class="uk-text-emphasis">Jurado:</span> {activity.jurado}.
-    <span class="uk-text-emphasis">Categoría:</span> {activity.categoria}.
-    {activity.deposito_legal ? "Deposito legal: " + activity.deposito_legal + '.' : ''}
-    {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
+    <span class="uk-text-emphasis">Jurado:</span> {activity.jurado || ''}.
+    <span class="uk-text-emphasis">Categoría:</span> {activity.categoria.replaceAll('_', ' ')}.
+    <span class="uk-text-emphasis">Depósito legal:</span> {activity.deposito_legal || ''}.
+    <span class="uk-text-emphasis">Financiado por:</span> {activity.financiado_por || ''}.
 
   {:else if kind === "patente"}
 
@@ -130,14 +136,14 @@
     {format_date(activity.fecha)}.
     {activity.ciudad}, {activity.pais}.
     <span class="uk-text-emphasis">Categoría:</span> {activity.categoria}.
-    {activity.organizado_por ? "Organizado por: " + activity.organizado_por + '.' : ''}
-    {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
+    <span class="uk-text-emphasis">Organizado por:</span> {activity.organizado_por || ''}.
+    <span class="uk-text-emphasis">Financiado por:</span> {activity.financiado_por || ''}.
 
   {:else if kind === "proyecto_grado"}
 
     <span class="uk-text-emphasis">Título Académico:</span> {activity.titulo_academico}.
     <span class="uk-text-emphasis">Coordinación Académica:</span> {activity.coordinacion_academica}.
-    <span class="uk-text-emphasis">Nivel Académico:</span> {activity.nivel_academico}.
+    <span class="uk-text-emphasis">Nivel Académico:</span> {activity.nivel_academico.replaceAll('_', ' ')}.
     <span class="uk-text-emphasis">Fecha de Defensa:</span> {format_date(activity.fecha_defensa)}.
 
   {:else if kind === "proyecto_investigacion"}
@@ -153,13 +159,19 @@
     {activity.ciudad}, {activity.pais}.
     {format_date(activity.fecha_evento)}.
     <span class="uk-text-emphasis">Jurado:</span> {activity.jurado}.
-    {activity.financiado_por ? "Financiado por: " + activity.financiado_por + '.' : ''}
+    <span class="uk-text-emphasis">Financiado por:</span> {activity.financiado_por || ''}.
 
   {/if}
 
 {:else}
   <span class="ui red text"><strong>
-    ESTA ACTIVIDAD SE INGRESO DE FORMA INCORRECTA Y SUS DATOS NO SON VÁLIDOS, LO QUE HACE
-    IMPOSIBLE MODIFICARLA.
+    {#if $session.user}
+      ESTA ACTIVIDAD SE INGRESO DE FORMA INCORRECTA Y SUS DATOS INVÁLIDOS.
+      IMPOSIBLE MODIFICARLA.
+    {:else}
+      DATOS INVÁLIDOS.
+    {/if}
+  </strong></span>
+  <span class="ui red text"><strong>
   </strong></span>
 {/if}

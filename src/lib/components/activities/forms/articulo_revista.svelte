@@ -93,7 +93,7 @@
             on:blur={handleChange}
             checked
           >
-          Aceptado en Vias de Publicacion
+          Aceptado en Vías de Publicación
         </label>
         <label>
           <input

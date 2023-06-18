@@ -39,10 +39,10 @@
     filter="url(#top_border)"
   />
   <text x=500 y=22 fill="#fafa96" textLength=44% filter="url(#sinai_shadow)" font-size=18>
-    Sistema de Informacion de Actividades de Investigacion
+    Sistema de Información de Actividades de Investigación
   </text>
   <text x=60 y=28 fill="#91dff5" textLength=24% filter="url(#did_shadow)" font-size=20>
-    DECANATO DE INVESTIGACION
+    DECANATO DE INVESTIGACIÓN
   </text>
   <text x=140 y=58 fill="#91dff5" textLength=12% filter="url(#did_shadow)" font-size=20>
     Y DESARROLLO

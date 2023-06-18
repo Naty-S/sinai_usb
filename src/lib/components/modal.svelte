@@ -1,6 +1,16 @@
 <!-- 
 	@component
 	Modal for actions notifications
+
+	Props:
+	* `id`: string
+	* `title`: string
+	* `ok_text`: string (optional)
+	* `close_text`: string (optional). Default "Cancelar"
+	* `align`: string (optional)
+	* `is_active`: boolean;
+	* `close`: function (optional). Default: () => {}
+	* `confirm`: function (optional). Default: () => {}
  -->
 <script lang="ts">
 	import { onDestroy } from "svelte";

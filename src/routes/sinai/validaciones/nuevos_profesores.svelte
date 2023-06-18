@@ -5,11 +5,11 @@
   If department chief, displays professor for that department.
  -->
 <script lang="ts">
-	import type { Department } from "$lib/interfaces/departments";
-  import { onMount } from "svelte";
-
   import type { profesor } from "@prisma/client";
+	import type { Department } from "$lib/interfaces/departments";
 
+  import { onMount } from "svelte";
+  
   import { goto } from "$app/navigation";
   import { page, session } from "$app/stores";
 
@@ -115,7 +115,7 @@
      razones ...
 
      Por favor vuelva a solicitar su ingreso en el siguiente link:
-     https://www.sinai.usb.ve/sinai/registro
+     https://www.sinai.did.usb.ve/sinai/registro
     `;
     const subject = "Rechazo solicitud ingreso al sistema del SINAI";
 

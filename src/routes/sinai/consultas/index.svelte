@@ -46,7 +46,6 @@
   let coordinations: Coordination[] = [];
 
   let activities: EntityActivities | undefined;
-
   let search_err = '';
 
   const show_search = async function(e: any) {

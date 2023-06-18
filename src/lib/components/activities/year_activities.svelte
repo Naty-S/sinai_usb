@@ -1,6 +1,10 @@
 <!-- 
 	@component
   Activities by year
+
+  Props:
+  * `year_activities`: YearActivities
+  * `editable`: boolean (optional)
  -->
 <script lang="ts">
   import { session } from "$app/stores";
@@ -142,8 +146,10 @@
 
                 <KindInfo activity={act.kind_data} kind={act.kind_name} />
 
-                <span class="uk-text-emphasis">Realizada en el(los) Grupo(s)</span>:
-                {act.groups.map(g => g.nombre).join(", ")}.
+                {#if act.kind_data}
+                  <span class="uk-text-emphasis">Realizada en el(los) Grupo(s)</span>:
+                  {act.groups.map(g => g.nombre).join(", ")}.
+                {/if}
 
                 <i><span class="ui blue text">
                   {act.observaciones ? "Observaciones: " + act.observaciones + '.' : ''}

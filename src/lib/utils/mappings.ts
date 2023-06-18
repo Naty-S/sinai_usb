@@ -49,8 +49,8 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         } else if (!_articulo_revista.indice && _articulo_revista.estado === "Publicado") {
           return "Publicaciones en Revistas Arbitradas No Indexadas"
   
-        } else if (_articulo_revista.estado as string === "Aceptado en Vias de Publicacion") {
-          return "Articulos Aceptados en Vías de Publicación"
+        } else if (_articulo_revista.estado as string === "Aceptado_via_publicacion") {
+          return "Artículos Aceptados en Vías de Publicación"
   
         } else {
           return "Publicaciones en Revistas Arbitradas"
@@ -60,7 +60,7 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         return "Publicaciones de Capitulos de Libros";
   
       case "composicion":
-        return "Composiciones Solicitadas por Orquestas Sinfonicas o Agrupaciones Reconocidas";
+        return "Composiciones Solicitadas por Orquestas Sinfónicas o Agrupaciones Reconocidas";
   
       case "evento":
         const _evento = act as evento;
@@ -82,13 +82,13 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         }
   
       case "exposicion":
-        return "Seleccion en Exposiciones, Bienales, Salones o Concursos Arbitrados";
+        return "Selección en Exposiciones, Bienales, Salones o Concursos Arbitrados";
   
       case "grabacion":
-        return "Grabaciones Sonoras Evaluadas Por Arbitros";
+        return "Grabaciones Sonoras Evaluadas Por Árbitros";
   
       case "informe_tecnico":
-        return "Informes Tecnicos";
+        return "Informes Técnicos";
   
       case "libro":
         const _libro = act as libro;
@@ -132,25 +132,25 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         const _proyecto_grado = act as proyecto_grado;
 
         if (_proyecto_grado.nivel_academico === "Doctorado") {
-          return "Tutoria de Tesis Doctorales"
+          return "Tutoría de Tesis Doctorales"
   
         } else if (_proyecto_grado.nivel_academico === "Maestria") {
-          return "Tutoria de Trabajos de Grado (Maestrias)"
+          return "Tutoría de Trabajos de Grado (Maestrías)"
   
         } else if (_proyecto_grado.nivel_academico === "Especializacion") {
-          return "Tutoria de Proyectos de Grado (Especializaciones)"
+          return "Tutoría de Proyectos de Grado (Especializaciones)"
   
         } else if (_proyecto_grado.nivel_academico === "Postgrado") {
           return "Proyectos de Grado (Postgrados)"
   
         } else if (_proyecto_grado.nivel_academico === "Licencitura") {
-          return "Tutoria de Proyectos de Grado (Licencituras)"
+          return "Tutoría de Proyectos de Grado (Licencituras)"
   
         } else if (_proyecto_grado.nivel_academico === "Ingenieria") {
-          return "Tutoria de Proyectos de Grado (Ingenierias)"
+          return "Tutoría de Proyectos de Grado (Ingenierías)"
   
         } else if (_proyecto_grado.nivel_academico === "Pasantia_Larga") {
-          return "Proyectos de Grado (Pasantias Largas)"
+          return "Proyectos de Grado (Pasantías Largas)"
   
         } else {
           return "Proyectos de Grado Dirigidos";
@@ -174,10 +174,10 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         return "Recitales o Conciertos Arbitrados";
   
       default:
-        return "ACTIVIDAD INVALIDA";
+        return "ACTIVIDAD INVÁLIDA";
     };
   } else {
-    return "ACTIVIDAD INVALIDA";
+    return "ACTIVIDAD INVÁLIDA";
   }
 };
 

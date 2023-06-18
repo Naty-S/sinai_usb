@@ -34,7 +34,7 @@
     <div class="three column row">
       <div class="column"><strong>Categoría:</strong> {profile.categoria}</div>
       <div class="column"><strong>Dedicación:</strong> {profile.dedicacion}</div>
-      <div class="column"><strong>Último Diploma:</strong> {profile.diploma_tipo}</div>
+      <div class="column"><strong>Último Diploma:</strong> {profile.diploma_tipo.replaceAll('_', ' ')}</div>
     </div>
     
     <div class="two column row">
