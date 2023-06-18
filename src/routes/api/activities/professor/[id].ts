@@ -71,7 +71,7 @@ export const GET: RequestHandler = async function({ params }) {
     // Find professor's activities where is author
     const _acts_id_author = await prisma.autor_usb.findMany({
       select: { actividad: true },
-      where: { profesor_id: _id }
+      where: { profesor_id: _id, actividad: { notIn: _acts.map(a => a.id) } }
     });
 
     if (_acts_id_author.length > 0) {
