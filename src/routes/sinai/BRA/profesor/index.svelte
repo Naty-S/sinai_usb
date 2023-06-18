@@ -73,12 +73,13 @@
       { printable: "bra"
       , type: "html"
       , maxWidth: 1600
+      // , style: "min-width: 1600px;" // Not working
       , targetStyles: ['*']
       , ignoreElements: ["resume_table"]
       , header: "SINAI - Consultas Públicas"
       , headerStyle: "font-size: 12px;"
-      // , style: "font-size: 8px;"
       // , onPrintDialogClose: show_modal_success() TODO:
+      // , onError: show_modal_error() TODO:
       }
     )};
   });
@@ -124,9 +125,9 @@
   <BraHeader {profile} period={_period}/>
   
   <div class="ui three column grid container segment">
-    <div class="column">Encontradas: {acts_count}</div>
-    <div class="center aligned column">Años: {years}</div>
-    <div class="right aligned column">Páginas: #</div>
+    <div class="five wide column">Encontradas: {acts_count}</div>
+    <div class="center aligned five wide column">Años: {years}</div>
+    <div class="right aligned five wide column">Páginas: #</div>
   </div>
 
   {#each period_activities as year_activities}
