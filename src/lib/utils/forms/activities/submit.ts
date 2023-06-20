@@ -57,7 +57,10 @@ export const submit = function (kind: kinds, update: boolean = false, id?: strin
     let res: Response;
 
     if (update) {
+
+      data.actividad.fecha_ultima_modificacion = new Date();
       res = await api.patch(`/api/activities/modify/${kind}/${id}`, data);
+
     } else {
       res = await api.post(`/api/activities/create/${kind}`, data);
     };

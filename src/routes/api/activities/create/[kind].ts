@@ -2,6 +2,8 @@ import type { RequestHandler } from "@sveltejs/kit";
 
 import { handle_error, prisma } from "$api/_api";
 
+import { ve_date } from "$lib/utils/formatting";
+
 
 /**
  * Creates an activity
@@ -42,7 +44,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
   try {
     const act = await prisma.actividad.create({ data });
 
-    const date = new Date();
+    const date = ve_date();
 
     await prisma.log_operacion_actividad.create({
       data: {
@@ -51,14 +53,14 @@ export const POST: RequestHandler = async ({ request, params }) => {
         fecha: date,
         hora: date,
         operacion: "Ingreso",
-        sql: `INSERT INTO actividad VALUES (${JSON.stringify(data.actividad)});
+        sql: `INSERT INTO actividad VALUES (${JSON.stringify(_data.actividad)});
               INSERT INTO ${params.kind} VALUES (${JSON.stringify(data[params.kind])});
               INSERT INTO actividad_grupo_investigacion VALUES (${JSON.stringify(data.actividades_grupos)});
               INSERT INTO autor_usb VALUES (${JSON.stringify(data.autores_usb)});
               INSERT INTO autor_externo VALUES (${JSON.stringify(data.autores_externos)});`,
         tabla: params.kind
       }
-    })
+    });
 
     if (_data.user_rank == "professor") {
       headers = {

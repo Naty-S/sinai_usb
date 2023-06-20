@@ -1,8 +1,32 @@
+import type { log_operacion_actividad } from "@prisma/client";
+
 import type { Activity } from "$lib/types/activities";
 import type { ActivityActionLog } from "$lib/interfaces/logs";
 import type { Group } from "$lib/interfaces/groups";
 
 import { parse, isDate } from "date-fns";
+import { DateTime } from "luxon";
+
+
+/**
+ * Creates or convert a date into VE timezone.
+ * 
+ * @param {Date | string | null} date - (optional) date to convert
+ * @returns Date in VE timezone
+ */
+export const ve_date = function (date?: Date | string): string {
+  
+  if (date) {
+
+    if (typeof date === "string") {
+      return DateTime.fromISO(date, { zone: "America/Caracas" }).toJSON();
+    } else {
+      return DateTime.fromJSDate(date, { zone: "America/Caracas" }).toJSON();
+    }
+  };
+
+  return DateTime.fromJSDate(new Date(), { zone: "America/Caracas" }).toJSON();
+};
 
 
 /**
@@ -20,21 +44,36 @@ import { parse, isDate } from "date-fns";
  */
 export const format_date = function (date: Date | string, format: string = "long"): string {
 
-  const _date = typeof date === "string" ? new Date(date) : date;
+  const _date = ve_date(date);
 
   if (_date) {
     switch (format) {
+
       case "long-day":
-        return _date.toLocaleDateString("es", { year: "numeric", month: "long", day: "2-digit" });
+        return _date.toLocaleString("es", {
+          year: "numeric",
+          month: "long",
+          day: "2-digit",
+          timeZone: "UTC"
+        });
     
-      case "yyyy-MM-dd":
-        return _date.toLocaleDateString("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" });
+      case "yyyy-MM-dd": // to format date picker in forms
+        return _date.toLocaleString("fr-CA", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          timeZone: "UTC"
+        });
     
-      case "time":
-        return _date.toLocaleTimeString("en-GB");
+      case "time": // for activities logs
+        return DateTime.fromJSDate(_date, { zone: "America/Caracas" })
+                       .toSQLTime({ includeOffset: false });
     
       default: // "long"
-        return _date.toLocaleDateString("es", { year: "numeric", month: "long" });
+        return _date.toLocaleString("es", {
+          year: "numeric",
+          month: "long"
+        });
     };
   };
 
@@ -48,7 +87,7 @@ export const format_date = function (date: Date | string, format: string = "long
  * @param logs - Log info, CRUD operations executed in activities by professors
  * @returns Activity data with groups, kinds and logs info
  */
-export const format_activity_kind = function (activity: any, logs?: any): Activity {
+export const format_activity_kind = function (activity: any, logs?: log_operacion_actividad[]): Activity {
   let kind_name = "ACTIVIDAD INVALIDA";
   let kind_data;
 
@@ -93,13 +132,14 @@ export const format_activity_kind = function (activity: any, logs?: any): Activi
 
   let actions_log: ActivityActionLog[] = [];
 
-  if (logs?.length > 0) {
-    actions_log = logs.map((l: any) => ({
-      user: l.Usuario.login,
-      date: l.fecha,
-      time: l.hora
-    }));
-  };
+  // if (logs?.length > 0) {
+  //   actions_log = logs.map((l: any) => ({
+  //     user: l.Usuario.login,
+  //     date: l.fecha,
+  //     time: l.hora,
+  //     action: l.operacion
+  //   }));
+  // };
 
   delete activity["actividades_grupos"];
 

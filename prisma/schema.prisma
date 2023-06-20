@@ -506,7 +506,7 @@ model actividad {
   cuota                     Int
   descripcion               String?
   fecha_creacion            DateTime  @db.Date
-  fecha_ultima_modificacion DateTime  @updatedAt @db.Date
+  fecha_ultima_modificacion DateTime  @db.Date
   fecha_validacion          DateTime? @db.Date
   observaciones             String?
   palabras_clave            String[]

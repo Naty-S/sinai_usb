@@ -115,25 +115,11 @@ export const GET: RequestHandler = async function({ params }) {
       all_acts = _acts.concat(_acts_author)
     }
 
-    const user = await prisma.usuario.findUniqueOrThrow({
-      where: {
-        login: professor.correo
-      },
-      include: {
-        logs_operaciones_actividades: {
-          select: {
-            actividad: true,
-            Usuario: { select: { login: true } },
-            fecha: true,
-            hora: true
-          },
-          where: { operacion: "Modificacion", actividad: { in: _acts.map(a => a.id) } },
-          orderBy: [{ fecha: "desc" }, { hora: "desc" }]
-        }
-      }
+    const logs = await prisma.log_operacion_actividad.findMany({
+      where: { actividad: { in: all_acts.map(a => a.id) } }
     });
 
-    const activities: Activity[] = all_acts.map(a => format_activity_kind(a, user.logs_operaciones_actividades));
+    const activities: Activity[] = all_acts.map(a => format_activity_kind(a, logs));
     const entityActivities: EntityActivities = {
       entity: `Prof. ${professor.apellido1}, ${professor.nombre1}`,
       by_year: acts_kinds_by_year(activities, true),

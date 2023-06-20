@@ -2,8 +2,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 
 import { handle_error, prisma } from "$api/_api";
 
-
-import { format_date } from "$lib/utils/formatting";
+import { ve_date } from "$lib/utils/formatting";
 
 
 /**
@@ -19,9 +18,11 @@ import { format_date } from "$lib/utils/formatting";
 export const PATCH: RequestHandler = async ({ request, params }) => {
 
   const _data = await request.json();
+
+  const date = ve_date();
   const data = {
-    fecha_ultima_modificacion: new Date(),
-    fecha_validacion: new Date(),
+    fecha_ultima_modificacion: date,
+    fecha_validacion: date,
     validado_por: _data.validado_por
   };
 
@@ -36,7 +37,7 @@ export const PATCH: RequestHandler = async ({ request, params }) => {
       }
     });
 
-    const date = new Date();
+    const date = ve_date();
     
     await prisma.log_operacion_actividad.create({
       data: {

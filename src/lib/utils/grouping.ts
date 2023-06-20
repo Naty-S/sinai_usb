@@ -3,6 +3,9 @@ import type { Activity } from "$lib/types/activities";
 
 import { map_to_detailed_kind } from "$lib/utils/mappings";
 
+import { ve_date } from "./formatting";
+
+
 /**
  * Groups activities by the given prop.
  * Used to group by year or kind
@@ -17,7 +20,8 @@ export const group_by = function (prop: string, acts: Activity[], detailed?: boo
     
     const _prop = prop as keyof Activity;
     const kind = detailed ? map_to_detailed_kind(act.kind_name, act.kind_data) : act[_prop];
-    const key = prop === "fecha_creacion" ? new Date(act[prop]).getFullYear() : kind as keyof typeof acc;
+    const key = prop === "fecha_creacion" ? new Date(act[prop]).getFullYear()
+                                          : kind as keyof typeof acc;
 
     if (!acc[key]) {
       acc[key] = []

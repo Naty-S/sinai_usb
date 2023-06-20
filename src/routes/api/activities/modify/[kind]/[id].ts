@@ -3,8 +3,8 @@ import type { autor_externo, autor_usb } from "@prisma/client";
 
 import { handle_error, prisma } from "$api/_api";
 
-import { format_activity_kind } from "$lib/utils/formatting";
-
+import { format_activity_kind, format_date, ve_date } from "$lib/utils/formatting";
+import { DateTime } from "luxon";
 
 /**
  * Query activity data
@@ -196,8 +196,6 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       }
     };
 
-    data.fecha_ultima_modificacion = new Date();
-
     await prisma.actividad.update({
       where: {
         id: Number(params.id)
@@ -205,7 +203,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       data
     });
 
-    const date = new Date();
+    const date = ve_date();
 
     await prisma.log_operacion_actividad.create({
       data: {
@@ -214,14 +212,14 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
         fecha: date,
         hora: date,
         operacion: "Modificacion",
-        sql: `UPDATE actividad SET (${JSON.stringify(data.actividad)}) WHERE id=${params.id};
+        sql: `UPDATE actividad SET (${JSON.stringify(_data.actividad)}) WHERE id=${params.id};
               UPDATE ${params.kind} SET (${JSON.stringify(data[params.kind])}) WHERE id=${params.id};
               UPDATE actividad_grupo_investigacion SET (${JSON.stringify(data.actividades_grupos)}) WHERE id=${params.id};
               UPDATE autor_usb SET (${JSON.stringify(data.autores_usb)}) WHERE id=${params.id};
               UPDATE autor_externo SET (${JSON.stringify(data.autores_externos)}) WHERE id=${params.id};`,
         tabla: params.kind
       }
-    })
+    });
 
     if (_data.user_rank == "professor") {
       headers = {

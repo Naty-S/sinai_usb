@@ -25,13 +25,15 @@ import { format_date } from "$lib/utils/formatting";
 
 export const init = function (kind: kinds, user?: User, data?: Activity): actividad_form<typeof kind> {
 
+  const date = new Date();
+
   const act: activity = {
     actividad: {
         creada_por: (data ? (user?.dean ? data.creada_por : user?.email) : user?.email) || "usuario ficticio"
       , titulo: data?.titulo || ''
       , cuota: data?.cuota || 0
-      , fecha_creacion: data?.fecha_creacion || new Date()
-      , fecha_ultima_modificacion: data?.fecha_ultima_modificacion || new Date()
+      , fecha_creacion: data?.fecha_creacion || date
+      , fecha_ultima_modificacion: data?.fecha_ultima_modificacion || date
       , descripcion: data?.descripcion || null
       , fecha_validacion: data?.fecha_validacion || null
       , observaciones: data?.observaciones || null

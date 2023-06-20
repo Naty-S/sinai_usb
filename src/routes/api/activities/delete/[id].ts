@@ -2,6 +2,8 @@ import type { RequestHandler } from "@sveltejs/kit";
 
 import { handle_error, prisma } from "$api/_api";
 
+import { ve_date } from "$lib/utils/formatting";
+
 
 /**
  * Deletes an activity
@@ -22,7 +24,7 @@ export const DELETE: RequestHandler = async ({ request, params }) => {
       }
     });
 
-    const date = new Date();
+    const date = ve_date();
 
     await prisma.log_operacion_actividad.create({
       data: {

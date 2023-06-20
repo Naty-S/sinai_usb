@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 import PrismaClient, { get_known_error } from "$lib/server/prisma";
+import { ve_date } from "$lib/utils/formatting";
 
 
 export const prisma = new PrismaClient();
@@ -55,7 +56,7 @@ export const handle_error = async function (error: any) {
   };
   
   if (causa !== '') {
-    const data: any = { causa, mensaje: error.message, fecha: new Date() };
+    const data: any = { causa, mensaje: error.message, fecha: ve_date() };
 
     if (error.code) {
       data.codigo = error.code;

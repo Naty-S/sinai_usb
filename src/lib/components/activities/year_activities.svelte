@@ -7,6 +7,8 @@
   * `editable`: boolean (optional)
  -->
 <script lang="ts">
+  import { DateTime } from "luxon";
+
   import { session } from "$app/stores";
   
   import type { Activity } from "$lib/types/activities";
@@ -158,10 +160,11 @@
                 {#if user?.dean || is_chief}
                   <span class="ui red text">
                     (Creada por {act.creada_por} el {format_date(act.fecha_creacion, "long-day")}).
-                    {#if act.actions_log[0]}
-                      (Modificado recientemente por {act.actions_log[0].user}
+                    {#if act.fecha_ultima_modificacion}
+                      (Última modificación el {format_date(act.fecha_ultima_modificacion, "long-day")}).
+                      <!-- (Modificado recientemente por {act.actions_log[0].user}
                       el {format_date(act.actions_log[0].date, "long-day")}
-                      a las {format_date(act.actions_log[0].time, "time")}).
+                      a las {format_date(act.actions_log[0].time, "time")}). -->
                     {/if}
                     {#if act.validado_por && act.fecha_validacion}
                       (Validada por {act.validado_por} el {format_date(act.fecha_validacion, "long-day")}).
