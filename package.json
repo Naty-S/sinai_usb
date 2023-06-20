@@ -16,7 +16,6 @@
 		"@playwright/test": "^1.22.2",
 		"@sveltejs/adapter-node": "^1.0.0-next.86",
 		"@sveltejs/kit": "^1.0.0-next.405",
-		"@types/luxon": "^3.3.0",
 		"eslint": "^8.16.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^4.0.0",
@@ -31,6 +30,7 @@
 	"dependencies": {
 		"@prisma/client": "^4.15.0",
 		"@types/cookie": "^0.5.1",
+		"@types/luxon": "^3.3.0",
 		"cookie": "^0.5.0",
 		"cs-list": "^1.0.5",
 		"date-fns": "^2.29.2",
