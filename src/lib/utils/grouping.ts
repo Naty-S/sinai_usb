@@ -3,8 +3,6 @@ import type { Activity } from "$lib/types/activities";
 
 import { map_to_detailed_kind } from "$lib/utils/mappings";
 
-import { ve_date } from "./formatting";
-
 
 /**
  * Groups activities by the given prop.

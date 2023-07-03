@@ -11,21 +11,21 @@ import { DateTime } from "luxon";
 /**
  * Creates or convert a date into VE timezone.
  * 
- * @param {Date | string | null} date - (optional) date to convert
+ * @param {Date | string} date - (optional) date to convert
  * @returns Date in VE timezone
  */
-export const ve_date = function (date?: Date | string): string {
+export const ve_date = function (date?: Date | string): DateTime {
   
   if (date) {
 
     if (typeof date === "string") {
-      return DateTime.fromISO(date, { zone: "America/Caracas" }).toJSON();
+      return DateTime.fromISO(date, { zone: "America/Caracas" });
     } else {
-      return DateTime.fromJSDate(date, { zone: "America/Caracas" }).toJSON();
+      return DateTime.fromJSDate(date, { zone: "America/Caracas" });
     }
   };
 
-  return DateTime.fromJSDate(new Date(), { zone: "America/Caracas" }).toJSON();
+  return DateTime.fromJSDate(new Date(), { zone: "America/Caracas" });
 };
 
 
@@ -50,7 +50,7 @@ export const format_date = function (date: Date | string, format: string = "long
     switch (format) {
 
       case "long-day":
-        return _date.toLocaleString("es", {
+        return new Date(_date.toSQLDate()).toLocaleString("es-419", {
           year: "numeric",
           month: "long",
           day: "2-digit",
@@ -58,7 +58,7 @@ export const format_date = function (date: Date | string, format: string = "long
         });
     
       case "yyyy-MM-dd": // to format date picker in forms
-        return _date.toLocaleString("fr-CA", {
+        return new Date(_date.toSQLDate()).toLocaleString("fr-CA", {
           year: "numeric",
           month: "2-digit",
           day: "2-digit",
@@ -66,13 +66,14 @@ export const format_date = function (date: Date | string, format: string = "long
         });
     
       case "time": // for activities logs
-        return DateTime.fromJSDate(_date, { zone: "America/Caracas" })
-                       .toSQLTime({ includeOffset: false });
+        return DateTime.fromISO(_date.toISO(), "tt", { zone: "America/Caracas" })
+                                .toSQLTime({ includeOffset: false });
     
       default: // "long"
-        return _date.toLocaleString("es", {
+        return new Date(_date.toSQLDate()).toLocaleString("es-419", {
           year: "numeric",
-          month: "long"
+          month: "long",
+          timeZone: "UTC"
         });
     };
   };

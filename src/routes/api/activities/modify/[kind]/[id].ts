@@ -203,7 +203,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       data
     });
 
-    const date = ve_date();
+    const date = ve_date().toJSON();
 
     await prisma.log_operacion_actividad.create({
       data: {

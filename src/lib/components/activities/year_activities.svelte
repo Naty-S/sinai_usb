@@ -7,8 +7,6 @@
   * `editable`: boolean (optional)
  -->
 <script lang="ts">
-  import { DateTime } from "luxon";
-
   import { session } from "$app/stores";
   
   import type { Activity } from "$lib/types/activities";
