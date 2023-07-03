@@ -56,7 +56,7 @@ export const handle_error = async function (error: any) {
   };
   
   if (causa !== '') {
-    const data: any = { causa, mensaje: error.message, fecha: ve_date() };
+    const data: any = { causa, mensaje: error.message, fecha: ve_date().toJSON() };
 
     if (error.code) {
       data.codigo = error.code;

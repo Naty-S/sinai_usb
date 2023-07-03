@@ -44,7 +44,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
   try {
     const act = await prisma.actividad.create({ data });
 
-    const date = ve_date();
+    const date = ve_date().toJSON();
 
     await prisma.log_operacion_actividad.create({
       data: {
