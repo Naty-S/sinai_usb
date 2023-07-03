@@ -45,7 +45,7 @@ If you don't want to use Docker you need to install these aswell:
 
 **Use production branch**: `git checkout production`
 
-1. Up docker dev container: `make up-dev`
+1. Up docker prod container: `make up`
 2. Enter postgres container: `docker compose -f docker-compose.yml exec postgres sh`
 3. Enter postgres: `su - postgres`
 4. Seed db data: `gunzip -c sinai.gz | psql sinai`
@@ -59,6 +59,7 @@ If you don't want to use Docker you need to install these aswell:
 1. Pull changes: `git pull`
 2. Update docker container: `make update`
 
+***Note***: If the update not works properly, try cleanning all cache `make clean`
 
 ## Backup DB data
 

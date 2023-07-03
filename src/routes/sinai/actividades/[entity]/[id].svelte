@@ -101,7 +101,7 @@
     close_text="Cancelar"
     align="center"
     is_active={act_created}
-    close={() => act_created = false}
+    close={() => location.replace($page.url.pathname)}
     confirm={() => { act_created = false; show_create = true; }}
   >
     <p>Desea ingresar otra actividad?</p>
@@ -115,12 +115,12 @@
     close_text="Ok"
     align="center"
     is_active={act_modified}
-    close={() => { act_modified = false; location.replace($page.url.pathname); }}
+    close={() => location.replace($page.url.pathname)}
   />
 {/if}
 
 {#if show_create}
-  <ActivitiesModal show={show_create} close={() => show_create = false} />
+  <ActivitiesModal show={show_create} close={() => location.replace($page.url.pathname)} />
 {/if}
 
 {#if err}

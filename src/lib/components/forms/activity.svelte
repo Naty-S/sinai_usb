@@ -26,7 +26,7 @@
   
   import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";
 
-  export let handleSubmit: svelte.JSX.EventHandler<SubmitEvent, HTMLFormElement>;
+  export let handleSubmit: any;
   export let handleReset: any;
   export let activity: string;
   export let action: string;

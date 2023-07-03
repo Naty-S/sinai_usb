@@ -1,11 +1,15 @@
 # APP_VERSION = $(shell jq -r ".version" package.json)
-ENV         = APP_VERSION=$(APP_VERSION)
-COMPOSE     = docker compose -f docker-compose.yml
-COMPOSE_DEV = docker compose -f docker-compose.dev.yml
-UP_CMD      = up -d --build ${ARGS}
-DOWN_CMD    = down ${ARGS}
-BUILD_CMD   = build --force ${ARGS}
-SH_CMD      = exec $1 sh ${ARGS}
+ENV           = APP_VERSION=$(APP_VERSION)
+COMPOSE       = docker compose -f docker-compose.yml
+COMPOSE_DEV   = docker compose -f docker-compose.dev.yml
+UP_CMD        = up -d --build ${ARGS}
+DOWN_CMD      = down ${ARGS}
+BUILD_CMD     = build --force ${ARGS}
+SH_CMD        = exec $1 sh ${ARGS}
+CLEAN_BUILDER = docker builder prune
+CLEAN_IMGS    = docker image prune
+CLEAN_VOLUMES = docker volume rm sinai_usb_app_build sinai_usb_app_static sinai_usb_docker_node_modules
+CLEAN_VOLUMES_DEV = docker volume rm sinai_usb-dev_app_build sinai_usb-dev_app_static sinai_usb-dev_docker_node_modules
 
 default_text = "\033[0m"
 yellow_text = "\e[1;33m%-6s\e[m"
@@ -73,6 +77,14 @@ sh-dev:
 	- @echo "Entering container $1 shell - v$(APP_VERSION) (dev)"
 	- $(ENV) $(COMPOSE_DEV) $(SH_CMD)
 
+
+clean: ## Clean cache for updates (clean-dev available)
+	- @echo "Cleaning cache"
+	- $(CLEAN_BUILDER) && $(CLEAN_IMG) && $(CLEAN_VOLUMES) && docker image rm sinai
+
+clean-dev:
+	- @echo "Cleaning cache"
+	- $(CLEAN_BUILDER) && $(CLEAN_IMG) && $(CLEAN_VOLUMES_DEV) && docker image rm sinai-dev
 
 
 
