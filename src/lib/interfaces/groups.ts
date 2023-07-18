@@ -1,13 +1,21 @@
 /// <reference types="@sveltejs/kit" />
 
+import type { Professor } from "./professors";
+
 
 /**
  * Activity group data
  * 
  * - `id`
- * - `nombre`
+ * - `name`
+ * - `chief`
+ * - `members`
+ * - `n_activities` (number of activities)
 */
 export interface Group {
   id: number
-  , nombre: string
+  , name: string
+  , chief: Professor
+  , members: Professor[]
+  , n_activities: number
 };

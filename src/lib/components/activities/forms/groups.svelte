@@ -64,7 +64,7 @@
           name="actividades_grupos[{i}].new"
           bind:value={$form.actividades_grupos[i].new}
           error={$errors.actividades_grupos[i]?.new}
-          options={groups.map(g => ({ val: g.id.toString(), name: `${g.id} - ${g.nombre}`}))}
+          options={groups.map(g => ({ val: g.id.toString(), name: `${g.id} - ${g.name}`}))}
           class="field"
         />
         <button type="button" class="ui red button" on:click={() => remove_group(i)}>

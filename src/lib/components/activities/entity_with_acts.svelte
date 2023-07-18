@@ -69,7 +69,7 @@
     entities_with_acts_counts = entities_with_acts.map( g => {
       return {
         link: `/sinai/actividades/grupo/${g.group.id}`,
-        kind: g.group.nombre,
+        kind: g.group.name,
         counts: count_acts_kinds(g.activities, true)
       };
     });

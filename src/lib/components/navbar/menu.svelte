@@ -59,6 +59,10 @@ import { goto } from "$app/navigation";
       
       const coord = `/sinai/actividades/coordinacion/${professor.coord_chief.id}`;
       views.push({ href: coord, click: void_click, name: "Coordinación" });
+
+      if (professor.coord_chief.id === 4) {
+        views.push({ href: "/sinai/grupos", click: void_click, name: "Grupos de Investigación" });
+      };
       
     } else if (professor.division_chief) {
 
