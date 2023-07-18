@@ -212,7 +212,17 @@
     />
   {/if}
 
-  <ActionsButtons action="Buscar" />
+  <div>
+    {#if activities}
+      <button type="reset" name="reset_form" class="ui red button">
+        Reset
+      </button>
+    {:else}
+      <button type="submit" name="submit_form" class="ui green button">
+        Buscar
+      </button>
+    {/if}
+  </div>
 </form>
 
 <div class="ui divider" />
@@ -224,6 +234,7 @@
   <ResumeTable
     headers={["Actividad"].concat(activities.by_year.map(a => a.year.toString()))}
     resume_kinds_counts={activities.years_counts}
+    links
     row_total
     col_total
   />
