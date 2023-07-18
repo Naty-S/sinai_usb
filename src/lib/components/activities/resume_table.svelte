@@ -7,6 +7,7 @@
 
   export let headers: string[] = [];
   export let resume_kinds_counts: ActivitiesCounts[] = [];
+  export let links: boolean = false;
   export let collapsing: boolean = false;
   export let row_total: boolean = false;
   export let col_total: boolean = false;
@@ -31,7 +32,13 @@
     <thead class="center aligned">
       <tr>
         {#each headers as header}
-          <th>{header}</th>
+          <th>
+            {#if links && header!=="Actividad"}
+              <a href="#{header}_activities">{header}</a>
+            {:else}
+              {header}
+            {/if}
+          </th>
         {/each}
         {#if row_total}
           <th><i>Total</i></th>
@@ -50,8 +57,14 @@
               {a.kind}
             {/if}
           </td>
-          {#each a.counts.map(c => c.count) as count}
-            <td class="center aligned">{count}</td>
+          {#each a.counts as c}
+            <td class="center aligned">
+              {#if links && c.count > 0}
+                <a href="#{c.year}_{a.kind}">{c.count}</a>
+              {:else}
+                {c.count}
+              {/if}
+            </td>
           {/each}
           {#if row_total}
             <td class="grey center aligned">

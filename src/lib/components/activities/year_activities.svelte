@@ -123,23 +123,29 @@
 </script>
 
 {#if activities.length > 0}
-  <div id="{year_activities.year}_activities" class="uk-margin">
+  <div id="{year_activities.year}_activities" class="uk-margin" style="scroll-margin: 225px;">
     <h2 class="ui blue header uk-text-center">
       Actividades Correspondientes al año {year_activities.year}
     </h2>
     
     {#each activities as [kind, acts]}
     <!-- Display activities kind -->
-      <h3>{kind}</h3>
+      <h3 id="{year_activities.year}_{kind}" style="scroll-margin: 225px;">{kind}</h3>
       
       <ol class="ui items">
         {#each acts as act}
           <div class="item">
             <li>
               <div class="content">
-                <strong>
-                  {act.autores_externos.length > 0 ? act.autores_externos.map(a => a.nombre).join("; ") + ';' : ''}
-                  {act.autores_usb.length > 0 ? act.autores_usb.map(a => a.nombre).join("; ") + '.' : ''}
+                <strong class="authors">
+                  {#if act.autores_usb.length > 0}
+                    {#each act.autores_usb as a}
+                      <a href="/sinai/actividades/profesor/{a.profesor_id}">
+                        {a.nombre}
+                      </a>
+                    {/each}.
+                  {/if}
+                  {act.autores_externos.length > 0 ? act.autores_externos.map(a => a.nombre).join("; ") + '.' : ''}
                 </strong>
 
                 "{act.titulo}".
@@ -217,6 +223,12 @@
     {/each}
   </div>
 {/if}
+
+<style>
+.authors a:not(:last-of-type)::after {
+  content: "; ";
+}
+</style>
 
 {#if show_validate}
   <Modal

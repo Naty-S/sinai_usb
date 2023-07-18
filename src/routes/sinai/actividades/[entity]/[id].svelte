@@ -72,6 +72,7 @@
 <ResumeTable
   {headers}
   resume_kinds_counts={activities.years_counts}
+  links
   row_total
   col_total
 />
