@@ -180,7 +180,7 @@
       label="Buscar Grupo"
       name="search"
       bind:value={$form.search}
-      options={groups.map(o => ({ val: o.id.toString(), name: o.nombre }))}
+      options={groups.map(o => ({ val: o.id.toString(), name: o.name }))}
     />
   {:else if $form.search_type === "department"}
     <Select

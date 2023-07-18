@@ -20,7 +20,7 @@
     entities_without_acts = groups_activities.filter(g => g.activities.length < 1);
     entities_without_acts_counts = entities_without_acts.map( g => {
       return {
-        kind: g.group.nombre,
+        kind: g.group.name,
         counts: []
       };
     });

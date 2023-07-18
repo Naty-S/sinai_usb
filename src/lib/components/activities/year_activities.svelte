@@ -154,7 +154,7 @@
 
                 {#if act.kind_data}
                   <span class="uk-text-emphasis">Realizada en el(los) Grupo(s)</span>:
-                  {act.groups.map(g => g.nombre).join(", ")}.
+                  {act.groups.map(g => g.name).join(", ")}.
                 {/if}
 
                 <i><span class="ui blue text">
