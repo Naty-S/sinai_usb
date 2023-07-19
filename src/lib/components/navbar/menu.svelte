@@ -84,8 +84,11 @@ import { goto } from "$app/navigation";
       {href: "/sinai/actividades", click: void_click, name: "Resumen de Actividades"},
     );
 
+    views.push({ href: "/sinai/grupos", click: void_click, name: "Grupos de Investigación" });
+
     options = [
       // { href: void_link, click: void_click, name: "Modificar Profesores"},
+      {href: "/sinai/coordinadores", click: void_click, name: "Modificar Coordinadores"},
       {href: void_link, click: show_modify_bra_period, name: "Modificar Periodo BRA"}
     ];
   };
@@ -124,7 +127,9 @@ import { goto } from "$app/navigation";
   >
     <Submenu name="Actividades" items={activities} />
     <Submenu name="Vistas" items={views} />
-    <Submenu name="Mis Grupos" items={groups} />
+    {#if user?.professor}
+      <Submenu name="Mis Grupos" items={groups} />
+    {/if}
     <Submenu name="Consultas" items={searchs} />
     <Submenu name="Opciones" items={options} />
     <!-- <Submenu name="Ayuda" items={[]} /> -->

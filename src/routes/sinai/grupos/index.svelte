@@ -1,3 +1,6 @@
+<!-- 
+  List all research groups.
+ -->
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
