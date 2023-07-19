@@ -124,7 +124,7 @@
         bind:value={chief}
       >
         {#each professors.map(p => ({ val: p.email, name: p.profile })) as opt}
-          <option value={opt.val}>{opt.name.replaceAll('_', ' ')}</option>
+          <option value={opt.val}>{opt.name}</option>
         {/each}
       </select>
     </div>
@@ -145,6 +145,6 @@
       Hubo un error al intentar cambiar de Coordinador, por favor vuelva a intentar
       o contáctese con algún administrador.
     </p>
-    <span class="ui red text">Detalles: {action.info !== ''}</span>
+    <span class="ui red text">Detalles: {action.info}</span>
   </Modal>
 {/if}
