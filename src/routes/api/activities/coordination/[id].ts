@@ -90,7 +90,7 @@ export const GET: RequestHandler = async function ({ request, params }) {
         return {
           group: {
             id: g.id,
-            nombre: g.nombre
+            name: g.nombre
           },
           activities: g.actividades_grupos.map(a => format_activity_kind(a.Actividad))
         }
