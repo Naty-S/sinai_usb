@@ -65,7 +65,7 @@
   {close_text}
   align="center"
   is_active={show}
-  close={close}
+  {close}
   confirm={modify_bra_period}
 >
   {#if action.code === "BRA Modified"}
@@ -102,6 +102,8 @@
     </div>
   {/if}
 </Modal>
+
+
 {#if action.info !== ''}
   <Modal
     id="error"
@@ -109,10 +111,10 @@
     close_text="Ok"
     align="center"
     is_active={action.info !== ''}
-    close={close}
+    {close}
   >
     <p>
-      Hubo un problema al intentar modificar el período BRA por favor vuelva a intentar
+      Hubo un problema al intentar modificar el período BRA, por favor vuelva a intentar
       o contáctese con algún administrador.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
