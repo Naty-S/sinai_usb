@@ -88,6 +88,7 @@ import { goto } from "$app/navigation";
 
     options = [
       // { href: void_link, click: void_click, name: "Modificar Profesores"},
+      {href: "/sinai/mesa_tecnica", click: void_click, name: "Modificar Mesa Técnica"},
       {href: "/sinai/coordinadores", click: void_click, name: "Modificar Coordinadores"},
       {href: void_link, click: show_modify_bra_period, name: "Modificar Periodo BRA"}
     ];

@@ -291,14 +291,14 @@ model departamento {
   nombre        String
 
   // Postgres relations
-  Coordinacion               coordinacion @relation(fields: [coordinacion], references: [id], onDelete: NoAction, onUpdate: Cascade)
-  Division                   division     @relation(fields: [division], references: [id], onDelete: NoAction, onUpdate: Cascade)
-  departamento_jefe          profesor     @relation("departamento_jefe_fkey", fields: [jefe], references: [correo], onDelete: NoAction, onUpdate: Cascade)
-  departamento_representante profesor     @relation("departamento_representante_fkey", fields: [representante], references: [correo], onDelete: NoAction, onUpdate: Cascade)
+  Coordinacion  coordinacion @relation(fields: [coordinacion], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Division      division     @relation(fields: [division], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Jefe          profesor     @relation("departamento_jefe_fkey", fields: [jefe], references: [correo], onDelete: NoAction, onUpdate: Cascade)
+  Representante profesor     @relation("departamento_representante_fkey", fields: [representante], references: [correo], onDelete: NoAction, onUpdate: Cascade)
 
   // Prisma relations
   datos_informe        datos_informe[]
-  historico_profesores historico_profesor_departamento[] @ignore
+  historico_profesores historico_profesor_departamento[]
 
   @@index([coordinacion])
   @@index([division])
