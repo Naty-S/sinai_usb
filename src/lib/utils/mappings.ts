@@ -57,7 +57,7 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         }
   
       case "capitulo_libro":
-        return "Publicaciones de Capitulos de Libros";
+        return "Publicaciones de Capítulos de Libros";
   
       case "composicion":
         return "Composiciones Solicitadas por Orquestas Sinfónicas o Agrupaciones Reconocidas";

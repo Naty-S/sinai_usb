@@ -1,6 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
 import type { EntityActivities } from "$lib/interfaces/activities";
+import type { ActivityActionLog } from "$lib/interfaces/logs";
 import type { Activity } from "$lib/types/activities";
 
 import { format_activity_kind } from "$lib/utils/formatting";
@@ -23,11 +24,7 @@ export const GET: RequestHandler = async function({ params }) {
   let body = {};
 
   try {
-    const professor = await prisma.profesor.findUniqueOrThrow({
-      where: {
-        id: _id
-      }
-    });
+    const professor = await prisma.profesor.findUniqueOrThrow({ where: {id: _id} });
 
     // Find professor's activities
     const _acts = await prisma.actividad.findMany({
@@ -35,16 +32,7 @@ export const GET: RequestHandler = async function({ params }) {
         creada_por: professor.correo
       },
       include: {
-        actividades_grupos: {
-          select: {
-            Grupo: {
-              select: {
-                id: true,
-                nombre: true
-              }
-            }
-          }
-        },
+        actividades_grupos: {select: { Grupo: {select: {id: true, nombre: true}} }},
         autores_usb: true,
         autores_externos: true,
         articulo_revista: true,
@@ -63,7 +51,8 @@ export const GET: RequestHandler = async function({ params }) {
         proyecto_grado: true,
         proyecto_investigacion: true,
         recital: true
-      }
+      },
+      orderBy: {id: "asc"}
     });
 
     let all_acts = _acts;
@@ -71,7 +60,8 @@ export const GET: RequestHandler = async function({ params }) {
     // Find professor's activities where is author
     const _acts_id_author = await prisma.autor_usb.findMany({
       select: { actividad: true },
-      where: { profesor_id: _id, actividad: { notIn: _acts.map(a => a.id) } }
+      where: { profesor_id: _id, actividad: {notIn: _acts.map(a => a.id)} },
+      orderBy: {actividad: "asc"}
     });
 
     if (_acts_id_author.length > 0) {
@@ -80,16 +70,7 @@ export const GET: RequestHandler = async function({ params }) {
         await prisma.actividad.findUniqueOrThrow({
           where: { id: a.actividad },
           include: {
-            actividades_grupos: {
-              select: {
-                Grupo: {
-                  select: {
-                    id: true,
-                    nombre: true
-                  }
-                }
-              }
-            },
+            actividades_grupos: {select: { Grupo: {select: {id: true, nombre: true}} }},
             autores_usb: true,
             autores_externos: true,
             articulo_revista: true,
@@ -112,11 +93,25 @@ export const GET: RequestHandler = async function({ params }) {
         })
       ));
   
-      all_acts = _acts.concat(_acts_author)
+      all_acts = _acts.concat(_acts_author);
     }
 
-    const logs = await prisma.log_operacion_actividad.findMany({
-      where: { actividad: { in: all_acts.map(a => a.id) } }
+    const logs: ActivityActionLog[] = await prisma.log_operacion_actividad.findMany({
+      select: {
+        id: true,
+        actividad: true,
+        Usuario: {
+          select: {
+            profesor: {select: {perfil: true}},
+            administrador: {select: {nombre: true}}
+          }
+        },
+        fecha: true,
+        hora: true,
+        operacion: true
+      },
+      where: { actividad: {in: all_acts.map(a => a.id)} },
+      orderBy: {id: "desc"}
     });
 
     const activities: Activity[] = all_acts.map(a => format_activity_kind(a, logs));

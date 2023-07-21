@@ -56,15 +56,15 @@ export const handle_error = async function (error: any) {
   };
   
   if (causa !== '') {
-    const data: any = { causa, mensaje: error.message, fecha: ve_date().toJSON() };
-
-    if (error.code) {
-      data.codigo = error.code;
+    const data: any = {
+      causa
+      , mensaje: error.message
+      , fecha: ve_date().toISO({ includeOffset: false })?.concat("Z")
     };
 
-    if (error.meta?.target) {
-      data.campos = error.meta.target;
-    };
+    if (error.code) { data.codigo = error.code; };
+
+    if (error.meta?.target) { data.campos = error.meta.target; };
 
     console.log("_api error data: ", data);
     await prisma.errors_log.create({ data });

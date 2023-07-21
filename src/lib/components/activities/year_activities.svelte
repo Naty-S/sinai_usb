@@ -11,9 +11,10 @@
   
   import type { Activity } from "$lib/types/activities";
   import type { YearActivities } from "$lib/interfaces/activities";
+	import type { ActivityActionLog } from "$lib/interfaces/logs";
   
   import { format_date } from "$lib/utils/formatting";
-  
+
   import * as api from "$lib/api";
 
   import Modal from "$lib/components/modal.svelte";
@@ -120,21 +121,39 @@
       action.code = code;
     };
   };
+
+  const find_act_last_log = function (act: Activity): ActivityActionLog {
+
+    const _act = act.kind_data?.actividad;
+    const logs = act.actions_log.filter(l => l.actividad === _act);
+
+    const last_log = logs.sort((a,b) => b.id - a.id)[0];
+
+    return last_log;
+  };
 </script>
 
 {#if activities.length > 0}
-  <div id="{year_activities.year}_activities" class="uk-margin" style="scroll-margin: 225px;">
+  <div
+    id="{year_activities.year}_activities"
+    class="uk-margin"
+    style="scroll-margin: 225px;"
+  >
     <h2 class="ui blue header uk-text-center">
       Actividades Correspondientes al año {year_activities.year}
     </h2>
-    
+
     {#each activities as [kind, acts]}
     <!-- Display activities kind -->
-      <h3 id="{year_activities.year}_{kind}" style="scroll-margin: 225px;">{kind}</h3>
+      <div class="js-filter">
+        <h3 id="{year_activities.year}_{kind}" data-kind={kind} style="scroll-margin: 225px;">
+          {kind}
+        </h3>
+      </div>
       
-      <ol class="ui items">
+      <ol class="ui items js-filter">
         {#each acts as act}
-          <div class="item">
+          <div class="item" data-kind={kind}>
             <li>
               <div class="content">
                 <strong class="authors">
@@ -152,7 +171,7 @@
 
                 <KindInfo activity={act.kind_data} kind={act.kind_name} />
 
-                {#if act.kind_data}
+                {#if act.groups.length > 0}
                   <span class="uk-text-emphasis">Realizada en el(los) Grupo(s)</span>:
                   {act.groups.map(g => g.name).join(", ")}.
                 {/if}
@@ -164,14 +183,15 @@
                 {#if user?.dean || is_chief}
                   <span class="ui red text">
                     (Creada por {act.creada_por} el {format_date(act.fecha_creacion, "long-day")}).
-                    {#if act.fecha_ultima_modificacion}
-                      (Última modificación el {format_date(act.fecha_ultima_modificacion, "long-day")}).
-                      <!-- (Modificado recientemente por {act.actions_log[0].user}
-                      el {format_date(act.actions_log[0].date, "long-day")}
-                      a las {format_date(act.actions_log[0].time, "time")}). -->
-                    {/if}
                     {#if act.validado_por && act.fecha_validacion}
                       (Validada por {act.validado_por} el {format_date(act.fecha_validacion, "long-day")}).
+                    {/if}
+                    {#if act.actions_log.filter(l => l.actividad === act.kind_data?.actividad).length > 0}
+                      (Modificado recientemente por
+                        {find_act_last_log(act).Usuario.profesor?.perfil || 
+                         find_act_last_log(act).Usuario.administrador?.nombre}
+                      el {format_date(find_act_last_log(act).fecha, "long-day")}
+                      a las {format_date(find_act_last_log(act).hora, "time")}).
                     {/if}
                   </span>
                 {/if}
@@ -321,7 +341,7 @@
     close={() => location.reload()}
   >
     <p>
-      Hubo un problema al intentar realizar la acción por favor vuelva a intentar
+      Hubo un problema al intentar realizar la acción, por favor vuelva a intentar
       o contáctese con algún administrador.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>

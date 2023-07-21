@@ -5,6 +5,6 @@
  */
 export type submenu_item = {
   href: string,
-  click: MouseEventHandler<HTMLAnchorElement>,
+  click: () => void,
   name: string
 };

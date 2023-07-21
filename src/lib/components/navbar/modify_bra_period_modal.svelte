@@ -13,10 +13,10 @@
   import Modal from "../modal.svelte";
 
   export let show: boolean;
-  export let close: MouseEventHandler<HTMLAnchorElement>;
+  export let close: () => void;
 
-  let inicio: Date;
-  let fin: Date;
+  let inicio: string;
+  let fin: string;
   let activo: boolean;
   let ok_text = "Modificar";
   let close_text = "Cancelar";
@@ -46,8 +46,8 @@
     if (res.ok) {
       const period = await res.json();
 
-      inicio = format_date(period.inicio, "yyyy-MM-dd") as unknown as Date;
-      fin = format_date(period.fin, "yyyy-MM-dd") as unknown as Date;
+      inicio = format_date(period.inicio, "yyyy-MM-dd");
+      fin = format_date(period.fin, "yyyy-MM-dd");
       activo = period.activo;
       
     } else {

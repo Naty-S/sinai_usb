@@ -24,7 +24,7 @@ export const DELETE: RequestHandler = async ({ request, params }) => {
       }
     });
 
-    const date = ve_date().toJSON();
+    const date = ve_date().toISO({ includeOffset: false })?.concat("Z");
 
     await prisma.log_operacion_actividad.create({
       data: {

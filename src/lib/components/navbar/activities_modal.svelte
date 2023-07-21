@@ -6,7 +6,7 @@
   import Modal from "../modal.svelte";
 
   export let show: boolean;
-  export let close: MouseEventHandler<HTMLAnchorElement>;
+  export let close: () => void;
 </script>
 
 <Modal
@@ -14,7 +14,7 @@
   id="create_activity"
   align="left"
   is_active={show}
-  close={close}
+  {close}
 >
   <li><a href="/sinai/actividades/crear/articulo_revista" on:click={close} >
     Artículos en Revistas
@@ -32,7 +32,7 @@
     Selección en Exposiciones, Bienales, Salones o Concursos Arbitrados
   </a></li>
   <li><a href="/sinai/actividades/crear/grabacion" on:click={close} >
-    Grabaciones Sonoras Evaluadas por Arbitros
+    Grabaciones Sonoras Evaluadas por Árbitros
   </a></li>
   <li><a href="/sinai/actividades/crear/informe_tecnico" on:click={close} >
     Informes Técnicos

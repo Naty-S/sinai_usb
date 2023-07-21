@@ -651,7 +651,7 @@ model capitulo_libro {
   Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
-// Composiciones solicitadas por Orquestas Sinfonicas o Agrupaciones reconocidas
+// Composiciones solicitadas por Orquestas Sinfónicas o Agrupaciones reconocidas
 model composicion {
   actividad      Int                        @id
   categoria      composicion_categoria_enum
@@ -692,7 +692,7 @@ model evento {
   pais          String
 
   // Postgres relations
-  actividades actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 // Selección en Exposiciones, Bienales, Salones o Concursos arbitrados
@@ -707,7 +707,7 @@ model exposicion {
   pais           String
 
   // Postgres relations
-  actividades actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 // Grabaciones sonoras evaluadas por árbitros
@@ -722,7 +722,7 @@ model grabacion {
   nacional       Boolean                  @default(true)
 
   // Postgres relations
-  actividades actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model informe_tecnico {
@@ -770,7 +770,7 @@ model memoria {
   volumen           String?
 
   // Postgres relations
-  actividades actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 // Partituras, Videos o CD's publicados en editoriales reconocidas
@@ -785,7 +785,7 @@ model partitura {
   nacional       Boolean                  @default(true)
 
   // Postgres relations
-  actividades actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model patente {
@@ -796,7 +796,7 @@ model patente {
   pais         String // pais que otorga
 
   // Postgres relations
-  actividades actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model premio {
@@ -805,7 +805,7 @@ model premio {
   institucion String // inst que otorga
 
   // Postgres relations
-  actividades actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 // Trabajos reconocidos o Premiados en Bienales, Salones, Concursos o Exposiciones
@@ -821,7 +821,7 @@ model premio_bienal {
   titulo_premio  String
 
   // Postgres relations
-  actividades actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 // Proyectos de grado dirigidos
@@ -833,7 +833,7 @@ model proyecto_grado {
   titulo_academico       String // Titulo Académico al que se optó
 
   // Postgres relations
-  actividades actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 // Proyectos de investigación y desarrollo
@@ -848,7 +848,7 @@ model proyecto_investigacion {
   monto          String
 
   // Postgres relations
-  actividades actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 // Recitales o Conciertos arbitrados
@@ -862,7 +862,7 @@ model recital {
   pais           String
 
   // Postgres relations
-  actividades actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 //

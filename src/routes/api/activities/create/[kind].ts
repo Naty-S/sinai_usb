@@ -18,23 +18,13 @@ export const POST: RequestHandler = async ({ request, params }) => {
   const data = {
     ..._data.actividad,
     actividades_grupos: {
-      create: _data.actividades_grupos.map((g: any) => {
-        return {
-          grupo: Number(g.new)
-        };
-      })
+      create: _data.actividades_grupos.map((g: any) => ( {grupo: Number(g.new)} ))
     },
-    autores_usb: {
-      create: _data.autores_usb
-    },
-    autores_externos: {
-      create: _data.autores_externos
-    },
+    autores_usb: { create: _data.autores_usb },
+    autores_externos: { create: _data.autores_externos },
   };
   
-  data[params.kind] = {
-    create: _data[params.kind]
-  };
+  data[params.kind] = { create: _data[params.kind] };
 
   let status = 303;
   let headers = {
@@ -44,7 +34,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
   try {
     const act = await prisma.actividad.create({ data });
 
-    const date = ve_date().toJSON();
+    const date = ve_date().toISO({ includeOffset: false })?.concat("Z");
 
     await prisma.log_operacion_actividad.create({
       data: {
