@@ -14,8 +14,8 @@ import { goto } from "$app/navigation";
 
   import Submenu from './submenu.svelte';
 
-  export let show_create: MouseEventHandler<HTMLAnchorElement>;
-  export let show_modify_bra_period: MouseEventHandler<HTMLAnchorElement>;
+  export let show_create: () => void;
+  export let show_modify_bra_period: () => void;
 
   const void_link = "javascript:void(0)";
   const void_click = () => {};

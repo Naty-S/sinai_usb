@@ -21,16 +21,7 @@ export const GET: RequestHandler = async function ({ params }) {
         id: Number(params.id)
       },
       include: {
-        actividades_grupos: {
-          select: {
-            Grupo: {
-              select: {
-                id: true,
-                nombre: true
-              }
-            }
-          }
-        },
+        actividades_grupos: {select: { Grupo: {select: {id: true, nombre: true}} }},
         autores_usb: true,
         autores_externos: true,
         articulo_revista: true,
@@ -80,23 +71,18 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
   const _data = await request.json();
 
   const professor = _data.user.professor?.id;
-  const data = {
-    ..._data.actividad
-  };
+  const data = { ..._data.actividad };
 
-  data[params.kind] = {
-    update: _data[params.kind]
-  };
+  data[params.kind] = { update: _data[params.kind] };
 
   let actividades_grupos_create: { grupo: number }[] = [];
   let actividades_grupos_delete: { actividad: number, grupo: number }[] = [];
   
   _data.actividades_grupos.forEach((group: { old: string, new: string }) => {
+    
     if (group.old !== '?' && group.old !== group.new) {
       
-      actividades_grupos_create.push({
-        grupo: Number(group.new)
-      });
+      actividades_grupos_create.push( {grupo: Number(group.new)} );
       
       actividades_grupos_delete.push({
         actividad: Number(params.id),
@@ -105,9 +91,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
     };
 
     if (group.old === '?') {
-      actividades_grupos_create.push({
-        grupo: Number(group.new)
-      });
+      actividades_grupos_create.push( {grupo: Number(group.new)} );
     };
   });
 
@@ -118,25 +102,17 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
 
   try {
     const autores_usb = await prisma.actividad.findUnique({
-      where: {
-        id: Number(params.id)
-      },
       select: {
-        autores_usb: {
-          select: { id: true }
-        }
-      }
+        autores_usb: { select: { id: true } }
+      },
+      where: { id: Number(params.id) }
     });
 
     const autores_externos = await prisma.actividad.findUnique({
-      where: {
-        id: Number(params.id)
-      },
       select: {
-        autores_externos: {
-          select: { id: true }
-        }
-      }
+        autores_externos: { select: { id: true } }
+      },
+      where: { id: Number(params.id) }
     });
 
     const actividades_grupos = await prisma.actividad.findUnique({
@@ -197,13 +173,11 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
     };
 
     await prisma.actividad.update({
-      where: {
-        id: Number(params.id)
-      },
-      data
+      data,
+      where: { id: Number(params.id) }
     });
 
-    const date = ve_date().toJSON();
+    const date = ve_date().toISO({ includeOffset: false })?.concat("Z");
 
     await prisma.log_operacion_actividad.create({
       data: {

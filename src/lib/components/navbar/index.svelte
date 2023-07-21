@@ -53,7 +53,7 @@ modificar para que todo este centrado entre el top y bottom del letter head
 <nav
   id="navabar"
   class="uk-navbar-container uk-position-z-index uk-width-1-1 {fixed}"
-  uk-navbar="delay-hide:1; offset: 2;"
+  uk-navbar="mode: click, hover; delay-hide:1; offset: 2;"
   style={fixed ? "top: 0;" : ''}
 >
   <div

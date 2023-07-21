@@ -1,6 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
 import type { EntityActivities } from "$lib/interfaces/activities";
+import type { ActivityActionLog } from "$lib/interfaces/logs";
 import type { Activity } from "$lib/types/activities";
 
 import { format_activity_kind } from "$lib/utils/formatting";
@@ -27,16 +28,7 @@ export const GET: RequestHandler = async function ({ params }) {
         creada_por: params.email
       },
       include: {
-        actividades_grupos: {
-          select: {
-            Grupo: {
-              select: {
-                id: true,
-                nombre: true
-              }
-            }
-          }
-        },
+        actividades_grupos: {select: { Grupo: {select: {id: true, nombre: true}} }},
         autores_usb: true,
         autores_externos: true,
         articulo_revista: true,
@@ -55,11 +47,26 @@ export const GET: RequestHandler = async function ({ params }) {
         proyecto_grado: true,
         proyecto_investigacion: true,
         recital: true
-      }
+      },
+      orderBy: {id: "asc"}
     });
 
-    const logs = await prisma.log_operacion_actividad.findMany({
-      where: { actividad: { in: _acts.map(a => a.id) } }
+    const logs: ActivityActionLog[] = await prisma.log_operacion_actividad.findMany({
+      select: {
+        id: true,
+        actividad: true,
+        Usuario: {
+          select: {
+            profesor: {select: {perfil: true}},
+            administrador: {select: {nombre: true}}
+          }
+        },
+        fecha: true,
+        hora: true,
+        operacion: true
+      },
+      where: { actividad: {in: _acts.map(a => a.id)} },
+      orderBy: {id: "desc"}
     });
 
     const dean = await prisma.administrador.findUniqueOrThrow({

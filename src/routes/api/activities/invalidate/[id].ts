@@ -19,7 +19,7 @@ export const PATCH: RequestHandler = async ({ params, request }) => {
 
   const _data = await request.json();
   const data = {
-    fecha_ultima_modificacion: ve_date().toJSDate(),
+    fecha_ultima_modificacion: ve_date().toISO({ includeOffset: false })?.concat("Z"),
     fecha_validacion: null,
     validado_por: null
   };
@@ -35,7 +35,7 @@ export const PATCH: RequestHandler = async ({ params, request }) => {
       }
     });
 
-    const date = ve_date().toJSON();
+    const date = ve_date().toISO({ includeOffset: false })?.concat("Z");
 
     await prisma.log_operacion_actividad.create({
       data: {
