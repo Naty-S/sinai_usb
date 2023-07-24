@@ -11,7 +11,7 @@
 
 	import Modal from "$lib/components/modal.svelte";
 
-  import Consultas from "./consultas/index.svelte";
+  import Consultas from "./consultas/actividades/index.svelte";
 
   $: not_registered = Boolean($page.url.searchParams.get("no_registro"));
 </script>
@@ -25,7 +25,7 @@
     close_text="Ok"
     align="center"
     is_active={not_registered}
-    close={() => location.replace($page.url.pathname)}
+    close={location.reload}
   >
     Usted no se encuentra registrado en el sistema del SINAI.
   </Modal>

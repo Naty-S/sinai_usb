@@ -21,7 +21,7 @@ import { goto } from "$app/navigation";
   const void_click = () => {};
 
   const searchs = [
-    {href: "/sinai/consultas", click: void_click, name: "Públicas"},
+    {href: "/sinai/consultas/actividades", click: void_click, name: "Públicas"},
     // {href: void_link, click: void_click, name: "Predeterminadas"}
   ];
 
