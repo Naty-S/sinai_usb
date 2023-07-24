@@ -286,11 +286,11 @@
     close_text="Ok"
     align="center"
     is_active={action.info !== ''}
-    close={() => location.replace($page.url.pathname)}
+    close={location.reload}
   >
     <p>
-      Hubo un problema al intentar realizar la acción por favor vuelva a intentar
-      o contáctese con algún administrador.
+      Hubo un problema al cargar la lista de profesores, por favor recargue la página
+      o contáctese con algún administrador proporcionando el código del error.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
   </Modal>

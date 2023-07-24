@@ -247,10 +247,10 @@
     close_text="Ok"
     align="center"
     is_active={action.info !== ''}
-    close={() => location.replace($page.url.pathname)}
+    close={location.reload}
   >
     <p>
-      Hubo un problema al cargar el formulario o registro, recargue la página 
+      Hubo un problema al cargar el formulario o registro, por favor recargue la página 
       o contáctese con algún administrador proporcionando el código del error.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>

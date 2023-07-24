@@ -70,7 +70,7 @@
     activities = group_activities.activities;
 
   } else {
-    throw new Error(`Este rango: ${rank} no es permitido en esta pagina`);
+    throw new Error(`Este rango: ${rank} no es permitido en esta página`);
   }
 </script>
 

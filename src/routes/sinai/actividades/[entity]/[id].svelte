@@ -138,7 +138,7 @@
   };
 </script>
 
-<h3>Resumen de Actividades del {activities.entity}</h3>
+<h3>Resumen de Actividades {activities.entity}</h3>
 
 <!-- Display activities resume table -->
 <ResumeTable
@@ -232,7 +232,7 @@
     close_text="Cancelar"
     align="center"
     is_active={act_created}
-    close={() => location.replace($page.url.pathname)}
+    close={location.reload}
     confirm={() => { act_created = false; show_create = true; }}
   >
     <p>Desea ingresar otra actividad?</p>
@@ -246,12 +246,12 @@
     close_text="Ok"
     align="center"
     is_active={act_modified}
-    close={() => location.replace($page.url.pathname)}
+    close={location.reload}
   />
 {/if}
 
 {#if show_create}
-  <ActivitiesModal show={show_create} close={() => location.replace($page.url.pathname)} />
+  <ActivitiesModal show={show_create} close={location.reload} />
 {/if}
 
 {#if err}
@@ -261,7 +261,7 @@
     close_text="Ok"
     align="center"
     is_active={Boolean(err)}
-    close={() => location.replace($page.url.pathname)}
+    close={location.reload}
   >
     <p>
       Hubo un problema al intentar realizar la acción por favor vuelva a intentar

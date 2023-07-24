@@ -123,7 +123,7 @@
       + "?subject=" + encodeURIComponent(subject)
       + "&body=" + encodeURIComponent(msg);
 
-    location.replace($page.url.pathname);
+    location.reload();
   };
 </script>
 
@@ -246,7 +246,7 @@
     close_text="Ok"
     align="center"
     is_active={Boolean(validated)}
-    close={() => location.replace($page.url.pathname)}
+    close={location.reload}
   >
   <p>Profesor <span class="ui primary text">"{validated}"</span></p>
   <p>Validado con éxito!!!</p>
@@ -302,7 +302,7 @@
     close_text="Ok"
     align="center"
     is_active={action.info !== '' && action.code !== "rejected"}
-    close={() => location.replace($page.url.pathname)}
+    close={location.reload}
   >
     <p>
       Hubo un problema al intentar realizar la acción por favor vuelva a intentar

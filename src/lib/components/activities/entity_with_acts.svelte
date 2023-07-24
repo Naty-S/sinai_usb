@@ -13,7 +13,6 @@
   import ResumeTable from "./resume_table.svelte";
 
   import { count_acts_kinds } from "$lib/utils/maths";
-  import { map_to_detailed_kind } from "$lib/utils/mappings";
 
   export let entity: string;
   export let entity_activities: ProfessorActivities[] | GroupActivities[];
@@ -87,7 +86,7 @@
     });
 
   } else {
-    throw new Error(`Esta entidad: ${entity} no es permitida en esta pagina`);
+    throw new Error(`Esta entidad: ${entity} no es permitida en esta página`);
   };
 </script>
 
@@ -95,8 +94,8 @@
   {entity == "Grupo" ? "Grupos" : "Profesores"} con Actividades ({entities_with_acts.length})
 </h2>
 <div class="uk-text-center">
-  Nota: A continuacion se muestran los totales de las actividades ingresadas en el sistema
-  de cada {entity}. Si desea ver mas detalles de las actividades de cada {entity} haga
+  Nota: A continuación se muestran los totales de las actividades ingresadas en el sistema
+  de cada {entity}. Si desea ver más detalles de las actividades de cada {entity} haga
   click en su nombre.
 </div>
 

@@ -212,7 +212,7 @@
     close_text="Ok"
     align="center"
     is_active={modified}
-    close={() => location.replace($page.url.pathname)}
+    close={location.reload}
   >
     <p>Perfil modificado con éxito!!!</p>
   </Modal>
@@ -225,7 +225,7 @@
     close_text="Ok"
     align="center"
     is_active={Boolean(err)}
-    close={() => location.replace($page.url.pathname)}
+    close={location.reload}
   >
     <p>
       Hubo un problema al intentar modificar su perfil por favor vuelva a intentar
