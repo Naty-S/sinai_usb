@@ -245,7 +245,7 @@
     title="Validar Profesor"
     close_text="Ok"
     align="center"
-    is_active={Boolean(validated)}
+    pop_up={Boolean(validated)}
     close={location.reload}
   >
   <p>Profesor <span class="ui primary text">"{validated}"</span></p>
@@ -258,7 +258,7 @@
     title="Rechazar Profesor"
     close_text="Ok"
     align="center"
-    is_active={action.code === "rejected"}
+    pop_up={action.code === "rejected"}
     close={send_rejection_mail}
   >
   <p>Profesor <span class="ui primary text">"{action.info}"</span>, RECHAZADO!!!</p>
@@ -270,7 +270,7 @@
     title="Validar Profesor"
     ok_text="Validar"
     align="center"
-    is_active={show_validate}
+    pop_up={show_validate}
     close={() => show_validate = false}
     confirm={confirm_validate}
   >
@@ -284,7 +284,7 @@
     title="Rechazar Profesor"
     ok_text="Rechazar"
     align="center"
-    is_active={show_reject}
+    pop_up={show_reject}
     close={() => show_reject = false}
     confirm={confirm_reject}
   >
@@ -301,7 +301,7 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== '' && action.code !== "rejected"}
+    pop_up={action.info !== '' && action.code !== "rejected"}
     close={location.reload}
   >
     <p>

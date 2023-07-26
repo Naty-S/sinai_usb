@@ -6,10 +6,11 @@
 
   export const load: Load = async ({ fetch, session }) => {
 
-    const professor = session.user?.professor;
+    const user = session.user;
+    const professor = user?.professor;
 
     if (professor) {
-      const res = await fetch(`/api/professor/${session.user?.email}`);
+      const res = await fetch(`/api/professor/${user?.email}`);
      
       if (res.ok) {
         const profile = await res.json();
@@ -211,7 +212,7 @@
     title="Perfil Modificado"
     close_text="Ok"
     align="center"
-    is_active={modified}
+    pop_up={modified}
     close={location.reload}
   >
     <p>Perfil modificado con éxito!!!</p>
@@ -224,11 +225,11 @@
     title="Error. {err_code}"
     close_text="Ok"
     align="center"
-    is_active={Boolean(err)}
+    pop_up={Boolean(err)}
     close={location.reload}
   >
     <p>
-      Hubo un problema al intentar modificar su perfil por favor vuelva a intentar
+      Hubo un problema al intentar modificar su perfil, por favor vuelva a intentar
       o contáctese con algún administrador.
     </p>
     <span class="ui red text">Detalles: {err}</span>

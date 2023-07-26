@@ -12,7 +12,7 @@
 
   import Modal from "../modal.svelte";
 
-  export let show: boolean;
+  export let pop_up: boolean;
   export let close: () => void;
 
   let inicio: string;
@@ -64,7 +64,7 @@
   {ok_text}
   {close_text}
   align="center"
-  is_active={show}
+  {pop_up}
   {close}
   confirm={modify_bra_period}
 >
@@ -110,7 +110,7 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
+    pop_up={action.info !== ''}
     {close}
   >
     <p>

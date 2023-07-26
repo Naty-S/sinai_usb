@@ -8,11 +8,11 @@
   import ActivitiesModal from "./activities_modal.svelte";
   import Letterhead from "./letterhead/index.svelte";
 	import MenuDropdown from "./menu.svelte";
-  import ModifyBraPeriodModal from "./modify_bra_period_modal.svelte";
+  import ModifyBraPeriod from "./modify_bra_period_modal.svelte";
   import bkg from "$assets/letterhead_bkg.png";
 
-  let show_create = false;
-  let show_modify_bra = false;
+  let pop_create = false;
+  let pop_modify_bra = false;
   let fixed = '';
   let navbar = "ui grid container uk-navbar-center";
 
@@ -69,8 +69,8 @@ modificar para que todo este centrado entre el top y bottom del letter head
         {#if $session.user}
           <li class="ui tertiary vertically fitted segment uk-margin-small-top">
             <MenuDropdown
-              show_create={() => show_create = true}
-              show_modify_bra_period={() => show_modify_bra = true}
+              show_create={() => pop_create = true}
+              show_modify_bra_period={() => pop_modify_bra = true}
             />
           </li>
         {:else}
@@ -90,10 +90,10 @@ modificar para que todo este centrado entre el top y bottom del letter head
   </div>
 </nav>
 
-{#if show_create}
-  <ActivitiesModal show={show_create} close={() => show_create = false} />
+{#if pop_create}
+  <ActivitiesModal pop_up={pop_create} close={() => pop_create = false} />
 {/if}
 
-{#if show_modify_bra}
-  <ModifyBraPeriodModal show={show_modify_bra} close={() => show_modify_bra = false} />
+{#if pop_modify_bra}
+  <ModifyBraPeriod pop_up={pop_modify_bra} close={() => pop_modify_bra = false} />
 {/if}

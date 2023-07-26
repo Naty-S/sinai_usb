@@ -12,13 +12,12 @@
 
       if (res1.ok && res2.ok) {
         const deps_chiefs = await res1.json();
-        const res_json = await res2.clone().json();
+        const profs: profesor[] = await res2.json();
 
-        const professors = res_json.filter((p: any) => p.activo && p.id !== 0).map((p: any) => (
-          { email: p.correo
+        const professors = profs.filter(p => p.activo && p.id !== 0).map(p => ({
+            email: p.correo
           , profile: p.perfil
-          }
-        ));
+        }));
 
         return {
           props: { deps_chiefs, professors }
@@ -41,6 +40,7 @@
   };
 </script>
 <script lang="ts">
+	import type { profesor } from "@prisma/client";
   import type { Department } from "$lib/interfaces/departments";
 
   import * as api from "$lib/api";
@@ -53,20 +53,20 @@
   let chief: string;
   let rep: string;
   let dep: number;
-  let show_modify_chief = false;
-  let show_modify_rep = false;
+  let pop_modify_chief = false;
+  let pop_modify_rep = false;
   let ok_text = "Modificar";
   let close_text = "Cancelar";
   let action = { info: '', code: '' };
 
   const toggle_modify_chief = function (modify: boolean, _chief: string, _dep: number) {
-    show_modify_chief = modify;
+    pop_modify_chief = modify;
     chief = _chief;
     dep = _dep;
   };
 
   const toggle_modify_rep = function (modify: boolean, _rep: string, _dep: number) {
-    show_modify_rep = modify;
+    pop_modify_rep = modify;
     rep = _rep;
     dep = _dep;
   };
@@ -75,7 +75,7 @@
     const res = await api.patch("/api/departments_chiefs", { chief, dep });
 
     if (res.ok) {
-      const { code } = await res.clone().json();
+      const { code } = await res.json();
       action.code = code;
       ok_text='';
       close_text="Ok";
@@ -91,7 +91,7 @@
     const res = await api.patch("/api/departments_chiefs", { rep, dep });
 
     if (res.ok) {
-      const { code } = await res.clone().json();
+      const { code } = await res.json();
       action.code = code;
       ok_text='';
       close_text="Ok";
@@ -138,15 +138,15 @@
   {/each}
 </div>
 
-{#if show_modify_chief}  
+{#if pop_modify_chief}  
   <Modal
     id="modify_chief"
     title="Modificar Jefe"
     {ok_text}
     {close_text}
     align="center"
-    is_active={show_modify_chief}
-    close={() => { show_modify_chief = false; location.reload(); }}
+    pop_up={pop_modify_chief}
+    close={() => { pop_modify_chief = false; location.reload(); }}
     confirm={modify_chief}
   >
   {#if action.code === "Dep Chief Modified"}
@@ -168,15 +168,15 @@
   </Modal>
 {/if}
 
-{#if show_modify_rep}  
+{#if pop_modify_rep}  
   <Modal
     id="modify_rep"
     title="Modificar Representante"
     {ok_text}
     {close_text}
     align="center"
-    is_active={show_modify_rep}
-    close={() => { show_modify_rep = false; location.reload(); }}
+    pop_up={pop_modify_rep}
+    close={() => { pop_modify_rep = false; location.reload(); }}
     confirm={modify_rep}
   >
   {#if action.code === "Dep Rep Modified"}
@@ -204,7 +204,7 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
+    pop_up={action.info !== ''}
     close={() => { action.info = ''; location.reload(); }}
   >
     <p>

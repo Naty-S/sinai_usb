@@ -12,13 +12,12 @@
 
       if (res1.ok && res2.ok) {
         const chiefs = await res1.json();
-        const res_json = await res2.clone().json();
+        const profs: profesor[] = await res2.json();
 
-        const professors = res_json.filter((p: any) => p.activo && p.id !== 0).map((p: any) => (
-          { email: p.correo
+        const professors = profs.filter(p => p.activo && p.id !== 0).map(p => ({
+            email: p.correo
           , profile: p.perfil
-          }
-        ));
+        }));
 
         return {
           props: { chiefs, professors }
@@ -41,6 +40,7 @@
   };
 </script>
 <script lang="ts">
+	import type { profesor } from "@prisma/client";
   import type { Professor } from "$lib/interfaces/professors";
 
   import * as api from "$lib/api";
@@ -67,7 +67,7 @@
     const res = await api.patch("/api/coordinators", { chief, coord });
 
     if (res.ok) {
-      const { code } = await res.clone().json();
+      const { code } = await res.json();
       action.code = code;
       ok_text='';
       close_text="Ok";
@@ -90,7 +90,9 @@
       <h3 class="ui blue header">
         Coordinación {c.coordination.nombre}
       </h3>
+
       {c.name} {c.surname}
+      
       <button
         type="button"
         class="ui right floated primary small button"
@@ -109,7 +111,7 @@
     {ok_text}
     {close_text}
     align="center"
-    is_active={show_modify}
+    pop_up={show_modify}
     close={() => { show_modify = false; location.reload(); }}
     confirm={modify_coord}
   >
@@ -138,7 +140,7 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
+    pop_up={action.info !== ''}
     close={() => { action.info = ''; location.reload(); }}
   >
     <p>

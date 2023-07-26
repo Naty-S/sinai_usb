@@ -7,6 +7,8 @@
   export const load = redirect;
 </script>
 <script lang="ts">
+  import type { Department } from "$lib/interfaces/departments";
+
   import { onMount, setContext } from "svelte";
   import { createForm, key } from "svelte-forms-lib";
   
@@ -20,13 +22,12 @@
 
   import { page } from "$app/stores";
 
-  import type { Department } from "$lib/interfaces/departments";
+  import * as api from "$lib/api";
 
   import { init } from "$lib/utils/forms/auth/register/init";
   import { validation } from "$lib/utils/forms/auth/register/validation";
   import { submit } from "$lib/utils/forms/auth/register/submit";
-  import * as api from "$lib/api";
-
+  
   import Modal from "$lib/components/modal.svelte";
   import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";
   import Input from "$lib/components/forms/input.svelte";
@@ -246,7 +247,7 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
+    pop_up={action.info !== ''}
     close={location.reload}
   >
     <p>

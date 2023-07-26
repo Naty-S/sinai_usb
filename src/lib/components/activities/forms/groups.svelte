@@ -90,7 +90,7 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
+    pop_up={action.info !== ''}
     close={location.reload}
   >
     <p>
