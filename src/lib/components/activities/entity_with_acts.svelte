@@ -13,50 +13,12 @@
   import ResumeTable from "./resume_table.svelte";
 
   import { count_acts_kinds } from "$lib/utils/maths";
+	import { detailed_kinds } from "$lib/constants";
 
   export let entity: string;
   export let entity_activities: ProfessorActivities[] | GroupActivities[];
 
-  const kinds = [
-    "ACTIVIDAD INVALIDA"
-    , "Publicaciones en Revistas Indexadas en el SCI-SSCI-ARTS"
-    , "Publicaciones en Revistas Indexadas en Otros Indices"
-    , "Publicaciones en Revistas Arbitradas No Indexadas"
-    , "Articulos Aceptados en Vías de Publicación"
-    , "Publicaciones en Revistas Arbitradas"
-    , "Publicaciones de Capítulos de Libros"
-    , "Composiciones Solicitadas por Orquestas Sinfónicas o Agrupaciones Reconocidas"
-    , "Asistencia a Eventos Internacionales"
-    , "Asistencia a Eventos Nacionales"
-    , "Eventos en Venezuela"
-    , "Eventos en el Exterior"
-    , "Eventos"
-    , "Selección en Exposiciones, Bienales, Salones o Concursos Arbitrados"
-    , "Grabaciones Sonoras Evaluadas Por Árbitros"
-    , "Informes Técnicos"
-    , "Libro Nacional"
-    , "Libro Internacional"
-    , "Publicaciones de Libros"
-    , "Memorias *Arbitradas* de Congresos"
-    , "Partituras, Video o CD's Publicados en Editoriales Reconocidas"
-    , "Patentes Nacional"
-    , "Patentes Internacional"
-    , "Patentes"
-    , "Premios"
-    , "Trabajos Reconocidos o Premiados En Bienales, Salones, Concursos o Exposiciones"
-    , "Tutoría de Tesis Doctorales"
-    , "Tutoría de Trabajos de Grado (Mestrías)"
-    , "Tutoría de Proyectos de Grado (Especializaciones)"
-    , "Proyectos de Grado (Postgrados)"
-    , "Tutoría de Proyectos de Grado (Licencituras)"
-    , "Tutoría de Proyectos de Grado (Ingenierias)"
-    , "Proyectos de Grado (Pasantías Largas)"
-    , "Proyectos de Grado Dirigidos"
-    , "Proyectos de IYD (Vigentes)"
-    , "Proyectos de IYD"
-    , "Recitales o Conciertos Arbitrados"
-  ];
-  const acts_kinds_headers = [entity].concat(kinds);
+  const acts_kinds_headers = [entity].concat(detailed_kinds);
 
   let entities_with_acts;
   let entities_with_acts_counts: ActivitiesCounts[];

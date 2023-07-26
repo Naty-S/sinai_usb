@@ -1,9 +1,10 @@
-import type { Activity } from "$lib/types/activities";
-import type { ActivityActionLog } from "$lib/interfaces/logs";
+import type { Activity, ActivityI } from "$lib/types/activities";
 import type { Group } from "$lib/interfaces/groups";
 
 import { parse, isDate } from "date-fns";
 import { DateTime } from "luxon";
+
+import { kinds } from "$lib/constants";
 
 
 /**
@@ -67,32 +68,13 @@ export const format_date = function (date: Date | string | null, format: string 
 /**
  * Format the raw activity data into the actual data to display
  * 
- * @param activity - Raw activity data
- * @param logs - Log info, CRUD operations executed in activities by professors
- * @returns Activity data with groups, kinds and logs info
+ * @param {ActivityI} activity - Raw activity data
+ * @returns {Activity} Activity data with kind, groups, and logs info
  */
-export const format_activity_kind = function (activity: any, actions_log?: ActivityActionLog[]): Activity {
+export const format_activity_kind = function (activity: ActivityI): Activity {
+
   let kind_name = "ACTIVIDAD INVALIDA";
   let kind_data;
-
-  const kinds = [
-    "articulo_revista"
-    , "capitulo_libro"
-    , "composicion"
-    , "evento"
-    , "exposicion"
-    , "grabacion"
-    , "informe_tecnico"
-    , "libro"
-    , "memoria"
-    , "partitura"
-    , "patente"
-    , "premio"
-    , "premio_bienal"
-    , "proyecto_grado"
-    , "proyecto_investigacion"
-    , "recital"
-  ];
 
   // removes null's activities kinds
   kinds.map(kind => {
@@ -105,19 +87,22 @@ export const format_activity_kind = function (activity: any, actions_log?: Activ
     };
   });
 
+  // if (!kind_data) console.log("no data:",activity);
+
   const groups: Group[] = activity.actividades_grupos.map((g: any) => ({
     id: g.Grupo.id,
     name: g.Grupo.nombre
   }));
 
-  delete activity["actividades_grupos"];
+  // Omit "actividades_grupos"
+  const { actividades_grupos, ..._activity } = activity;
 
   const act: Activity = {
-    ...activity,
-    groups,
-    kind_name,
-    kind_data,
-    actions_log
+    ..._activity
+    , groups
+    , kind_name
+    , kind_data
+    , logs: activity.logs
   };
 
   return act;
