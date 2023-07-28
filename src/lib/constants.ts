@@ -1,5 +1,8 @@
 
 
+export const void_link = "javascript:void(0)";
+export const void_click = () => {};
+
 export const kinds = [
     "articulo_revista"
   , "capitulo_libro"
@@ -20,7 +23,7 @@ export const kinds = [
 ];
 
 export const detailed_kinds = [
-  "ACTIVIDAD INVALIDA"
+  "ACTIVIDAD INVÁLIDA"
   , "Publicaciones en Revistas Indexadas en el SCI-SSCI-ARTS"
   , "Publicaciones en Revistas Indexadas en Otros Indices"
   , "Publicaciones en Revistas Arbitradas No Indexadas"
