@@ -1,58 +1,50 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import { env } from "$env/dynamic/private";
+import type { Activity } from "$lib/types/activities";
 
-import type { DepActivities, DivisionActivities } from "$lib/interfaces/activities";
+import { stringify } from "zipson";
+
 import { handle_error, prisma } from "$api/_api";
+
+import { query_activities_logs, query_professor_activities } from "$lib/server/queries";
+import { format_activity } from "$lib/utils/formatting";
 
 
 /**
- * Query division's activities
+ * Query division activities.
 */
 export const GET: RequestHandler = async function ({ request, params }) {
   
-  const origin = env.NODE_ENV == "development" ? "http://localhost:3000" : env.NGINX_PROXY_PASS;
-
   let status = 500;
   let body = {};
 
   try {
     const division = await prisma.division.findUniqueOrThrow({
-      where: {
-        id: Number(params.id)
-      },
       select: {
         id: true,
         nombre: true,
-        departamentos: {
-          select: {
-            id: true
-          }
-        }
-      }
+        departamentos: { select: { id: true } }
+      },
+      where: { id: Number(params.id) }
     });
 
-    const departments_activities: DepActivities[] = await Promise.all(
-      division.departamentos.map(async d =>{
+    const professors = await prisma.profesor.findMany({
+      select: { id: true, correo: true },
+      where: { departamento: { in: division.departamentos.map(d => d.id) } }
+    });
 
-        const r = await fetch(`${origin}/api/activities/department/${d.id}`);
-        const r_json = await r.json()
+    const professor_activities = (await Promise.all(professors.map(async p => (
+      await query_professor_activities(p.id, p.correo)
+    )))).flat();
 
-        if (r.ok) return r_json;
-        else throw new Error(r_json.code + '. ' + r_json.message);
-      })
-    );
-
-    const division_activities: DivisionActivities = {
-      division: {
-        id: division.id,
-        nombre: division.nombre
-      },
-      departments_activities
-    };
+    const logs = await query_activities_logs(professor_activities.map(a => a.id));
+    const activities: Activity[] = professor_activities.map(a => (format_activity(a, logs)));
 
     status = 200;
-    body = division_activities;
+    body = {
+        owner: `de la División de ${division.nombre}`
+      , activities: stringify(activities)
+    };
     
   } catch (error: any) {
     

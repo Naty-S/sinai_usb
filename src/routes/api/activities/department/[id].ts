@@ -1,109 +1,48 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import type { DepActivities } from "$lib/interfaces/activities";
+
+import type { Activity } from "$lib/types/activities";
 
 import { handle_error, prisma } from "$api/_api";
-import { format_activity_kind } from "$lib/utils/formatting";
+
+import { query_professor_activities, query_activities_logs } from "$lib/server/queries";
+import { format_activity } from "$lib/utils/formatting";
 
 
 /**
- * Query department's activities and professor with they activities
+ * Query department activities.
+ * 
+ * @returns The department activities with logs
 */
 export const GET: RequestHandler = async function ({ params }) {
   
+  const _id = Number(params.id);
+
   let status = 500;
   let body = {};
 
   try {
     const department = await prisma.departamento.findUniqueOrThrow({
-      where: {
-        id: Number(params.id)
-      },
-      select: {
-        id: true,
-        nombre: true
-      }
+      select: { id: true, nombre: true },
+      where: { id: _id }
     });
     
-    const professors: { correo: string }[] = await prisma.profesor.findMany({
-      where: {
-        departamento: Number(params.id)
-      },
-      select: {
-        correo: true
-      }
+    const professors = await prisma.profesor.findMany({
+      select: { id: true, correo: true },
+      where: { departamento: _id }
     });
 
-    const professors_activities = await Promise.all(professors.map(async p => {
-
-      return await prisma.usuario.findUniqueOrThrow({
-        where: {
-          login: p.correo
-        },
-        select: {
-          profesor: {
-            select: {
-              id: true,
-              correo: true,
-              nombre1: true,
-              apellido1: true
-            }
-          },
-          actividades: {
-            include: {
-              actividades_grupos: {
-                select: {
-                  Grupo: {
-                    select: {
-                      id: true,
-                      nombre: true
-                    }
-                  }
-                }
-              },
-              autores_usb: true,
-              autores_externos: true,
-              articulo_revista: true,
-              capitulo_libro: true,
-              composicion: true,
-              evento: true,
-              exposicion: true,
-              grabacion: true,
-              informe_tecnico: true,
-              libro: true,
-              memoria: true,
-              partitura: true,
-              patente: true,
-              premio: true,
-              premio_bienal: true,
-              proyecto_grado: true,
-              proyecto_investigacion: true,
-              recital: true
-            }
-          }
-        }
-      });
-    }));
-
-    const dep_activities: DepActivities = {
-      department: {
-        id: department.id,
-        nombre: department.nombre
-      },
-      professors_activities: professors_activities.map((p: any) => {
-        return {
-          professor: {
-            id: p.profesor.id,
-            email: p.profesor.correo,
-            name: p.profesor.nombre1,
-            surname: p.profesor.apellido1
-          },
-          activities: p.actividades.map((a: any) => format_activity_kind(a))
-        };
-      })
-    };
+    const professor_activities = (await Promise.all(
+      professors.map(async p => (await query_professor_activities(p.id, p.correo)))
+    )).flat();
+    
+    const logs = await query_activities_logs(professor_activities.map(a => a.id));
+    const activities: Activity[] = professor_activities.map(a => (format_activity(a, logs)));
 
     status = 200;
-    body = dep_activities;
+    body = {
+        entity: `del Departamento de ${department.nombre}`
+      , activities
+    };
 
   } catch (error: any) {
     const message = await handle_error(error);

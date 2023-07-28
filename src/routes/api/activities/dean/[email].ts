@@ -1,89 +1,36 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { EntityActivities } from "$lib/interfaces/activities";
-import type { ActivityActionLog } from "$lib/interfaces/logs";
 import type { Activity } from "$lib/types/activities";
-
-import { format_activity_kind } from "$lib/utils/formatting";
-import { acts_kinds_by_year } from "$lib/utils/grouping";
-import { count_acts_kinds_by_year } from "$lib/utils/maths";
 
 import { handle_error, prisma } from "$api/_api";
 
+import { query_activities_logs, query_user_activities } from "$lib/server/queries";
+import { format_activity } from "$lib/utils/formatting";
+
 
 /**
- * Query dean's activities
+ * Query dean activities.
  * 
- * @returns The dean's activities grouped by year and kind
+ * @returns Dean activities with logs.
  */
 export const GET: RequestHandler = async function ({ params }) {
+
+  const _email = params.email;
 
   let status = 500;
   let body = {};
 
   try {
-    // Find dean's activities
-    const _acts = await prisma.actividad.findMany({
-      where: {
-        creada_por: params.email
-      },
-      include: {
-        actividades_grupos: {select: { Grupo: {select: {id: true, nombre: true}} }},
-        autores_usb: true,
-        autores_externos: true,
-        articulo_revista: true,
-        capitulo_libro: true,
-        composicion: true,
-        evento: true,
-        exposicion: true,
-        grabacion: true,
-        informe_tecnico: true,
-        libro: true,
-        memoria: true,
-        partitura: true,
-        patente: true,
-        premio: true,
-        premio_bienal: true,
-        proyecto_grado: true,
-        proyecto_investigacion: true,
-        recital: true
-      },
-      orderBy: {id: "asc"}
-    });
-
-    const logs: ActivityActionLog[] = await prisma.log_operacion_actividad.findMany({
-      select: {
-        id: true,
-        actividad: true,
-        Usuario: {
-          select: {
-            profesor: {select: {perfil: true}},
-            administrador: {select: {nombre: true}}
-          }
-        },
-        fecha: true,
-        hora: true,
-        operacion: true
-      },
-      where: { actividad: {in: _acts.map(a => a.id)} },
-      orderBy: {id: "desc"}
-    });
-
-    const dean = await prisma.administrador.findUniqueOrThrow({
-      where: {
-        login: params.email
-      }
-    });
-
-    const activities: Activity[] = _acts.map(a => format_activity_kind(a, logs));
-    const entityActivities: EntityActivities = {
-      entity: `Decano. ${dean.nombre}`,
-      by_year: acts_kinds_by_year(activities, true),
-      years_counts: count_acts_kinds_by_year(activities, true)
-    };
+    const dean = await prisma.administrador.findUniqueOrThrow({ where: { login: _email } });
+    const dean_activities = await query_user_activities(_email);
+    const logs = await query_activities_logs(dean_activities.map(a => a.id));
+    const activities: Activity[] = dean_activities.map(a => (format_activity(a, logs)));
 
     status = 200;
-    body = entityActivities;
+    body = {
+        owner: `del Decano. ${dean.nombre}`
+      , activities
+    };
 
   } catch (error: any) {
     const message = await handle_error(error);
