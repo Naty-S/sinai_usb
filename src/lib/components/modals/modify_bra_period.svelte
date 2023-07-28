@@ -10,7 +10,7 @@
 
   import * as api from "$lib/api";
 
-  import Modal from "../modal.svelte";
+  import Modal from "./modal.svelte";
 
   export let pop_up: boolean;
   export let close: () => void;
@@ -115,7 +115,7 @@
   >
     <p>
       Hubo un problema al intentar modificar el período BRA, por favor vuelva a intentar
-      o contáctese con algún administrador.
+      o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
   </Modal>

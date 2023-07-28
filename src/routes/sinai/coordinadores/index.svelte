@@ -45,7 +45,7 @@
 
   import * as api from "$lib/api";
 
-	import Modal from '$lib/components/modal.svelte';
+	import Modal from '$lib/components/modals/modal.svelte';
 
   export let chiefs: Professor[];
   export let professors: { email: string, profile: string }[];
@@ -145,7 +145,7 @@
   >
     <p>
       Hubo un error al intentar cambiar de Coordinador, por favor vuelva a intentar
-      o contáctese con algún administrador.
+      o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
   </Modal>

@@ -5,10 +5,10 @@
 <script lang="ts">
   import { session } from "$app/stores";
 
-  import ActivitiesModal from "./activities_modal.svelte";
+  import CreateActivities from "../modals/create_activities.svelte";
   import Letterhead from "./letterhead/index.svelte";
 	import MenuDropdown from "./menu.svelte";
-  import ModifyBraPeriod from "./modify_bra_period_modal.svelte";
+  import ModifyBraPeriod from "../modals/modify_bra_period.svelte";
   import bkg from "$assets/letterhead_bkg.png";
 
   let pop_create = false;
@@ -91,7 +91,7 @@ modificar para que todo este centrado entre el top y bottom del letter head
 </nav>
 
 {#if pop_create}
-  <ActivitiesModal pop_up={pop_create} close={() => pop_create = false} />
+  <CreateActivities pop_up={pop_create} close={() => pop_create = false} />
 {/if}
 
 {#if pop_modify_bra}

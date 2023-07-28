@@ -9,7 +9,7 @@
 <script lang="ts">
   import { page } from "$app/stores";
 
-	import Modal from "$lib/components/modal.svelte";
+	import Modal from "$lib/components/modals/modal.svelte";
 
   import Consultas from "./consultas/actividades/index.svelte";
 

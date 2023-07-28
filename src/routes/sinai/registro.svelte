@@ -28,7 +28,7 @@
   import { validation } from "$lib/utils/forms/auth/register/validation";
   import { submit } from "$lib/utils/forms/auth/register/submit";
   
-  import Modal from "$lib/components/modal.svelte";
+  import Modal from "$lib/components/modals/modal.svelte";
   import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
@@ -252,7 +252,7 @@
   >
     <p>
       Hubo un problema al cargar el formulario o registro, por favor recargue la página 
-      o contáctese con algún administrador proporcionando el código del error.
+      o contáctese con algún administrador proporcionando el código del error y detalles.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
   </Modal>

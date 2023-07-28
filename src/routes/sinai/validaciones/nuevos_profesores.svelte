@@ -15,7 +15,7 @@
 
   import * as api from "$lib/api";
 
-  import Modal from "$lib/components/modal.svelte";
+  import Modal from "$lib/components/modals/modal.svelte";
 
   
   let show_validate = false;
@@ -306,7 +306,7 @@
   >
     <p>
       Hubo un problema al intentar realizar la acción por favor vuelva a intentar
-      o contáctese con algún administrador.
+      o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
   </Modal>

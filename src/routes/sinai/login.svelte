@@ -9,7 +9,7 @@
 	import { goto } from "$app/navigation";
   import { session, page } from "$app/stores";
 
-	import Modal from "$lib/components/modal.svelte";
+	import Modal from "$lib/components/modals/modal.svelte";
 
   import * as api from "$lib/api";
 

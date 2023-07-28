@@ -6,7 +6,7 @@
   * `close`: () => void
  -->
 <script lang="ts">
-  import Modal from "../modal.svelte";
+  import Modal from "./modal.svelte";
 
   export let pop_up: boolean;
   export let close: () => void;
