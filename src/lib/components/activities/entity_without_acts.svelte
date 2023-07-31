@@ -20,7 +20,7 @@
     entities_without_acts = groups_activities.filter(g => g.activities.length < 1);
     entities_without_acts_counts = entities_without_acts.map( g => {
       return {
-        kind: g.group.name,
+        kind: g.group.nombre,
         counts: []
       };
     });
@@ -32,13 +32,13 @@
     entities_without_acts_counts = entities_without_acts.map( p => {
       return {
         link: `mailto:${p.professor.email}`,
-        kind: `${p.professor.name}, ${p.professor.surname}`,
+        kind: `${p.professor.name1}, ${p.professor.surname1}`,
         counts: []
       };
     });
 
   } else {
-    throw new Error(`Esta entidad: ${entity} no es permitida en esta página`);
+    throw new Error(`Esta entidad: ${entity} no es permitida en esta página.`);
   };
 </script>
 

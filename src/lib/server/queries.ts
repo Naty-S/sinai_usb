@@ -26,6 +26,41 @@ const include = {
   recital: true
 };
 
+export const query_user = async function (email: string) {
+
+  const user = await prisma.usuario.findUnique({
+    where: { login: email + "@usb.ve"},
+    include: {
+      administrador: true,
+      profesor: {
+        include: {
+          pei: { select: {anio: true, nivel: true, numero: true}, orderBy: {id: "desc"}, take: 1 },
+          ppi: { select: {anio: true, nivel: true, numero: true}, orderBy: {id: "desc"}, take: 1 },
+          grupos_investigacion: true,
+          historico_grupos: {
+            select: {
+              Grupo: true,
+              inicio: true,
+              fin: true,
+            },
+            where: { fin: { equals: null } }
+          },
+          coordinacion: { select: {id: true, nombre: true, departamentos: {select: {id: true, nombre: true}}} },
+          division: { select: { id: true, nombre: true, departamentos: { select: { id: true, nombre: true } } } },
+          _count: {
+            select: {
+              jefe_departamentos: true,
+              representante_departamentos: true,
+            }
+          },
+        }
+      }
+    }
+  });
+
+  return user;
+};
+
 /**
  * 
  * @param id - 

@@ -50,14 +50,15 @@
   import { validation } from "$lib/utils/forms/profile/validation";
   import { submit } from "$lib/utils/forms/profile/submit";
 
-  import Modal from "$lib/components/modal.svelte";
+  import Modal from "$lib/components/modals/modal.svelte";
   import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
 
   import ResearchLines from "$lib/components/forms/profile/research_lines.svelte";
+	import type { Profile } from "$lib/interfaces/professors";
 
-  export let profile;
+  export let profile: Profile;
   
   const initialValues = init(profile);
   const onSubmit = submit($session.user?.email, $page.url.pathname);
@@ -146,13 +147,13 @@
     </div>
 
     <div class="one column row">
-      <div class="column">Departamento: {professor?.department.name}</div>
+      <div class="column">Departamento: {professor?.department.nombre}</div>
     </div>
 
-    {#if professor?.ppi_number && professor?.ppi_level}      
+    {#if professor?.ppi}
       <div class="two column row">
-        <div class="column">Número del PPI: {professor?.ppi_number}</div>
-        <div class="column">Nivel: {professor?.ppi_level}</div>
+        <div class="column">Número del PPI: {professor?.ppi.numero}</div>
+        <div class="column">Nivel: {professor?.ppi.nivel}</div>
       </div>
     {/if}
   </div>
@@ -230,7 +231,7 @@
   >
     <p>
       Hubo un problema al intentar modificar su perfil, por favor vuelva a intentar
-      o contáctese con algún administrador.
+      o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
     <span class="ui red text">Detalles: {err}</span>
   </Modal>

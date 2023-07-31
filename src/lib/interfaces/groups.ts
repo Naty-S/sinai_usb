@@ -4,18 +4,27 @@ import type { Professor } from "./professors";
 
 
 /**
- * Activity group data
+ * Research group basic data
  * 
- * - `id`
- * - `name`
- * - `chief`
- * - `members`
- * - `n_activities` (number of activities)
+ * - `id`: number
+ * - `nombre`: string
 */
 export interface Group {
-  id: number
-  , name: string
-  , chief: Professor
-  , members: Professor[]
-  , n_activities: number
+    id: number
+  ; nombre: string
+};
+
+/**
+ * Research group extended data
+ * 
+ * - `id`: number
+ * - `nombre`: string
+ * - `chief`: Professor
+ * - `members`: Professor[]
+ * - `n_activities`: number - Number of activities
+*/
+export interface GroupE extends Group {
+    chief: Professor
+  ; members: Professor[]
+  ; n_activities: number
 };

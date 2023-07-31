@@ -1,5 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
+import type { Activities } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
 import { handle_error, prisma } from "$api/_api";
@@ -25,12 +26,18 @@ export const GET: RequestHandler = async function ({ params }) {
     const dean_activities = await query_user_activities(_email);
     const logs = await query_activities_logs(dean_activities.map(a => a.id));
     const activities: Activity[] = dean_activities.map(a => (format_activity(a, logs)));
-
-    status = 200;
-    body = {
-        owner: `del Decano. ${dean.nombre}`
+    const owner_activities: Activities = {
+      owner: {
+          id: 0
+        , name: dean.nombre
+        , full_name: `del Decano. ${dean.nombre}`
+        , email: _email
+      }
       , activities
     };
+
+    status = 200;
+    body = owner_activities;
 
   } catch (error: any) {
     const message = await handle_error(error);

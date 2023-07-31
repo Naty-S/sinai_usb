@@ -3,40 +3,36 @@
   Activity authors section form
  -->
 <script lang="ts">
+  import type { autor_tipo_actividad_enum, profesor } from "@prisma/client";
+  import type { activity_form_ctx, kinds } from "$lib/types/forms";
+	import type { Profesor } from "$lib/interfaces/professors";
+
   import { getContext, onMount } from "svelte";
   import { key } from "svelte-forms-lib";
   
-  import type { autor_tipo_actividad_enum, profesor } from "@prisma/client";
-
   import { page } from "$app/stores";
-  
-  import type { activity_form_ctx, kinds } from "$lib/types/forms";
 
   import * as api from "$lib/api";
 
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
-  import Modal from "$lib/components/modal.svelte";
+  import Modal from "$lib/components/modals/modal.svelte";
 
   const param = $page.params.activity;
   const kind = param as kinds;
   const tipo_actividad = param as autor_tipo_actividad_enum;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 
-  let professors: { id: number, perfil: string, nombre: string }[] = [];
+  let professors: Profesor[] = [];
   let action = { info: '', code: '' };
 
   onMount(async () => {
     const res = await api.get("/api/professors");
 
     if (res.ok) {
-      const res_json = await res.clone().json();
-      professors = res_json.filter((p: profesor) => p.activo && p.id !== 0).map((p: profesor) => (
-        {
-          id: p.id,
-          nombre: p.perfil
-        }
-      ));
+
+      const profesors: Profesor[] = await res.clone().json();
+      professors = profesors.filter(p => p.activo);
 
     } else {
       const { message, code } = await res.json();
@@ -92,7 +88,7 @@
 
   $: $form.autores_usb.map(a => {
     if (!a.es_estudiante) {
-      a.profesor_id = professors.find(p => p.nombre === a.nombre)?.id || null;
+      a.profesor_id = professors.find(p => p.perfil === a.nombre)?.id || null;
     } else {
       a.profesor_id = null;
     };
@@ -126,7 +122,7 @@
             label="Nombre Profesor"
             name="autores_usb[{i}].nombre"
             bind:value={$form.autores_usb[i].nombre}
-            options={professors.map(p => ({ val: p.nombre, name: p.nombre }))}
+            options={professors.map(p => ({ val: p.perfil, name: p.perfil }))}
             class="ten wide required field"
           />
         {/if}

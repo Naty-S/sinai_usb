@@ -101,8 +101,8 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
     data.autores_usb = {
       update: _data.autores_usb.map((a: autor_usb) => {
         if (a.id) {
-          delete a["actividad"];
-          return { where: { id: a.id }, data: a }
+          const { actividad, ..._a} = a;
+          return { where: { id: _a.id }, data: _a }
         };
       }),
       create: _data.autores_usb.map((a: autor_usb) => {
@@ -120,8 +120,8 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
     data.autores_externos = {
       update: _data.autores_externos.map((a: autor_externo) => {
         if (a.id) {
-          delete a["actividad"];
-          return { where: { id: a.id }, data: a }
+          const { actividad, ..._a } = a;
+          return { where: { id: _a.id }, data: _a }
         };
       }),
       create: _data.autores_externos.map((a: autor_externo) => {

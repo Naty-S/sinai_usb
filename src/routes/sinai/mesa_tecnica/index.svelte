@@ -11,13 +11,10 @@
       const res2 = await fetch("/api/professors");
 
       if (res1.ok && res2.ok) {
-        const deps_chiefs = await res1.json();
-        const profs: profesor[] = await res2.json();
 
-        const professors = profs.filter(p => p.activo && p.id !== 0).map(p => ({
-            email: p.correo
-          , profile: p.perfil
-        }));
+        const deps_chiefs = await res1.json();
+        const profesors: Profesor[] = await res2.json();
+        const professors = profesors.filter(p => p.activo);;
 
         return {
           props: { deps_chiefs, professors }
@@ -40,15 +37,15 @@
   };
 </script>
 <script lang="ts">
-	import type { profesor } from "@prisma/client";
-  import type { Department } from "$lib/interfaces/departments";
+	import type { Profesor } from "$lib/interfaces/professors";
+  import type { DepartmentE } from "$lib/interfaces/departments";
 
   import * as api from "$lib/api";
 
 	import Modal from '$lib/components/modals/modal.svelte';
 
-  export let deps_chiefs: Department[];
-  export let professors: { email: string, profile: string }[];
+  export let deps_chiefs: DepartmentE[];
+  export let professors: Profesor[];
 
   let chief: string;
   let rep: string;
@@ -115,7 +112,7 @@
         Departamento {d.nombre}
       </h3>
       <div class="ui clearing segment">
-        <strong>Jefe:</strong> {d.chief.name} {d.chief.surname}
+        <strong>Jefe:</strong> {d.chief.name1} {d.chief.surname1}
         <button
           type="button"
           class="ui right floated primary small button"
@@ -125,7 +122,7 @@
         </button>
       </div>
       <div class="ui clearing segment">
-        <strong>Representante:</strong> {d.rep.name} {d.rep.surname}
+        <strong>Representante:</strong> {d.rep.name1} {d.rep.surname1}
         <button
           type="button"
           class="ui right floated primary small button"
@@ -159,7 +156,7 @@
         class="ui fluid search selection dropdown"
         bind:value={chief}
       >
-        {#each professors.map(p => ({ val: p.email, name: p.profile })) as opt}
+        {#each professors.map(p => ({ val: p.correo, name: p.perfil })) as opt}
           <option value={opt.val}>{opt.name}</option>
         {/each}
       </select>
@@ -189,7 +186,7 @@
         class="ui fluid search selection dropdown"
         bind:value={rep}
       >
-        {#each professors.map(p => ({ val: p.email, name: p.profile })) as opt}
+        {#each professors.map(p => ({ val: p.correo, name: p.perfil })) as opt}
           <option value={opt.val}>{opt.name}</option>
         {/each}
       </select>

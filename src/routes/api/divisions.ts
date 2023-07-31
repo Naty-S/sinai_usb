@@ -18,7 +18,8 @@ export const GET: RequestHandler = async function () {
     const divisions: Division[] = await prisma.division.findMany({
       select: {
         id: true,
-        nombre: true
+        nombre: true,
+        departamentos: { select: { id: true, nombre: true } }
       }
     });
 

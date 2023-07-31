@@ -7,6 +7,7 @@
 <script lang="ts">
   import type { profesor } from "@prisma/client";
 	import type { Department } from "$lib/interfaces/departments";
+	import type { Profesor } from "$lib/interfaces/professors";
 
   import { onMount } from "svelte";
   
@@ -17,37 +18,35 @@
 
   import Modal from "$lib/components/modals/modal.svelte";
 
-  
   let show_validate = false;
   let show_reject = false;
   let actual_prof_email = '';
   let actual_prof_name = '';
-  let new_professors: profesor[] = [];
+  let new_professors: Profesor[] = [];
   let action = { info: '', code: '' };
   let departments: Department[];
 
   $: user = $session.user;
+  $: professor = user?.professor;
   $: validated = $page.url.searchParams.get("validado");
 
   // Fetch new professors data
   onMount(async () => {
 
-    if (user?.dean || user?.professor?.coord_chief) {
+    if (user?.dean || professor?.coord_chief) {
 
       const res = await api.get("/api/professors");
       const res2 = await api.get("/api/departments");
 
       if (res.ok && res2.ok) {
         
-        const professors = await res.clone().json();
+        const professors: Profesor[] = await res.clone().json();
         departments = await res2.clone().json();
+        new_professors = professors.filter(p => !p.activo);
 
-        new_professors = professors.filter((p: profesor) => !p.activo && (p.id !== 0));
-
-        if (user?.professor) {
-          
-          new_professors = professors.filter((p: profesor) => !p.activo && (p.id !== 0) &&
-            user?.professor?.coord_chief?.departments.includes(p.departamento)
+        if (professor?.coord_chief) {
+          new_professors = professors.filter(p =>
+            !p.activo && professor?.coord_chief?.departamentos.includes(p.departamento)
           );
         };
       } else {

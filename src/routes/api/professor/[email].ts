@@ -1,10 +1,11 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
 import { handle_error, prisma } from "$api/_api";
+import type { Profile } from "$lib/interfaces/professors";
 
 
 /**
- * Query loged in professor data
+ * Query professor prfile data
 */
 export const GET: RequestHandler = async function ({ params }) {
   
@@ -15,13 +16,28 @@ export const GET: RequestHandler = async function ({ params }) {
     const professor = await prisma.profesor.findUniqueOrThrow({
       where: { correo: params.email },
       include: {
-        ppi: { orderBy: { id: "desc" }, take: 1 },
         pei: { orderBy: { id: "desc" }, take: 1 }
       }
     });
 
+    const pei = professor.pei[0];
+    const profile: Profile = {
+        perfil: professor.perfil
+      , categoria: professor.categoria
+      , dedicacion: professor.dedicacion
+      , diploma_tipo: professor.diploma_tipo
+      , diploma_universidad: professor.diploma_universidad
+      , url: professor.url
+      , lineas_investigacion: professor.lineas_investigacion
+      , pei: {
+          anio: pei.anio
+        , nivel: pei.nivel
+        , numero: pei.numero
+      }
+    };
+
     status = 200;
-    body = professor;
+    body = profile;
 
   } catch (error: any) {
     const message = await handle_error(error);
@@ -41,7 +57,7 @@ export const GET: RequestHandler = async function ({ params }) {
  * Updates professor data
  * 
  * If the user its the professor means profile modified,
- * else the user its the Dean validating a professor register request
+ * else the user its the Coordinator or Dean validating a professor register request.
  * 
  * @returns Redirects the user to the same page with `action` executed `modificado` or `validado`
 */

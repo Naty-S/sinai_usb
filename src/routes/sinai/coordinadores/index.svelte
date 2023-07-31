@@ -11,13 +11,11 @@
       const res2 = await fetch("/api/professors");
 
       if (res1.ok && res2.ok) {
+        
         const chiefs = await res1.json();
-        const profs: profesor[] = await res2.json();
+        const profesors: Profesor[] = await res2.json();
 
-        const professors = profs.filter(p => p.activo && p.id !== 0).map(p => ({
-            email: p.correo
-          , profile: p.perfil
-        }));
+        const professors = profesors.filter(p => p.activo);
 
         return {
           props: { chiefs, professors }
@@ -40,15 +38,14 @@
   };
 </script>
 <script lang="ts">
-	import type { profesor } from "@prisma/client";
-  import type { Professor } from "$lib/interfaces/professors";
+  import type { Profesor, ProfessorE } from "$lib/interfaces/professors";
 
   import * as api from "$lib/api";
 
 	import Modal from '$lib/components/modals/modal.svelte';
 
-  export let chiefs: Professor[];
-  export let professors: { email: string, profile: string }[];
+  export let chiefs: ProfessorE[];
+  export let professors: Profesor[];
 
   let chief: string;
   let coord: number;
@@ -91,7 +88,7 @@
         Coordinación {c.coordination.nombre}
       </h3>
 
-      {c.name} {c.surname}
+      {c.name1} {c.surname1}
       
       <button
         type="button"
@@ -125,7 +122,7 @@
         class="ui fluid search selection dropdown"
         bind:value={chief}
       >
-        {#each professors.map(p => ({ val: p.email, name: p.profile })) as opt}
+        {#each professors.map(p => ({ val: p.correo, name: p.perfil })) as opt}
           <option value={opt.val}>{opt.name}</option>
         {/each}
       </select>

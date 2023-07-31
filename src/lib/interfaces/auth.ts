@@ -1,67 +1,67 @@
 /// <reference types="@sveltejs/kit" />
 
 import type { grupo_investigacion } from "@prisma/client";
+import type { Coordination } from "./coordinations";
+import type { Division } from "./divisions";
+import type { PEI, PPI, ProfessorE } from "./professors";
 
 
 /**
  * User data
  * If the logged in user its the Dean it can't have professor data
  * 
- * - `email`
- * - `pending_professors`
- * - `dean` (optional)
- * - `professor` (optional)
+ * - `email`: string
+ * - `pending_professors`: boolean
+ * - `dean`: `string` - (optional)
+ * - `professor`: `ProfessorU` - (optional)
  */
 export interface User {
   email: string;
   pending_professors: boolean;
   dean?: string;
-  professor?: Professor;
+  professor?: ProfessorU;
 };
 
 /**
- * User data as professor
+ * Professor user data
+ * 
+ * - `id`: number
+ * - `email`: string
+ * - `name1`: string
+ * - `surname1`: string
+ * - `name2`: `string` - (optional)
+ * - `surname2`: `string` - (optional)
+ * - `department`: Department
+ * - `coordination`: Coordination
+ * - `division`: Division
+ * - `id_card`: number
+ * - `groups`:
+ *    + `grupos_investigacion`: grupo_investigacion[]
+ *    + `historico_grupos`:
+ *      * `Grupo`: grupo_investigacion
+ *      * `inicio`: Date
+ *      * `fin`: Date | null
+ * - `pei?`: PEI | undefined
+ * - `ppi?`: PPI | undefined
+ * - `is_dep_chief`: boolean
+ * - `is_dep_representative`: boolean
+ * - `coord_chief?`: Coordination & { departamentos`: number[] } | undefined
+ * - `division_chief?`: Division | null | undefined
  */
-export interface Professor {
-  id: number;
-  id_card: number;
-  name1: string;
-  name2?: string | null;
-  surname1: string;
-  surname2?: string | null;
-  department: {
-    id: number;
-    name: string;
-    coordination: {
-      id: number;
-      nombre: string;
-    };
-    division: {
-      id: number;
-      nombre: string;
-    };
-  };
-  groups: {
-    grupos_investigacion: grupo_investigacion[],
-    historico_grupos: {
-      Grupo: grupo_investigacion;
-      inicio: Date;
-      fin: Date | null;
+export interface ProfessorU extends ProfessorE {
+    id_card: number
+  ; groups: {
+      grupos_investigacion: grupo_investigacion[]
+    ; historico_grupos: {
+        Grupo: grupo_investigacion
+      ; inicio: Date
+      ; fin: Date | null
     }[]
-  };
-  pei_number?: string | null;
-  pei_level?: string | null;
-  ppi_number?: number | null;
-  ppi_level?: string | null;
-  is_dep_chief: boolean;
-  is_dep_representative: boolean;
-  coord_chief?: {
-    id: number;
-    name: string;
-    departments: number[];
-  };
-  division_chief?: {
-    id: number;
-    name: string;
-  };
+  }
+  ; pei?: PEI
+  ; ppi?: PPI
+  ; is_dep_chief: boolean
+  ; is_dep_representative: boolean
+  ; coord_chief?: Coordination
+  ; division_chief?: Division | null
 };

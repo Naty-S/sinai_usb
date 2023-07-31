@@ -1,5 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
+import type { Activities } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
 import { stringify } from "zipson";
@@ -39,12 +40,17 @@ export const GET: RequestHandler = async function ({ request, params }) {
 
     const logs = await query_activities_logs(professor_activities.map(a => a.id));
     const activities: Activity[] = professor_activities.map(a => (format_activity(a, logs)));
+    const owner_activities: Activities = {
+      owner: {
+          id: division.id
+        , name: division.nombre
+        , full_name: `de la División de ${division.nombre}`
+      }
+      , activities
+    }
 
     status = 200;
-    body = {
-        owner: `de la División de ${division.nombre}`
-      , activities: stringify(activities)
-    };
+    body = stringify(owner_activities);
     
   } catch (error: any) {
     

@@ -6,23 +6,44 @@
 
   export const load: Load = async ({ fetch, params, session }) => {
 
+    const _id = params.id;
     const user = session.user;
     const professor = user?.professor;
 
     if (user?.dean || professor?.coord_chief ||
-        professor?.is_dep_chief || professor?.is_dep_representative) {
-
-      const res = await fetch(`/api/activities/department/${params.id}`);
+        professor?.is_dep_chief || professor?.is_dep_representative
+    ) {
+      const res1 = await fetch(`/api/activities/department/${_id}`);
+      const res2 = await fetch("/api/professors");
      
-      if (res.ok) {
-        const dep_activities = await res.json();
+      if (res1.ok && res2.ok) {
+        
+        const activities: Activities = await res1.json();
+        const profesores: Profesor[] = await res2.json();
+
+        const professors = profesores.filter(p => p.departamento === Number(_id));
+        const professors_activities: Activities[] = activities.activities.map(a => {
+
+          const prof = professors.find(p => p.correo === a.creada_por);
+          const acts: Activity[] = activities.activities.filter(a => a.creada_por === prof?.correo);
+          const owner = {
+            id: prof?.id || 0,
+            name: prof?.nombre1 + ", " + prof?.apellido1 || "Usuario Ficticio",
+            full_name: '',
+          };
+          
+          return { owner, activities: acts };
+        });
   
         return {
-          props: { dep_activities }
+          props: {
+              activities
+            , professors_activities
+          }
         };
       };
   
-      const { message, code } = await res.json();
+      const { message, code } = await res1.json();
       return {
         error: new Error(`Error al cargar las actividades del departamento.\n${code}. ${message}`),
         status: 500
@@ -39,15 +60,18 @@
 <script lang="ts">
   import { page } from "$app/stores";
 
-  import type { DepActivities } from "$lib/interfaces/activities";
+  import type { Activities } from "$lib/interfaces/activities";
+	import type { Profesor } from "$lib/interfaces/professors";
+	import type { Activity } from "$lib/types/activities";
   
   import ResumeEntity from "$lib/components/activities/resume_entity.svelte";
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";
   
-  export let dep_activities: DepActivities;
+  export let activities: Activities;
+  export let professors_activities: Activities[];
 </script>
 
-<ResumeRank rank="Departamento" rank_activities={dep_activities} />
+<ResumeRank rank="departamento" rank_activities={activities} />
 
 <div class="uk-text-center">
   <a href="/sinai/BRA/departamento/{$page.params.id}" class="ui button disabled">
@@ -57,7 +81,7 @@
 
 <div class="uk-text-center">
   Número total de profesores de su departamento resgistrados en el sistema:
-  ({dep_activities.professors_activities.length})
+  ({professors_activities.length})
 </div>
 
 <div class="uk-text-center">
@@ -67,4 +91,4 @@
 
 <div class="ui divider" />
 
-<ResumeEntity entity="Profesor" entity_activities={dep_activities.professors_activities} />
+<ResumeEntity entity="profesor" entity_activities={professors_activities} />

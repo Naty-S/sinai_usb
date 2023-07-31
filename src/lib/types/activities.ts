@@ -1,7 +1,5 @@
 /// <reference types="@sveltejs/kit" />
 
-import type { Group } from "$lib/interfaces/groups";
-import type { ActivityActionLog } from "$lib/interfaces/logs";
 import type {
   actividad,
   autor_externo,
@@ -24,22 +22,51 @@ import type {
   recital
 } from "@prisma/client";
 
+import type { Group } from "$lib/interfaces/groups";
+import type { ActivityLog } from "$lib/interfaces/logs";
+
 
 /**
- * Activity data, contains raw data from DB type `actividad` and
- * authors, groups, kind data and info about the actions performed in the activity
+ * Activity data with format to access from the client.
  */
 export type Activity = actividad & {
   autores_externos: autor_externo[],
   autores_usb: autor_usb[],
-  groups: Group[],
   kind_name: string,
   kind_data: ActivityKind,
-  actions_log: ActivityActionLog[]
+  groups: Group[],
+  logs: ActivityLog[]
 };
 
 /**
- * Each kind of activity info
+ * Activity raw data, contains the data fetched from DB.
+ */
+export type Actividad = actividad & {
+    autores_externos: autor_externo[]
+  , autores_usb: autor_usb[]
+  , actividades_grupos: {
+      Grupo: { id: number, nombre: string }
+    }[]
+  , articulo_revista: articulo_revista | null
+  , capitulo_libro: capitulo_libro | null
+  , composicion: composicion | null
+  , evento: evento | null
+  , exposicion: exposicion | null
+  , grabacion: grabacion | null
+  , informe_tecnico: informe_tecnico | null
+  , libro: libro | null
+  , memoria: memoria | null
+  , partitura: partitura | null
+  , patente: patente | null
+  , premio: premio | null
+  , premio_bienal: premio_bienal | null
+  , proyecto_grado: proyecto_grado | null
+  , proyecto_investigacion: proyecto_investigacion | null
+  , recital: recital | null
+};
+
+/**
+ * Each kind of activity data
  */
 export type ActivityKind
   = articulo_revista
@@ -58,5 +85,5 @@ export type ActivityKind
   | proyecto_grado
   | proyecto_investigacion
   | recital
-  | undefined // This means there's no kind asociated to the activity. This shouldn't happen
+  | undefined // This means there's no kind data. This shouldn't happen, but it does.
 ;

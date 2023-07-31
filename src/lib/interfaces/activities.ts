@@ -1,120 +1,67 @@
 /// <reference types="@sveltejs/kit" />
 
 import type { Activity } from "$lib/types/activities"
-import type { Professor } from "./professors"
-import type { Group } from "./groups"
-import type { Department } from "./departments"
 import type { Division } from "./divisions"
 import type { Coordination } from "./coordinations"
 
 
 /**
- * Activities by year
+ * List of activities belonging to owner:
+ * (Professor, Group, Department, Coordination, Division).
  * 
- * - `year`
- * - `kind_activities`: activities by kind
+ * - `owner`:
+ *    + `id`: string
+ *    + `name`: string
+ *    + `full_name`: string
+ *    + `email`: `string` - (optional)
+ * - `activities`: `Activity[]`
+ */
+export interface Activities {
+  owner: {
+      id: number
+    ; name: string
+    ; full_name: string
+    ; email?: string
+  }
+  ; activities: Activity[]
+};
+
+/**
+ * Activities by year.
+ * 
+ * - `year`: number
+ * - `kind_activities`: `Record<string, Activity[]>` - Activities grouped by kind
  */
 export interface YearActivities {
-  year: number,
-  kind_activities: Record<string, Activity[]>
+    year: number
+  ; kind_activities: Record<string, Activity[]>
 };
 
 /**
- * Count of activity kind by year
+ * Count of activity kind by year.
  * 
- * - `link` (optional): link to redirect if can be clicked
- * - `kind`
+ * - `kind`: string
  * - `counts`
- *    + `count`
- *    + `year` (optional)
+ *    + `count`: number
+ *    + `year`: number - (optional)
+ * - `link`: `string` (optional) - Link to the kind in the resume table
  */
 export interface ActivitiesCounts {
-  link?: string,
-  kind: string,
-  counts: {
-    count: number,
-    year?: number
+    kind: string
+  ; counts: {
+      count: number
+    ; year?: number
   }[]
+  ; link?: string
 };
 
 /**
- * Professor's or group's activity data to be displayed
+ * Coordinations and divisions basic data.
  * 
- * - `entity`: `Decano`, `Profesor` or `Grupo`
- * - `by_year`: activities by year
- * - `years_counts`: count of activity's kind by year
- */
-export interface EntityActivities {
-  entity: string,
-  by_year: YearActivities[],
-  years_counts: ActivitiesCounts[]
-};
-
-/**
- * Professor data and related activities
- * 
- * - `professor`
- * - `activities`
- */
-export interface ProfessorActivities {
-  professor: Professor,
-  activities: Activity[]
-};
-
-/**
- * Group's activities
- * 
- * - `group`
- * - `activities`
- */
-export interface GroupActivities {
-  group: Group,
-  activities: Activity[]
-};
-
-/**
- * Department's activities
- * 
- * - `department`
- * - `professors_activities`
- */
-export interface DepActivities {
-  department: Department,
-  professors_activities: ProfessorActivities[]
-};
-
-/**
- * Coordination's activities
- * Can only have departments or groups activities
- * 
- * - `coordination`
- * - `departments_activities` (optional)
- * - `groups_activities` (optional)
- */
-export interface CoordActivities {
-  coordination: Coordination,
-  departments_activities?: DepActivities[]
-  groups_activities?: GroupActivities[]
-};
-
-/**
- * Division's activities
- * 
- * - `division`
- * - `departments_activities`
- */
-export interface DivisionActivities {
-  division: Division,
-  departments_activities: DepActivities[]
-};
-
-/**
- * Coordinations and divisions.
- * 
- * - `coordinations`
- * - `divisions`
+ * - `coordinations`: Coordination[]
+ * - `divisions`: Division[]
  */
 export interface Ranks {
-  coordinations: Coordination[],
-  divisions: Division[]
+    coordinations: Coordination[]
+  ; divisions: Division[]
 };

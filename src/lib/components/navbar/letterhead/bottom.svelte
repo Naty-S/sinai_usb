@@ -21,19 +21,19 @@
       name = `Prof. ${professor.surname1}, ${professor.name1}. `;
 
       if (professor.is_dep_chief) {
-        rank = `Jefe del Dpto. de ${professor.department.name}`;
+        rank = `Jefe del Dpto. de ${professor.department.nombre}`;
   
       } else if (professor.is_dep_representative) {
-        rank = `Representante del Dpto. de ${professor.department.name}`;
+        rank = `Representante del Dpto. de ${professor.department.nombre}`;
         
       } else if (professor.coord_chief) {
-        rank = `Coordinador de ${professor.coord_chief.name}`;
+        rank = `Coordinador de ${professor.coord_chief.nombre}`;
         
       } else if (professor.division_chief) {
-        rank = `Jefe de Division de ${professor.division_chief.name}`;
+        rank = `Jefe de División de ${professor.division_chief.nombre}`;
         
       } else {
-        rank = `Dpto. de ${professor?.department.name}`;
+        rank = `Dpto. de ${professor.department.nombre}`;
       };
     } else {
       name = `${user.dean}. `;

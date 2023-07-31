@@ -1,6 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { Department } from "$lib/interfaces/departments";
+import type { DepartmentE } from "$lib/interfaces/departments";
+
 import { handle_error, prisma } from "$api/_api";
 
 
@@ -41,15 +42,15 @@ export const GET: RequestHandler = async function () {
       orderBy: { id: "asc" }
     });
 
-    const deps_chiefs: Department[] = departments.map(d => (
+    const deps_chiefs: DepartmentE[] = departments.map(d => (
       {
         id: d.id,
         nombre: d.nombre,
         chief: {
           id: d.Jefe.id,
           email: d.Jefe.correo,
-          name: d.Jefe.nombre1,
-          surname: d.Jefe.apellido1,
+          name1: d.Jefe.nombre1,
+          surname1: d.Jefe.apellido1,
           department: { id: d.id, nombre: d.nombre },
           coordination: d.Coordinacion,
           division: d.Division,
@@ -57,8 +58,8 @@ export const GET: RequestHandler = async function () {
         rep: {
           id: d.Representante.id,
           email: d.Representante.correo,
-          name: d.Representante.nombre1,
-          surname: d.Representante.apellido1,
+          name1: d.Representante.nombre1,
+          surname1: d.Representante.apellido1,
           department: { id: d.id, nombre: d.nombre },
           coordination: d.Coordinacion,
           division: d.Division,
