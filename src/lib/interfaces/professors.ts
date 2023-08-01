@@ -17,9 +17,21 @@ import type { Division } from "./divisions"
  * 
  * - `id`: number
  * - `correo`: string
- * - `departamento`: number
- * - `perfil`: string
  * - `activo`: boolean
+ * - `cedula`: number
+ * - `nombre1`: string
+ * - `nombre2`: string | null
+ * - `apellido1`: string
+ * - `apellido2`: string | null
+ * - `perfil`: string
+ * - `categoria`: string
+ * - `condicion`: string
+ * - `dedicacion`: string
+ * - `departamento`: number
+ * - `diploma_tipo`: string
+ * - `diploma_universidad`: string
+ * - `lineas_investigacion`: string[]
+ * - `url`: string | null
  */
 export interface Profesor {
     id: number

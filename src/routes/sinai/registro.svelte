@@ -231,7 +231,7 @@
     <Input
       label="Página Web Personal"
       name="professor.url"
-      placeholder="http://"
+      placeholder="http://www.example.com"
       bind:value={$form.professor.url}
       error={$errors.professor.url}
       class="field"

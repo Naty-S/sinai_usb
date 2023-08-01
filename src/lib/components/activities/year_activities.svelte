@@ -7,17 +7,16 @@
   * `editable`: boolean (optional)
  -->
 <script lang="ts">
-  import { session } from "$app/stores";
-  
   import type { Activity } from "$lib/types/activities";
   import type { YearActivities } from "$lib/interfaces/activities";
-	import type { ActivityActionLog } from "$lib/interfaces/logs";
+  
+  import { session } from "$app/stores";
   
   import { format_date } from "$lib/utils/formatting";
 
   import * as api from "$lib/api";
 
-  import Modal from "$lib/components/modal.svelte";
+  import Modal from "$lib/components/modals/modal.svelte";
   import KindInfo from "./kind_info.svelte";
   
   // Props
@@ -26,9 +25,9 @@
 
   const activities = Object.entries(year_activities.kind_activities);
 
-  let show_validate = false;
-  let show_invalidate = false;
-  let show_delete = false;
+  let pop_validate = false;
+  let pop_invalidate = false;
+  let pop_delete = false;
   let actual_act_id = -1;
   let actual_act_kind = '';
   let actual_act_title = '';
@@ -36,10 +35,11 @@
 
   $: user = $session.user;
   $: professor = user?.professor;
-  $: is_chief = professor?.coord_chief || professor?.is_dep_representative || professor?.is_dep_chief;
+  $: is_chief = professor?.is_dep_chief || professor?.is_dep_representative ||
+                professor?.coord_chief || professor?.division_chief;
 
   const can_validate = function (act: Activity, kind: string) {
-    return (user?.dean || (is_chief && user?.email !== act.creada_por))&& kind !== "ACTIVIDAD INVALIDA";
+    return (user?.dean || (is_chief && user?.email !== act.creada_por)) && kind !== "ACTIVIDAD INVALIDA";
   };
 
   const can_modify = function (act: Activity, kind: string) {
@@ -51,7 +51,7 @@
   };
 
   const popup_validate = function (act_id: number, act_kind: string, act_title: string) {
-    show_validate = true;
+    pop_validate = true;
     actual_act_id = act_id;
     actual_act_kind = act_kind;
     actual_act_title = act_title;
@@ -65,7 +65,7 @@
     if (res.ok) {
       const { code } = await res.json();
       action.code = code;
-      show_validate = false;
+      pop_validate = false;
 
     } else {
       const { message, code } = await res.json();
@@ -75,7 +75,7 @@
   };
 
   const popup_invalidate = function (act_id: number, act_kind: string, act_title: string) {
-    show_invalidate = true
+    pop_invalidate = true
     actual_act_id = act_id;
     actual_act_kind = act_kind;
     actual_act_title = act_title;
@@ -89,7 +89,7 @@
     if (res.ok) {
       const { code } = await res.json();
       action.code = code;
-      show_invalidate = false;
+      pop_invalidate = false;
 
     } else {
       const { message, code } = await res.json();
@@ -99,7 +99,7 @@
   };
 
   const popup_delete = function (act_id: number, act_kind: string, act_title: string) {
-    show_delete = true;
+    pop_delete = true;
     actual_act_id = act_id;
     actual_act_kind = act_kind;
     actual_act_title = act_title;
@@ -113,23 +113,13 @@
     if (res.ok) {
       const { code } = await res.json();
       action.code = code;
-      show_delete = false;
+      pop_delete = false;
 
     } else {
       const { message, code } = await res.json();
       action.info = message;
       action.code = code;
     };
-  };
-
-  const find_act_last_log = function (act: Activity): ActivityActionLog {
-
-    const _act = act.kind_data?.actividad;
-    const logs = act.actions_log.filter(l => l.actividad === _act);
-
-    const last_log = logs.sort((a,b) => b.id - a.id)[0];
-
-    return last_log;
   };
 </script>
 
@@ -145,23 +135,25 @@
 
     {#each activities as [kind, acts]}
     <!-- Display activities kind -->
-      <div class="js-filter">
-        <h3 id="{year_activities.year}_{kind}" data-kind={kind} style="scroll-margin: 225px;">
-          {kind}
-        </h3>
-      </div>
+      <h3 id="{year_activities.year}_{kind}" style="scroll-margin: 225px;">
+        {kind}
+      </h3>
       
-      <ol class="ui items js-filter">
+      <ol class="ui items">
         {#each acts as act}
-          <div class="item" data-kind={kind}>
+          <div class="item">
             <li>
               <div class="content">
                 <strong class="authors">
                   {#if act.autores_usb.length > 0}
                     {#each act.autores_usb as a}
-                      <a href="/sinai/actividades/profesor/{a.profesor_id}">
+                      {#if user}
+                        <a href="/sinai/actividades/profesor/{a.profesor_id}">
+                          {a.nombre}
+                        </a>
+                      {:else}
                         {a.nombre}
-                      </a>
+                      {/if}
                     {/each}.
                   {/if}
                   {act.autores_externos.length > 0 ? act.autores_externos.map(a => a.nombre).join("; ") + '.' : ''}
@@ -173,7 +165,7 @@
 
                 {#if act.groups.length > 0}
                   <span class="uk-text-emphasis">Realizada en el(los) Grupo(s)</span>:
-                  {act.groups.map(g => g.name).join(", ")}.
+                  {act.groups.map(g => g.nombre).join(", ")}.
                 {/if}
 
                 <i><span class="ui blue text">
@@ -186,12 +178,12 @@
                     {#if act.validado_por && act.fecha_validacion}
                       (Validada por {act.validado_por} el {format_date(act.fecha_validacion, "long-day")}).
                     {/if}
-                    {#if act.actions_log.filter(l => l.actividad === act.kind_data?.actividad).length > 0}
+                    {#if act.logs.length > 0}
                       (Modificado recientemente por
-                        {find_act_last_log(act).Usuario.profesor?.perfil || 
-                         find_act_last_log(act).Usuario.administrador?.nombre}
-                      el {format_date(find_act_last_log(act).fecha, "long-day")}
-                      a las {format_date(find_act_last_log(act).hora, "time")}).
+                        {act.logs[0].Usuario.profesor?.perfil || act.logs[0].Usuario.administrador?.nombre}
+                        el {format_date(act.logs[0].fecha, "long-day")}
+                        a las {format_date(act.logs[0].hora, "time")}
+                      ).
                     {/if}
                   </span>
                 {/if}
@@ -250,14 +242,14 @@
 }
 </style>
 
-{#if show_validate}
+{#if pop_validate}
   <Modal
     id="validate_{actual_act_id}"
     title="Validar Actividad"
     ok_text="Validar"
     align="center"
-    is_active={show_validate}
-    close={() => show_validate = false}
+    pop_up={pop_validate}
+    close={() => pop_validate = false}
     confirm={confirm_validate}
   >
     <p>Está seguro(a) que quiere VALIDAR ésta actividad?</p>
@@ -269,7 +261,7 @@
     id="{actual_act_id}_validated"
     title="Validar Actividad"
     align="center"
-    is_active={action.code === "validated"}
+    pop_up={action.code === "validated"}
     close_text="Cerrar"
     close={() => { action.code = ''; location.reload(); }}
   >
@@ -277,14 +269,14 @@
   </Modal>
 {/if}
 
-{#if show_invalidate}
+{#if pop_invalidate}
   <Modal 
     id="invalidate_{actual_act_id}"
     title="Desvalidar Actividad"
     ok_text="Desvalidar"
     align="center"
-    is_active={show_invalidate}
-    close={() => show_invalidate = false}
+    pop_up={pop_invalidate}
+    close={() => pop_invalidate = false}
     confirm={confirm_invalidate}
   >
     <p>Esta seguro(a) que quiere DESVALIDAR esta actividad?</p>
@@ -296,7 +288,7 @@
     id="{actual_act_id}_invalidated"
     title="Desvalidar Actividad"
     align="center"
-    is_active={action.code === "invalidated"}
+    pop_up={action.code === "invalidated"}
     close_text="Cerrar"
     close={() => { action.code = ''; location.reload(); }}
   >
@@ -304,14 +296,14 @@
   </Modal>
 {/if}
 
-{#if show_delete}
+{#if pop_delete}
   <Modal 
     id="delete_{actual_act_id}"
     title="Eliminar Actividad"
     ok_text="Eliminar"
     align="center"
-    is_active={show_delete}
-    close={() => show_delete = false}
+    pop_up={pop_delete}
+    close={() => pop_delete = false}
     confirm={confirm_delete}
   >
     <p>Está seguro(a) que quiere ELIMINAR ésta actividad?</p>
@@ -323,7 +315,7 @@
     id="{actual_act_id}_deleted"
     title="Eliminar Actividad"
     align="center"
-    is_active={action.code === "deleted"}
+    pop_up={action.code === "deleted"}
     close_text="Cerrar"
     close={() => { action.code = ''; location.reload(); }}
   >
@@ -337,7 +329,7 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
+    pop_up={action.info !== ''}
     close={() => location.reload()}
   >
     <p>

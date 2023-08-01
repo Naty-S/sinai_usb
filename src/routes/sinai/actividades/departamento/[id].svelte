@@ -21,19 +21,40 @@
         const activities: Activities = await res1.json();
         const profesores: Profesor[] = await res2.json();
 
+        const activitys = activities.activities;
+        const acts_owners = activitys.map(a => a.creada_por);
         const professors = profesores.filter(p => p.departamento === Number(_id));
-        const professors_activities: Activities[] = activities.activities.map(a => {
+        const p_with_acts = professors.filter(p => acts_owners.includes(p.correo))
+        const p_without_acts = professors.filter(p => !acts_owners.includes(p.correo))
 
-          const prof = professors.find(p => p.correo === a.creada_por);
-          const acts: Activity[] = activities.activities.filter(a => a.creada_por === prof?.correo);
-          const owner = {
-            id: prof?.id || 0,
-            name: prof?.nombre1 + ", " + prof?.apellido1 || "Usuario Ficticio",
-            full_name: '',
-          };
-          
-          return { owner, activities: acts };
-        });
+        const professors_with_acts: Activities[] = p_with_acts.map(p => ({
+          owner: {
+            id: p.id,
+            name: p.nombre1 + ", " + p.apellido1,
+            full_name: ''
+          },
+          activities: activitys.filter(a => a.creada_por === p.correo)
+        }));
+
+        const professors_without_acts: Activities[] = p_without_acts.map(p => ({
+          owner: {
+            id: p.id,
+            name: p.nombre1 + ", " + p.apellido1,
+            full_name: ''
+          },
+          activities: []
+        }));
+
+        const profesor_ficticio: Activities = {
+          owner: {
+            id: 0,
+            name: "profesor ficticio",
+            full_name: ''
+          },
+          activities: activitys.filter(a => a.creada_por === "usuario ficticio")
+        };
+
+        const professors_activities = professors_with_acts.concat(professors_without_acts).concat(profesor_ficticio)
   
         return {
           props: {
@@ -62,7 +83,6 @@
 
   import type { Activities } from "$lib/interfaces/activities";
 	import type { Profesor } from "$lib/interfaces/professors";
-	import type { Activity } from "$lib/types/activities";
   
   import ResumeEntity from "$lib/components/activities/resume_entity.svelte";
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";

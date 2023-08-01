@@ -10,7 +10,6 @@
 
   export let entity: string;
   export let entity_activities: Activities[];
-
 </script>
 
 <div class="ui divider" />

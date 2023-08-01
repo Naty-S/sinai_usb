@@ -12,18 +12,57 @@
 
       const res1 = await fetch(`/api/activities/coordination/${_id}`);
       const res2 = await fetch("/api/coordinations");
-      const res3 = await fetch("/api/professors");
+      let res3;
+
+      if (Number(_id) === 4) {
+        res3 = await fetch("/api/groups");
+      } else {
+        res3 = await fetch("/api/professors");
+      };
 
       if (res1.ok && res2.ok && res3.ok) {
         
-        const activities = await res1.json();
+        const activities: Activities = parse(await res1.text());
         const coords: Coordination[] = await res2.json();
-        const coord_deps: number[] = coords.find(c => c.id === Number(_id))?.departamentos.map(d => d.id) || [];
-        const profesores: Profesor[] = await res3.json();
-        const professors = profesores.filter(p => coord_deps.includes(p.departamento));
+
+        let profesores: Profesor[];
+        let grupos: GroupE[];
+        let ranks: Department[] | GroupE[];
+
+        if (Number(_id) === 4) {
+          grupos = await res3.json();
+          ranks = grupos;
+        } else {
+          profesores = await res3.json();
+          ranks = coords.find(c => c.id === Number(_id))?.departamentos || [];
+        };
+
+        const ranks_activities: Activities[] = ranks.map(r => {
+
+          let full_name = '';
+          let activitys: Activity[] = [];
+
+          if (Number(_id) === 4) {
+            full_name = `del Grupo de ${r.nombre}`;
+            activitys = activities.activities.filter(a => a.groups.map(g => g.id).includes(r.id))
+          } else {
+            full_name = `del Departamento de ${r.nombre}`;
+            const dep_profs = profesores.filter(p => p.departamento === r.id).map(p => p.correo);
+            activitys = activities.activities.filter(a => dep_profs.includes(a.creada_por))
+          };
+
+          return {
+            owner: {
+              id: r.id,
+              name: r.nombre,
+              full_name
+            },
+            activities: activitys
+          }
+        });
 
         return {
-          props: {activities: parse(activities), professors}
+          props: {activities, ranks_activities}
         };
       };
   
@@ -46,29 +85,19 @@
 <script lang="ts">
   import type { Activities } from "$lib/interfaces/activities";
 	import type { Coordination } from "$lib/interfaces/coordinations";
+	import type { Group, GroupE } from "$lib/interfaces/groups";
 	import type { Profesor } from "$lib/interfaces/professors";
 	import type { Activity } from "$lib/types/activities";
 
   import { parse } from "zipson";
   
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";
+	import type { Department } from "$lib/interfaces/departments";
 
   export let activities: Activities;
-  export let professors: Profesor[];
+  export let ranks_activities: Activities[];
 
   const rank = activities.owner.id === 4 ? "grupo" : "departamento";
-  const ranks_activities: Activities[] = activities.activities.map(a => {
-
-    const prof = professors.find(p => p.correo === a.creada_por);
-    const acts: Activity[] = activities.activities.filter(a => a.creada_por === prof?.correo);
-    const owner = {
-      id: prof?.id || 0,
-      name: prof?.nombre1 + ", " + prof?.apellido1 || "Usuario Ficticio",
-      full_name: '',
-    };
-    
-    return { owner, activities: acts };
-  });
 </script>
 
 <ResumeRank rank="coordinacion" rank_activities={activities} />

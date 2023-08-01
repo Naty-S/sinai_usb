@@ -16,14 +16,27 @@
 
       if (res1.ok && res2.ok && res3.ok) {
         
-        const activities = await res1.json();
+        const activities: Activities = parse(await res1.text());
         const divisions: Division[] = await res2.json();
-        const div_deps: number[] = divisions.find(c => c.id === Number(_id))?.departamentos.map(d => d.id) || [];
         const profesores: Profesor[] = await res3.json();
-        const professors = profesores.filter(p => div_deps.includes(p.departamento));
+
+        const departments = divisions.find(c => c.id === Number(_id))?.departamentos || [];
+        const deparments_activities: Activities[] = departments.map(d => {
+
+          const dep_profs = profesores.filter(p => p.departamento === d.id).map(p => p.correo);
+
+          return {
+            owner: {
+              id: d.id,
+              name: d.nombre,
+              full_name: `del Departamento de ${d.nombre}`
+            },
+            activities: activities.activities.filter(a => dep_profs.includes(a.creada_por))
+          }
+        });
 
         return {
-          props: {activities: parse(activities), professors}
+          props: {activities, deparments_activities}
         };
       };
   
@@ -47,31 +60,17 @@
   import type { Activities } from "$lib/interfaces/activities";
 	import type { Division } from "$lib/interfaces/divisions";
 	import type { Profesor } from "$lib/interfaces/professors";
-	import type { Activity } from "$lib/types/activities";
   
   import { parse } from "zipson";
 
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";
 
   export let activities: Activities;
-  export let professors: Profesor[];
-
-  const ranks_activities: Activities[] = activities.activities.map(a => {
-
-    const prof = professors.find(p => p.correo === a.creada_por);
-    const acts: Activity[] = activities.activities.filter(a => a.creada_por === prof?.correo);
-    const owner = {
-      id: prof?.id || 0,
-      name: prof?.nombre1 + ", " + prof?.apellido1 || "Usuario Ficticio",
-      full_name: '',
-    };
-    
-    return { owner, activities: acts };
-  });
+  export let deparments_activities: Activities[];
 </script>
 
 <ResumeRank rank="division" rank_activities={activities} />
 
-{#each ranks_activities as rank_activities}
+{#each deparments_activities as rank_activities}
   <ResumeRank rank="departamento" {rank_activities} />
 {/each}

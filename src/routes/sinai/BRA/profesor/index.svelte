@@ -19,13 +19,13 @@
         
         const { owner, activities } = await res1.json();
         const profile = await res2.json();
-        const period = await res3.json();
+        const period_bra = await res3.json();
   
         return {
           props: {
             activities,
             profile,
-            period
+            period_bra
           }
         };
       };

@@ -108,6 +108,7 @@
     <Input
       label="Página url"
       name="profile.url"
+      placeholder="http://www.example.com"
       bind:value={$form.profile.url}
       error={$errors.profile.url}
       class="field"
@@ -214,7 +215,7 @@
     close_text="Ok"
     align="center"
     pop_up={modified}
-    close={location.reload}
+    close={() => location.replace($page.url.pathname)}
   >
     <p>Perfil modificado con éxito!!!</p>
   </Modal>

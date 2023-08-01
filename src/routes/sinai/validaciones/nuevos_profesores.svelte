@@ -5,7 +5,6 @@
   If department chief, displays professor for that department.
  -->
 <script lang="ts">
-  import type { profesor } from "@prisma/client";
 	import type { Department } from "$lib/interfaces/departments";
 	import type { Profesor } from "$lib/interfaces/professors";
 
@@ -46,7 +45,7 @@
 
         if (professor?.coord_chief) {
           new_professors = professors.filter(p =>
-            !p.activo && professor?.coord_chief?.departamentos.includes(p.departamento)
+            !p.activo && professor?.coord_chief?.departamentos.map(d => d.id).includes(p.departamento)
           );
         };
       } else {
@@ -245,7 +244,7 @@
     close_text="Ok"
     align="center"
     pop_up={Boolean(validated)}
-    close={location.reload}
+    close={() => location.replace($page.url.pathname)}
   >
   <p>Profesor <span class="ui primary text">"{validated}"</span></p>
   <p>Validado con éxito!!!</p>
@@ -301,7 +300,7 @@
     close_text="Ok"
     align="center"
     pop_up={action.info !== '' && action.code !== "rejected"}
-    close={location.reload}
+    close={() => location.replace($page.url.pathname)}
   >
     <p>
       Hubo un problema al intentar realizar la acción por favor vuelva a intentar

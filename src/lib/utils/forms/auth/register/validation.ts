@@ -37,12 +37,12 @@ export const validation = function () {
       diploma_tipo: yup.string().oneOf(["Lic_", "Ph_D_", "Doctor", "Magister", "Ing_"]),
       diploma_universidad: yup.string().required("Requerido"),
       departamento: yup.string().oneOf(deps_ids),
-      perfil: yup.string().required("Requerido").matches(perfil, "Formato inválido. Escriba su primer apellido y primer nombre"),
+      perfil: yup.string().required("Requerido").matches(perfil, "Formato inválido. Escriba su primer Apellido, Nombre"),
       url: yup.lazy(value => !value ? yup.string().nullable() : 
         yup.string().when("url", {
           is: null,
           then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato inválido")
+          otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
         })
       )
     }),
