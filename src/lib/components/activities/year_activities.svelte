@@ -147,7 +147,7 @@
                 <strong class="authors">
                   {#if act.autores_usb.length > 0}
                     {#each act.autores_usb as a}
-                      {#if user}
+                      {#if user && a.profesor_id}
                         <a href="/sinai/actividades/profesor/{a.profesor_id}">
                           {a.nombre}
                         </a>

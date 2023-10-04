@@ -5,6 +5,14 @@ import type { kinds } from "$lib/types/forms";
 import { parse_date } from "$lib/utils/formatting";
 
 
+const actividad = yup.object().shape({
+    titulo: yup.string().required("Requerido")
+  , descripcion: yup.string().nullable()
+  , fecha_validacion: yup.date().nullable()
+  , observaciones: yup.string().nullable()
+  , palabras_clave: yup.array(yup.string())
+});
+
 const articulo_revista = yup.object().shape({
     articulo_invitado: yup.boolean().typeError("No es booleano")
   , con_estudiantes: yup.boolean().typeError("No es booleano")
@@ -285,6 +293,8 @@ const autores_usb = yup.lazy(value => {
   return yup.mixed().notRequired();
 });
 
+const autores: [string, string] = ["autores_usb", "autores_externos"];
+
 const groups = [
   '?','0','1', '2', '3', '4', '6', '8', '9', "10", "11", "12", "13", "14", "15", "16", "17",
   "19", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "33", "34",
@@ -304,274 +314,146 @@ export const validation = function (kind: kinds) {
   switch (kind) {
     case "articulo_revista":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , articulo_revista
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "capitulo_libro":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , capitulo_libro
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "composicion":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , composicion
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "evento":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , evento
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "exposicion":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , exposicion
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "grabacion":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , grabacion
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "informe_tecnico":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , informe_tecnico
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "libro":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , libro
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "memoria":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , memoria
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "partitura":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , partitura
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "patente":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , patente
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "premio":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , premio
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "premio_bienal":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , premio_bienal
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "proyecto_grado":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , proyecto_grado
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "proyecto_investigacion":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , proyecto_investigacion
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
 
     case "recital":
       return yup.object().shape({
-        actividad: yup.object().shape({
-          titulo: yup.string().required("Requerido")
-          , descripcion: yup.string().nullable()
-          , fecha_validacion: yup.date().nullable()
-          , observaciones: yup.string().nullable()
-          , palabras_clave: yup.array(yup.string())
-        })
+        actividad
         , recital
         , autores_externos
         , autores_usb
         , actividades_grupos
-      }, [
-        ["autores_usb", "autores_externos"]
-      ]);
+      }, [autores]);
   };
 };

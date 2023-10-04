@@ -1,6 +1,6 @@
 <!-- 
 	@component
-  Form dropdown select
+  Form datalist
 
   Props:
   * `label`: string
@@ -33,15 +33,19 @@
 
 <div class:error={error} {...$$props}>
   <label for={name}>{label}</label>
-  <select
+  <input
+    list="datalist-{name}"
     {name}
-    class="ui fluid selection dropdown"
     {value}
     on:change={handleChange}
+  >
+  <datalist
+    id="datalist-{name}"
+    class="ui fluid selection"
   >
     {#each options as opt}
       <option value={opt.val}>{opt.name.replaceAll('_', ' ')}</option>
     {/each}
-  </select>
+  </datalist>
   <ErrorMsg {error} />
 </div>
