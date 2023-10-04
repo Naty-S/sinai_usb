@@ -6,21 +6,46 @@
 
   export const load: Load = async ({ fetch, params, session }) => {
 
+    const _id = params.id;
+
     if (session.user?.professor?.division_chief || session.user?.dean) {
 
-      const res = await fetch(`/api/activities/division/${params.id}`);
-  
-      if (res.ok) {
-        const division_activities: DivisionActivities = await res.json();
-  
+      const res1 = await fetch(`/api/activities/division/${_id}`);
+      const res2 = await fetch("/api/divisions");
+      const res3 = await fetch("/api/professors");
+
+      if (res1.ok && res2.ok && res3.ok) {
+        
+        const activities: Activities = parse(await res1.text());
+        const divisions: Division[] = await res2.json();
+        const profesores: Profesor[] = await res3.json();
+
+        const departments = divisions.find(c => c.id === Number(_id))?.departamentos || [];
+        const deparments_activities: Activities[] = departments.map(d => {
+
+          const dep_profs = profesores.filter(p => p.departamento === d.id).map(p => p.correo);
+
+          return {
+            owner: {
+              id: d.id,
+              name: d.nombre,
+              full_name: `del Departamento de ${d.nombre}`
+            },
+            activities: activities.activities.filter(a => dep_profs.includes(a.creada_por))
+          }
+        });
+
         return {
-          props: {division_activities}
+          props: {activities, deparments_activities}
         };
       };
   
-      const { message,code } = await res.json();
+      const { message: msg1, code: code1 } = await res1.json();
+      const { message: msg2, code: code2 } = await res2.json();
+      const { message: msg3, code: code3 } = await res2.json();
       return {
-        error: new Error(`Error al cargar las actividades de la División.\n${code}. ${message}`),
+        error: new Error(`Error al cargar los datos de la División.\n${code1}. ${msg1}\n\
+          ${code2}. ${msg2}\n${code3}. ${msg3}`),
         status: 500
       };
     } else {
@@ -32,15 +57,20 @@
   };
 </script>
 <script lang="ts">
-  import type { DivisionActivities } from "$lib/interfaces/activities";
+  import type { Activities } from "$lib/interfaces/activities";
+	import type { Division } from "$lib/interfaces/divisions";
+	import type { Profesor } from "$lib/interfaces/professors";
+  
+  import { parse } from "zipson";
 
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";
 
-  export let division_activities: DivisionActivities;
+  export let activities: Activities;
+  export let deparments_activities: Activities[];
 </script>
 
-<ResumeRank rank="División" rank_activities={division_activities} />
+<ResumeRank rank="division" rank_activities={activities} />
 
-{#each division_activities.departments_activities as dep_acts}
-  <ResumeRank rank="Departamento" rank_activities={dep_acts} />
+{#each deparments_activities as rank_activities}
+  <ResumeRank rank="departamento" {rank_activities} />
 {/each}

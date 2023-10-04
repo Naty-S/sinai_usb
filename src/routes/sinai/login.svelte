@@ -2,7 +2,6 @@
   import { redirect } from "$lib/utils/session";
   
   export const load = redirect;
-
 </script>
 <script lang="ts">
   import { onMount } from "svelte";
@@ -10,7 +9,7 @@
 	import { goto } from "$app/navigation";
   import { session, page } from "$app/stores";
 
-	import Modal from "$lib/components/modal.svelte";
+	import Modal from "$lib/components/modals/modal.svelte";
 
   import * as api from "$lib/api";
 
@@ -65,7 +64,7 @@
     title="Error al iniciar sesión"
     close_text="Ok"
     align="center"
-    is_active={err_info !== ''}
+    pop_up={err_info !== ''}
     close={() => err_info = ''}
   >
     <span class="ui red text">Detalles: {err_info}</span>

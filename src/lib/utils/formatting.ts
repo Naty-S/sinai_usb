@@ -1,15 +1,17 @@
-import type { Activity } from "$lib/types/activities";
-import type { ActivityActionLog } from "$lib/interfaces/logs";
+import type { Activity, Actividad } from "$lib/types/activities";
 import type { Group } from "$lib/interfaces/groups";
+import type { ActivityLog } from "$lib/interfaces/logs";
 
 import { parse, isDate } from "date-fns";
 import { DateTime } from "luxon";
+
+import { kinds } from "$lib/constants";
 
 
 /**
  * Creates or convert a date into VE timezone.
  * 
- * @param {Date | string} date - (optional) date to convert
+ * @param date - (optional) date to convert
  * @returns Date in VE timezone
  */
 export const ve_date = function (date?: Date | string | null): DateTime {
@@ -32,15 +34,16 @@ export const ve_date = function (date?: Date | string | null): DateTime {
  *    - `long`: `Month` `yyyy` (default)
  *    - `long-day`: `dd` de `Month` del `yyyy`
  *    - `yyyy-MM-dd`
- *    - `time`: hours:minutes:seconds
+ *    - `time`: `hours`:`minutes`:`seconds`
  * 
  * Used to display the activity's description and current date
  * 
- * @param {Date | string} date - The date to format
- * @param {string} format - `long` (default), `yyyy-MM-dd`, `long-day`, `time`
+ * @param date - The date to format
+ * @param format - `long` (default), `yyyy-MM-dd`, `long-day`, `time`
  * @returns The formated date
  */
-export const format_date = function (date: Date | string | null, format: string = "long"): string {
+export const format_date = function (date: Date | string | null, format: string = "long")
+: string {
 
   const _date = ve_date(date);
 
@@ -65,71 +68,57 @@ export const format_date = function (date: Date | string | null, format: string 
 };
 
 /**
- * Format the raw activity data into the actual data to display
+ * Format the raw activity data into the actual data to display in client.
  * 
- * @param activity - Raw activity data
- * @param logs - Log info, CRUD operations executed in activities by professors
- * @returns Activity data with groups, kinds and logs info
+ * @param actividad - Raw activity data
+ * @param logs - Log info
+ * @returns Activity data with kind data, groups, and logs
  */
-export const format_activity_kind = function (activity: any, actions_log?: ActivityActionLog[]): Activity {
+export const format_activity = function (actividad: Actividad, logs: ActivityLog[] = [])
+: Activity {
+
   let kind_name = "ACTIVIDAD INVALIDA";
   let kind_data;
 
-  const kinds = [
-    "articulo_revista"
-    , "capitulo_libro"
-    , "composicion"
-    , "evento"
-    , "exposicion"
-    , "grabacion"
-    , "informe_tecnico"
-    , "libro"
-    , "memoria"
-    , "partitura"
-    , "patente"
-    , "premio"
-    , "premio_bienal"
-    , "proyecto_grado"
-    , "proyecto_investigacion"
-    , "recital"
-  ];
-
-  // removes null's activities kinds
+  // Find kind data
   kinds.map(kind => {
-    const _kind = kind as keyof typeof activity ;
     
-    if (!activity[_kind]) { delete activity[_kind]; }
+    const _kind = kind as keyof typeof actividad ;
+    const _kind_data = actividad[_kind];
+    
+    if (!_kind_data) { delete actividad[_kind]; /* console.log("no data:",actividad) */}
     else {
       kind_name = kind;
-      kind_data = activity[_kind];
+      kind_data = _kind_data;
     };
   });
 
-  const groups: Group[] = activity.actividades_grupos.map((g: any) => ({
+  const groups: Group[] = actividad.actividades_grupos.map((g: any) => ({
     id: g.Grupo.id,
-    name: g.Grupo.nombre
+    nombre: g.Grupo.nombre
   }));
 
-  delete activity["actividades_grupos"];
+  // Omit "actividades_grupos"
+  const { actividades_grupos, ..._actividad } = actividad;
 
-  const act: Activity = {
-    ...activity,
-    groups,
-    kind_name,
-    kind_data,
-    actions_log
+  const activity: Activity = {
+    ..._actividad
+    , kind_name
+    , kind_data
+    , groups
+    , logs: logs.filter(l => l.actividad === actividad.id).sort((a, b) => b.id - a.id)
   };
 
-  return act;
+  return activity;
 };
 
 
 /**
- * Parse date to check for validation in activities forms
+ * Parse date to check for validation in activities forms.
  * 
- * @param value Not used, needed for the function that uses this function
- * @param originalValue - Original date value
- * @returns Parsed date for validation in activities forms
+ * @param value Not used, needed for the function that uses this function.
+ * @param originalValue - Original date value.
+ * @returns Parsed date for validation.
  */
 export const parse_date = function (value: any, originalValue: any) {
   const parsed_date = isDate(originalValue) || originalValue === null

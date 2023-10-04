@@ -4,46 +4,43 @@
   Can only be seen by Coordinations and Departments
  -->
 <script lang="ts">
-  import type { ActivitiesCounts, ProfessorActivities, GroupActivities } from "$lib/interfaces/activities";
+  import type { ActivitiesCounts,	Activities } from "$lib/interfaces/activities";
 
   import ResumeTable from "./resume_table.svelte";
   
   export let entity: string;
-  export let entity_activities: ProfessorActivities[] | GroupActivities[];
+  export let entity_activities: Activities[];
 
-  let entities_without_acts;
+  const entities_without_acts = entity_activities.filter(e => e.activities.length < 1);
+
   let entities_without_acts_counts: ActivitiesCounts[];
   
-  if (entity === "Grupo") {
+  if (entity === "grupo") {
 
-    const groups_activities = entity_activities as GroupActivities[];
-    entities_without_acts = groups_activities.filter(g => g.activities.length < 1);
-    entities_without_acts_counts = entities_without_acts.map( g => {
+    entities_without_acts_counts = entities_without_acts.map(g => {
       return {
-        kind: g.group.name,
+        kind: g.owner.name,
         counts: []
       };
     });
 
-  } else if (entity === "Profesor") {
+  } else if (entity === "profesor") {
 
-    const professors_activities = entity_activities as ProfessorActivities[]
-    entities_without_acts = professors_activities.filter(p => p.activities.length < 1);
-    entities_without_acts_counts = entities_without_acts.map( p => {
+    entities_without_acts_counts = entities_without_acts.map(p => {
       return {
-        link: `mailto:${p.professor.email}`,
-        kind: `${p.professor.name}, ${p.professor.surname}`,
+        link: `mailto:${p.owner.email}`,
+        kind: p.owner.name,
         counts: []
       };
     });
 
   } else {
-    throw new Error(`Esta entidad: ${entity} no es permitida en esta página`);
+    throw new Error(`Esta entidad: ${entity} no es permitida en esta página.`);
   };
 </script>
 
 <h2 class="ui blue header uk-text-center">
-  {entity}s sin Actividades ({entities_without_acts.length})
+  {entity == "grupo" ? "Grupos" : "Profesores"} sin Actividades ({entities_without_acts.length})
 </h2>
 
 <ResumeTable

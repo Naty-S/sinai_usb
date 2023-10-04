@@ -5,10 +5,10 @@
 	Props:
 	* `id`: string
 	* `title`: string
+	* `pop_up`: boolean
 	* `ok_text`: string (optional)
-	* `close_text`: string (optional). Default "Cancelar"
+	* `close_text`: string (optional). Default: "Cancelar"
 	* `align`: string (optional)
-	* `is_active`: boolean;
 	* `close`: function (optional). Default: () => {}
 	* `confirm`: function (optional). Default: () => {}
  -->
@@ -17,10 +17,10 @@
 
 	export let id: string;
 	export let title: string;
+	export let pop_up: boolean;
 	export let ok_text = '';
 	export let close_text = "Cancelar";
 	export let align = '';
-	export let is_active: boolean;
   export let close = () => {};
   export let confirm = () => {};
 
@@ -64,7 +64,7 @@
 
 <div
   {id}
-  class="ui {is_active ? "active" : ''} modal this-modal"
+  class="ui {pop_up ? "active" : ''} modal this-modal"
   role="dialog"
   aria-modal="true"
   bind:this={modal}

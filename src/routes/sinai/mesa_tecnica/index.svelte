@@ -11,14 +11,10 @@
       const res2 = await fetch("/api/professors");
 
       if (res1.ok && res2.ok) {
-        const deps_chiefs = await res1.json();
-        const res_json = await res2.clone().json();
 
-        const professors = res_json.filter((p: any) => p.activo && p.id !== 0).map((p: any) => (
-          { email: p.correo
-          , profile: p.perfil
-          }
-        ));
+        const deps_chiefs = await res1.json();
+        const profesors: Profesor[] = await res2.json();
+        const professors = profesors.filter(p => p.activo);;
 
         return {
           props: { deps_chiefs, professors }
@@ -41,32 +37,33 @@
   };
 </script>
 <script lang="ts">
-  import type { Department } from "$lib/interfaces/departments";
+	import type { Profesor } from "$lib/interfaces/professors";
+  import type { DepartmentE } from "$lib/interfaces/departments";
 
   import * as api from "$lib/api";
 
-	import Modal from '$lib/components/modal.svelte';
+	import Modal from '$lib/components/modals/modal.svelte';
 
-  export let deps_chiefs: Department[];
-  export let professors: { email: string, profile: string }[];
+  export let deps_chiefs: DepartmentE[];
+  export let professors: Profesor[];
 
   let chief: string;
   let rep: string;
   let dep: number;
-  let show_modify_chief = false;
-  let show_modify_rep = false;
+  let pop_modify_chief = false;
+  let pop_modify_rep = false;
   let ok_text = "Modificar";
   let close_text = "Cancelar";
   let action = { info: '', code: '' };
 
   const toggle_modify_chief = function (modify: boolean, _chief: string, _dep: number) {
-    show_modify_chief = modify;
+    pop_modify_chief = modify;
     chief = _chief;
     dep = _dep;
   };
 
   const toggle_modify_rep = function (modify: boolean, _rep: string, _dep: number) {
-    show_modify_rep = modify;
+    pop_modify_rep = modify;
     rep = _rep;
     dep = _dep;
   };
@@ -75,7 +72,7 @@
     const res = await api.patch("/api/departments_chiefs", { chief, dep });
 
     if (res.ok) {
-      const { code } = await res.clone().json();
+      const { code } = await res.json();
       action.code = code;
       ok_text='';
       close_text="Ok";
@@ -91,7 +88,7 @@
     const res = await api.patch("/api/departments_chiefs", { rep, dep });
 
     if (res.ok) {
-      const { code } = await res.clone().json();
+      const { code } = await res.json();
       action.code = code;
       ok_text='';
       close_text="Ok";
@@ -115,7 +112,7 @@
         Departamento {d.nombre}
       </h3>
       <div class="ui clearing segment">
-        <strong>Jefe:</strong> {d.chief.name} {d.chief.surname}
+        <strong>Jefe:</strong> {d.chief.name1} {d.chief.surname1}
         <button
           type="button"
           class="ui right floated primary small button"
@@ -125,7 +122,7 @@
         </button>
       </div>
       <div class="ui clearing segment">
-        <strong>Representante:</strong> {d.rep.name} {d.rep.surname}
+        <strong>Representante:</strong> {d.rep.name1} {d.rep.surname1}
         <button
           type="button"
           class="ui right floated primary small button"
@@ -138,15 +135,15 @@
   {/each}
 </div>
 
-{#if show_modify_chief}  
+{#if pop_modify_chief}  
   <Modal
     id="modify_chief"
     title="Modificar Jefe"
     {ok_text}
     {close_text}
     align="center"
-    is_active={show_modify_chief}
-    close={() => { show_modify_chief = false; location.reload(); }}
+    pop_up={pop_modify_chief}
+    close={() => { pop_modify_chief = false; location.reload(); }}
     confirm={modify_chief}
   >
   {#if action.code === "Dep Chief Modified"}
@@ -159,7 +156,7 @@
         class="ui fluid search selection dropdown"
         bind:value={chief}
       >
-        {#each professors.map(p => ({ val: p.email, name: p.profile })) as opt}
+        {#each professors.map(p => ({ val: p.correo, name: p.perfil })) as opt}
           <option value={opt.val}>{opt.name}</option>
         {/each}
       </select>
@@ -168,15 +165,15 @@
   </Modal>
 {/if}
 
-{#if show_modify_rep}  
+{#if pop_modify_rep}  
   <Modal
     id="modify_rep"
     title="Modificar Representante"
     {ok_text}
     {close_text}
     align="center"
-    is_active={show_modify_rep}
-    close={() => { show_modify_rep = false; location.reload(); }}
+    pop_up={pop_modify_rep}
+    close={() => { pop_modify_rep = false; location.reload(); }}
     confirm={modify_rep}
   >
   {#if action.code === "Dep Rep Modified"}
@@ -189,7 +186,7 @@
         class="ui fluid search selection dropdown"
         bind:value={rep}
       >
-        {#each professors.map(p => ({ val: p.email, name: p.profile })) as opt}
+        {#each professors.map(p => ({ val: p.correo, name: p.perfil })) as opt}
           <option value={opt.val}>{opt.name}</option>
         {/each}
       </select>
@@ -204,12 +201,12 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
+    pop_up={action.info !== ''}
     close={() => { action.info = ''; location.reload(); }}
   >
     <p>
       Hubo un error al intentar cambiar la mesa técnica, por favor vuelva a intentar
-      o contáctese con algún administrador.
+      o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
   </Modal>

@@ -4,16 +4,25 @@ import type { Professor } from "./professors"
 
 
 /**
- * Department data
+ * Department basic data
  * 
- * - `id`
- * - `nombre`
- * - `chief`
- * - `rep`
+ * - `id`: number
+ * - `nombre`: string
  */
 export interface Department {
-  id: number
-  , nombre: string
-  , chief: Professor
-  , rep: Professor
+    id: number
+  ; nombre: string
+};
+
+/**
+ * Department extended data
+ * 
+ * - `id`: number
+ * - `nombre`: string
+ * - `chief`: Professor
+ * - `rep`: Professor
+ */
+export interface DepartmentE extends Department {
+    chief: Professor
+  ; rep: Professor
 };

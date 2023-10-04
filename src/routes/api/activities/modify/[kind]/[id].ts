@@ -3,8 +3,8 @@ import type { autor_externo, autor_usb } from "@prisma/client";
 
 import { handle_error, prisma } from "$api/_api";
 
-import { format_activity_kind, format_date, ve_date } from "$lib/utils/formatting";
-import { DateTime } from "luxon";
+import { format_activity, ve_date } from "$lib/utils/formatting";
+import { query_activity } from "$lib/server/queries";
 
 /**
  * Query activity data
@@ -16,34 +16,8 @@ export const GET: RequestHandler = async function ({ params }) {
 
   try {
 
-    const act = await prisma.actividad.findUnique({
-      where: {
-        id: Number(params.id)
-      },
-      include: {
-        actividades_grupos: {select: { Grupo: {select: {id: true, nombre: true}} }},
-        autores_usb: true,
-        autores_externos: true,
-        articulo_revista: true,
-        capitulo_libro: true,
-        composicion: true,
-        evento: true,
-        exposicion: true,
-        grabacion: true,
-        informe_tecnico: true,
-        libro: true,
-        memoria: true,
-        partitura: true,
-        patente: true,
-        premio: true,
-        premio_bienal: true,
-        proyecto_grado: true,
-        proyecto_investigacion: true,
-        recital: true
-      }
-    });
-
-    const activity = format_activity_kind(act);
+    const act = await query_activity(Number(params.id));
+    const activity = format_activity(act);
 
     status = 200;
     body = activity;
@@ -127,8 +101,8 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
     data.autores_usb = {
       update: _data.autores_usb.map((a: autor_usb) => {
         if (a.id) {
-          delete a["actividad"];
-          return { where: { id: a.id }, data: a }
+          const { actividad, ..._a} = a;
+          return { where: { id: _a.id }, data: _a }
         };
       }),
       create: _data.autores_usb.map((a: autor_usb) => {
@@ -146,8 +120,8 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
     data.autores_externos = {
       update: _data.autores_externos.map((a: autor_externo) => {
         if (a.id) {
-          delete a["actividad"];
-          return { where: { id: a.id }, data: a }
+          const { actividad, ..._a } = a;
+          return { where: { id: _a.id }, data: _a }
         };
       }),
       create: _data.autores_externos.map((a: autor_externo) => {

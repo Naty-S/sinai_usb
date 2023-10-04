@@ -3,12 +3,13 @@
   Navbar menu
  -->
 <script lang="ts">
-import { goto } from "$app/navigation";
-
+  import type { submenu_item } from "$lib/types/menu";
+  
 	import { dev } from "$app/env";
+  import { goto } from "$app/navigation";
   import { session } from "$app/stores";
   
-	import type { submenu_item } from "$lib/types/menu";
+  import { void_link, void_click } from "$lib/constants";
 
   import * as api from "$lib/api";
 
@@ -17,11 +18,8 @@ import { goto } from "$app/navigation";
   export let show_create: () => void;
   export let show_modify_bra_period: () => void;
 
-  const void_link = "javascript:void(0)";
-  const void_click = () => {};
-
   const searchs = [
-    {href: "/sinai/consultas", click: void_click, name: "Públicas"},
+    {href: "/sinai/consultas/actividades", click: void_click, name: "Públicas"},
     // {href: void_link, click: void_click, name: "Predeterminadas"}
   ];
 

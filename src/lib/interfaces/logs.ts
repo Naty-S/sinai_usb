@@ -4,24 +4,26 @@ import type { log_operacion_actividad_operacion_enum } from "@prisma/client";
 
 
 /**
- * Activity data about the action performed in it.
- * Actions: create, modify data, validate, invalidate
+ * Activity data about the action made in it.
+ * Actions: create, modify data, validate, invalidate, delete
  * 
- * - `id`: log id
- * - `actividad`: Activity id
- * - `usuario`: The user who performed the action
- * - `fecha`
- * - `hora`
- * - `operacion`: "Ingreso", "Modificacion", "Validacion", "Eliminacion"
+ * - `id`: `number` - log id
+ * - `actividad`: `number` - Activity id
+ * - `Usuario`: The user who domadene the action
+ *    + `profesor`: { perfil: string } | null
+ *    + `administrador`: { nombre: string } | null
+ * - `fecha`: Date | null)
+ * - `hora`: Date | null)
+ * - `operacion`: "Modificacion" | "Validacion" | "Eliminacion" | "Ingreso
  */
-export interface ActivityActionLog {
-  id: number;
-  actividad: number;
-  Usuario: {
-    profesor: { perfil: string } | null;
-    administrador: { nombre: string } | null
-  };
-  fecha: Date | null;
-  hora: Date | null;
-  operacion: log_operacion_actividad_operacion_enum
+export interface ActivityLog {
+    id: number
+  ; actividad: number
+  ; Usuario: {
+      profesor: { perfil: string } | null
+    ; administrador: { nombre: string } | null
+  }
+  ; fecha: Date | null
+  ; hora: Date | null
+  ; operacion: log_operacion_actividad_operacion_enum
 };

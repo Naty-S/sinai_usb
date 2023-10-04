@@ -11,14 +11,11 @@
       const res2 = await fetch("/api/professors");
 
       if (res1.ok && res2.ok) {
+        
         const chiefs = await res1.json();
-        const res_json = await res2.clone().json();
+        const profesors: Profesor[] = await res2.json();
 
-        const professors = res_json.filter((p: any) => p.activo && p.id !== 0).map((p: any) => (
-          { email: p.correo
-          , profile: p.perfil
-          }
-        ));
+        const professors = profesors.filter(p => p.activo);
 
         return {
           props: { chiefs, professors }
@@ -41,14 +38,14 @@
   };
 </script>
 <script lang="ts">
-  import type { Professor } from "$lib/interfaces/professors";
+  import type { Profesor, ProfessorE } from "$lib/interfaces/professors";
 
   import * as api from "$lib/api";
 
-	import Modal from '$lib/components/modal.svelte';
+	import Modal from '$lib/components/modals/modal.svelte';
 
-  export let chiefs: Professor[];
-  export let professors: { email: string, profile: string }[];
+  export let chiefs: ProfessorE[];
+  export let professors: Profesor[];
 
   let chief: string;
   let coord: number;
@@ -67,7 +64,7 @@
     const res = await api.patch("/api/coordinators", { chief, coord });
 
     if (res.ok) {
-      const { code } = await res.clone().json();
+      const { code } = await res.json();
       action.code = code;
       ok_text='';
       close_text="Ok";
@@ -90,7 +87,9 @@
       <h3 class="ui blue header">
         Coordinación {c.coordination.nombre}
       </h3>
-      {c.name} {c.surname}
+
+      {c.name1} {c.surname1}
+      
       <button
         type="button"
         class="ui right floated primary small button"
@@ -109,7 +108,7 @@
     {ok_text}
     {close_text}
     align="center"
-    is_active={show_modify}
+    pop_up={show_modify}
     close={() => { show_modify = false; location.reload(); }}
     confirm={modify_coord}
   >
@@ -123,7 +122,7 @@
         class="ui fluid search selection dropdown"
         bind:value={chief}
       >
-        {#each professors.map(p => ({ val: p.email, name: p.profile })) as opt}
+        {#each professors.map(p => ({ val: p.correo, name: p.perfil })) as opt}
           <option value={opt.val}>{opt.name}</option>
         {/each}
       </select>
@@ -138,12 +137,12 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
+    pop_up={action.info !== ''}
     close={() => { action.info = ''; location.reload(); }}
   >
     <p>
       Hubo un error al intentar cambiar de Coordinador, por favor vuelva a intentar
-      o contáctese con algún administrador.
+      o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
   </Modal>

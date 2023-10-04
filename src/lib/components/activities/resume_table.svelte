@@ -1,12 +1,20 @@
 <!-- 
 	@component
   Kinds activities count resume table
+
+  * `headers`: string[]
+  * `resume_kinds_counts`: ActivitiesCounts[]
+  * `links`: boolean (optional)
+  * `collapsing`: boolean (optional)
+  * `row_total`: boolean (optional)
+  * `col_total`: boolean (optional)
+  * 
  -->
 <script lang="ts">
   import type { ActivitiesCounts } from "$lib/interfaces/activities";
 
-  export let headers: string[] = [];
-  export let resume_kinds_counts: ActivitiesCounts[] = [];
+  export let headers: string[];
+  export let resume_kinds_counts: ActivitiesCounts[];
   export let links: boolean = false;
   export let collapsing: boolean = false;
   export let row_total: boolean = false;

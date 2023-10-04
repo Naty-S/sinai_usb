@@ -1,13 +1,14 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { Group } from "$lib/interfaces/groups";
+import type { GroupE } from "$lib/interfaces/groups";
+
 import { handle_error, prisma } from "$api/_api";
 
 
 /**
  * Query all research groups
  * 
- * @returns {id: number, nombre: string}
+ * @returns Group extended data
 */
 export const GET: RequestHandler = async function () {
   
@@ -35,20 +36,20 @@ export const GET: RequestHandler = async function () {
       where: { id: { not: { equals: 0 } } }
     });
 
-    const groups: Group[] = grupos.map(g => ({
+    const groups: GroupE[] = grupos.map(g => ({
       id: g.id,
-      name: g.nombre,
+      nombre: g.nombre,
       chief: {
         id: g.Responsable.id,
         email: g.Responsable.correo,
-        name: g.Responsable.nombre1,
-        surname: g.Responsable.apellido1
+        name1: g.Responsable.nombre1,
+        surname1: g.Responsable.apellido1
       },
       members: g.historico_profesores_grupos.map(p => ({
         id: p.Profesor.id,
         email: p.Profesor.correo,
-        name: p.Profesor.nombre1,
-        surname: p.Profesor.apellido1
+        name1: p.Profesor.nombre1,
+        surname1: p.Profesor.apellido1
       })),
       n_activities: g.actividades_grupos.length
     }));

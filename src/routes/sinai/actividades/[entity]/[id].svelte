@@ -7,12 +7,13 @@
   export const load: Load = async ({ fetch, params, session }) => {
 
     const { entity, id } = params;
+    const _id = Number(id);
     const user = session.user;
     const professor = user?.professor;
-    const prof_group = professor?.groups.historico_grupos.map(g => g.Grupo.id).includes(Number(id));
+    const in_group = professor?.groups.historico_grupos.map(g => g.Grupo.id).includes(_id);
 
     // si es decano que ve otros prof no mostrar las del decano
-    if (professor?.id === Number(id) || prof_group || user?.dean ||
+    if (professor?.id === _id || in_group || user?.dean ||
       professor?.is_dep_chief || professor?.is_dep_representative ||
       professor?.coord_chief || professor?.division_chief
     ) {
@@ -23,11 +24,9 @@
       const res = await fetch(api);
      
       if (res.ok) {
-        const activities = await res.json();
+        const activities: Activities = await res.json();
   
-        return {
-          props: {activities}
-        };
+        return { props: { owner: activities.owner.full_name, activities: activities.activities } };
       };
   
       const { message, code } = await res.json();
@@ -44,106 +43,62 @@
   };
 </script>
 <script lang="ts">
+  import type { Activities } from "$lib/interfaces/activities";
+  import type { Activity } from "$lib/types/activities";
+  
   import { page, session } from "$app/stores";
 
-  import type { EntityActivities } from "$lib/interfaces/activities";
-
-  import { format_date } from "$lib/utils/formatting";
+	import { detailed_kinds } from "$lib/constants";
+	import { filter_activities } from "$lib/utils/filters";
+  import { acts_kinds_by_year } from "$lib/utils/grouping";
+  import { count_acts_kinds_by_year } from "$lib/utils/maths";
   
-	import Modal from '$lib/components/modal.svelte';
-  import ActivitiesModal from "$lib/components/navbar/activities_modal.svelte";
+	import Modal from '$lib/components/modals/modal.svelte';
+  import Pagination from "$lib/components/pagination.svelte";
+  import CreateActivities from "$lib/components/modals/create_activities.svelte";
   import YearActivities from "$lib/components/activities/year_activities.svelte";
   import ResumeTable from "$lib/components/activities/resume_table.svelte";
 
-  export let activities: EntityActivities;
+  export let owner: string;
+  export let activities: Activity[];
 
-  const headers = ["Actividad"].concat(activities.by_year.map(a => a.year.toString()));
-  const kinds = [
-    "ACTIVIDAD INVALIDA"
-    , "Publicaciones en Revistas Indexadas en el SCI-SSCI-ARTS"
-    , "Publicaciones en Revistas Indexadas en Otros Indices"
-    , "Publicaciones en Revistas Arbitradas No Indexadas"
-    , "Articulos Aceptados en Vías de Publicación"
-    , "Publicaciones en Revistas Arbitradas"
-    , "Publicaciones de Capítulos de Libros"
-    , "Composiciones Solicitadas por Orquestas Sinfónicas o Agrupaciones Reconocidas"
-    , "Asistencia a Eventos Internacionales"
-    , "Asistencia a Eventos Nacionales"
-    , "Eventos en Venezuela"
-    , "Eventos en el Exterior"
-    , "Eventos"
-    , "Selección en Exposiciones, Bienales, Salones o Concursos Arbitrados"
-    , "Grabaciones Sonoras Evaluadas Por Árbitros"
-    , "Informes Técnicos"
-    , "Libro Nacional"
-    , "Libro Internacional"
-    , "Publicaciones de Libros"
-    , "Memorias *Arbitradas* de Congresos"
-    , "Partituras, Video o CD's Publicados en Editoriales Reconocidas"
-    , "Patentes Nacional"
-    , "Patentes Internacional"
-    , "Patentes"
-    , "Premios"
-    , "Trabajos Reconocidos o Premiados En Bienales, Salones, Concursos o Exposiciones"
-    , "Tutoría de Tesis Doctorales"
-    , "Tutoría de Trabajos de Grado (Mestrías)"
-    , "Tutoría de Proyectos de Grado (Especializaciones)"
-    , "Proyectos de Grado (Postgrados)"
-    , "Tutoría de Proyectos de Grado (Licencituras)"
-    , "Tutoría de Proyectos de Grado (Ingenierías)"
-    , "Proyectos de Grado (Pasantías Largas)"
-    , "Proyectos de Grado Dirigidos"
-    , "Proyectos de IYD (Vigentes)"
-    , "Proyectos de IYD"
-    , "Recitales o Conciertos Arbitrados"
-  ];
+  const activities_by_year = acts_kinds_by_year(activities);
+  const activities_years_counts = count_acts_kinds_by_year(activities);
+  const headers = ["Actividad"].concat(activities_by_year.map(a => a.year.toString()));
 
+  let page_activities = acts_kinds_by_year(activities.slice(0, activities.length));;
+  let kind = '';
+  let start_date = '';
+  let end_date = '';
+
+  let pop_create_act = false;
+  let show_filters = false;
+
+  $: user = $session.user;
+  $: professor = user?.professor;
   $: act_created = Boolean($page.url.searchParams.get("creada"));
   $: act_modified = Boolean($page.url.searchParams.get("modificada"));
   $: err = $page.url.searchParams.get("error");
   $: err_code = $page.url.searchParams.get("code");
   $: editable = $page.params.entity !== "grupo" || $session.user?.dean !== undefined;
 
-  let show_create = false;
-  let show_filters = false;
-  let start_date: string;
-  let end_date: string;
-  let filtered_acts = activities.by_year;
-
-  const filter_by_date = function() {
-
-    filtered_acts = activities.by_year.map(y_acts => {
-    
-      const kind_activities = Object.entries(y_acts.kind_activities).reduce((a, [kind, acts]) => ({
-        ...a,
-        [kind]: acts.filter(a => 
-          start_date <= format_date(a.fecha_creacion, "yyyy-MM-dd") && 
-          format_date(a.fecha_creacion, "yyyy-MM-dd") <= end_date
-        )
-      }), {});
-
-      return {
-        year: y_acts.year,
-        kind_activities
-      };
-    });
+  const filter = function() {
+    page_activities = filter_activities(
+      activities, kind, start_date, end_date, 0, activities.length);
   };
 
-  const can_filter = function() {
-    const user = $session.user;
-    const professor = user?.professor;
-
+  $: can_filter = function() {
     return user?.dean || professor?.is_dep_chief || professor?.is_dep_representative ||
       professor?.coord_chief || professor?.division_chief;
   };
 </script>
 
-<h3>Resumen de Actividades del {activities.entity}</h3>
+<h3>Resumen de Actividades {owner}</h3>
 
 <!-- Display activities resume table -->
 <ResumeTable
   {headers}
-  resume_kinds_counts={activities.years_counts}
+  resume_kinds_counts={activities_years_counts}
   links
   row_total
   col_total
@@ -162,13 +117,14 @@
 {/if}
 
 <!-- Display activities by year -->
-<div uk-filter="target: .js-filter; animation: delayed-fade;">
+<div>
   
   <!-- Filters -->
   {#if show_filters}    
-    <div class="ui segments">
+    <div id="filters" class="ui segments">
       <div class="ui vertically fitted segment"><strong>Filtrar Actividades:</strong></div>
-      <div class="ui horizontal stackable segments">
+
+      <div id="date_filter" class="ui horizontal stackable segments">
         <div class="ui segment">
           <label for="start_date">Fecha Inicio</label>
           <input type="date" name="start_date" bind:value={start_date}>
@@ -178,35 +134,36 @@
           <input type="date" name="end_date" bind:value={end_date}>
         </div>
         <div class="ui segment">        
-          <button type="button" class="ui green mini button" on:click={filter_by_date}>
+          <button type="button" class="ui green mini button" on:click={filter}>
             Filtrar
           </button>
         </div>
       </div>
-      <ul class="ui segment uk-subnav uk-subnav-pill">
-        <li class="uk-active" uk-filter-control><a href="#">Todas</a></li>
-        <li class="uk-width-2-3">
-          <a href="#">Tipos de Actividad <span uk-icon="icon: triangle-down"></span></a>
-          <div uk-dropdown="mode: click, hover; delay-hide:1; offset: 2;">
-            <div class="uk-panel uk-panel-scrollable">
-              
-              <ul class="uk-nav uk-dropdown-nav">
-                {#each kinds as k}
-                  <li uk-filter-control="[data-kind='{k}']"><a href="#">
-                    {k}
-                  </a></li>
-                {/each}
-              </ul>
-            </div>
-          </div>
-        </li>
-      </ul>
+
+      <div id="kind_filter" class="ui segment segments">
+        <label class="ui segment" for="kinds">Tipos de Actividad</label>
+        <div class="ui segment">
+          <button class="ui blue mini button" on:click={() => {kind = ''; filter()}}>
+            TODAS
+          </button>
+          <select
+            name="kinds"
+            class="ui fluid selection dropdown"
+            bind:value={kind}
+            on:change={filter}
+          >
+            {#each detailed_kinds as k}
+              <option value={k}>{k}</option>
+            {/each}
+          </select>
+        </div>
+      </div>
     </div>
   {/if}
   
   <!-- Activities by year -->
-  {#key filtered_acts}    
-    {#each filtered_acts as year_activities}
+  {#key page_activities}    
+    {#each page_activities as year_activities}
       <YearActivities {year_activities} {editable}/>
     {/each}
   {/key}
@@ -231,9 +188,9 @@
     ok_text="Ingresar"
     close_text="Cancelar"
     align="center"
-    is_active={act_created}
+    pop_up={act_created}
     close={() => location.replace($page.url.pathname)}
-    confirm={() => { act_created = false; show_create = true; }}
+    confirm={() => { act_created = false; pop_create_act = true; }}
   >
     <p>Desea ingresar otra actividad?</p>
   </Modal>
@@ -245,13 +202,13 @@
     title="Actividad modificada con éxito"
     close_text="Ok"
     align="center"
-    is_active={act_modified}
+    pop_up={act_modified}
     close={() => location.replace($page.url.pathname)}
   />
 {/if}
 
-{#if show_create}
-  <ActivitiesModal show={show_create} close={() => location.replace($page.url.pathname)} />
+{#if pop_create_act}
+  <CreateActivities pop_up={pop_create_act} close={location.reload} />
 {/if}
 
 {#if err}
@@ -260,12 +217,12 @@
     title="Error. {err_code}"
     close_text="Ok"
     align="center"
-    is_active={Boolean(err)}
-    close={() => location.replace($page.url.pathname)}
+    pop_up={Boolean(err)}
+    close={location.reload}
   >
     <p>
-      Hubo un problema al intentar realizar la acción por favor vuelva a intentar
-      o contáctese con algún administrador.
+      Hubo un problema al intentar realizar la acción, por favor vuelva a intentar
+      o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
     <span class="ui red text">Detalles: {err}</span>
   </Modal>

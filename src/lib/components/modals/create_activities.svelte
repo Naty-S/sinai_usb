@@ -1,11 +1,14 @@
 <!-- 
 	@component
   Renders list of activities the user can create
+
+  * `pop_up`: boolean
+  * `close`: () => void
  -->
 <script lang="ts">
-  import Modal from "../modal.svelte";
+  import Modal from "./modal.svelte";
 
-  export let show: boolean;
+  export let pop_up: boolean;
   export let close: () => void;
 </script>
 
@@ -13,7 +16,7 @@
   title="Ingresar nueva actividad"
   id="create_activity"
   align="left"
-  is_active={show}
+  {pop_up}
   {close}
 >
   <li><a href="/sinai/actividades/crear/articulo_revista" on:click={close} >

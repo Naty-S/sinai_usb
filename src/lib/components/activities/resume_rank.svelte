@@ -1,92 +1,39 @@
 <!-- 
   @component
-  Activities count resume table for coordination, department or division
+  Activities count resume table for group, department, coordination or division
  -->
 <script lang="ts">
-  import type { Activity } from "$lib/types/activities";
-  import type {
-    CoordActivities
-    , DepActivities
-    , DivisionActivities
-    , GroupActivities
-  } from "$lib/interfaces/activities";
+  import type {	Activities } from "$lib/interfaces/activities";
+
+  import { acts_kinds_by_year } from "$lib/utils/grouping";
+  import { count_acts_kinds_by_year } from "$lib/utils/maths";
   
   import ResumeTable from "./resume_table.svelte";
   
-  import { acts_kinds_by_year } from "$lib/utils/grouping";
-  import { count_acts_kinds_by_year } from "$lib/utils/maths";
-
   export let rank: string;
-  export let rank_activities: CoordActivities | DivisionActivities | DepActivities | GroupActivities;
+  export let rank_activities: Activities;
 
-  let activities: Activity[];
-  let rank_name: string;
-  let rank_page: string;
-
-  if (rank === "Coordinacion") {
-
-    const coord_activities = rank_activities as CoordActivities;
-    const dep_activities = coord_activities.departments_activities;
-    const groups_activities = coord_activities.groups_activities;
-
-    rank_name = coord_activities.coordination.nombre;
-    rank_page = `/sinai/actividades/coordinacion/${coord_activities.coordination.id}`;
-
-    if (dep_activities) {
-      
-      activities = dep_activities.flatMap(d => d.professors_activities).flatMap(p => p.activities);
-
-    } else if (groups_activities) {
-
-      activities = groups_activities.flatMap(g => g.activities);
-
-    } else {
-      throw new Error(`Actividades desconocidas para la coordinacion: ${coord_activities.coordination}`);
-    };
-  } else if (rank === "División") {
-
-    const division_activities = rank_activities as DivisionActivities;
-    const dep_activities = division_activities.departments_activities;
-    
-    rank_name = division_activities.division.nombre;
-    rank_page = `/sinai/actividades/division/${division_activities.division.id}`;
-    activities = dep_activities.flatMap(d => d.professors_activities).flatMap(p => p.activities);
-
-  } else if (rank === "Departamento") {
-
-    const dep_activities = rank_activities as DepActivities;
-    const professors_activities = dep_activities.professors_activities;
-
-    rank_name = dep_activities.department.nombre;
-    rank_page = `/sinai/actividades/departamento/${dep_activities.department.id}`;
-    activities = professors_activities.flatMap(p => p.activities);
-
-  } else if (rank === "Grupo") {
-
-    const group_activities = rank_activities as GroupActivities;
-
-    rank_name = group_activities.group.name;
-    rank_page = `/sinai/actividades/grupo/${group_activities.group.id}`;
-    activities = group_activities.activities;
-
-  } else {
-    throw new Error(`Este rango: ${rank} no es permitido en esta pagina`);
-  }
+  const rank_id = rank_activities.owner.id;
+  const rank_name = rank_activities.owner.name;
+  const rank_page = `/sinai/actividades/${rank}/${rank_id}`;
+  const activities_by_year = acts_kinds_by_year(rank_activities.activities);
+  const activities_count = count_acts_kinds_by_year(rank_activities.activities);
 </script>
 
-{#if activities.length > 0}
-  
+{#if rank_activities.activities.length > 0}
+
   <div class="ui divider" />
 
   <h2 class="ui blue header uk-text-center">
     <a href="{rank_page}">
-      {rank} "{rank_name}" tiene en el sistema
+      <!-- {rank} "{rank_name}" tiene en el sistema -->
+      Actividades en el sistema {rank_activities.owner.full_name}
     </a>
   </h2>
 
   <ResumeTable
-    headers={["Actividad"].concat(acts_kinds_by_year(activities, true).map(a => a.year.toString()))}
-    resume_kinds_counts={count_acts_kinds_by_year(activities, true)}
+    headers={["Actividad"].concat(activities_by_year.map(a => a.year.toString()))}
+    resume_kinds_counts={activities_count}
     row_total
   />
 

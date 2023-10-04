@@ -3,13 +3,13 @@
   Header for BRA page
  -->
 <script lang="ts">
-  import type { profesor } from "@prisma/client";
+	import type { Profile } from "$lib/interfaces/professors";
 
   import { session } from "$app/stores";
 
   import { format_date } from "$lib/utils/formatting";
 
-  export let profile: profesor;
+  export let profile: Profile;
   export let period = '';
 
   const current_date = format_date(new Date(), "long-day");
@@ -38,8 +38,8 @@
     </div>
     
     <div class="two column row">
-      <div class="column"><strong>Num. PPI:</strong> {professor?.ppi_number || ''}</div>
-      <div class="column"><strong>Num. PEI:</strong> {professor?.pei_number || ''}</div>
+      <div class="column"><strong>Num. PPI:</strong> {professor?.ppi?.numero || ''}</div>
+      <div class="column"><strong>Num. PEI:</strong> {professor?.pei?.numero || ''}</div>
     </div>
 
     <div class="one column row">
@@ -53,7 +53,7 @@
   
   <div class="ui centered grid container">
     <div class="two column row">
-      <div class="column"><strong>Departamento:</strong> {professor?.department.name}</div>
+      <div class="column"><strong>Departamento:</strong> {professor?.department.nombre}</div>
       <div class="column"><strong>Tipo de Actividad:</strong> TODAS</div>
     </div>
   

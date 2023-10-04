@@ -3,24 +3,24 @@
   Groups dropdown selection
  -->
 <script lang="ts">
+  import type { activity_form_ctx, kinds } from "$lib/types/forms";
+  import type { GroupE } from "$lib/interfaces/groups";
+
   import { getContext, onMount } from "svelte";
   import { key } from "svelte-forms-lib";
 
   import { page } from "$app/stores";
   
-  import type { activity_form_ctx, kinds } from "$lib/types/forms";
-  import type { Group } from "$lib/interfaces/groups";
-
   import * as api from "$lib/api";
 
-  import Modal from "$lib/components/modal.svelte";
+  import Modal from "$lib/components/modals/modal.svelte";
   import Select from "$lib/components/forms/select.svelte";
 
   const param = $page.params.activity;
   const kind = param as kinds;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 
-  let groups: Group[] = [];
+  let groups: GroupE[] = [];
   let action = { info: '', code: '' };
 
   onMount(async () => {
@@ -64,7 +64,7 @@
           name="actividades_grupos[{i}].new"
           bind:value={$form.actividades_grupos[i].new}
           error={$errors.actividades_grupos[i]?.new}
-          options={groups.map(g => ({ val: g.id.toString(), name: `${g.id} - ${g.name}`}))}
+          options={groups.map(g => ({ val: g.id.toString(), name: `${g.id} - ${g.nombre}`}))}
           class="field"
         />
         <button type="button" class="ui red button" on:click={() => remove_group(i)}>
@@ -90,12 +90,12 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
-    close={() => location.replace($page.url.pathname)}
+    pop_up={action.info !== ''}
+    close={location.reload}
   >
     <p>
-      Hubo un problema al cargar los datos de la página, recargue 
-      o contáctese con algún administrador.
+      Hubo un problema al cargar los grupos, por favor recargue la página
+      o contáctese con algún administrador proporcionando el código del error.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
   </Modal>

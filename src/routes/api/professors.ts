@@ -1,5 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
+import type { Profesor } from "$lib/interfaces/professors";
+
 import { handle_error, prisma } from "$api/_api";
 
 
@@ -12,7 +14,29 @@ export const GET: RequestHandler = async function () {
   let body = {};
 
   try {
-    const professors = await prisma.profesor.findMany({ orderBy: { apellido1: "asc" } });
+    const professors: Profesor[] = await prisma.profesor.findMany({
+      select: {
+        id: true ,
+        correo: true,
+        activo: true,
+        cedula: true,
+        nombre1: true,
+        nombre2: true,
+        apellido1: true,
+        apellido2: true,
+        perfil: true,
+        categoria: true,
+        condicion: true,
+        dedicacion: true,
+        departamento: true,
+        diploma_tipo: true,
+        diploma_universidad: true,
+        lineas_investigacion: true,
+        url: true
+      },
+      where: { id: {not: { equals: 0}} },
+      orderBy: { apellido1: "asc" }
+    });
 
     status = 200;
     body = professors;

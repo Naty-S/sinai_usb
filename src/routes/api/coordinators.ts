@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import type { Professor } from "$lib/interfaces/professors";
+import type { Professor, ProfessorE } from "$lib/interfaces/professors";
 import { handle_error, prisma } from "$api/_api";
 
 
@@ -19,42 +19,51 @@ export const GET: RequestHandler = async function () {
       select: {
         id: true,
         nombre: true,
+        departamentos: { select: { id: true, nombre: true } },
         Jefe: {
           select: {
             id: true,
             correo: true,
             nombre1: true,
             apellido1: true,
-            departamento: true,
+            departamento: true
         }}
       },
       orderBy: { id: "asc" }
     });
 
-    const deparments = await Promise.all( coordinations.map( async c =>
+    const deparments = await Promise.all(coordinations.map( async c =>
       await prisma.departamento.findUniqueOrThrow({
         select: {
           id: true,
           nombre: true,
-          Division: { select: { id: true, nombre: true } }
+          Division: { select: {
+            id: true,
+            nombre: true,
+            departamentos: { select: { id: true, nombre: true } } 
+          }}
         },
         where: { id: c.Jefe.departamento }
       })
     ));
 
-    const chiefs: Professor[] = coordinations.map(c => {
+    const chiefs: ProfessorE[] = coordinations.map(c => {
 
       const dep = deparments.find(d => d.id === c.Jefe.departamento);
 
-      return {
-        id: c.Jefe.id,
-        email: c.Jefe.correo,
-        name: c.Jefe.nombre1,
-        surname: c.Jefe.apellido1,
-        department: { id: dep?.id, nombre: dep?.nombre },
-        coordination: { id: c.id, nombre: c.nombre },
-        division: dep?.Division,
-      }
+      if (dep) {
+        return {
+          id: c.Jefe.id,
+          email: c.Jefe.correo,
+          name1: c.Jefe.nombre1,
+          surname1: c.Jefe.apellido1,
+          department: { id: dep.id, nombre: dep.nombre },
+          coordination: { id: c.id, nombre: c.nombre, departamentos: c.departamentos },
+          division: dep.Division,
+        };
+      } else {
+        throw new Error("No deparment found for coordination chief. Should not happen.")
+      };
     });
 
     status = 200;

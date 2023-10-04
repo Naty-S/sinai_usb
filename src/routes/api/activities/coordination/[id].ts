@@ -1,120 +1,82 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
-import { env } from "$env/dynamic/private";
+import type { Activities } from "$lib/interfaces/activities";
+import type { Activity } from "$lib/types/activities";
 
-import type { CoordActivities, DepActivities, GroupActivities } from "$lib/interfaces/activities";
-import { format_activity_kind } from "$lib/utils/formatting";
+import { stringify } from "zipson/lib";
+
 import { handle_error, prisma } from "$api/_api";
+
+import {
+    query_activities_logs
+  , query_group_activities
+  , query_professor_activities
+} from "$lib/server/queries";
+import { format_activity } from "$lib/utils/formatting";
 
 
 /**
- * Query coorditanion's and asociated deparments or groups activities.
+ * Query coorditanion activities.
  * 
  * Coordination `4 (Integración e Información)` only manages groups
 */
-export const GET: RequestHandler = async function ({ request, params }) {
+export const GET: RequestHandler = async function ({ params }) {
   
-  const origin = env.NODE_ENV == "development" ? "http://localhost:3000" : env.NGINX_PROXY_PASS;
-
   let status = 500;
   let body = {};
 
   try {
     const coordination = await prisma.coordinacion.findUniqueOrThrow({
-      where: {
-        id: Number(params.id)
-      },
       select: {
         id: true,
         nombre: true,
-        departamentos: {
-          select: {
-            id: true
-          }
-        }
-      }
+        correo: true,
+        departamentos: { select: { id: true } }
+      },
+      where: { id: Number(params.id) }
     });
 
-    let coordination_activities: CoordActivities = {
-      coordination: {
-        id: coordination.id,
-        nombre: coordination.nombre
-      }
-    };
+    let activities: Activity[];
 
     if (params.id === '4') {
-      const groups = await prisma.grupo_investigacion.findMany({
-        select: {
-          id: true,
-          nombre: true,
-          actividades_grupos: {
-            select: {
-              Actividad: {
-                include: {
-                  actividades_grupos: {
-                    select: {
-                      Grupo: {
-                        select: {
-                          id: true,
-                          nombre: true
-                        }
-                      }
-                    }
-                  },
-                  autores_usb: true,
-                  autores_externos: true,
-                  articulo_revista: true,
-                  capitulo_libro: true,
-                  composicion: true,
-                  evento: true,
-                  exposicion: true,
-                  grabacion: true,
-                  informe_tecnico: true,
-                  libro: true,
-                  memoria: true,
-                  partitura: true,
-                  patente: true,
-                  premio: true,
-                  premio_bienal: true,
-                  proyecto_grado: true,
-                  proyecto_investigacion: true,
-                  recital: true
-                }
-              }
-            }
-          }
-        }
-      });
 
-      const groups_activities: GroupActivities[] = groups.map( g => {
-        return {
-          group: {
-            id: g.id,
-            name: g.nombre
-          },
-          activities: g.actividades_grupos.map(a => format_activity_kind(a.Actividad))
-        }
-      });
+      const groups = await prisma.grupo_investigacion.findMany({ select: { id: true } });
 
-      coordination_activities.groups_activities = groups_activities;
+      const groups_activities = (await Promise.all(
+        groups.map(async g => (await query_group_activities(g.id)))
+      )).flat()
+      
+      const logs = await query_activities_logs(groups_activities.map(a => a.id));
+
+      activities = groups_activities.map(a => (format_activity(a, logs)));
 
     } else {
-      const departments_activities: DepActivities[] = await Promise.all(
-        coordination.departamentos.map(async d =>{
 
-          const r = await fetch(`${origin}/api/activities/department/${d.id}`);
-          const r_json = await r.json()
-          
-          if (r.ok) return r_json;
-          else throw new Error(r_json.code + '. ' + r_json.message);
-        })
-      );
+      const professors = await prisma.profesor.findMany({
+        select: { id: true, correo: true },
+        where: { departamento: { in: coordination.departamentos.map(d => d.id) } }
+      });
 
-      coordination_activities.departments_activities = departments_activities;
+      const professor_activities = (await Promise.all(
+        professors.map(async p => (await query_professor_activities(p.id, p.correo)))
+      )).flat();
+
+      const logs = await query_activities_logs(professor_activities.map(a => a.id));
+
+      activities = professor_activities.map(a => (format_activity(a, logs)));
     };
+    const owner_activities: Activities = {
+      owner: {
+          id: coordination.id
+        , name: coordination.nombre
+        , full_name: `de la Coordinación de ${coordination.nombre}`
+        , email: coordination.correo
+      }
+      , activities
+    }
 
     status = 200;
-    body = coordination_activities;
+    body = stringify(owner_activities);
 
   } catch (error: any) {
     const message = await handle_error(error);

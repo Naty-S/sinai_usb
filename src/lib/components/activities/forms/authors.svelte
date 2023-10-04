@@ -3,40 +3,36 @@
   Activity authors section form
  -->
 <script lang="ts">
+  import type { autor_tipo_actividad_enum } from "@prisma/client";
+  import type { activity_form_ctx, kinds } from "$lib/types/forms";
+	import type { Profesor } from "$lib/interfaces/professors";
+
   import { getContext, onMount } from "svelte";
   import { key } from "svelte-forms-lib";
   
-  import type { autor_tipo_actividad_enum, profesor } from "@prisma/client";
-
   import { page } from "$app/stores";
-  
-  import type { activity_form_ctx, kinds } from "$lib/types/forms";
 
   import * as api from "$lib/api";
 
+  import Datalist from "$lib/components/forms/datalist.svelte";
   import Input from "$lib/components/forms/input.svelte";
-  import Select from "$lib/components/forms/select.svelte";
-  import Modal from "$lib/components/modal.svelte";
+  import Modal from "$lib/components/modals/modal.svelte";
 
   const param = $page.params.activity;
   const kind = param as kinds;
   const tipo_actividad = param as autor_tipo_actividad_enum;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 
-  let professors: { id: number, perfil: string, nombre: string }[] = [];
+  let professors: Profesor[] = [];
   let action = { info: '', code: '' };
 
   onMount(async () => {
     const res = await api.get("/api/professors");
 
     if (res.ok) {
-      const res_json = await res.clone().json();
-      professors = res_json.filter((p: profesor) => p.activo && p.id !== 0).map((p: profesor) => (
-        {
-          id: p.id,
-          nombre: p.perfil
-        }
-      ));
+
+      const profesors: Profesor[] = await res.clone().json();
+      professors = profesors.filter(p => p.activo);
 
     } else {
       const { message, code } = await res.json();
@@ -45,10 +41,11 @@
     };
   });
 
-  const add_author_usb = function () {
+  const add_author_usb = function (est: boolean) {
+    
     const init_author = {
       nombre: ''
-      , es_estudiante: false
+      , es_estudiante: est
       , es_ponente: false
       , es_tutor: false
       , tipo_actividad
@@ -56,7 +53,8 @@
       , profesor_id: null
       , estudiante_carrera: null
     };
-		$form.autores_usb = $form.autores_usb.concat(init_author);
+
+    $form.autores_usb.push(init_author);
 		$errors.autores_usb = $errors.autores_usb.concat(init_author);
 	};
 
@@ -65,18 +63,20 @@
     $errors.autores_usb = $errors.autores_usb.filter((_, j) => j !== i);
   };
 
-	const add_author_out = function () {
+	const add_author_out = function (est: boolean) {
+    
     const init_author = {
       nombre: ''
       , universidad: ''
-      , es_estudiante: false
+      , es_estudiante: est
       , es_ponente: false
       , es_tutor: false
       , tipo_actividad
       , correo: null
       , estudiante_carrera: null
     };
-		$form.autores_externos = $form.autores_externos.concat(init_author);
+		
+    $form.autores_externos.push(init_author);
 		$errors.autores_externos = $errors.autores_externos.concat(init_author);
 	};
 
@@ -87,16 +87,19 @@
 
   $: student_usb = function (i: number) { return $form.autores_usb[i].es_estudiante }
   $: student_out = function (i: number) { return $form.autores_externos[i].es_estudiante }
-  $: tutor_usb = function (i: number) { return $form.autores_usb[i].es_tutor }
-  $: tutor_out = function (i: number) { return $form.autores_externos[i].es_tutor }
 
   $: $form.autores_usb.map(a => {
     if (!a.es_estudiante) {
-      a.profesor_id = professors.find(p => p.nombre === a.nombre)?.id || null;
+      a.profesor_id = professors.find(p => p.perfil === a.nombre)?.id || null;
     } else {
       a.profesor_id = null;
     };
+
+    return a;
   });
+
+  $: console.log("changing USB:",$form.autores_usb)
+  $: console.log("changing out:",$form.autores_externos)
 </script>
 
 <div class="required field">
@@ -108,10 +111,12 @@
     </div>
   {/if}
 
+  <!-- Autores USB -->
   <div class="field">
     <span class="ui header">USB</span>
 
     {#each $form.autores_usb as author, i}
+
       <div class="four inline fields">
         {#if student_usb(i)}
           <Input
@@ -122,11 +127,11 @@
             class="ten wide required field"
           />
         {:else}
-          <Select
+          <Datalist
             label="Nombre Profesor"
             name="autores_usb[{i}].nombre"
             bind:value={$form.autores_usb[i].nombre}
-            options={professors.map(p => ({ val: p.nombre, name: p.nombre }))}
+            options={professors.map(p => ({ val: p.perfil, name: p.perfil }))}
             class="ten wide required field"
           />
         {/if}
@@ -141,15 +146,6 @@
         
         <!-- TODO: #81 -->
         
-        {#if !tutor_usb(i)}
-          <Input
-            type="checkbox"
-            label="Estudiante"
-            name="autores_usb[{i}].es_estudiante"
-            bind:value={$form.autores_usb[i].es_estudiante}
-            class="three wide field"
-          />
-        {/if}        
         {#if !student_usb(i)}
           <Input
             type="checkbox"
@@ -185,8 +181,11 @@
       {/if}
     {/each}
 
-    <button type="button" class="ui blue button" on:click|preventDefault={add_author_usb}>
-      Agregar
+    <button type="button" class="ui blue button" on:click|preventDefault={() => add_author_usb(false)}>
+      Agregar Profesor
+    </button>
+    <button type="button" class="ui blue button" on:click|preventDefault={() => add_author_usb(true)}>
+      Agregar Estudiante
     </button>
     {#if $form.autores_usb.length > 0}
       <button type="button" class="ui red button" on:click={() => $form.autores_usb = []}>
@@ -195,10 +194,12 @@
     {/if}
   </div>
   
+  <!-- Autores Externos -->
   <div class="field">
     <span class="ui header">Externos</span>
 
     {#each $form.autores_externos as author, i}
+
       <div class="two inline fields">
         <Input
           label="Nombre"
@@ -216,8 +217,8 @@
         />
       </div>
 
-      {#if student_out(i)}
-        <div class="two inline fields">
+      <div class="two inline fields">
+        {#if student_out(i)}
           <Input
             label="Carrera"
             name="autores_externos[{i}].estudiante_carrera"
@@ -225,15 +226,15 @@
             error={$errors.autores_externos[i]?.estudiante_carrera}
             class="ten wide required field"
           />
-          <Input
-            label="Correo"
-            name="autores_externos[{i}].correo"
-            bind:value={$form.autores_externos[i].correo}
-            error={$errors.autores_externos[i]?.correo}
-            class="ten wide field"
-          />
+        {/if}
+        <Input
+          label="Correo"
+          name="autores_externos[{i}].correo"
+          bind:value={$form.autores_externos[i].correo}
+          error={$errors.autores_externos[i]?.correo}
+          class="ten wide field"
+        />
         </div>
-      {/if}
       
       <div class="three inline fields">
         <Input
@@ -243,15 +244,6 @@
           bind:value={$form.autores_externos[i].es_ponente}
           class="three wide field"
         />                
-        {#if !tutor_out(i)}
-          <Input
-            type="checkbox"
-            label="Estudiante"
-            name="autores_externos[{i}].es_estudiante"
-            bind:value={$form.autores_externos[i].es_estudiante}
-            class="three wide field"
-          />
-        {/if}        
         {#if !student_out(i)}
           <Input
             type="checkbox"
@@ -268,8 +260,11 @@
       </div>
     {/each}
     
-    <button type="button" class="ui blue button" on:click|preventDefault={add_author_out}>
-      Agregar
+    <button type="button" class="ui blue button" on:click|preventDefault={() => add_author_out(false)}>
+      Agregar Profesor
+    </button>
+    <button type="button" class="ui blue button" on:click|preventDefault={() => add_author_out(true)}>
+      Agregar Estudiante
     </button>
     {#if $form.autores_externos.length > 0}      
       <button type="button" class="ui red button" on:click={() => $form.autores_externos = []}>
@@ -285,12 +280,12 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== ''}
-    close={() => location.replace($page.url.pathname)}
+    pop_up={action.info !== ''}
+    close={location.reload}
   >
     <p>
-      Hubo un problema al intentar realizar la acción por favor vuelva a intentar
-      o contáctese con algún administrador.
+      Hubo un problema al cargar la lista de profesores, por favor recargue la página
+      o contáctese con algún administrador proporcionando el código del error.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
   </Modal>

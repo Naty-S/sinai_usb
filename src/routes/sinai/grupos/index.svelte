@@ -31,9 +31,9 @@
   };
 </script>
 <script lang="ts">
-  import type { Group } from "$lib/interfaces/groups";
+  import type { GroupE } from "$lib/interfaces/groups";
   
-  export let groups: Group[];
+  export let groups: GroupE[];
 </script>
 
 <h2>Lista de Grupos de Investigación</h2>
@@ -45,7 +45,7 @@
       <div class="uk-accordion-title title">
         <div class="ui grid">
           <div class="ten wide column">
-            {g.name}.
+            {g.nombre}.
           </div>
           <div class="six wide right aligned column">
             <button
@@ -66,7 +66,7 @@
               <div class="content">
                 Jefe:
                 <a href="/sinai/actividades/profesor/{g.chief.id}">
-                  {g.chief.name} {g.chief.surname}
+                  {g.chief.name1} {g.chief.surname1}
                 </a>
               </div>
             </div>
@@ -78,7 +78,7 @@
                   {#each g.members as member}
                     <div class="item"><li>
                       <a href="/sinai/actividades/profesor/{member.id}">
-                        {member.name} {member.surname}
+                        {member.name1} {member.surname1}
                       </a>
                     </li></div>
                   {/each}

@@ -1,7 +1,7 @@
-import type { profesor } from "@prisma/client";
+import type { Profile } from "$lib/interfaces/professors";
 
 
-export const init = function (p: profesor) {
+export const init = function (p: Profile) {
 
   const pei = p.pei;
 
@@ -17,9 +17,9 @@ export const init = function (p: profesor) {
     , 
     }
     , pei: {
-      anio: pei[0]?.anio || 2022,
-      nivel: pei[0]?.nivel || "A",
-      numero: pei[0]?.numero || '',
+      anio: pei?.anio || 2022,
+      nivel: pei?.nivel || "A",
+      numero: pei?.numero || '',
     }
   };
 };

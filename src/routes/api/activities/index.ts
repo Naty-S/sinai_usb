@@ -19,14 +19,16 @@ export const GET: RequestHandler = async function () {
     const coordinations: Coordination[] = await prisma.coordinacion.findMany({
       select: {
         id: true,
-        nombre: true
+        nombre: true,
+        departamentos: { select: { id: true, nombre: true } }
       }
     });
 
     const divisions: Division[] = await prisma.division.findMany({
       select: {
         id: true,
-        nombre: true
+        nombre: true,
+        departamentos: { select: { id: true, nombre: true } }
       }
     });
 

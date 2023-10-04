@@ -5,8 +5,8 @@
   If department chief, displays professor for that department.
  -->
 <script lang="ts">
-  import type { profesor } from "@prisma/client";
 	import type { Department } from "$lib/interfaces/departments";
+	import type { Profesor } from "$lib/interfaces/professors";
 
   import { onMount } from "svelte";
   
@@ -15,39 +15,37 @@
 
   import * as api from "$lib/api";
 
-  import Modal from "$lib/components/modal.svelte";
+  import Modal from "$lib/components/modals/modal.svelte";
 
-  
   let show_validate = false;
   let show_reject = false;
   let actual_prof_email = '';
   let actual_prof_name = '';
-  let new_professors: profesor[] = [];
+  let new_professors: Profesor[] = [];
   let action = { info: '', code: '' };
   let departments: Department[];
 
   $: user = $session.user;
+  $: professor = user?.professor;
   $: validated = $page.url.searchParams.get("validado");
 
   // Fetch new professors data
   onMount(async () => {
 
-    if (user?.dean || user?.professor?.coord_chief) {
+    if (user?.dean || professor?.coord_chief) {
 
       const res = await api.get("/api/professors");
       const res2 = await api.get("/api/departments");
 
       if (res.ok && res2.ok) {
         
-        const professors = await res.clone().json();
+        const professors: Profesor[] = await res.clone().json();
         departments = await res2.clone().json();
+        new_professors = professors.filter(p => !p.activo);
 
-        new_professors = professors.filter((p: profesor) => !p.activo && (p.id !== 0));
-
-        if (user?.professor) {
-          
-          new_professors = professors.filter((p: profesor) => !p.activo && (p.id !== 0) &&
-            user?.professor?.coord_chief?.departments.includes(p.departamento)
+        if (professor?.coord_chief) {
+          new_professors = professors.filter(p =>
+            !p.activo && professor?.coord_chief?.departamentos.map(d => d.id).includes(p.departamento)
           );
         };
       } else {
@@ -123,7 +121,7 @@
       + "?subject=" + encodeURIComponent(subject)
       + "&body=" + encodeURIComponent(msg);
 
-    location.replace($page.url.pathname);
+    location.reload();
   };
 </script>
 
@@ -245,7 +243,7 @@
     title="Validar Profesor"
     close_text="Ok"
     align="center"
-    is_active={Boolean(validated)}
+    pop_up={Boolean(validated)}
     close={() => location.replace($page.url.pathname)}
   >
   <p>Profesor <span class="ui primary text">"{validated}"</span></p>
@@ -258,7 +256,7 @@
     title="Rechazar Profesor"
     close_text="Ok"
     align="center"
-    is_active={action.code === "rejected"}
+    pop_up={action.code === "rejected"}
     close={send_rejection_mail}
   >
   <p>Profesor <span class="ui primary text">"{action.info}"</span>, RECHAZADO!!!</p>
@@ -270,7 +268,7 @@
     title="Validar Profesor"
     ok_text="Validar"
     align="center"
-    is_active={show_validate}
+    pop_up={show_validate}
     close={() => show_validate = false}
     confirm={confirm_validate}
   >
@@ -284,7 +282,7 @@
     title="Rechazar Profesor"
     ok_text="Rechazar"
     align="center"
-    is_active={show_reject}
+    pop_up={show_reject}
     close={() => show_reject = false}
     confirm={confirm_reject}
   >
@@ -301,12 +299,12 @@
     title="Error. {action.code}"
     close_text="Ok"
     align="center"
-    is_active={action.info !== '' && action.code !== "rejected"}
+    pop_up={action.info !== '' && action.code !== "rejected"}
     close={() => location.replace($page.url.pathname)}
   >
     <p>
       Hubo un problema al intentar realizar la acción por favor vuelva a intentar
-      o contáctese con algún administrador.
+      o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
     <span class="ui red text">Detalles: {action.info}</span>
   </Modal>
