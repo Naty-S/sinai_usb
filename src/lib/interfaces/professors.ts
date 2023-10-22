@@ -32,6 +32,15 @@ import type { Division } from "./divisions"
  * - `diploma_universidad`: string
  * - `lineas_investigacion`: string[]
  * - `url`: string | null
+ * - `orcid_id`: number | null
+ * - `orcid_profile`: string | null
+ * - `orcid_posts`: string[]
+ * - `google_schoolar_id`: number | null
+ * - `google_schoolar_profile`: string | null
+ * - `google_schoolar_posts`: string[]
+ * - `research_gate_id`: number | null
+ * - `research_gate_profile`: string | null
+ * - `research_gate_posts`: string[]
  */
 export interface Profesor {
     id: number
@@ -51,6 +60,15 @@ export interface Profesor {
   ; diploma_universidad: string
   ; lineas_investigacion: string[]
   ; url: string | null
+  ; orcid_id: number | null
+  ; orcid_profile: string | null
+  ; orcid_posts: string[]
+  ; google_schoolar_id: number | null
+  ; google_schoolar_profile: string | null
+  ; google_schoolar_posts: string[]
+  ; research_gate_id: number | null
+  ; research_gate_profile: string | null
+  ; research_gate_posts: string[]
 };
 
 /**
@@ -102,6 +120,15 @@ export interface ProfessorE extends Professor {
  * - `url`: string | null
  * - `lineas_investigacion`: string[]
  * - `pei`: PEI
+ * - `orcid_id`: number | null
+ * - `orcid_profile`: string | null
+ * - `orcid_posts`: string[]
+ * - `google_schoolar_id`: number | null
+ * - `google_schoolar_profile`: string | null
+ * - `google_schoolar_posts`: string[]
+ * - `research_gate_id`: number | null
+ * - `research_gate_profile`: string | null
+ * - `research_gate_posts`: string[]
  */
 export interface Profile {
     perfil: string
@@ -109,9 +136,18 @@ export interface Profile {
   ; dedicacion: profesor_dedicacion_enum
   ; diploma_tipo: profesor_diploma_tipo_enum
   ; diploma_universidad: string
-  ; url: string | null
   ; lineas_investigacion: string[]
   ; pei: PEI
+  ; url: string | null
+  ; orcid_id: number | null
+  ; orcid_profile: string | null
+  ; orcid_posts: string[]
+  ; google_schoolar_id: number | null
+  ; google_schoolar_profile: string | null
+  ; google_schoolar_posts: string[]
+  ; research_gate_id: number | null
+  ; research_gate_profile: string | null
+  ; research_gate_posts: string[]
 };
 
 /**

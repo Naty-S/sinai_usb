@@ -19,7 +19,16 @@ export const init = function () {
       departamento: '2',
       perfil: '',
       lineas_investigacion: [],
-      url: null
+      url: null,
+      orcid_id: null,
+      orcid_profile: null,
+      orcid_posts: [],
+      google_schoolar_id: null,
+      google_schoolar_profile: null,
+      google_schoolar_posts: [],
+      research_gate_id: null,
+      research_gate_profile: null,
+      research_gate_posts: []
     },
     pei: {
       anio: 2022,

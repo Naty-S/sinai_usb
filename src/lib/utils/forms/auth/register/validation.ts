@@ -45,6 +45,33 @@ export const validation = function () {
           otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
         })
       )
+      , orcid_id: yup.number().nullable()
+      , orcid_profile: yup.lazy(value => !value ? yup.string().nullable() :
+        yup.string().when("url", {
+          is: null,
+          then: yup.string().nullable(),
+          otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
+        })
+      )
+      , orcid_posts: yup.array(yup.string())
+      , google_schoolar_id: yup.number().nullable()
+      , google_schoolar_profile: yup.lazy(value => !value ? yup.string().nullable() :
+        yup.string().when("url", {
+          is: null,
+          then: yup.string().nullable(),
+          otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
+        })
+      )
+      , google_schoolar_posts: yup.array(yup.string())
+      , research_gate_id: yup.number().nullable()
+      , research_gate_profile: yup.lazy(value => !value ? yup.string().nullable() :
+        yup.string().when("url", {
+          is: null,
+          then: yup.string().nullable(),
+          otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
+        })
+      )
+      , research_gate_posts: yup.array(yup.string())
     }),
     pei: yup.object().shape({
       anio: yup.string().required("Requerido").oneOf(pei_years, "Ingrese un año entre 1997 y el actual"),

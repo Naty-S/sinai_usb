@@ -33,6 +33,10 @@
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
 
+	import GoogleSchoolarPosts from "$lib/components/forms/register/google_schoolar_posts.svelte";
+	import OrcidPosts from "$lib/components/forms/register/orcid_posts.svelte";
+	import ResearchGatePosts from "$lib/components/forms/register/research_gate_posts.svelte";
+
   // Config form
   const initialValues = init();
   const onSubmit = submit();
@@ -226,7 +230,7 @@
       name="professor.departamento"
       bind:value={$form.professor.departamento}
       options={departments.map(d => ({ val: d.id.toString(), name: `${d.id} - ${d.nombre}`}))}
-      class="inline field"
+      class="field"
     />
     <Input
       label="Página Web Personal"
@@ -236,6 +240,75 @@
       error={$errors.professor.url}
       class="field"
     />
+
+    <div class="field">
+      <label for="">Perfil de Orcid</label>
+      <div class="two inline fields">
+        <Input
+          type="number"
+          label="Id"
+          name="professor.orcid_id"
+          bind:value={$form.professor.orcid_id}
+          error={$errors.professor.orcid_id}
+          class="field"
+        />
+        <Input
+          label="Link del perfil"
+          name="professor.orcid_profile"
+          placeholder="http://www.example.com"
+          bind:value={$form.professor.orcid_profile}
+          error={$errors.professor.orcid_profile}
+          class="twelve wide field"
+        />
+      </div>
+      <OrcidPosts />
+    </div>
+
+    <div class="field">
+      <label for="">Perfil de Google Schoolar</label>
+      <div class="two inline fields">
+        <Input
+          type="number"
+          label="Id"
+          name="professor.google_schoolar_id"
+          bind:value={$form.professor.google_schoolar_id}
+          error={$errors.professor.google_schoolar_id}
+          class="field"
+        />
+        <Input
+          label="Link del perfil"
+          name="professor.google_schoolar_profile"
+          placeholder="http://www.example.com"
+          bind:value={$form.professor.google_schoolar_profile}
+          error={$errors.professor.google_schoolar_profile}
+          class="twelve wide field"
+        />
+      </div>
+      <GoogleSchoolarPosts />
+    </div>
+
+    <div class="field">
+      <label for="">Perfil de Research Gate</label>
+      <div class="two inline fields">
+        <Input
+          type="number"
+          label="Id"
+          name="professor.research_gate_id"
+          bind:value={$form.professor.research_gate_id}
+          error={$errors.professor.research_gate_id}
+          class="field"
+        />
+        <Input
+          label="Link del perfil"
+          name="professor.research_gate_profile"
+          placeholder="http://www.example.com"
+          bind:value={$form.professor.research_gate_profile}
+          error={$errors.professor.research_gate_profile}
+          class="twelve wide field"
+        />
+      </div>
+      <ResearchGatePosts />
+    </div>
 
     <ActionsButtons action="Registrarse" />
   </form>
