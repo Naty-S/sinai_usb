@@ -221,13 +221,67 @@
             <div class="item">
               <i class="searchengin icon"/>
               <div class="content">
-                Líneas de investigación: {p.lineas_investigacion.join(", ")}.
+                Líneas de investigación: {p.lineas_investigacion?.join(", ")}
               </div>
             </div>
             <div class="item">
               <i class="linkify icon"/>
               <div class="content">
-                {p.url || ''}
+                Página personal: {p.url || ''}
+              </div>
+            </div>
+            <div class="item">
+              <i class="orcid icon"/>
+              <div class="list content">
+                <div class="header">Perfil Orcid</div>
+                <div class="item">
+                  <i class="id badge icon"/>
+                  id: {p.orcid_id || ''}
+                </div>
+                <div class="item">
+                  <i class="user circle icon"/>
+                  Link del perfil: {p.orcid_profile || ''}
+                </div>
+                <div class="item">
+                  <i class="pen alternate icon"/>
+                  Publicaciones: {p.orcid_posts?.join(", ") || ''}
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <i class="google icon"/>
+              <div class="list content">
+                <div class="header">Perfil Google Schoolar</div>
+                <div class="item">
+                  <i class="id badge icon"/>
+                  id: {p.google_schoolar_id || ''}
+                </div>
+                <div class="item">
+                  <i class="user circle icon"/>
+                  Link del perfil: {p.google_schoolar_profile || ''}
+                </div>
+                <div class="item">
+                  <i class="pen alternate icon"/>
+                  Publicaciones: {p.google_schoolar_posts?.join(", ") || ''}
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <i class="researchgate icon"/>
+              <div class="list content">
+                <div class="header">Perfil Research Gate</div>
+                <div class="item">
+                  <i class="id badge icon"/>
+                  id: {p.research_gate_id || ''}
+                </div>
+                <div class="item">
+                  <i class="user circle icon"/>
+                  Link del perfil: {p.research_gate_profile || ''}
+                </div>
+                <div class="item">
+                  <i class="pen alternate icon"/>
+                  Publicaciones: {p.research_gate_posts?.join(", ") || ''}
+                </div>
               </div>
             </div>
           </div>

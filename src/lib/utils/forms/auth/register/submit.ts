@@ -6,6 +6,9 @@ export const submit = function () {
 
     data.professor.departamento = Number(data.professor.departamento);
     data.professor.cedula = Number(data.professor.cedula);
+    data.professor.orcid_id = Number(data.professor.orcid_id);
+    data.professor.google_schoolar_id = Number(data.professor.google_schoolar_id);
+    data.professor.research_gate_id = Number(data.professor.research_gate_id);
 
     // register
     const res = await api.post("/api/auth/register", data);

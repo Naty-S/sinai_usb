@@ -32,7 +32,16 @@ export const GET: RequestHandler = async function () {
         diploma_tipo: true,
         diploma_universidad: true,
         lineas_investigacion: true,
-        url: true
+        url: true,
+        orcid_id: true,
+        orcid_profile: true,
+        orcid_posts: true,
+        google_schoolar_id: true,
+        google_schoolar_profile: true,
+        google_schoolar_posts: true,
+        research_gate_id: true,
+        research_gate_profile: true,
+        research_gate_posts: true,
       },
       where: { id: {not: { equals: 0}} },
       orderBy: { apellido1: "asc" }

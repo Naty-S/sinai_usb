@@ -232,6 +232,15 @@ model profesor {
   perfil               String
   sexo                 profesor_sexo_enum
   url                  String?
+  orcid_id                Int?
+  orcid_profile           String?
+  orcid_posts             String[]
+  google_schoolar_id      Int?
+  google_schoolar_profile String?
+  google_schoolar_posts   String[]
+  research_gate_id        Int?
+  research_gate_profile   String?
+  research_gate_posts     String[]
 
   // Postgres relations
   Usuario      usuario      @relation(fields: [correo], references: [login], onDelete: Cascade, onUpdate: Cascade)
