@@ -17,7 +17,7 @@ datasource db {
 // Postgresql enumerable types
 //
 enum articulo_revista_estado_enum {
-  Aceptado_via_publicacion  @map("Aceptado en Vias de Publicacion")
+  Aceptado_via_publicacion @map("Aceptado en Vias de Publicacion")
   Publicado
 }
 
@@ -58,13 +58,19 @@ enum evento_modalidad_enum {
   Invitada
 }
 
+enum estado_solicitud_enum {
+  Aprobado
+  En_Revision
+  Rechazado
+}
+
 enum grabacion_categoria_enum {
-  Ejecucion_CD_Nacional          @map("Ejecucion en CD Nacional")
-  Ejecucion_CD_Internacional     @map("Ejecucion en CD Internacional")
-  CD_Completo_Nacional           @map("CD Completo Nacional")
-  CD_Completo_Internacional      @map("CD Completo Internacional")
-  Premio_Nacional_Concurso       @map("Premio Nacional por Concurso")
-  Premio_Internacional_Concurso  @map("Premio Internacional por Concurso")
+  Ejecucion_CD_Nacional         @map("Ejecucion en CD Nacional")
+  Ejecucion_CD_Internacional    @map("Ejecucion en CD Internacional")
+  CD_Completo_Nacional          @map("CD Completo Nacional")
+  CD_Completo_Internacional     @map("CD Completo Internacional")
+  Premio_Nacional_Concurso      @map("Premio Nacional por Concurso")
+  Premio_Internacional_Concurso @map("Premio Internacional por Concurso")
 }
 
 enum historico_profesor_departamento_cargo_enum {
@@ -116,12 +122,12 @@ enum meses_enum {
 }
 
 enum partitura_categoria_enum {
-  Ejecucion_CD_Nacional          @map("Ejecucion en CD Nacional")
-  Ejecucion_CD_Internacional     @map("Ejecucion en CD Internacional")
-  CD_Completo_Nacional           @map("CD Completo Nacional")
-  CD_Completo_Internacional      @map("CD Completo Internacional")
-  Premio_Nacional_Concurso       @map("Premio Nacional por Concurso")
-  Premio_Internacional_Concurso  @map("Premio Internacional por Concurso")
+  Ejecucion_CD_Nacional         @map("Ejecucion en CD Nacional")
+  Ejecucion_CD_Internacional    @map("Ejecucion en CD Internacional")
+  CD_Completo_Nacional          @map("CD Completo Nacional")
+  CD_Completo_Internacional     @map("CD Completo Internacional")
+  Premio_Nacional_Concurso      @map("Premio Nacional por Concurso")
+  Premio_Internacional_Concurso @map("Premio Internacional por Concurso")
   Partitura
 }
 
@@ -139,10 +145,10 @@ enum personal_coordinacion_cargo_enum {
 
 enum ppi_nivel_enum {
   Candidato
-  Nivel_I    @map("Nivel I")
-  Nivel_II   @map("Nivel II")
-  Nivel_III  @map("Nivel III")
-  Nivel_IV   @map("Nivel IV")
+  Nivel_I   @map("Nivel I")
+  Nivel_II  @map("Nivel II")
+  Nivel_III @map("Nivel III")
+  Nivel_IV  @map("Nivel IV")
 }
 
 enum profesor_categoria_enum {
@@ -166,11 +172,11 @@ enum profesor_dedicacion_enum {
 }
 
 enum profesor_diploma_tipo_enum {
-  Lic_      @map("Lic.")
-  Ph_D_     @map("Ph.D.")
+  Lic_     @map("Lic.")
+  Ph_D_    @map("Ph.D.")
   Doctor
   Magister
-  Ing_      @map("Ing.")
+  Ing_     @map("Ing.")
 }
 
 enum profesor_sexo_enum {
@@ -185,7 +191,7 @@ enum proyecto_grado_nivel_academico_enum {
   Postgrado
   Licencitura
   Ingenieria
-  Pasantia_Larga   @map("Pasantia Larga")
+  Pasantia_Larga  @map("Pasantia Larga")
 }
 
 //
@@ -198,40 +204,40 @@ model usuario {
   padded Int?
 
   // Prisma relations
-  actividades                  actividad[]     @relation("actividad_creada_por_fkey")
-  validaciones                 actividad[]     @relation("actividad_validado_por_fkey")
+  actividades                  actividad[]               @relation("actividad_creada_por_fkey")
+  validaciones                 actividad[]               @relation("actividad_validado_por_fkey")
   administrador                administrador?
   autores                      autor_usb[]
   profesor                     profesor?
   logs_operaciones_actividades log_operacion_actividad[]
 
-  logs_usuario  log_usuario[]  @ignore
+  logs_usuario log_usuario[] @ignore
 }
 
 model profesor {
-  id                   Int                        @id @default(autoincrement())
-  correo               String                     @unique(map: "profesor_correo_idx")
-  cedula               Int                        @unique(map: "profesor_cedula_idx")
-  codigo               Int?                       @unique(map: "profesor_codigo_idx")
-  nombre1              String
-  nombre2              String?
-  apellido1            String
-  apellido2            String?
-  activo               Boolean                    @default(false)
-  confirmado           Boolean                    @default(false) // confirmacion de proyecto?
-  categoria            profesor_categoria_enum
-  condicion            profesor_condicion_enum
-  dedicacion           profesor_dedicacion_enum
-  departamento         Int
-  diploma_tipo         profesor_diploma_tipo_enum
-  diploma_universidad  String
-  extension            Int?
-  fecha_contrato       DateTime?                  @db.Date
-  fecha_ingreso        DateTime?                  @db.Date
-  lineas_investigacion String[]
-  perfil               String
-  sexo                 profesor_sexo_enum
-  url                  String?
+  id                      Int                        @id @default(autoincrement())
+  correo                  String                     @unique(map: "profesor_correo_idx")
+  cedula                  Int                        @unique(map: "profesor_cedula_idx")
+  codigo                  Int?                       @unique(map: "profesor_codigo_idx")
+  nombre1                 String
+  nombre2                 String?
+  apellido1               String
+  apellido2               String?
+  activo                  Boolean                    @default(false)
+  confirmado              Boolean                    @default(false) // confirmacion de proyecto?
+  categoria               profesor_categoria_enum
+  condicion               profesor_condicion_enum
+  dedicacion              profesor_dedicacion_enum
+  departamento            Int
+  diploma_tipo            profesor_diploma_tipo_enum
+  diploma_universidad     String
+  extension               Int?
+  fecha_contrato          DateTime?                  @db.Date
+  fecha_ingreso           DateTime?                  @db.Date
+  lineas_investigacion    String[]
+  perfil                  String
+  sexo                    profesor_sexo_enum
+  url                     String?
   orcid_id                Int?
   orcid_profile           String?
   orcid_posts             String[]
@@ -243,23 +249,25 @@ model profesor {
   research_gate_posts     String[]
 
   // Postgres relations
-  Usuario      usuario      @relation(fields: [correo], references: [login], onDelete: Cascade, onUpdate: Cascade)
-
+  Usuario usuario @relation(fields: [correo], references: [login], onDelete: Cascade, onUpdate: Cascade)
 
   // Prisma relations
-  autor_actividades            autor_usb[]
-  convocatorias_pei            convocatoria_pei[]
-  coordinacion                 coordinacion?
-  datos_informe                datos_informe[]
-  jefe_departamentos           departamento[]                           @relation("departamento_jefe_fkey")
-  representante_departamentos  departamento[]                           @relation("departamento_representante_fkey")
-  division                     division?
-  grupos_investigacion         grupo_investigacion[]
-  historico_departamentos      historico_profesor_departamento[]
-  historico_grupos             historico_profesor_grupo_investigacion[]
-  historico_nomina             historico_profesor_nomina[]
-  pei                          pei[]
-  ppi                          ppi[]
+  autor_actividades           autor_usb[]
+  convocatorias_pei           convocatoria_pei[]
+  coordinacion                coordinacion?
+  datos_informe               datos_informe[]
+  jefe_departamentos          departamento[]                           @relation("departamento_jefe_fkey")
+  representante_departamentos departamento[]                           @relation("departamento_representante_fkey")
+  division                    division?
+  grupos_investigacion        grupo_investigacion[]
+  historico_departamentos     historico_profesor_departamento[]
+  historico_grupos            historico_profesor_grupo_investigacion[]
+  historico_nomina            historico_profesor_nomina[]
+  pei                         pei[]
+  ppi                         ppi[]
+  s1_novel_evaluador          s1_novel[]                               @relation("s1_novel_evaluador_fkey")
+  s1_novel_profesor           s1_novel[]                               @relation("s1_novel_profesor_fkey")
+  s1_novel_jurado             s1_novel_jurado_usb[]
 }
 
 model coordinacion {
@@ -486,13 +494,56 @@ model red_academica_grupo_investigacion {
   red   Int
   grupo Int
 
-  // Prisma relations
+  // Postgres relations
   Grupo grupo_investigacion @relation(fields: [grupo], references: [id], onDelete: NoAction, onUpdate: Cascade)
   Red   red_academica       @relation(fields: [red], references: [id], onDelete: NoAction, onUpdate: Cascade)
 
   @@id([red, grupo])
   @@index([grupo])
   @@index([red])
+}
+
+model s1_novel {
+  id                      Int                   @id @default(autoincrement())
+  evaluador               Int
+  profesor                Int
+  comentario              String // Dirigido al profresor solicitante
+  estado                  estado_solicitud_enum
+  observaciones_evaluador String // Privadas, no las ve el profesor
+  observaciones_profesor  String // Las que escribe el profesor al hacer la solicitud
+  proyecto                String
+  soportes                String[]
+
+  // Postgres relations
+  Evaluador profesor @relation("s1_novel_evaluador_fkey", fields: [evaluador], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Profesor  profesor @relation("s1_novel_profesor_fkey", fields: [profesor], references: [id], onDelete: NoAction, onUpdate: Cascade)
+
+  // Prisma relations
+  jurado_usb     s1_novel_jurado_usb[]
+  jurado_externo s1_novel_jurado_externo[]
+}
+
+model s1_novel_jurado_usb {
+  id        Int    @id @default(autoincrement())
+  profesor  Int
+  s1_novel  Int
+  veredicto String?
+
+  // Postgres relations
+  S1_novel s1_novel @relation(fields: [s1_novel], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Profesor profesor @relation(fields: [profesor], references: [id], onDelete: NoAction, onUpdate: Cascade)
+}
+
+model s1_novel_jurado_externo {
+  id          Int     @id @default(autoincrement())
+  s1_novel    Int
+  correo      String?
+  nombre      String
+  universidad String?
+  veredicto   String?
+
+  // Postgres relations
+  S1_novel s1_novel @relation(fields: [s1_novel], references: [id], onDelete: NoAction, onUpdate: Cascade)
 }
 
 model errors_log {
@@ -522,30 +573,30 @@ model actividad {
   titulo                    String
 
   // Postgres relations
-  Ingresada_por usuario   @relation("actividad_creada_por_fkey", fields: [creada_por], references: [login], onDelete: NoAction, onUpdate: Cascade)
-  Validado_por  usuario?  @relation("actividad_validado_por_fkey", fields: [validado_por], references: [login], onDelete: NoAction, onUpdate: Cascade)
+  Ingresada_por usuario  @relation("actividad_creada_por_fkey", fields: [creada_por], references: [login], onDelete: NoAction, onUpdate: Cascade)
+  Validado_por  usuario? @relation("actividad_validado_por_fkey", fields: [validado_por], references: [login], onDelete: NoAction, onUpdate: Cascade)
 
   // Prisma relations
-  actividades_grupos           actividad_grupo_investigacion[]
-  autores_externos             autor_externo[]
-  autores_usb                  autor_usb[]
-  articulo_revista             articulo_revista?
-  capitulo_libro               capitulo_libro?
-  composicion                  composicion?
-  documentos                   documento[]
-  evento                       evento?
-  exposicion                   exposicion?
-  grabacion                    grabacion?
-  informe_tecnico              informe_tecnico?
-  libro                        libro?
-  memoria                      memoria?
-  partitura                    partitura?
-  patente                      patente?
-  premio                       premio?
-  premio_bienal                premio_bienal?
-  proyecto_grado               proyecto_grado?
-  proyecto_investigacion       proyecto_investigacion?
-  recital                      recital?
+  actividades_grupos     actividad_grupo_investigacion[]
+  autores_externos       autor_externo[]
+  autores_usb            autor_usb[]
+  articulo_revista       articulo_revista?
+  capitulo_libro         capitulo_libro?
+  composicion            composicion?
+  documentos             documento[]
+  evento                 evento?
+  exposicion             exposicion?
+  grabacion              grabacion?
+  informe_tecnico        informe_tecnico?
+  libro                  libro?
+  memoria                memoria?
+  partitura              partitura?
+  patente                patente?
+  premio                 premio?
+  premio_bienal          premio_bienal?
+  proyecto_grado         proyecto_grado?
+  proyecto_investigacion proyecto_investigacion?
+  recital                recital?
 
   @@index([creada_por])
   @@index([validado_por])
@@ -562,7 +613,7 @@ model log_operacion_actividad {
   tabla     String
 
   // Postgres relations
-  Usuario  usuario  @relation(fields: [usuario], references: [login], onDelete: Cascade, onUpdate: Cascade)
+  Usuario usuario @relation(fields: [usuario], references: [login], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([actividad])
   @@index([usuario])

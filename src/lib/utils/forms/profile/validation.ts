@@ -30,7 +30,7 @@ export const validation = function () {
     )
     , orcid_id: yup.number().nullable()
     , orcid_profile: yup.lazy(value => !value ? yup.string().nullable() :
-        yup.string().when("url", {
+        yup.string().when("orcid_profile", {
           is: null,
           then: yup.string().nullable(),
           otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
@@ -39,7 +39,7 @@ export const validation = function () {
     , orcid_posts: yup.array(yup.string())
     , google_schoolar_id: yup.number().nullable()
     , google_schoolar_profile: yup.lazy(value => !value ? yup.string().nullable() :
-        yup.string().when("url", {
+        yup.string().when("google_schoolar_profile", {
           is: null,
           then: yup.string().nullable(),
           otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
@@ -48,7 +48,7 @@ export const validation = function () {
     , google_schoolar_posts: yup.array(yup.string())
     , research_gate_id: yup.number().nullable()
     , research_gate_profile: yup.lazy(value => !value ? yup.string().nullable() :
-        yup.string().when("url", {
+        yup.string().when("research_gate_profile", {
           is: null,
           then: yup.string().nullable(),
           otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")

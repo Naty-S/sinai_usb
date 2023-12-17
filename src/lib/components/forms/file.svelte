@@ -1,12 +1,12 @@
 <!-- 
 	@component
-  Form datalist
+  Form inputs
 
   Props:
   * `label`: string
   * `name`: string
+  * `placeholder`: string (optional)
   * `value`: any
-  * `options`: { val: string, name: string }[]
   * `error`: any (optional)
   * `class`: string
  -->
@@ -20,32 +20,28 @@
 
   import ErrorMsg from "./error_msg.svelte";
 
+  export let accept = "*/*";
   export let label: string;
   export let name: string;
+  export let placeholder = '';
   export let value: any;
-  export let options: { val: string | number, name: string }[];
   export let error: any = undefined;
 
-  const param = $page.params.activity;
-  const kind = param as kinds;
-  const { handleChange }: activity_form_ctx<typeof kind> = getContext(key);
+  const act = $page.params.activity;
+  const kind = act as kinds;
+  // const ctx = act ? typeof kind : typeof any;
+  const { handleChange }: activity_form_ctx<any> = getContext(key);
 </script>
 
 <div class:error={error} {...$$props}>
   <label for={name}>{label}</label>
   <input
-    list="datalist-{name}"
+    type="file"
     {name}
     {value}
-    on:change={handleChange}
+    {placeholder}
+    {accept}
   >
-  <datalist
-    id="datalist-{name}"
-    class="ui fluid selection"
-  >
-    {#each options as opt}
-      <option value={opt.val}>{opt.name.replaceAll('_', ' ')}</option>
-    {/each}
-  </datalist>
   <ErrorMsg {error} />
+  <slot></slot>
 </div>

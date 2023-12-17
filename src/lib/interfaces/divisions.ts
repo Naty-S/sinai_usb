@@ -9,7 +9,7 @@ import type { Professor } from "./professors";
  * 
  * - `id`: number
  * - `nombre`: string
- * - `departamentos`: Department[]
+ * - `departamentos`: Department[] //TODO: move to extended?
  */
 export interface Division {
     id: number

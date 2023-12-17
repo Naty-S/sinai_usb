@@ -90,16 +90,13 @@
 
   $: $form.autores_usb.map(a => {
     if (!a.es_estudiante) {
-      a.profesor_id = professors.find(p => p.perfil === a.nombre)?.id || null;
+      a.profesor_id = professors.find(p => p.perfil === a.nombre)?.id || 0;
     } else {
       a.profesor_id = null;
     };
 
     return a;
   });
-
-  $: console.log("changing USB:",$form.autores_usb)
-  $: console.log("changing out:",$form.autores_externos)
 </script>
 
 <div class="required field">

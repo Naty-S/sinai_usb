@@ -30,7 +30,7 @@
     {action}
   </button>
   <button type="reset" name="reset_form" class="ui red button">
-    Reset
+    Reiniciar
   </button>
   <button type="button" class="ui button" on:click={() => goto(previousPage)}>
     Regresar

@@ -34,7 +34,8 @@
 
   const act = $page.params.activity;
   const kind = act as kinds;
-  const { handleChange }: activity_form_ctx<typeof kind> = getContext(key);
+  // const ctx = act ? typeof kind : typeof any;
+  const { handleChange }: activity_form_ctx<any> = getContext(key);
 </script>
 
 <div class:error={error} {...$$props}>

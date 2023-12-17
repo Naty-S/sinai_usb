@@ -208,7 +208,7 @@
 {/if}
 
 {#if pop_create_act}
-  <CreateActivities pop_up={pop_create_act} close={location.reload} />
+  <CreateActivities pop_up={pop_create_act} close={() => location.replace($page.url.pathname)} />
 {/if}
 
 {#if err}
@@ -218,7 +218,7 @@
     close_text="Ok"
     align="center"
     pop_up={Boolean(err)}
-    close={location.reload}
+    close={() => location.replace($page.url.pathname)}
   >
     <p>
       Hubo un problema al intentar realizar la acción, por favor vuelva a intentar

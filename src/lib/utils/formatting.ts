@@ -86,7 +86,7 @@ export const format_activity = function (actividad: Actividad, logs: ActivityLog
     const _kind = kind as keyof typeof actividad ;
     const _kind_data = actividad[_kind];
     
-    if (!_kind_data) { delete actividad[_kind]; /* console.log("no data:",actividad) */}
+    if (!_kind_data) { delete actividad[_kind]; }
     else {
       kind_name = kind;
       kind_data = _kind_data;
