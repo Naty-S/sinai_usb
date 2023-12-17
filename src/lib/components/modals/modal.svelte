@@ -21,6 +21,7 @@
 	export let ok_text = '';
 	export let close_text = "Cancelar";
 	export let align = '';
+	export let style = '';
   export let close = () => {};
   export let confirm = () => {};
 
@@ -65,6 +66,7 @@
 <div
   {id}
   class="ui {pop_up ? "active" : ''} modal this-modal"
+	{style}
   role="dialog"
   aria-modal="true"
   bind:this={modal}

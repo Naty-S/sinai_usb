@@ -102,6 +102,24 @@ export type activity = {
 };
 
 /**
+ * 
+ */
+export type jury = {
+    jurado_usb: {
+      profesor: number
+    , s1_novel: number
+    , veredicto: FileList | null
+  }[]
+  , jurado_externo: {
+      s1_novel: number
+    , correo: String | null
+    , nombre: String
+    , universidad: String | null
+    , veredicto: FileList | null
+  }[]
+}
+
+/**
  * Activity form data
  */
 export type actividad_form<kind extends kinds> = activity & Pick<actividades_form, kind>;

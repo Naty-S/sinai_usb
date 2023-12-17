@@ -69,7 +69,8 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
     };
   });
 
-  let status = 303;
+  let status = 500;
+  let body = {};
   let headers = {
     location: '/'
   };
@@ -169,6 +170,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       }
     });
 
+    status = 303;
     if (_data.user_rank == "professor") {
       headers = {
         location: `/sinai/actividades/profesor/${professor}?modificada=true`
@@ -181,17 +183,9 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
 
   } catch (error: any) {
     const message = await handle_error(error);
-    const code = error.code ? "&code=" + error.code : '';
+    const code = error.code || '';
 
-    if (data.user_rank == "professor") {
-      headers = {
-        location: `/sinai/actividades/profesor/${professor}?error=` + message + code
-      };
-    } else {
-      headers = {
-        location: "/sinai/actividades/decano/0?error=" + message + code
-      };
-    };
+    body = { message, code };
   };
 
   return {

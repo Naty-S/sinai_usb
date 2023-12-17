@@ -302,7 +302,7 @@
     close_text="Ok"
     align="center"
     pop_up={Boolean(err)}
-    close={location.reload}
+    close={() => location.replace($page.url.pathname)}
   >
     <p>
       Hubo un problema al intentar modificar su perfil, por favor vuelva a intentar

@@ -1,10 +1,12 @@
 import type { actividad_form, kinds } from "$lib/types/forms";
 import { goto } from "$app/navigation";
 
+import type { User } from "$lib/interfaces/auth";
+
 import * as api from "$lib/api";
 
 
-export const submit = function (kind: kinds, update: boolean = false, id?: string) {
+export const submit = function (kind: kinds, update: boolean = false, user: User, id?: string) {
   return async function (data: actividad_form<typeof kind>) {
     
     switch (kind) {
@@ -65,6 +67,17 @@ export const submit = function (kind: kinds, update: boolean = false, id?: strin
       res = await api.post(`/api/activities/create/${kind}`, data);
     };
     
-    goto(res.url);
+    if (res.ok) {
+      goto(res.url);
+
+    } else {
+      const { message, code } = await res.json();
+
+      if (user.professor) {
+        goto(`/sinai/actividades/profesor/${user.professor?.id}?error=${message}&code=${code}`);
+      } else {
+        goto(`/sinai/actividades/decano/0?error=${message}&code=${code}`);
+      };
+    };
   };
 }

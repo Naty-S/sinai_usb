@@ -31,7 +31,7 @@
   const activity = $page.params.activity;
   const kind = activity as kinds;
   const initialValues = init(kind, $session.user);
-  const onSubmit = submit(kind);
+  const onSubmit = submit(kind, true, $session.user);
   const validationSchema = validation(kind);
   const formProps = { initialValues, onSubmit, validationSchema };
   const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);

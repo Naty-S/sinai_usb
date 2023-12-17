@@ -57,6 +57,7 @@
   let departments: Department[] = [];
   let divisions: Division[] = [];
   let coordinations: Coordination[] = [];
+  let action = { info: '', code: '' };
 
   let searching = false;
   let search_err = '';
@@ -167,8 +168,9 @@
     } else {
 
       const { message, code } = await res1.json();
-      // action.info = message;
-      // action.code = code;
+      action.info = message;
+      action.code = code;
+
       console.log(message)
     };
   });
@@ -405,5 +407,22 @@
   >
     <p>Hubo un error al realizar la búsqueda. Por favor vuelva a intentar.</p>
     <span class="ui red text">Detalles: {search_err}</span>
+  </Modal>
+{/if}
+
+{#if action.info !== ''}
+  <Modal
+    id="error"
+    title="Error. {action.code}"
+    close_text="Ok"
+    align="center"
+    pop_up={action.info !== ''}
+    close={location.reload}
+  >
+    <p>
+      Hubo un problema al cargar la lista de profesores, por favor recargue la página
+      o contáctese con algún administrador proporcionando el código del error.
+    </p>
+    <span class="ui red text">Detalles: {action.info}</span>
   </Modal>
 {/if}

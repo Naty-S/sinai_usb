@@ -104,8 +104,8 @@ export const GET: RequestHandler = async function ({ params }) {
             id: professor.departamento
           , nombre: professor_department.nombre
         }
-        , coordination: professor_department.Coordinacion
-        , division: professor_department.Division
+        , coordination: professor_department.Coordinacion // Not used. TODO
+        , division: professor_department.Division // Not used. TODO
         , groups: {
           grupos_investigacion: professor.grupos_investigacion
           , historico_grupos: professor.historico_grupos

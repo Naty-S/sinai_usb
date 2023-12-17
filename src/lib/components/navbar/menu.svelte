@@ -22,10 +22,13 @@
     {href: "/sinai/consultas/actividades", click: void_click, name: "Públicas"},
     // {href: void_link, click: void_click, name: "Predeterminadas"}
   ];
+  const requests = [
+    {href: "/sinai/s1_novel/solicitud", click: void_click, name: "S1 Novel"},
+  ];
 
-  let views: submenu_item[] = [];
-  let groups: submenu_item[] = [];
+  let groups: submenu_item[] = [ {href: void_link, click: void_click, name: "Sin grupos"} ];
   let options: submenu_item[] = [];
+  let views: submenu_item[] = [];
 
   $: user = $session.user;
   $: professor = user?.professor;  
@@ -130,6 +133,7 @@
       <Submenu name="Mis Grupos" items={groups} />
     {/if}
     <Submenu name="Consultas" items={searchs} />
+    <Submenu name="Solicitudes" items={requests} />
     <Submenu name="Opciones" items={options} />
     <!-- <Submenu name="Ayuda" items={[]} /> -->
     
