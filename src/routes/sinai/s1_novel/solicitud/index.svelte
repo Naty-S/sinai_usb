@@ -10,50 +10,22 @@
       const res = await fetch(`/api/s1_novel/requests/${professor.id}`);
      
       if (res.ok) {
-        // console.log(res)
-        const s1_novel_requests = await res.json();
-        // console.log("proyecto 2")
-        // console.log(s1_novel_requests[2].proyecto)
-        // console.log("proyecto 3")
-        // const p = s1_novel_requests[0].proyecto
-        // const pdata = p.data
-        // const parray8 = new Uint8Array(pdata)
-        // console.log(p)
-        // console.log(parray8)
-        // console.log(parray8.buffer)
-        // console.log(new Blob([parray8.buffer], { type: "application/pdf" }))
-        // console.log(new File([parray8.buffer], "download"), { type: "application/pdf" }) - File not defined
-        // console.log("new blob")
-        // const n = new Blob([s1_novel_requests[2].proyecto], { type: "application/pdf" })
 
+        const req = await res.json();
+        const s1_novel_requests = req.map(s1 => {
 
-        // const binaryString = atob(p);
-        // const binaryLen = binaryString.length;
-        // const bytes = new Uint8Array(binaryLen);
-        // for (var i = 0; i < binaryLen; i++) {
-        //   var ascii = binaryString.charCodeAt(i);
-        //   bytes[i] = ascii;
-        // }
+          s1.jurado_usb = s1.jurado_usb.map(ju => {
+            ju.veredicto = base64_to_blob(ju.veredicto);
+            return ju;
+          });
+          s1.jurado_externo = s1.jurado_externo.map(je => {
+            je.veredicto = base64_to_blob(je.veredicto);
+            return je;
+          });
 
-
-        // // console.log("text")
-        // // console.log(await n.text())
-        // console.log("arrayBuffer")
-        // console.log(await n.arrayBuffer())
-        // const f = new FileReader()
-
-  //       const bytes = new Uint8Array(59);
-
-  // for (let i = 0; i < 59; i++) {
-  //   bytes[i] = 32 + i;
-  // }
-        
-        // s1_novel_requests[0].proyecto = new Blob([s1_novel_requests[0].proyecto], { type: "application/pdf" })
-        // s1_novel_requests[1].proyecto = new Blob([s1_novel_requests[1].proyecto], { type: "application/pdf" })
-        // s1_novel_requests[2].proyecto = new Blob([s1_novel_requests[2].proyecto], { type: "application/pdf" })
-        // s1_novel_requests[0].proyecto = new Blob([bytes], { type: "application/pdf" })
-        // s1_novel_requests[4].proyecto = new Blob([s1_novel_requests[4].proyecto], { type: "image/jpeg" })
-  
+          return s1;
+        });
+          
         return {
           props: { s1_novel_requests }
         };
@@ -79,6 +51,8 @@
   import { createForm, key } from "svelte-forms-lib";
 
   import { session, page } from "$app/stores";
+
+	import { base64_to_blob } from "$lib/utils/conversions";
 
   import { init } from "$lib/utils/forms/s1_novel/request/init";
   import { validation } from "$lib/utils/forms/s1_novel/request/validation";
@@ -180,35 +154,24 @@
               </div>
             </div>
             <div class="item">
-              <i class="file icon"/>
-              <div class="content">
-                Proyecto:
-                <!-- <a href={URL.createObjectURL(s1.proyecto)}
-                target=”_blank”
-                > -->
-                <!-- <a href={`data:application/pdf;base64,${s1.proyecto}`}
-                target=”_blank”
-                download = "download.pdf"
-                > -->
-                Ver/Descargar
-                <!-- </a> -->
-              </div>
-            </div>
-            <div class="item">
               <i class="users icon"/>
               <div class="content">
                 <div class="">Jurado:</div>
                 <ul class="ui items">
                   {#each s1.jurado_usb as ju}
                     <div class="item"><li>
-                      {`${ju.Profesor.nombre1}, ${ju.Profesor.apellido1}`}: Ver/Descargar
-                      <!-- {ju.veredicto} -->
+                      {`${ju.Profesor.nombre1}, ${ju.Profesor.apellido1}`}: 
+                      <a href={URL.createObjectURL(ju.veredicto)} target=”_blank”>
+                        Ver/Descargar
+                      </a>
                     </li></div>
                   {/each}
                   {#each s1.jurado_externo as je}
                     <div class="item"><li>
-                      {je.nombre}: Ver/Descargar
-                      <!-- {je.veredicto} -->
+                      {je.nombre}: 
+                      <a href={URL.createObjectURL(je.veredicto)} target=”_blank”>
+                        Ver/Descargar
+                      </a>
                     </li></div>
                   {/each}
                 </ul>

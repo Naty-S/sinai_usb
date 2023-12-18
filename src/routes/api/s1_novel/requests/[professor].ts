@@ -23,6 +23,7 @@ export const GET: RequestHandler = async function ({ params }) {
         estado: true,
         comentario: true,
         proyecto: true,
+        soportes: true,
         jurado_usb: { select: {
           id: true,
           Profesor: { select: {nombre1: true, apellido1: true} },
@@ -31,17 +32,7 @@ export const GET: RequestHandler = async function ({ params }) {
         jurado_externo: { select: {id: true, nombre: true, veredicto: true} }
       },
       where: { profesor: Number(params.professor) }
-    });
-    // console.log("back - proy")
-
-    // const p = requests[3].proyecto
-    // const n = new Blob([p], { type: "application/pdf" })
-    // console.log(p)
-    // console.log(n)
-    // console.log("text")
-    // console.log(p.toJSON())
-    // requests[3].proyecto = Buffer.from(p).toString('base64')
-    
+    });    
 
     status = 200;
     body = requests;
