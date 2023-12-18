@@ -2,21 +2,23 @@ import { goto } from "$app/navigation";
 
 import * as api from "$lib/api";
 
+import { file_to_base64 } from "$lib/utils/conversions";
+
 
 export const submit = function (s1_novel_id: number, pathname: string) {
   return async function (data: any) {
 
-    data.jurado_usb = await Promise.all(data.jurado_usb.map(async j => {
+    data.jurado_usb = await Promise.all(data.jurado_usb.map(async ju => {
       
-      j.veredicto = await (new Blob(j.veredicto, { type: "application/pdf" })).text();
+      ju.veredicto = await file_to_base64(ju.veredicto[0]);
       
-      return j;
+      return ju;
     }));
-    data.jurado_externo = await Promise.all(data.jurado_externo.map(async j => {
+    data.jurado_externo = await Promise.all(data.jurado_externo.map(async je => {
       
-      j.veredicto = await (new Blob(j.veredicto, { type: "application/pdf" })).text();
+      je.veredicto = await file_to_base64(je.veredicto[0]);
 
-      return j;
+      return je;
     }));
 
     const res = await api.patch("/api/s1_novel/decision", { s1_novel_id, data, pathname });

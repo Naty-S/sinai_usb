@@ -17,6 +17,7 @@ export const GET: RequestHandler = async function ({ params }) {
         id: true,
         estado: true,
         proyecto: true,
+        soportes: true,
         Profesor: { select: {nombre1: true, apellido1: true} },
         jurado_usb: { select: { Profesor: { select: {nombre1: true, apellido1: true, correo: true} }}},
         jurado_externo: { select: {nombre: true, correo: true, universidad: true} }

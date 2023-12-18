@@ -10,8 +10,15 @@
       const res = await fetch(`/api/s1_novel/evals/${professor.id}`);
      
       if (res.ok) {
-        const requests = await res.json();
+        const req = await res.json();
   
+        const requests = req.map(s1 => {
+
+          s1.proyecto = base64_to_blob(s1.proyecto);
+          s1.soportes = s1.soportes.map((s: string) => base64_to_blob(s));
+
+          return s1;
+        });
         return {
           props: { requests }
         };
@@ -38,6 +45,7 @@
   import { page } from "$app/stores";
 
   import * as api from "$lib/api";
+	import { base64_to_blob } from "$lib/utils/conversions";
 
   import { init } from "$lib/utils/forms/s1_novel/decision/init";
   import { validation } from "$lib/utils/forms/s1_novel/decision/validation";
@@ -111,9 +119,32 @@
       </div>
       <div class="content">
         Profesor solicitante: {`${r.Profesor.nombre1}, ${r.Profesor.apellido1}`}.
-        <!-- Proyecto: ver/descargar {r.proyecto} -->
+        <div class="ui list">
+          <div class="item">
+            <i class="file icon"/>
+            <div class="content">
+              Proyecto:
+              <a href={URL.createObjectURL(r.proyecto)} target=”_blank”>
+                Ver/Descargar
+              </a>
+            </div>
+          </div>
+          <div class="item">
+            <i class="file icon"/>
+            <div class="content">
+              <div class="">Soportes:</div>
+              <ol class="ui items">
+                {#each r.soportes as s}
+                  <div class="item"><li><a href={URL.createObjectURL(s)} target=”_blank”>
+                    Ver/Descargar
+                  </a></li></div>
+                {/each}
+              </ol>
+            </div>
+          </div>
+        </div>
 
-        {#if r.jurado_usb.length > 0 || r.jurado_externo.length > 0}
+        {#if r.jurado_usb.length > 0}
           <div class="medium header">USB:</div>
           <div class="ui horizontal list">
             {#each r.jurado_usb as j_usb}
@@ -126,6 +157,9 @@
               </div>
             {/each}
           </div>
+        {/if}
+
+        {#if r.jurado_externo.length > 0}
           <div class="medium header">Externos:</div>
           <div class="ui horizontal list">
             {#each r.jurado_externo as j_e}
