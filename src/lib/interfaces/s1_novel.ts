@@ -22,19 +22,20 @@ export interface S1_request {
     }
   ; estado: string
   ; comentario: string
-  ; proyecto: any
+  ; proyecto: Blob
+  ; soportes: Blob[]
   ; jurado_usb: {
         id: number
       ; Profesor: {
           nombre1: string
         ; apellido1: string
         }
-      ; veredicto: any
+      ; veredicto: Blob
     }[]
   ; jurado_externo: {
         id: number
       ; nombre: string
-      ; veredicto: any
+      ; veredicto: Blob
     }[]
 };
 
@@ -48,7 +49,8 @@ export interface S1_eval {
       nombre1: string
     ; apellido1: string
   }
-  ; proyecto: any
+  ; proyecto: Blob
+  ; soportes: Blob[]
   ; jurado_usb: {
       Profesor: {
         nombre1: string

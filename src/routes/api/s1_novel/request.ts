@@ -11,11 +11,6 @@ import { handle_error, prisma } from "$api/_api";
 export const POST: RequestHandler = async function ({ request }) {
 
   const { data, pathname } = await request.json();
-  data.proyecto = Buffer.from(data.proyecto).toString("base64");
-  // console.log("back - buffer")
-  // console.log(data.proyecto)
-  // lo mismo para los soportes
-  // data.soportes = data.soportes.map(s => Buffer.from(s).toString("base64"))
 
   let status = 500;
   let body = {};

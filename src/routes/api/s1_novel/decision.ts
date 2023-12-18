@@ -12,13 +12,13 @@ export const PATCH: RequestHandler = async function ({ request }) {
 
   const { s1_novel_id, data, pathname } = await request.json();
 
-  const jurado_usb = data.jurado_usb.map(j => ({
-    data: { veredicto: Buffer.from(j.veredicto).toString("base64") },
-    where: { id: j.id }
+  const jurado_usb = data.jurado_usb.map(ju => ({
+    data: { veredicto: ju.veredicto },
+    where: { id: ju.id }
   }));
-  const jurado_externo = data.jurado_externo.map(j => ({
-    data: { veredicto: Buffer.from(j.veredicto).toString("base64") },
-    where: { id: j.id }
+  const jurado_externo = data.jurado_externo.map(je => ({
+    data: { veredicto: je.veredicto },
+    where: { id: je.id }
   }));
   const s1_novel = {
     ...data.s1_novel,
