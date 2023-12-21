@@ -25,6 +25,10 @@ import type {
 import type { User } from "$lib/interfaces/auth";
 
 
+//
+// Activities
+//
+
 /**
  * Kinds of activities
  */
@@ -102,27 +106,75 @@ export type activity = {
 };
 
 /**
+ * Activity form data
+ */
+export type actividad_form<kind extends kinds> = activity & Pick<actividades_form, kind>;
+
+
+//
+// S1 Novel
+//
+
+export type s1_novel_form = {
+
+};
+
+/**
  * 
  */
 export type jury = {
     jurado_usb: {
       profesor: number
     , s1_novel: number
-    , veredicto: FileList | null
+    , veredicto?: FileList | null
   }[]
   , jurado_externo: {
       s1_novel: number
-    , correo: String | null
+    , correo?: String | null
     , nombre: String
-    , universidad: String | null
-    , veredicto: FileList | null
+    , universidad?: String | null
+    , veredicto?: FileList | null
   }[]
 }
 
-/**
- * Activity form data
- */
-export type actividad_form<kind extends kinds> = activity & Pick<actividades_form, kind>;
+//
+// PREPRAII
+//
+
+export type prepraii_form = {
+  prepraii_solicitud: {
+      actividad: number
+    , articulo: FileList
+    , comentario: string
+    , indice: string
+    , observaciones_evaluador: string
+    , observaciones_profesor: string
+  }
+  , prepraii_profesores: {
+      profesor: number
+    , contrato_constancia: FileList
+  }[]
+};
+
+export type prepraii = {
+  prepraii_solicitud: {
+      actividad: number
+    , articulo: string
+    , profesor: number
+    , comentario: string
+    , indice: string
+    , observaciones_evaluador: string
+    , observaciones_profesor: string
+  }
+  , prepraii_profesores: {
+      profesor: number
+    , contrato_constancia: string
+  }[]
+};
+
+//
+// Context
+//
 
 /**
  * Form context, propagates form data across components

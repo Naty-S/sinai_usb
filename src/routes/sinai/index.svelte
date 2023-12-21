@@ -10,11 +10,14 @@
   import { page } from "$app/stores";
 
 	import Modal from "$lib/components/modals/modal.svelte";
+	import SINAI from "$lib/components/sinai.svelte";
 
   import Consultas from "./consultas/actividades/index.svelte";
 
   $: not_registered = Boolean($page.url.searchParams.get("no_registro"));
 </script>
+
+<SINAI />
 
 <Consultas />
 

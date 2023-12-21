@@ -5,14 +5,20 @@
 <script lang="ts">
   import { session } from "$app/stores";
 
-  import CreateActivities from "../modals/create_activities.svelte";
+  import bkg from "$assets/letterhead_bkg.png";
+
+  import CreateActivities from "$lib/components/modals/create_activities.svelte";
+  import ModifyBraPeriod from "$lib/components/modals/modify_bra_period.svelte";
+  import CreatePrepraii from "$lib/components/modals/create_prepraii.svelte";
+  import UpdatePrepraii from "$lib/components/modals/update_prepraii.svelte";
+
   import Letterhead from "./letterhead/index.svelte";
 	import MenuDropdown from "./menu.svelte";
-  import ModifyBraPeriod from "../modals/modify_bra_period.svelte";
-  import bkg from "$assets/letterhead_bkg.png";
 
   let pop_create = false;
   let pop_modify_bra = false;
+  let pop_create_prepraii = false;
+  let pop_update_prepraii = false;
   let fixed = '';
   let navbar = "ui grid container uk-navbar-center";
 
@@ -71,6 +77,8 @@ modificar para que todo este centrado entre el top y bottom del letter head
             <MenuDropdown
               show_create={() => pop_create = true}
               show_modify_bra_period={() => pop_modify_bra = true}
+              show_create_prepraii={() => pop_create_prepraii = true}
+              show_update_prepraii={() => pop_update_prepraii = true}
             />
           </li>
         {:else}
@@ -96,4 +104,12 @@ modificar para que todo este centrado entre el top y bottom del letter head
 
 {#if pop_modify_bra}
   <ModifyBraPeriod pop_up={pop_modify_bra} close={() => pop_modify_bra = false} />
+{/if}
+
+{#if pop_create_prepraii}
+  <CreatePrepraii pop_up={pop_create_prepraii} close={() => pop_create_prepraii = false} />
+{/if}
+
+{#if pop_update_prepraii}
+  <UpdatePrepraii pop_up={pop_update_prepraii} close={() => pop_update_prepraii = false} />
 {/if}

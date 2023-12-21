@@ -42,6 +42,7 @@
 	import Loader from "$lib/components/loader.svelte";
 	import Modal from '$lib/components/modals/modal.svelte';
   import Pagination from "$lib/components/pagination.svelte";
+	import Radio from "$lib/components/forms/radio.svelte";
   import Select from "$lib/components/forms/select.svelte";
   import YearActivities from "$lib/components/activities/year_activities.svelte";
   import ResumeTable from "$lib/components/activities/resume_table.svelte";

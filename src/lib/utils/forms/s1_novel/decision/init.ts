@@ -1,6 +1,6 @@
 
 
-export const init = function (jurado_usb: any[], jurado_externo: any[]) {
+export const init = function (jurado_usb, jurado_externo) {
 
   return {
       s1_novel: {

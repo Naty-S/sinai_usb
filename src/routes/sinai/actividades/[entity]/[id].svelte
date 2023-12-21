@@ -73,6 +73,7 @@
 
   let pop_create_act = false;
   let show_filters = false;
+  let show_buttons = false;
 
   $: user = $session.user;
   $: professor = user?.professor;
@@ -104,8 +105,8 @@
   col_total
 />
 
-{#if can_filter()}  
-  <div class="uk-clearfix">
+<div class="uk-clearfix">
+  {#if can_filter()}  
     <button
       type="button"
       class="ui right floated primary mini button"
@@ -113,8 +114,15 @@
     >
       <i class="filter icon"/>Filtro
     </button>
-  </div>
-{/if}
+  {/if}
+  <button
+    type="button"
+    class="ui right floated primary mini button"
+    on:click={() => show_buttons = !show_buttons}
+  >
+    <i class="pen icon"/>Modificar
+  </button>
+</div>
 
 <!-- Display activities by year -->
 <div>
@@ -164,7 +172,7 @@
   <!-- Activities by year -->
   {#key page_activities}    
     {#each page_activities as year_activities}
-      <YearActivities {year_activities} {editable}/>
+      <YearActivities {year_activities} {editable} {show_buttons}/>
     {/each}
   {/key}
 </div>

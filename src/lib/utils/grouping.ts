@@ -53,7 +53,7 @@ export const acts_kinds_by_year = function (
   );
 
   if (!show_invalid) {
-    a = a.filter(a => a.kind_name !== "ACTIVIDAD INVALIDA")
+    a = a.filter(a => a.kind_name !== "ACTIVIDAD INVÁLIDA")
   };
 
   const acts_group = Object.entries(group_by("fecha_creacion", a, false));

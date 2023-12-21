@@ -10,25 +10,9 @@
       const res = await fetch(`/api/s1_novel/requests/${professor.id}`);
      
       if (res.ok) {
-
-        const req = await res.json();
-        const s1_novel_requests = req.map(s1 => {
-
-          s1.jurado_usb = s1.jurado_usb.map(ju => {
-            ju.veredicto = base64_to_blob(ju.veredicto);
-            return ju;
-          });
-          s1.jurado_externo = s1.jurado_externo.map(je => {
-            je.veredicto = base64_to_blob(je.veredicto);
-            return je;
-          });
-
-          return s1;
-        });
+        const requests = await res.json();
           
-        return {
-          props: { s1_novel_requests }
-        };
+        return { props: { requests } };
       };
   
       const { message, code } = await res.json();
@@ -45,7 +29,7 @@
   };
 </script>
 <script lang="ts">
-	import type { S1_request } from "$lib/interfaces/s1_novel";
+	import type { S1Request } from "$lib/interfaces/s1_novel";
 
   import { setContext } from "svelte";
   import { createForm, key } from "svelte-forms-lib";
@@ -61,10 +45,11 @@
   import Modal from "$lib/components/modals/modal.svelte";
   import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";
   import ErrorMsg from "$lib/components/forms/error_msg.svelte";
-  
+  import Textarea from "$lib/components/forms/textarea.svelte";
+
 	import BackupFiles from "$lib/components/forms/s1_novel/backup_files.svelte";
 
-  export let s1_novel_requests: S1_request[];
+  export let requests: S1Request[];
 
   const initialValues = init();
   const onSubmit = submit($session.user?.professor?.id, $page.url.pathname);
@@ -83,7 +68,7 @@
   $: err_code = $page.url.searchParams.get("code");
 </script>
 
-<button type="button" class="ui button" on:click={() => show_s1_form = true}>
+<button type="button" class="ui button" on:click={() => show_s1_form = !show_s1_form}>
   Nueva solicitud
 </button>
 
@@ -99,23 +84,18 @@
         bind:value={$form.proyecto}
         on:change={handleChange}
       />
-      <ErrorMsg error={$errors.proyecto} /> <!-- TODO: No lo muestra -->
+      <ErrorMsg error={$errors.proyecto} />
     </div>
     
     <BackupFiles />
 
-    <div class="required field" class:error={$errors.observaciones_profesor}>
-      <label for="observaciones_profesor">Obervaciones:</label>
-      <textarea
-        name="observaciones_profesor"
-        bind:value={$form.observaciones_profesor}
-        on:change={handleChange}
-        rows="5"
-        cols="50"
-        aria-label="Textarea"
-      />
-      <ErrorMsg error={$errors.observaciones_profesor} />
-    </div>
+    <Textarea
+      label="Obervaciones"
+      name="observaciones_profesor"
+      bind:value={$form.observaciones_profesor}
+      error={$errors.observaciones_profesor}
+      class="required field"
+    />
 
     <ActionsButtons action="Solicitar" />
   </form>
@@ -124,8 +104,8 @@
 <h2>Estado de las Solicitudes</h2>
 
 <div id="s1_novel_requests" class="ui fluid styled accordion" uk-accordion="animation: false;">
-  {#each s1_novel_requests as s1}
-    <section id="s1_novel_reuquest_{s1.id}">
+  {#each requests as s1}
+    <section id="s1_novel_request_{s1.id}">
       
       <div class="uk-accordion-title title">
         <div class="ui grid">
@@ -161,7 +141,7 @@
                   {#each s1.jurado_usb as ju}
                     <div class="item"><li>
                       {`${ju.Profesor.nombre1}, ${ju.Profesor.apellido1}`}: 
-                      <a href={URL.createObjectURL(ju.veredicto)} target=”_blank”>
+                      <a href={URL.createObjectURL(base64_to_blob(ju.veredicto))} target=”_blank”>
                         Ver/Descargar
                       </a>
                     </li></div>
@@ -169,7 +149,7 @@
                   {#each s1.jurado_externo as je}
                     <div class="item"><li>
                       {je.nombre}: 
-                      <a href={URL.createObjectURL(je.veredicto)} target=”_blank”>
+                      <a href={URL.createObjectURL(base64_to_blob(je.veredicto))} target=”_blank”>
                         Ver/Descargar
                       </a>
                     </li></div>

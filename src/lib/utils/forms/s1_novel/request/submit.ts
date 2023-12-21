@@ -14,7 +14,7 @@ export const submit = function (profesor_id: number, pathname: string) {
       data.soportes.map(async (s: FileList) => await file_to_base64(s[0]))
     );
 
-    const res = await api.post("/api/s1_novel/request", {data, pathname});
+    const res = await api.post("/api/s1_novel/request", { data, pathname });
 
     if (res.ok) {
       goto(res.url);

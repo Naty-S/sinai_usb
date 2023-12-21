@@ -15,7 +15,7 @@
   import Modal from "$lib/components/modals/modal.svelte";
   import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";
   import Input from "$lib/components/forms/input.svelte";
-	import Datalist from "../datalist.svelte";
+	import Datalist from "$lib/components/forms/datalist.svelte";
 
   export let s1_novel: number;
 
@@ -43,9 +43,7 @@
     };
   });
 
-  setContext(key, {
-    form, errors, handleChange
-  });
+  setContext(key, { form, errors, handleChange });
 
   const add_jury_usb = function () {
     

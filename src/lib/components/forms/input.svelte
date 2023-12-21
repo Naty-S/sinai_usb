@@ -46,6 +46,7 @@
     {value}
     {placeholder}
     on:change={handleChange}
+    on:blur={handleChange}
     class={type === "checkbox" ? "ui checkbox" : ''}
     checked={value}
   >

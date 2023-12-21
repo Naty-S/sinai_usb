@@ -1,10 +1,12 @@
+import type { jury } from "$lib/types/forms";
+
 import { goto } from "$app/navigation";
 
 import * as api from "$lib/api";
 
 
 export const submit = function (pathname: string) {
-  return async function (data: any) {
+  return async function (data: jury) {
 
     data.jurado_usb = data.jurado_usb.map(j => {
       

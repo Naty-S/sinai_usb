@@ -13,14 +13,21 @@ export const GET: RequestHandler = async function ({ params }) {
 
   try {
     const evals = await prisma.s1_novel.findMany({
-      select: {
-        id: true,
-        estado: true,
-        proyecto: true,
-        soportes: true,
-        Profesor: { select: {nombre1: true, apellido1: true} },
-        jurado_usb: { select: { Profesor: { select: {nombre1: true, apellido1: true, correo: true} }}},
-        jurado_externo: { select: {nombre: true, correo: true, universidad: true} }
+      include: {
+        Evaluador: { select: {nombre1: true, apellido1: true, correo: true} },
+        Profesor: { select: {nombre1: true, apellido1: true, correo: true} },
+        jurado_usb: { select: {
+          id: true,
+          veredicto: true,
+          Profesor: { select: {nombre1: true, apellido1: true, correo: true} }
+        }},
+        jurado_externo: { select: {
+          id: true,
+          correo: true,
+          nombre: true,
+          universidad: true,
+          veredicto: true
+        }}
       },
       where: { evaluador: Number(params.coord) }
     });
@@ -35,8 +42,5 @@ export const GET: RequestHandler = async function ({ params }) {
     body = { message, code };
   };
 
-  return {
-    status,
-    body
-  };
+  return { status, body };
 };

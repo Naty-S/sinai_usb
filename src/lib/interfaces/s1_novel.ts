@@ -1,66 +1,41 @@
 /// <reference types="@sveltejs/kit" />
 
+import type { s1_novel } from "@prisma/client";
+
 
 /* 
  * 
  * 
  * - 
- * - 
- * - 
- * - 
- * - 
- * - 
- * - 
- * - 
 */
-export interface S1_request {
-    id: number
-  ; Evaluador: {
-        nombre1: string
-      ; apellido1: string
-      ; correo: string
-    }
-  ; estado: string
-  ; comentario: string
-  ; proyecto: Blob
-  ; soportes: Blob[]
-  ; jurado_usb: {
-        id: number
-      ; Profesor: {
-          nombre1: string
-        ; apellido1: string
-        }
-      ; veredicto: Blob
-    }[]
-  ; jurado_externo: {
-        id: number
-      ; nombre: string
-      ; veredicto: Blob
-    }[]
-};
-
-/**
- * 
-*/
-export interface S1_eval {
-    id: number
-  ; estado: "Aprbado" | "En_Revision" | "Rechazado"
+export type S1Request = s1_novel & {
+    Evaluador: {
+      nombre1: string
+    ; apellido1: string
+    ; correo: string
+  }
   ; Profesor: {
       nombre1: string
     ; apellido1: string
-  }
-  ; proyecto: Blob
-  ; soportes: Blob[]
-  ; jurado_usb: {
-      Profesor: {
-        nombre1: string
-      ; apellido1: string
-      ; correo: string
-    }
-  }[]
-  ; jurado_externo: {
-      nombre: string
     ; correo: string
-    ; universidad: string
-  }[]
+  }
+} & Jury;
+
+export type Jury = {
+    jurado_usb: {
+        id: number
+      ; veredicto?: string | null
+      ; Profesor: {
+          nombre1: string
+        ; apellido1: string
+        ; correo: string
+      }
+    }[]
+  ; jurado_externo: {
+        id: number
+      ; correo?: string | null
+      ; nombre: string
+      ; universidad?: string | null
+      ; veredicto?: string | null
+    }[]
 };

@@ -17,16 +17,16 @@
 
   export let show_create: () => void;
   export let show_modify_bra_period: () => void;
+  export let show_create_prepraii: () => void;
+  export let show_update_prepraii: () => void;
 
   const searchs = [
     {href: "/sinai/consultas/actividades", click: void_click, name: "Públicas"},
     // {href: void_link, click: void_click, name: "Predeterminadas"}
   ];
-  const requests = [
-    {href: "/sinai/s1_novel/solicitud", click: void_click, name: "S1 Novel"},
-  ];
-
+  
   let groups: submenu_item[] = [ {href: void_link, click: void_click, name: "Sin grupos"} ];
+  let requests: submenu_item[] = [];
   let options: submenu_item[] = [];
   let views: submenu_item[] = [];
 
@@ -51,6 +51,9 @@
 
     views.push({ href: "/sinai/BRA/profesor", click: void_click, name: "BRA" });
 
+    requests.push({href: "/sinai/s1_novel/solicitud", click: void_click, name: "Solicitar S1 Novel"});
+    requests.push({href: "/sinai/prepraii/solicitud", click: void_click, name: "Solicitar PREPRAII"});
+
     if (professor.is_dep_chief || professor.is_dep_representative) {
       
       const dep = `/sinai/actividades/departamento/${professor.department.id}`;
@@ -59,7 +62,10 @@
     } else if (professor.coord_chief) {
       
       const coord = `/sinai/actividades/coordinacion/${professor.coord_chief.id}`;
+      
       views.push({ href: coord, click: void_click, name: "Coordinación" });
+      requests.push({href: "/sinai/s1_novel/evaluar", click: void_click, name: "Evaluar S1 Novel"});
+      requests.push({href: "/sinai/prepraii/evaluar", click: void_click, name: "Evaluar PREPRAII"});
 
       if (professor.coord_chief.id === 4) {
         views.push({ href: "/sinai/grupos", click: void_click, name: "Grupos de Investigación" });
@@ -87,11 +93,16 @@
 
     views.push({ href: "/sinai/grupos", click: void_click, name: "Grupos de Investigación" });
 
+    requests.push({href: "/sinai/prepraii", click: void_click, name: "PREPRAII"});
+    requests.push({href: "/sinai/prepraii/pagos", click: void_click, name: "Pagos PREPRAII"});
+
     options = [
       // { href: void_link, click: void_click, name: "Modificar Profesores"},
       {href: "/sinai/mesa_tecnica", click: void_click, name: "Modificar Mesa Técnica"},
       {href: "/sinai/coordinadores", click: void_click, name: "Modificar Coordinadores"},
-      {href: void_link, click: show_modify_bra_period, name: "Modificar Periodo BRA"}
+      {href: void_link, click: show_modify_bra_period, name: "Modificar Período BRA"},
+      {href: void_link, click: show_create_prepraii, name: "Crear nueva convocatoria PREPRAII"},
+      {href: void_link, click: show_update_prepraii, name: "Actualizar convocatoria PREPRAII actual"}
     ];
   };
 

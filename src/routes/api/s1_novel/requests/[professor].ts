@@ -13,23 +13,21 @@ export const GET: RequestHandler = async function ({ params }) {
 
   try {
     const requests = await prisma.s1_novel.findMany({
-      select: {
-        id: true,
-        Evaluador: { select: {
-          nombre1: true,
-          apellido1: true,
-          correo: true
-        }},
-        estado: true,
-        comentario: true,
-        proyecto: true,
-        soportes: true,
+      include: {
+        Evaluador: { select: {nombre1: true, apellido1: true, correo: true} },
+        Profesor: { select: {nombre1: true, apellido1: true, correo: true} },
         jurado_usb: { select: {
           id: true,
-          Profesor: { select: {nombre1: true, apellido1: true} },
-          veredicto: true
+          veredicto: true,
+          Profesor: { select: {nombre1: true, apellido1: true, correo: true} }
         }},
-        jurado_externo: { select: {id: true, nombre: true, veredicto: true} }
+        jurado_externo: { select: {
+          id: true,
+          correo: true,
+          nombre: true,
+          universidad: true,
+          veredicto: true
+        }}
       },
       where: { profesor: Number(params.professor) }
     });    
