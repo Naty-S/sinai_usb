@@ -23,6 +23,7 @@ export type S1Request = s1_novel & {
 
 export type Jury = {
     jurado_usb: {
+
         id: number
       ; veredicto?: string | null
       ; Profesor: {
