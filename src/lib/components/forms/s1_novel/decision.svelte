@@ -1,19 +1,30 @@
 <script lang="ts">
+  import { setContext } from "svelte";
+  import { key } from "svelte-forms-lib";
+
   import Modal from "$lib/components/modals/modal.svelte";
   import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";
   import ErrorMsg from "$lib/components/forms/error_msg.svelte";
+	import Textarea from "$lib/components/forms/textarea.svelte";
+	import Radio from "$lib/components/forms/radio.svelte";
 
-  export let jury_usb: any[];
-  export let jury_out: any[];
+  export let jury_usb;
+  export let jury_out;
   export let action: { info: string, code: string };
   export let f;
   
   const { form, errors, handleChange, handleSubmit, handleReset } = f;
+  
+  setContext(key, { form, errors, handleChange });
 </script>
 
 <h2>Tomar decision</h2>
 
-<form id="s1_novel_request_decision_form" class="ui large form segment" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
+<form
+  id="s1_novel_request_decision_form" class="ui large form segment"
+  on:submit|preventDefault={handleSubmit}
+  on:reset={handleReset}
+>
   
   <div class="fields">
     {#each jury_usb as j_usb, i}
@@ -27,9 +38,9 @@
           accept=".pdf"
           bind:value={$form.jurado_usb[i].veredicto}
           on:change={handleChange}
-          />
+        />
 
-          <ErrorMsg error={$errors.jurado_usb[i].veredicto} />
+        <ErrorMsg error={$errors.jurado_usb[i].veredicto} />
       </div>
     {/each}
   </div>
@@ -44,69 +55,37 @@
           accept=".pdf"
           bind:value={$form.jurado_externo[i].veredicto}
           on:change={handleChange}
-          />
+        />
           
-          <ErrorMsg error={$errors.jurado_externo[i].veredicto} />
+        <ErrorMsg error={$errors.jurado_externo[i].veredicto} />
       </div>
     {/each}
   </div>
 
-  <div class="ten wide field fields" class:error={$errors.s1_novel.estado}>
-    <label for="s1_novel.estado">Decisión</label>
-    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-      <label>
-        <input
-          type="radio"
-          id="s1_novel.estado-Aprobado"
-          name="s1_novel.estado"
-          value="Aprobado"
-          class="uk-radio"
-          on:change={handleChange}
-          on:blur={handleChange}
-          checked
-        >
-        Aprobado
-      </label>
-      <label>
-        <input
-          type="radio"
-          id="s1_novel.estado-Rechazado"
-          name="s1_novel.estado"
-          value="Rechazado"
-          class="uk-radio"
-          on:change={handleChange}
-          on:blur={handleChange}
-        >
-        Rechazado
-      </label>
-    </div>
+  <Radio
+    label="Decisión"
+    name="s1_novel.estado"
+    value1="Aprobado"
+    value2="Rechazado"
+    error={$errors.s1_novel.estado}
+    class="ten wide field fields"
+  />
 
-    <ErrorMsg error={$errors.s1_novel.estado} />
-  </div>
+  <Textarea
+    label="Comentario al Profesor solicitante"
+    name="s1_novel.comentario"
+    bind:value={$form.s1_novel.comentario}
+    error={$errors.s1_novel.comentario}
+    class="required field"
+  />
 
-  <div class="required field" class:error={$errors.s1_novel.comentario}>
-    <label for="s1_novel.comentario">Comentario al Profesor solicitante:</label>
-    <textarea
-      name="s1_novel.comentario"
-      bind:value={$form.s1_novel.comentario}
-      rows="5"
-      cols="50"
-      aria-label="Textarea"
-    />
-    <ErrorMsg error={$errors.s1_novel.comentario} />
-  </div>
-
-  <div class="required field" class:error={$errors.s1_novel.observaciones_evaluador}>
-    <label for="s1_novel.observaciones_evaluador">Mis obervaciones:</label>
-    <textarea
-      name="s1_novel.observaciones_evaluador"
-      bind:value={$form.s1_novel.observaciones_evaluador}
-      rows="5"
-      cols="50"
-      aria-label="Textarea"
-    />
-    <ErrorMsg error={$errors.s1_novel.observaciones_evaluador} />
-  </div>
+  <Textarea
+    label="Mis obervaciones"
+    name="s1_novel.observaciones_evaluador"
+    bind:value={$form.s1_novel.observaciones_evaluador}
+    error={$errors.s1_novel.observaciones_evaluador}
+    class="required field"
+  />
 
   <ActionsButtons action="Tomar decisión" />
 </form>

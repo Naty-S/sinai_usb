@@ -13,23 +13,14 @@ export const POST: RequestHandler = async function ({ request }) {
 
   let status = 500;
   let body = {};
-  let headers = {
-    location: '/'
-  };
+  let headers = { location: '/' };
 
   try {
-    await prisma.s1_novel_jurado_usb.createMany({
-      data: (data.jurado_usb)
-    });
-
-    await prisma.s1_novel_jurado_externo.createMany({
-      data: (data.jurado_externo)
-    });
+    await prisma.s1_novel_jurado_usb.createMany({ data: (data.jurado_usb) });
+    await prisma.s1_novel_jurado_externo.createMany({ data: (data.jurado_externo) });
 
     status = 303;
-    headers = {
-      location: `${pathname}?jury_assingned=true`
-    };
+    headers = { location: `${pathname}?jury_assingned=true` };
 
   } catch (error: any) {
     const message = await handle_error(error);
@@ -38,9 +29,5 @@ export const POST: RequestHandler = async function ({ request }) {
     body = { message, code };
   };
 
-  return {
-    status,
-    headers,
-    body
-  };
+  return { status, headers, body };
 };

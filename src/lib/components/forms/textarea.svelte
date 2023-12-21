@@ -1,13 +1,12 @@
 <!-- 
 	@component
-  Form inputs
+  Form textarea
 
   Props:
   * `label`: string
   * `name`: string
-  * `placeholder`: string (optional)
   * `value`: any
-  * `error`: any (optional)
+  * `error`: any
   * `class`: string
  -->
 <script lang="ts">
@@ -20,12 +19,10 @@
 
   import ErrorMsg from "./error_msg.svelte";
 
-  export let accept = "*/*";
   export let label: string;
   export let name: string;
-  export let placeholder = '';
   export let value: any;
-  export let error: any = undefined;
+  export let error: any;
 
   const act = $page.params.activity;
   const kind = act as kinds;
@@ -35,13 +32,14 @@
 
 <div class:error={error} {...$$props}>
   <label for={name}>{label}</label>
-  <input
-    type="file"
+  <textarea
     {name}
     {value}
-    {placeholder}
-    {accept}
-  >
+    on:change={handleChange}
+    on:blur={handleChange}
+    rows="5"
+    cols="50"
+    aria-label="Textarea"
+  />
   <ErrorMsg {error} />
-  <slot></slot>
 </div>

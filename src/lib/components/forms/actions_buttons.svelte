@@ -18,7 +18,8 @@
   export let action: string;
 
   let previousPage: string = "/sinai";
-  afterNavigate((navigation) => {
+
+  afterNavigate(navigation => {
     if (navigation?.from) {
       previousPage = navigation.from.pathname;
     };
@@ -32,7 +33,7 @@
   <button type="reset" name="reset_form" class="ui red button">
     Reiniciar
   </button>
-  <button type="button" class="ui button" on:click={() => goto(previousPage)}>
+  <!-- <button type="button" class="ui button" on:click={() => goto(previousPage)}>
     Regresar
-  </button>
+  </button> -->
 </div>

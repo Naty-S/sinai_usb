@@ -23,9 +23,9 @@ export const file_to_base64 = async function(file: File): Promise<string> {
 /**
  * 
 */
-export const base64_to_blob = function(file: string): Blob {
+export const base64_to_blob = function(file?: string | null): Blob {
   
-  const bin_str = atob(file);
+  const bin_str = atob(file || '');
   const bin_str_len = bin_str.length;
   const bytes = new Uint8Array(bin_str_len);
 

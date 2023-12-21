@@ -22,6 +22,7 @@
   // Props
   export let year_activities: YearActivities;
   export let editable = false;
+  export let show_buttons = false;
 
   const activities = Object.entries(year_activities.kind_activities);
 
@@ -39,11 +40,12 @@
                 professor?.coord_chief || professor?.division_chief;
 
   const can_validate = function (act: Activity, kind: string) {
-    return (user?.dean || (is_chief && user?.email !== act.creada_por)) && kind !== "ACTIVIDAD INVALIDA";
+    return (user?.dean || (is_chief && user?.email !== act.creada_por)) && kind !== "ACTIVIDAD INVÁLIDA";
   };
 
   const can_modify = function (act: Activity, kind: string) {
-    return user?.email === act.creada_por && kind !== "ACTIVIDAD INVALIDA";
+
+    return (user?.dean || (user?.email === act.creada_por)) && kind !== "ACTIVIDAD INVÁLIDA";
   };
 
   const can_delete = function (act: Activity) {
@@ -188,7 +190,7 @@
                   </span>
                 {/if}
               </div>
-              {#if editable}
+              {#if editable && show_buttons}
                 <div class="uk-margin-small">
                   {#if can_modify(act, kind)}
                     <a

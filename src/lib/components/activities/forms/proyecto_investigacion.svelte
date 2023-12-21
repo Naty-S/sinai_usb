@@ -12,7 +12,7 @@
 
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
-  import ErrorMsg from "$lib/components/forms/error_msg.svelte";
+	import Radio from "$lib/components/forms/radio.svelte";
 
   const param = $page.params.activity;
   const kind = param as kinds;
@@ -42,50 +42,26 @@
       error={$errors.proyecto_investigacion.fecha_inicio}
       class="field"
     />
-    <div class="twelve wide field fields">
-      <label for="proyecto_investigacion.institucion">
-        Institución que financia o patrocina
-      </label>
-      <div>
-        <label>
-          <input
-            type="radio"
-            id="proyecto_investigacion.institucion-Fonacit"
-            name="proyecto_investigacion.institucion"
-            value="Fonacit"
-            class="uk-radio"
-            on:change={handleChange}
-            on:blur={handleChange}
-            on:click={() => fonacit = true}
-            checked
-          >
-          Fonacit
-        </label>
-        <label>
-          <input
-            type="radio"
-            id="proyecto_investigacion.institucion-Otro"
-            name="proyecto_investigacion.institucion"
-            class="uk-radio"
-            bind:value={$form.proyecto_investigacion.institucion}
-            on:change={handleChange}
-            on:blur={handleChange}
-            on:click={() => {fonacit = false; $form.proyecto_investigacion.institucion = ''}}
-          >
-          Otro
-        </label>
-        <input
-          type="text"
-          id="proyecto_investigacion.institucion-Otro"
-          name="proyecto_investigacion.institucion"
-          bind:value={$form.proyecto_investigacion.institucion}
-          on:change={handleChange}
-          on:blur={handleChange}
-          hidden={fonacit}
-        >
-      </div>
-      <ErrorMsg error={$errors.proyecto_investigacion.institucion} />      
-    </div>
+    <Radio
+      label="Institución que financia o patrocina"
+      name="estado"
+      value1="Fonacit"
+      value2="Otro"
+      click1={() => fonacit = true}
+      click2={() => {fonacit = false; $form.proyecto_investigacion.institucion = ''}}
+      error={$errors.proyecto_investigacion.institucion}
+      class="twelve wide field fields"
+    >
+      <input
+        type="text"
+        id="proyecto_investigacion.institucion-Otro"
+        name="proyecto_investigacion.institucion"
+        bind:value={$form.proyecto_investigacion.institucion}
+        on:change={handleChange}
+        on:blur={handleChange}
+        hidden={fonacit}
+      >
+    </Radio>
   </div>
   <div class="two required inline fields">
     <Input

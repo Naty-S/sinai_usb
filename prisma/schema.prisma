@@ -268,6 +268,9 @@ model profesor {
   s1_novel_evaluador          s1_novel[]                               @relation("s1_novel_evaluador_fkey")
   s1_novel_profesor           s1_novel[]                               @relation("s1_novel_profesor_fkey")
   s1_novel_jurado             s1_novel_jurado_usb[]
+  prepraii_evaluador          prepraii_solicitud[]                    @relation("prepraii_evaluador_fkey")
+  prepraii_profesor           prepraii_solicitud[]                    @relation("prepraii_profesor_fkey")
+  contratos_constancias       prepraii_profesores[]
 }
 
 model coordinacion {
@@ -481,6 +484,57 @@ model personal_coordinacion {
   @@index([coordinacion])
 }
 
+model prepraii_convocatoria {
+  id          Int      @id @default(autoincrement())
+  activo      Boolean  @default(false)
+  fin         DateTime @db.Date
+  inicio      DateTime @db.Date
+  monto_tipo1 Int
+  monto_tipo2 Int
+
+  // Prisma relations
+  solicitudes prepraii_solicitud[]
+}
+
+// Registra cuando el profesor realiza la solicitud y actualiza cuando el coordinador aprueba o no
+model prepraii_solicitud {
+  id                      Int                   @id @default(autoincrement())
+  actividad               Int
+  convocatoria            Int
+  evaluador               Int
+  profesor                Int
+  articulo                String
+  comentario              String // Dirigido al profresor solicitante
+  estado                  estado_solicitud_enum @default(En_Revision)
+  indice                  String
+  monto                   Int?
+  observaciones_evaluador String // Privadas, no las ve el profesor
+  observaciones_profesor  String // Las que escribe el profesor al hacer la solicitud
+  pagada                  Boolean               @default(false)
+  tipo                    Int? // 1 o 2
+
+  // Postgres relations
+  Actividad    actividad             @relation(fields: [actividad], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Convocatoria prepraii_convocatoria @relation(fields: [convocatoria], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Evaluador    profesor              @relation("prepraii_evaluador_fkey", fields: [evaluador], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Profesor     profesor              @relation("prepraii_profesor_fkey", fields: [profesor], references: [id], onDelete: NoAction, onUpdate: Cascade)
+
+  // Prisma relations
+  prepraii_profesores prepraii_profesores[]
+}
+
+// Registra los contratos/constancias de los profesores autores de la USB
+model prepraii_profesores {
+  id                  Int    @id @default(autoincrement())
+  profesor            Int
+  solicitud           Int
+  contrato_constancia String
+
+  // Postgres relations
+  Profesor  profesor            @relation(fields: [profesor], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  Solicitud prepraii_solicitud @relation(fields: [solicitud], references: [id], onDelete: NoAction, onUpdate: Cascade)
+}
+
 model red_academica {
   id     Int    @id @default(autoincrement())
   correo String
@@ -524,7 +578,7 @@ model s1_novel {
 }
 
 model s1_novel_jurado_usb {
-  id        Int    @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   profesor  Int
   s1_novel  Int
   veredicto String?
@@ -597,6 +651,7 @@ model actividad {
   proyecto_grado         proyecto_grado?
   proyecto_investigacion proyecto_investigacion?
   recital                recital?
+  prepraii               prepraii_solicitud[]
 
   @@index([creada_por])
   @@index([validado_por])

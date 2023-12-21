@@ -12,16 +12,7 @@
       if (res.ok) {
         const req = await res.json();
   
-        const requests = req.map(s1 => {
-
-          s1.proyecto = base64_to_blob(s1.proyecto);
-          s1.soportes = s1.soportes.map((s: string) => base64_to_blob(s));
-
-          return s1;
-        });
-        return {
-          props: { requests }
-        };
+        return { props: { requests } };
       };
   
       const { message, code } = await res.json();
@@ -38,7 +29,7 @@
   };
 </script>
 <script lang="ts">
-	import type { S1_eval } from "$lib/interfaces/s1_novel";
+	import type { S1Request, Jury as JuryT } from "$lib/interfaces/s1_novel";
   
   import { createForm } from "svelte-forms-lib";
 
@@ -56,7 +47,7 @@
 	import Decision from "$lib/components/forms/s1_novel/decision.svelte";
 	import Jury from "$lib/components/forms/s1_novel/jury.svelte";
 
-  export let requests: S1_eval[];
+  export let requests: S1Request[];
 
   let s1_novel = 0;
   let jury = false;
@@ -66,12 +57,12 @@
   let action = { info: '', code: '' };
   let form;
 
-  const d = async function(id: number) {
+  const make_decision = async function(id: number) {
     const res = await api.get(`/api/s1_novel/jury/${id}`);
 
     if (res.ok) { 
       
-      const jury = await res.clone().json();
+      const jury: JuryT = await res.clone().json();
       jury_usb = jury.jurado_usb;
       jury_out = jury.jurado_externo;
 
@@ -100,12 +91,19 @@
 <h2>Solicitudes</h2>
 
 <div class="ui middle aligned divided list">
+  {#if jury}
+    <Jury {s1_novel} />
+  {/if}
+  {#if decision}
+    <Decision {action} {jury_usb} {jury_out} f={form} />
+  {/if}
+
   {#each requests as r}    
     <div class="item">
       <div class="right floated content">
         {#if r.estado == "En_Revision"}
           {#if r.jurado_usb.length > 0 || r.jurado_externo.length > 0}
-            <button type="button" class="ui button" on:click={() => d(r.id)}>
+            <button type="button" class="ui button" on:click={() => make_decision(r.id)}>
               Tomar Decisión
             </button>
           {:else}
@@ -121,21 +119,27 @@
         Profesor solicitante: {`${r.Profesor.nombre1}, ${r.Profesor.apellido1}`}.
         <div class="ui list">
           <div class="item">
-            <i class="file icon"/>
+            <i class="comment icon"/>
+            <div class="content">
+              Observaciones: {r.observaciones_profesor}
+            </div>
+          </div>
+          <div class="item">
+            <i class="file pdf icon"/>
             <div class="content">
               Proyecto:
-              <a href={URL.createObjectURL(r.proyecto)} target=”_blank”>
+              <a href={URL.createObjectURL(base64_to_blob(r.proyecto))} target=”_blank”>
                 Ver/Descargar
               </a>
             </div>
           </div>
           <div class="item">
-            <i class="file icon"/>
+            <i class="folder open icon"/>
             <div class="content">
               <div class="">Soportes:</div>
               <ol class="ui items">
                 {#each r.soportes as s}
-                  <div class="item"><li><a href={URL.createObjectURL(s)} target=”_blank”>
+                  <div class="item"><li><a href={URL.createObjectURL(base64_to_blob(s))} target=”_blank”>
                     Ver/Descargar
                   </a></li></div>
                 {/each}
@@ -145,7 +149,7 @@
         </div>
 
         {#if r.jurado_usb.length > 0}
-          <div class="medium header">USB:</div>
+          <div class="medium header">Jurado USB:</div>
           <div class="ui horizontal list">
             {#each r.jurado_usb as j_usb}
               <div class="item">
@@ -160,7 +164,7 @@
         {/if}
 
         {#if r.jurado_externo.length > 0}
-          <div class="medium header">Externos:</div>
+          <div class="medium header">Jurado Externo:</div>
           <div class="ui horizontal list">
             {#each r.jurado_externo as j_e}
               <div class="item">
@@ -177,13 +181,6 @@
       </div>
     </div>
   {/each}
-
-  {#if jury}
-    <Jury {s1_novel} />
-  {/if}
-  {#if decision}
-    <Decision {action} {jury_usb} {jury_out} f={form} />
-  {/if}
 </div>
 
 {#if jury_assingned}

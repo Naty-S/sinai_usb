@@ -10,10 +10,11 @@
   import { page } from "$app/stores";
 
   import Input from "$lib/components/forms/input.svelte";
+	import Radio from "$lib/components/forms/radio.svelte";
 
   const param = $page.params.activity;
   const kind = param as kinds;
-  const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
+  const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
 </script>
 
 <h2 class="uk-text-center">
@@ -79,41 +80,15 @@
     />
   </div>
   <div class="two inline fields">
-    <div class="ten wide field fields">
-      <label for="articulo_revista.estado">Estado</label>
-      <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-        <label>
-          <input
-            type="radio"
-            id="articulo_revista.estado-Aceptado_via_publicacion"
-            name="articulo_revista.estado"
-            value="Aceptado_via_publicacion"
-            class="uk-radio"
-            on:change={handleChange}
-            on:blur={handleChange}
-            checked
-          >
-          Aceptado en Vías de Publicación
-        </label>
-        <label>
-          <input
-            type="radio"
-            id="articulo_revista.estado-Publicado"
-            name="articulo_revista.estado"
-            value="Publicado"
-            class="uk-radio"
-            on:change={handleChange}
-            on:blur={handleChange}
-          >
-          Publicado
-        </label>
-      </div>
-
-      {#if $errors.articulo_revista?.estado}
-        {$errors.articulo_revista.estado}
-      {/if}
-      
-    </div>
+    <Radio
+      label="Estado"
+      name="articulo_revista.estado"
+      value1="Aceptado_via_publicacion"
+      value2="Publicado"
+      text1="Aceptado en Vías de Publicación"
+      error={$errors.articulo_revista.estado}
+      class="ten wide field fields"
+    />
     <Input
       type="checkbox"
       label="Artículo Invitado"

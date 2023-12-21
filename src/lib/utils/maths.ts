@@ -20,7 +20,7 @@ export const count_acts_kinds_by_year = function (
   );
 
   if (!show_invalid) {
-    a = a.filter(a => a.kind_name !== "ACTIVIDAD INVALIDA")
+    a = a.filter(a => a.kind_name !== "ACTIVIDAD INVÁLIDA")
   };
 
   return Object.entries(group_by("kind_name", a))

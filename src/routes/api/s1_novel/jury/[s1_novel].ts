@@ -16,14 +16,19 @@ export const GET: RequestHandler = async function ({ params }) {
       select: {
         jurado_usb: { select: {
           id: true,
-          Profesor: { select: {nombre1: true, apellido1: true} },
-          veredicto: true
+          veredicto: true,
+          Profesor: { select: {nombre1: true, apellido1: true, correo: true} }
         }},
-        jurado_externo: { select: {id: true, nombre: true, veredicto: true} }
+        jurado_externo: { select: {
+          id: true,
+          correo: true,
+          nombre: true,
+          universidad: true,
+          veredicto: true
+        }}
       },
       where: { id: Number(params.s1_novel) }
     });
-
 
     status = 200;
     body = jury;
@@ -35,8 +40,5 @@ export const GET: RequestHandler = async function ({ params }) {
     body = { message, code };
   };
 
-  return {
-    status,
-    body
-  };
+  return { status, body };
 };

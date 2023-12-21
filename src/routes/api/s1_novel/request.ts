@@ -14,9 +14,7 @@ export const POST: RequestHandler = async function ({ request }) {
 
   let status = 500;
   let body = {};
-  let headers = {
-    location: '/'
-  };
+  let headers = { location: '/' };
 
   try {
 
@@ -41,9 +39,7 @@ export const POST: RequestHandler = async function ({ request }) {
     await prisma.s1_novel.create({ data: data });
 
     status = 303;
-    headers = {
-      location: `${pathname}?s1_requested=true`
-    };
+    headers = { location: `${pathname}?s1_requested=true` };
 
   } catch (error: any) {
     const message = await handle_error(error);
@@ -52,9 +48,5 @@ export const POST: RequestHandler = async function ({ request }) {
     body = { message, code };
   };
 
-  return {
-    status,
-    headers,
-    body
-  };
+  return { status, headers, body };
 };

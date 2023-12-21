@@ -77,7 +77,7 @@ export const format_date = function (date: Date | string | null, format: string 
 export const format_activity = function (actividad: Actividad, logs: ActivityLog[] = [])
 : Activity {
 
-  let kind_name = "ACTIVIDAD INVALIDA";
+  let kind_name = "ACTIVIDAD INVÁLIDA";
   let kind_data;
 
   // Find kind data
