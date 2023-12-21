@@ -30,7 +30,7 @@ COPY . .
 
 
 ## Generate prisma client
-RUN npx prisma generate
+RUN npx prisma migrate dev
 
 
 ## Expose port 3000 to access from outside the container and SvelteKit app

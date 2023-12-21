@@ -29,7 +29,7 @@ COPY . .
 
 
 ## Generate prisma client
-RUN npx prisma generate
+RUN npx prisma migrate
 
 
 ## Set the Node environment to production
