@@ -67,7 +67,11 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
   const activities_years_counts = count_acts_kinds_by_year(activities);
   const headers = ["Actividad"].concat(activities_by_year.map(a => a.year.toString()));
 
-  let page_activities = acts_kinds_by_year(activities.slice(0, activities.length));;
+  let pagination_size = 100;
+  let start_pagination = 0;
+  let end_pagination = pagination_size;
+  let page_activities = acts_kinds_by_year(activities.slice(start_pagination, end_pagination));;
+
   let kind = '';
   let start_date = '';
   let end_date = '';
@@ -83,6 +87,41 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
   $: err = $page.url.searchParams.get("error");
   $: err_code = $page.url.searchParams.get("code");
   $: editable = $page.params.entity !== "grupo" || $session.user?.dean !== undefined;
+
+  const show_prev = function () {
+
+    start_pagination -= pagination_size;
+    end_pagination -= pagination_size;
+
+    page_activities = filter_activities(
+      activities, kind, start_date, end_date, start_pagination, end_pagination) as YearActivitiesT[];
+  };
+
+  const show_page = function (page: number) {
+
+    start_pagination = page === 0 ? page : end_pagination;
+    end_pagination = page === 0 ? pagination_size : start_pagination + pagination_size;
+
+    page_activities = filter_activities(
+      activities, kind, start_date, end_date, start_pagination, end_pagination) as YearActivitiesT[];
+  };
+
+  const show_next = function () {
+
+    start_pagination += pagination_size;
+    end_pagination += pagination_size;
+
+    page_activities = filter_activities(
+      activities, kind, start_date, end_date, start_pagination, end_pagination) as YearActivitiesT[];
+  };
+
+  const resize_pagination = function (size: number) {
+    pagination_size = size;
+    start_pagination = 0;
+    end_pagination = pagination_size;
+    page_activities = filter_activities(
+      activities, kind, start_date, end_date, start_pagination, end_pagination) as YearActivitiesT[];
+  };
 
   const filter = function() {
     page_activities = filter_activities(
@@ -132,6 +171,13 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
     <div id="filters" class="ui segments">
       <div class="ui vertically fitted segment"><strong>Filtrar Actividades:</strong></div>
 
+      <div id="page_size" class="ui stackable small compact buttons segment">
+        <button class="ui button" on:click={() => resize_pagination(20)}>20</button>
+        <button class="ui button" on:click={() => resize_pagination(30)}>30</button>
+        <button class="ui button" on:click={() => resize_pagination(50)}>50</button>
+        <button class="ui button" on:click={() => resize_pagination(100)}>100</button>
+      </div>
+
       <div id="date_filter" class="ui horizontal stackable segments">
         <div class="ui segment">
           <label for="start_date">Fecha Inicio</label>
@@ -176,6 +222,14 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
     {/each}
   {/key}
 </div>
+
+<Pagination
+  size={activities.length}
+  page_size={pagination_size}
+  start={start_pagination}
+  end={end_pagination}
+  {show_prev} {show_next}
+/>
 
 {#if $page.params.entity === "profesor"} 
   <div class="uk-text-center">

@@ -97,7 +97,7 @@ import type { GroupActivities as GroupActivitiesT } from "$lib/interfaces/activi
   };
 </script>
 
-<h3>Actividades</h3>
+<h3>Actividades de los Grupos de Investigación</h3>
 
 <div class="uk-clearfix">
   <button
