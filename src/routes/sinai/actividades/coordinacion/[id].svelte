@@ -68,7 +68,7 @@
   
       const { message: msg1, code: code1 } = await res1.json();
       const { message: msg2, code: code2 } = await res2.json();
-      const { message: msg3, code: code3 } = await res2.json();
+      const { message: msg3, code: code3 } = await res3.json();
       return {
         error: new Error(`Error al cargar los datos de la Coordinación.\n${code1}. ${msg1}\n\
           ${code2}. ${msg2}\n${code3}. ${msg3}`),

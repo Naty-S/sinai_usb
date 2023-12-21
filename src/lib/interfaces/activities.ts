@@ -38,6 +38,17 @@ export interface YearActivities {
 };
 
 /**
+ * Activities by group.
+ * 
+ * - `group`: string
+ * - `kind_activities`: `Record<string, Activity[]>` - Activities grouped by kind
+ */
+export interface GroupActivities {
+    group: string
+  ; kind_activities: Record<string, Activity[]>
+};
+
+/**
  * Count of activity kind by year.
  * 
  * - `kind`: string

@@ -69,6 +69,7 @@
 
       if (professor.coord_chief.id === 4) {
         views.push({ href: "/sinai/grupos", click: void_click, name: "Grupos de Investigación" });
+        activities.push({ href: "/sinai/grupos/actividades", click: void_click, name: "Grupos" });
       };
       
     } else if (professor.division_chief) {

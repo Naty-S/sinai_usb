@@ -43,6 +43,7 @@
   };
 </script>
 <script lang="ts">
+import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activities";
   import type { Activities } from "$lib/interfaces/activities";
   import type { Activity } from "$lib/types/activities";
   
@@ -85,7 +86,7 @@
 
   const filter = function() {
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, 0, activities.length);
+      activities, kind, start_date, end_date, 0, activities.length) as YearActivitiesT[];
   };
 
   $: can_filter = function() {
@@ -126,7 +127,6 @@
 
 <!-- Display activities by year -->
 <div>
-  
   <!-- Filters -->
   {#if show_filters}    
     <div id="filters" class="ui segments">

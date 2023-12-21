@@ -1,8 +1,8 @@
-import type { YearActivities } from "$lib/interfaces/activities";
+import type { YearActivities, GroupActivities } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
 import { format_date } from "./formatting";
-import { acts_kinds_by_year } from "./grouping";
+import { acts_kinds_by_group, acts_kinds_by_year } from "./grouping";
 import { map_to_detailed_kind } from "./mappings";
 
 
@@ -14,6 +14,7 @@ import { map_to_detailed_kind } from "./mappings";
  * @param end_date -
  * @param start_pagination -
  * @param end_pagination -
+ * @param by_group -
  * @param show_invalid -
  * @returns Filtered and paginated activites by year
  */
@@ -24,8 +25,9 @@ export const filter_activities = function (
   end_date: string,
   start_pagination: number,
   end_pagination: number,
+  by_group: boolean = false,
   show_invalid: boolean = true
-): YearActivities[] {
+): YearActivities[] | GroupActivities[] {
 
   let aa = activities;
   
@@ -51,6 +53,10 @@ export const filter_activities = function (
       const date = format_date(a.fecha_creacion, "yyyy-MM-dd");
       return date <= end_date
     });
+  };
+
+  if (by_group) {
+    return acts_kinds_by_group(aa.slice(start_pagination, end_pagination), show_invalid);
   };
 
   return acts_kinds_by_year(aa.slice(start_pagination, end_pagination), show_invalid);

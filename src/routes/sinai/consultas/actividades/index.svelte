@@ -8,8 +8,6 @@
   * Coordination
  -->
 <script lang="ts">
-  import type { profesor } from "@prisma/client";
-
   import type {
       Activities
     , ActivitiesCounts
@@ -115,7 +113,7 @@
     end_pagination -= pagination_size;
 
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid);
+      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
   };
 
   const show_page = function (page: number) {
@@ -124,7 +122,7 @@
     end_pagination = page === 0 ? pagination_size : start_pagination + pagination_size;
 
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid);
+      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
   };
 
   const show_next = function () {
@@ -133,7 +131,7 @@
     end_pagination += pagination_size;
 
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid);
+      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
   };
 
   const resize_pagination = function (size: number) {
@@ -141,12 +139,12 @@
     start_pagination = 0;
     end_pagination = pagination_size;
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid)
+      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
   };
 
   const filter = function() {
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid);
+      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
   };
 
   onMount(async () => {
@@ -171,14 +169,10 @@
       const { message, code } = await res1.json();
       action.info = message;
       action.code = code;
-
-      console.log(message)
     };
   });
 
-  setContext(key, {
-    form, errors, handleChange
-  });  
+  setContext(key, { form, errors, handleChange });  
 </script>
 
 
