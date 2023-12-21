@@ -54,7 +54,7 @@
       , estudiante_carrera: null
     };
 
-    $form.autores_usb.push(init_author);
+		$form.autores_usb = $form.autores_usb.concat(init_author);
 		$errors.autores_usb = $errors.autores_usb.concat(init_author);
 	};
 

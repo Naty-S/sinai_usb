@@ -59,7 +59,7 @@ modificar para que todo este centrado entre el top y bottom del letter head
 <nav
   id="navabar"
   class="uk-navbar-container uk-position-z-index uk-width-1-1 {fixed}"
-  uk-navbar="mode: click, hover; delay-hide:1; offset: 2;"
+  uk-navbar="mode: click, hover; delay-hide:1; offset: 1;"
   style={fixed ? "top: 0;" : ''}
 >
   <div
@@ -70,7 +70,9 @@ modificar para que todo este centrado entre el top y bottom del letter head
     style="background-image: url({bkg});"
   >
     <div id="navbar" class="{navbar} uk-inline uk-margin-bottom">
+      
       <Letterhead />
+
       <ul id="nav" class="uk-navbar-nav uk-position-center-right uk-margin-small-right uk-position-z-index">
         {#if $session.user}
           <li class="ui tertiary vertically fitted segment uk-margin-small-top">

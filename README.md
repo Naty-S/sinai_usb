@@ -27,17 +27,18 @@ If you don't want to use Docker you need to install these aswell:
 2. Enter postgres container: `docker compose -f docker-compose.dev.yml exec postgres sh`
 3. Enter postgres: `su - postgres`
 4. Seed db data: `gunzip -c sinai_dev.gz | psql sinai_dev`
-5. Exit container
+5. Exit postgres: `exit`
+6. Exit container: `exit`
 
 **Use `make help` to see all docker commands available**
 
 ### Without Docker
 1. Install dependencies: `npm install`
-2. Enter postgres: `su - postgres`
-3. Create database: `createdb sinai_dev`
+2. Configure prisma client: `npx prisma migrate dev`
+3. Enter postgres: `su - postgres`
 4. Seed db data: `gunzip -c sinai_dev.gz | psql sinai_dev`
-5. Exit postgres
-6. Configure prisma client: `npx prisma generate`
+5. Exit postgres: `exit`
+6. Exit container: `exit`
 7. Run & Open app: `npm run dev -- --open`
 
 
@@ -48,8 +49,9 @@ If you don't want to use Docker you need to install these aswell:
 1. Up docker prod container: `make up`
 2. Enter postgres container: `docker compose -f docker-compose.yml exec postgres sh`
 3. Enter postgres: `su - postgres`
-4. Seed db data: `gunzip -c sinai.gz | psql sinai`
-5. Exit container
+4. Restore migrated data: `gunzip -c sinai.gz | psql sinai`
+5. Exit postgres: `exit`
+6. Exit container: `exit`
 
 ### Test production (wihtout Docker)
 1. Build app: `npm run build`
@@ -57,7 +59,8 @@ If you don't want to use Docker you need to install these aswell:
 
 ### Update production deployment
 1. Pull changes: `git pull`
-2. Update docker container: `make update`
+2. Backup data
+3. Update docker container: `make update`
 
 ***Note***: If the update not works properly, try cleanning all cache `make clean`
 
@@ -65,6 +68,7 @@ If you don't want to use Docker you need to install these aswell:
 
 1. Enter postgres container: `docker compose -f docker-compose.yml exec postgres sh`
 2. Enter postgres: `su - postgres`
-3. Dump database: `pg_dump sinai | gzip > sinai.gz`
-4. Exit container
-5. Copy dump from container: `sudo docker cp postgres:/var/lib/postgresql/sinai.gz ./sinai.gz`
+3. Dump database: `pg_dump --column-inserts --data-only  sinai | gzip > sinai.gz`
+4. Exit postgres: `exit`
+5. Exit container: `exit`
+6. Copy dump from container: `sudo docker cp postgres:/var/lib/postgresql/sinai.gz ./sinai.gz`

@@ -101,7 +101,7 @@
   };
 </script>
 
-<h2>Lista de Coordinadores</h2>
+<h2>Mesa Técnica</h2>
 
 <div class="ui divider" />
 

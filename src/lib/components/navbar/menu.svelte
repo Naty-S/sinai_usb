@@ -91,6 +91,7 @@
     activities.push(
       {href: "/sinai/actividades", click: void_click, name: "Resumen de Actividades"},
     );
+    activities.push({ href: "/sinai/grupos/actividades", click: void_click, name: "Grupos" });
 
     views.push({ href: "/sinai/grupos", click: void_click, name: "Grupos de Investigación" });
 

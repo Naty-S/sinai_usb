@@ -67,15 +67,15 @@ update: ## updates changes for production
 	- $(ENV) $(COMPOSE) $(DOWN_CMD) && docker volume rm sinai_usb_app_build && $(COMPOSE) $(UP_CMD)
 
 
-sh: ## Enter inside container shell (sh-dev available). Usage: make sh <container name>\
-   	Enter interactive shell for postgres container for seed db data.\
-		Then su - postgres, then gunzip -c ${PG_DUMP}.gz | psql ${PG_DB}
-	- @echo "Entering container $1 shell - v$(APP_VERSION) (prod)"
-	- $(ENV) $(COMPOSE) $(SH_CMD)
+# sh: ## Enter inside container shell (sh-dev available). Usage: make sh <container name>\
+#    	Enter interactive shell for postgres container for seed db data.\
+# 		Then su - postgres, then gunzip -c ${PG_DUMP}.gz | psql ${PG_DB}
+# 	- @echo "Entering container $1 shell - v$(APP_VERSION) (prod)"
+# 	- $(ENV) $(COMPOSE) $(SH_CMD)
 
-sh-dev:
-	- @echo "Entering container $1 shell - v$(APP_VERSION) (dev)"
-	- $(ENV) $(COMPOSE_DEV) $(SH_CMD)
+# sh-dev:
+# 	- @echo "Entering container $1 shell - v$(APP_VERSION) (dev)"
+# 	- $(ENV) $(COMPOSE_DEV) $(SH_CMD)
 
 
 clean: ## Clean cache for updates (clean-dev available)

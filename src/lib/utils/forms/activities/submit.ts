@@ -6,7 +6,7 @@ import type { User } from "$lib/interfaces/auth";
 import * as api from "$lib/api";
 
 
-export const submit = function (kind: kinds, update: boolean = false, user: User, id?: string) {
+export const submit = function (kind: kinds, user: User, update: boolean = false, id?: string) {
   return async function (data: actividad_form<typeof kind>) {
     
     switch (kind) {

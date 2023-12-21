@@ -176,7 +176,7 @@
           Agregar
         </button>
 
-        {#if show_authors}          
+        {#if show_authors}
           {#each article.autores_usb as a, i}
             {#if a.profesor_id !== null}        
               <div class="required field" class:error={$errors.prepraii_profesores[i]?.contrato_constancia}>
