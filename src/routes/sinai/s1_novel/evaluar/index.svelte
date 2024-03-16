@@ -10,7 +10,7 @@
       const res = await fetch(`/api/s1_novel/evals/${professor.id}`);
      
       if (res.ok) {
-        const req = await res.json();
+        const requests = await res.json();
   
         return { props: { requests } };
       };
