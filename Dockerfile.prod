@@ -14,7 +14,7 @@ WORKDIR /var/www/${SERVER_NAME}
 
 
 ## Copy over `package.json` and lock files to optimize the build process
-COPY package*.json ./
+COPY package.json ./
 
 
 ## Install dependencies

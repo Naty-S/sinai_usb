@@ -15,13 +15,12 @@ WORKDIR /usr/src/${DOCKER_APP_NAME}
 
 ## Bundle APP files
 # Copy over `package.json` and lock files to optimize the build process
-COPY package*.json ./
+COPY package.json ./
 
 
 ## Install dependencies
 RUN apt-get update -y && apt-get install -y openssl
 RUN npm i
-RUN npm audit fix
 RUN npm fund
 
 
@@ -30,7 +29,7 @@ COPY . .
 
 
 ## Generate prisma client
-RUN npx prisma migrate dev
+#RUN npx prisma migrate dev
 
 
 ## Expose port 3000 to access from outside the container and SvelteKit app
