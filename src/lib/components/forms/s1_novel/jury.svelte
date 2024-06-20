@@ -27,6 +27,8 @@
 
   let professors: Profesor[] = [];
   let action = { info: '', code: '' };
+  let jurado_usb: any[] = [];
+  let jurado_externo: any[] = [];
 
   onMount(async () => {
     const res = await api.get("/api/professors");
@@ -52,12 +54,13 @@
       , s1_novel
     };
 
-    $form.jurado_usb = $form.jurado_usb.concat(init_jury);
+    jurado_usb = jurado_usb.concat(init_jury);
 		$errors.jurado_usb = $errors.jurado_usb.concat(init_jury);
 	};
 
 	const remove_jury_usb = function (i: number) {
-    $form.jurado_usb = $form.jurado_usb.filter((_, j) => j !== i);
+    jurado_usb = jurado_usb.filter((_, j) => j !== i);
+    $form.jurado_usb = jurado_usb;
     $errors.jurado_usb = $errors.jurado_usb.filter((_, j) => j !== i);
   };
 
@@ -70,16 +73,15 @@
     , universidad: null
     };
 		
-		$form.jurado_externo = $form.jurado_externo.concat(init_jury);
+		jurado_externo = jurado_externo.concat(init_jury);
 		$errors.jurado_externo = $errors.jurado_externo.concat(init_jury);
 	};
 
 	const remove_jury_out = function (i: number) {
-    $form.jurado_externo = $form.jurado_externo.filter((_, j) => j !== i);
+    jurado_externo = jurado_externo.filter((_, j) => j !== i);
+    $form.jurado_externo = jurado_externo;
     $errors.jurado_externo = $errors.jurado_externo.filter((_, j) => j !== i);
   };
-
-  
 </script>
 
 <h2>Asignar Jurado</h2>
@@ -96,15 +98,20 @@
   <div class="field">
     <span class="ui header">USB</span>
 
-    {#each $form.jurado_usb as jury, i}
+    {#each jurado_usb as jury, i}
 
       <div class="two inline fields">
         <Datalist
-          label="Nombre Profesor"
+          label="Profesor"
           name="jurado_usb[{i}].profesor"
-          bind:value={$form.jurado_usb[i].profesor}
+          bind:value={jurado_usb[i].profesor}
+          customHandleChange={(e) => {
+            $form.jurado_usb = jurado_usb;
+            $form.jurado_usb[i].profesor = e.target.value;
+          }}
           options={professors.map(p => ({ val: p.id, name: p.perfil }))}
           class="twelve wide required field"
+          error={$errors.jurado_usb[i]?.profesor}
         />
         
         <!-- TODO: #81 -->
@@ -125,7 +132,7 @@
       </button>
     {/if}
     {#if $form.jurado_usb.length > 0}
-      <button type="button" class="ui red button" on:click={() => $form.jurado_usb = []}>
+      <button type="button" class="ui red button" on:click={() => {$form.jurado_usb = []; jurado_usb = []}}>
         Limpiar
       </button>
     {/if}
@@ -135,19 +142,27 @@
   <div class="field">
     <span class="ui header">Externos</span>
 
-    {#each $form.jurado_externo as jury, i}
+    {#each jurado_externo as jury, i}
 
       <Input
         label="Nombre"
         name="jurado_externo[{i}].nombre"
-        bind:value={$form.jurado_externo[i].nombre}
+        bind:value={jurado_externo[i].nombre}
+        customHandleChange={(e) => {
+          $form.jurado_externo = jurado_externo;
+          $form.jurado_externo[i].nombre = e.target.value;
+        }}
         error={$errors.jurado_externo[i]?.nombre}
         class="required field"
       />
       <Input
         label="Universidad"
         name="jurado_externo[{i}].universidad"
-        bind:value={$form.jurado_externo[i].universidad}
+        bind:value={jurado_externo[i].universidad}
+        customHandleChange={(e) => {
+          $form.jurado_externo = jurado_externo;
+          $form.jurado_externo[i].universidad = e.target.value;
+        }}
         error={$errors.jurado_externo[i]?.universidad}
         class="field"
       />
@@ -156,7 +171,11 @@
         <Input
           label="Correo"
           name="jurado_externo[{i}].correo"
-          bind:value={$form.jurado_externo[i].correo}
+          bind:value={jurado_externo[i].correo}
+          customHandleChange={(e) => {
+            $form.jurado_externo = jurado_externo;
+            $form.jurado_externo[i].correo = e.target.value;
+          }}
           error={$errors.jurado_externo[i]?.correo}
           class="twelve wide field"
         />
@@ -176,7 +195,9 @@
       </button>
     {/if}
     {#if $form.jurado_externo.length > 0}      
-      <button type="button" class="ui red button" on:click={() => $form.jurado_externo = []}>
+      <button type="button" class="ui red button"
+        on:click={() => {$form.jurado_externo = []; jurado_externo = []}}
+      >
         Limpiar
       </button>
     {/if}

@@ -12,6 +12,7 @@
   * `name`: string
   * `placeholder`: string (optional)
   * `value`: any
+  * `customHandleChange`: ((e: any) => void) | undefined
   * `error`: any (optional)
   * `class`: string
  -->
@@ -30,6 +31,7 @@
   export let name: string;
   export let placeholder = '';
   export let value: any;
+  export let customHandleChange: ((e: any) => void) | undefined = undefined;
   export let error: any = undefined;
 
   const act = $page.params.activity;
@@ -45,7 +47,10 @@
     {name}
     {value}
     {placeholder}
-    on:change={handleChange}
+    on:change={(e) => {
+      if (customHandleChange) customHandleChange(e);
+      handleChange(e);
+    }}
     class={type === "checkbox" ? "ui checkbox" : ''}
     checked={value}
   >

@@ -25,6 +25,8 @@
 
   let professors: Profesor[] = [];
   let action = { info: '', code: '' };
+  let autores_usb: any[] = [];
+  let autores_externos: any[] = [];
 
   onMount(async () => {
     const res = await api.get("/api/professors");
@@ -54,12 +56,14 @@
       , estudiante_carrera: null
     };
 
-		$form.autores_usb = $form.autores_usb.concat(init_author);
+		autores_usb = autores_usb.concat(init_author);
+    $form.autores_usb = autores_usb;
 		$errors.autores_usb = $errors.autores_usb.concat(init_author);
 	};
 
 	const remove_author_usb = function (i: number) {
-    $form.autores_usb = $form.autores_usb.filter((_, j) => j !== i);
+    autores_usb = autores_usb.filter((_, j) => j !== i);
+    $form.autores_usb = autores_usb;
     $errors.autores_usb = $errors.autores_usb.filter((_, j) => j !== i);
   };
 
@@ -76,12 +80,14 @@
       , estudiante_carrera: null
     };
 		
-    $form.autores_externos.push(init_author);
+    autores_externos.push(init_author);
+    $form.autores_externos = autores_externos;
 		$errors.autores_externos = $errors.autores_externos.concat(init_author);
 	};
 
 	const remove_author_out = function (i: number) {
-    $form.autores_externos = $form.autores_externos.filter((_, j) => j !== i);
+    autores_externos = autores_externos.filter((_, j) => j !== i);
+    $form.autores_externos = autores_externos;
     $errors.autores_externos = $errors.autores_externos.filter((_, j) => j !== i);
   };
 
@@ -112,14 +118,18 @@
   <div class="field">
     <span class="ui header">USB</span>
 
-    {#each $form.autores_usb as author, i}
+    {#each autores_usb as author, i}
 
       <div class="four inline fields">
         {#if student_usb(i)}
           <Input
             label="Nombre Estudiante"
             name="autores_usb[{i}].nombre"
-            bind:value={$form.autores_usb[i].nombre}
+            bind:value={autores_usb[i].nombre}
+            customHandleChange={(e) => {
+              $form.autores_usb = autores_usb;
+              $form.autores_usb[i].nombre = e.target.value;
+            }}
             error={$errors.autores_usb[i]?.nombre}
             class="ten wide required field"
           />
@@ -127,9 +137,14 @@
           <Datalist
             label="Nombre Profesor"
             name="autores_usb[{i}].nombre"
-            bind:value={$form.autores_usb[i].nombre}
+            bind:value={autores_usb[i].nombre}
+            customHandleChange={(e) => {
+              $form.autores_usb = autores_usb;
+              $form.autores_usb[i].nombre = e.target.value;
+            }}
             options={professors.map(p => ({ val: p.perfil, name: p.perfil }))}
             class="ten wide required field"
+            error={$errors.autores_externos[i]?.nombre}
           />
         {/if}
         
@@ -163,14 +178,22 @@
           <Input
             label="Carrera"
             name="autores_usb[{i}].estudiante_carrera"
-            bind:value={$form.autores_usb[i].estudiante_carrera}
+            bind:value={autores_usb[i].estudiante_carrera}
+            customHandleChange={(e) => {
+              $form.autores_usb = autores_usb;
+              $form.autores_usb[i].estudiante_carrera = e.target.value;
+            }}
             error={$errors.autores_usb[i]?.estudiante_carrera}
             class="ten wide required field"
           />
           <Input
             label="Correo"
             name="autores_usb[{i}].correo"
-            bind:value={$form.autores_usb[i].correo}
+            bind:value={autores_usb[i].correo}
+            customHandleChange={(e) => {
+              $form.autores_usb = autores_usb;
+              $form.autores_usb[i].correo = e.target.value;
+            }}
             error={$errors.autores_usb[i]?.correo}
             class="ten wide field"
           />
@@ -185,7 +208,7 @@
       Agregar Estudiante
     </button>
     {#if $form.autores_usb.length > 0}
-      <button type="button" class="ui red button" on:click={() => $form.autores_usb = []}>
+      <button type="button" class="ui red button" on:click={() => {$form.autores_usb = []; autores_usb = []}}>
         Limpiar
       </button>
     {/if}
@@ -195,20 +218,28 @@
   <div class="field">
     <span class="ui header">Externos</span>
 
-    {#each $form.autores_externos as author, i}
+    {#each autores_externos as author, i}
 
       <div class="two inline fields">
         <Input
           label="Nombre"
           name="autores_externos[{i}].nombre"
-          bind:value={$form.autores_externos[i].nombre}
+          bind:value={autores_externos[i].nombre}
+          customHandleChange={(e) => {
+            $form.autores_externos = autores_externos;
+            $form.autores_externos[i].nombre = e.target.value;
+          }}
           error={$errors.autores_externos[i]?.nombre}
           class="ten wide required field"
         />
         <Input
           label="Universidad"
           name="autores_externos[{i}].universidad"
-          bind:value={$form.autores_externos[i].universidad}
+          bind:value={autores_externos[i].universidad}
+          customHandleChange={(e) => {
+            $form.autores_externos = autores_externos;
+            $form.autores_externos[i].universidad = e.target.value;
+          }}
           error={$errors.autores_externos[i]?.universidad}
           class="ten wide required field"
         />
@@ -219,7 +250,11 @@
           <Input
             label="Carrera"
             name="autores_externos[{i}].estudiante_carrera"
-            bind:value={$form.autores_externos[i].estudiante_carrera}
+            bind:value={autores_externos[i].estudiante_carrera}
+            customHandleChange={(e) => {
+              $form.autores_externos = autores_externos;
+              $form.autores_externos[i].estudiante_carrera = e.target.value;
+            }}
             error={$errors.autores_externos[i]?.estudiante_carrera}
             class="ten wide required field"
           />
@@ -227,7 +262,11 @@
         <Input
           label="Correo"
           name="autores_externos[{i}].correo"
-          bind:value={$form.autores_externos[i].correo}
+          bind:value={autores_externos[i].correo}
+          customHandleChange={(e) => {
+            $form.autores_externos = autores_externos;
+            $form.autores_externos[i].correo = e.target.value;
+          }}
           error={$errors.autores_externos[i]?.correo}
           class="ten wide field"
         />
@@ -264,7 +303,9 @@
       Agregar Estudiante
     </button>
     {#if $form.autores_externos.length > 0}      
-      <button type="button" class="ui red button" on:click={() => $form.autores_externos = []}>
+      <button type="button" class="ui red button" 
+        on:click={() => {$form.autores_externos = []; autores_externos = []}}
+      >
         Limpiar
       </button>
     {/if}

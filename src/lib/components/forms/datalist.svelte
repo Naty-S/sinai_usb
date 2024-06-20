@@ -7,6 +7,7 @@
   * `name`: string
   * `value`: any
   * `options`: { val: string, name: string }[]
+  * `customHandleChange`: (e: any) => void
   * `error`: any (optional)
   * `class`: string
  -->
@@ -24,11 +25,12 @@
   export let name: string;
   export let value: any;
   export let options: { val: string | number, name: string }[];
+  export let customHandleChange: (e: any) => void;
   export let error: any = undefined;
 
   const param = $page.params.activity;
   const kind = param as kinds;
-  const { handleChange }: activity_form_ctx<typeof kind> = getContext(key);
+  const { handleChange }: activity_form_ctx<any> = getContext(key);
 </script>
 
 <div class:error={error} {...$$props}>
@@ -37,7 +39,10 @@
     list="datalist-{name}"
     {name}
     {value}
-    on:change={handleChange}
+    on:change={(e) => {
+      customHandleChange(e);
+      handleChange(e);
+    }}
   >
   <datalist
     id="datalist-{name}"

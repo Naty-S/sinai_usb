@@ -36,13 +36,13 @@ export const validation = function () {
         is: [],
         then: yup.array().of(
           yup.object().shape({
-            profesor: yup.number().required()
+            profesor: yup.number().required("Requerido").typeError("Debe ingresar un número")
             , s1_novel: yup.number().required()
           })
         ).min(1, "Ingrese al menos 1 jurado").required("Requerido"),
         otherwise: yup.array().of(
           yup.object().shape({
-            profesor: yup.number().required()
+            profesor: yup.number().required("Requerido").typeError("Debe ingresar un número")
             , s1_novel: yup.number().required()
           })
         )
