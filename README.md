@@ -2,7 +2,7 @@
 
 ## Rqueriments
 
-* Docker
+* Docker compose
 * Nodejs
 * Git
 
@@ -18,6 +18,7 @@ If you don't want to use Docker you need to install these aswell:
 3. set .env file: `cp .env.template .env`
   * Change `DOCKER_APP_NAME`, `PG_DB`, `DB_DUMP` variables to use dev resources
   * Change `PG_PORT` if you have postgres already running in the same port
+    (check ports used: sudo ss -tulpn | grep LISTEN)
 
 
 ## Set up Dev Environment
