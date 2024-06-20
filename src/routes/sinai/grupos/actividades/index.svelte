@@ -6,25 +6,25 @@
 
   export const load: Load = async ({ fetch, session }) => {
 
-    if (session.user?.professor?.coord_chief) {
+    if (session.user?.professor?.coord_chief || session.user?.dean) {
 
-      const res1 = await fetch("/api/activities/coordination/4");
+      const res = await fetch("/api/activities/coordination/4");
 
-      if (res1.ok) {
+      if (res.ok) {
         
-        const activities: Activities = parse(await res1.text());
+        const activities: Activities = parse(await res.text());
 
         return { props: { activities: activities.activities }  };
       };
   
-      const { message: msg1, code: code1 } = await res1.json();
+      const { message: msg, code } = await res.json();
       return {
-        error: new Error(`Error al cargar los datos de la Coordinación.\n${code1}. ${msg1}`),
+        error: new Error(`Error al cargar los datos de la Coordinación.\n${code}. ${msg}`),
         status: 500
       };
     } else {
       return {
-        error: new Error("Acceso denegado. Inicie sesión como Coordinador de Integración"),
+        error: new Error("Acceso denegado. Inicie sesión como Coordinador de Integración o Decano"),
         status: 401
       };
     };
