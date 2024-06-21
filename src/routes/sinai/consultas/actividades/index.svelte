@@ -386,8 +386,7 @@
     {show_prev} {show_next}
   />
 {:else}
-  <div class="ui card">
-    No se encontraron actividades
+  <div>
   </div>
 {/if}
 
