@@ -1,7 +1,7 @@
 <div class="ui segment">
   <p>
     El Decanato de Investigación y Desarrollo
-    (<a href="https://www.didusb.ve">https://www.didusb.ve</a>)
+    (<a href="https://www.did.usb.ve">https://www.did.usb.ve</a>)
     es el ente de la Universidad Simón Bolívar
     (<a href="https://www.usb.ve">https://www.usb.ve</a>)
     que tiene como objetivo dar el respaldo institucional y financiero a los
