@@ -261,7 +261,7 @@
       label="Buscar Grupo"
       name="search"
       bind:value={$form.search}
-      options={groups.map(o => ({ val: o.id.toString(), name: o.nombre }))}
+      options={groups.map(o => ({ val: o.id.toString(), name: `Grupo ${o.id.toString()} - ${o.nombre}` }))}
     />
   {:else if $form.search_type === "department"}
     <Select
@@ -289,7 +289,7 @@
       label="Buscar Profesor"
       name="search"
       bind:value={$form.search}
-      options={professors.map(o => ({ val: o.id.toString(), name: o.perfil }))}
+      options={professors.map(o => ({ val: o.id.toString(), name: `${o.apellido1}, ${o.nombre1}` }))}
     />
   {/if}
 

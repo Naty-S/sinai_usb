@@ -142,7 +142,10 @@
               $form.autores_usb = autores_usb;
               $form.autores_usb[i].nombre = e.target.value;
             }}
-            options={professors.map(p => ({ val: p.perfil, name: p.perfil }))}
+            options={professors.map(p => ({
+              val: p.perfil,
+              name: `${p.apellido2 ?? ''} ${p.apellido1}, ${p.nombre2 ?? ''} ${p.nombre1} - ${p.correo}`
+            }))}
             class="ten wide required field"
             error={$errors.autores_externos[i]?.nombre}
           />

@@ -109,7 +109,10 @@
             $form.jurado_usb = jurado_usb;
             $form.jurado_usb[i].profesor = e.target.value;
           }}
-          options={professors.map(p => ({ val: p.id, name: p.perfil }))}
+          options={professors.map(p => ({
+            val: p.id,
+            name: `${p.apellido2 ?? ''} ${p.apellido1}, ${p.nombre2 ?? ''} ${p.nombre1} - ${p.correo}`
+          }))}
           class="twelve wide required field"
           error={$errors.jurado_usb[i]?.profesor}
         />
