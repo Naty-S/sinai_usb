@@ -19,7 +19,8 @@ export const GET: RequestHandler = async function () {
       select: {
         id: true,
         nombre: true
-      }
+      },
+      orderBy: {nombre: "asc"}
     });
 
     status = 200;
