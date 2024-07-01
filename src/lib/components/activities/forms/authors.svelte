@@ -35,6 +35,8 @@
 
       const profesors: Profesor[] = await res.clone().json();
       professors = profesors.filter(p => p.activo);
+  
+      autores_usb = autores_usb.concat($form.autores_usb);
 
     } else {
       const { message, code } = await res.json();

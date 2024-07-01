@@ -29,6 +29,7 @@ export interface User {
  * - `email`: string
  * - `name1`: string
  * - `surname1`: string
+ * - `profile`: string
  * - `name2`: `string` - (optional)
  * - `surname2`: `string` - (optional)
  * - `department`: Department

@@ -98,6 +98,7 @@ export const GET: RequestHandler = async function ({ params }) {
         , email: _user.login
         , name1: professor.nombre1
         , name2: professor.nombre2
+        , profile: professor.perfil
         , surname1: professor.apellido1
         , surname2: professor.apellido2
         , department: {
