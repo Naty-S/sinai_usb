@@ -66,6 +66,7 @@
       views.push({ href: coord, click: void_click, name: "Coordinación" });
       requests.push({href: "/sinai/s1_novel/evaluar", click: void_click, name: "Evaluar S1 Novel"});
       requests.push({href: "/sinai/prepraii/evaluar", click: void_click, name: "Evaluar PREPRAII"});
+      requests.push({href: "/sinai/validaciones/nuevos_profesores", click: void_click, name: "Nuevos Registros"});
 
       if (professor.coord_chief.id === 4) {
         views.push({ href: "/sinai/grupos", click: void_click, name: "Grupos de Investigación" });
@@ -97,6 +98,7 @@
 
     requests.push({href: "/sinai/prepraii", click: void_click, name: "PREPRAII"});
     requests.push({href: "/sinai/prepraii/pagos", click: void_click, name: "Pagos PREPRAII"});
+    requests.push({href: "/sinai/validaciones/nuevos_profesores", click: void_click, name: "Nuevos Registros"});
 
     options = [
       // { href: void_link, click: void_click, name: "Modificar Profesores"},
