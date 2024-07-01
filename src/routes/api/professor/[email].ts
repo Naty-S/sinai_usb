@@ -39,9 +39,9 @@ export const GET: RequestHandler = async function ({ params }) {
       , research_gate_profile: professor.research_gate_profile
       , research_gate_posts: professor.research_gate_posts
       , pei: {
-          anio: pei.anio
-        , nivel: pei.nivel
-        , numero: pei.numero
+          anio: pei?.anio
+        , nivel: pei?.nivel
+        , numero: pei?.numero
       }
     };
 
