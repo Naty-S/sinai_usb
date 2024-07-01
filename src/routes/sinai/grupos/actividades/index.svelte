@@ -159,7 +159,15 @@ import type { GroupActivities as GroupActivitiesT } from "$lib/interfaces/activi
       </div>
     </div>
   {/if}
-  
+
+  <Pagination
+    size={activities.length}
+    page_size={pagination_size}
+    start={start_pagination}
+    end={end_pagination}
+    {show_prev} {show_next}
+  />
+
   <!-- Activities by group -->
   {#key page_activities}    
     {#each page_activities as group_activities}

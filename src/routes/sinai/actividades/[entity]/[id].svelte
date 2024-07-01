@@ -215,6 +215,14 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
     </div>
   {/if}
   
+  <Pagination
+    size={activities.length}
+    page_size={pagination_size}
+    start={start_pagination}
+    end={end_pagination}
+    {show_prev} {show_next}
+  />
+
   <!-- Activities by year -->
   {#key page_activities}    
     {#each page_activities as year_activities}
