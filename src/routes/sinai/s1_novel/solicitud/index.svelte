@@ -68,8 +68,14 @@
   $: err_code = $page.url.searchParams.get("code");
 </script>
 
+<h2>Solicitar S1 Novel</h2>
+
 <button type="button" class="ui button" on:click={() => show_s1_form = !show_s1_form}>
-  Nueva solicitud
+  {#if show_s1_form}
+    Cancelar
+  {:else}
+    Nueva solicitud
+  {/if}
 </button>
 
 {#if show_s1_form}
@@ -101,7 +107,7 @@
   </form>
 {/if}
 
-<h2>Estado de las Solicitudes</h2>
+<h3>Solicitudes Realizadas</h3>
 
 <div id="s1_novel_requests" class="ui fluid styled accordion" uk-accordion="animation: false;">
   {#each requests as s1}

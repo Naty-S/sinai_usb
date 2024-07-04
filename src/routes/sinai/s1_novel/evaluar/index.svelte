@@ -88,7 +88,8 @@
   $: err_code = $page.url.searchParams.get("code");
 </script>
 
-<h2>Solicitudes</h2>
+<h2>Evaluar S1 Novel</h2>
+<h3>Solicitudes</h3>
 
 <div class="ui middle aligned divided list">
   {#if jury}

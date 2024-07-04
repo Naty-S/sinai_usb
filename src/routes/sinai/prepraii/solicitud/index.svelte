@@ -114,9 +114,15 @@
   $: console.log($form.prepraii_profesores)
 </script>
 
+<h2>Solicitar PREPRAII</h2>
+
 {#if actual}
   <button type="button" class="ui button" on:click={() => show_prepraii_form = !show_prepraii_form}>
-    Nueva solicitud
+    {#if show_prepraii_form}
+      Cancelar
+    {:else}
+      Nueva solicitud
+    {/if}
   </button>
 {:else}
   <Notifications header_msg="No hay una convocatoria activa actualmente" />
@@ -223,7 +229,7 @@
   </form>
 {/if}
 
-<h2>Estado de las Solicitudes</h2>
+<h2>Solicitudes Realizadas</h2>
 
 <div id="prepraii_requests" class="ui fluid styled accordion" uk-accordion="animation: false;">
   {#each prepraii_requests as pre}

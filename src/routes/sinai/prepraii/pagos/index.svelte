@@ -72,7 +72,8 @@
   });
 </script>
 
-<h2>Solicitudes aprobadas pendientes por pagar</h2>
+<h2>Pagos PREPRAII</h2>
+<h3>Solicitudes aprobadas pendientes por pagar</h3>
 
 <div class="ui middle aligned divided list">
   {#if pay}

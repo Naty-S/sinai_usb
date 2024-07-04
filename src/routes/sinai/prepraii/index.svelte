@@ -39,7 +39,9 @@
   const actual = prepraii.find(p => p.activo);
 </script>
 
-<h2>Convocatoria PREPRAII Actual</h2>
+<h2>PREPRAII</h2>
+
+<h3>Convocatoria Actual</h3>
 
 {#if actual}
   <div class="ui middle aligned divided list">
@@ -90,7 +92,7 @@
   <Notifications header_msg="No hay una convocatoria activa actualmente" />
 {/if}
 
-<h2>Convocatorias PREPRAII Anteriores</h2>
+<h3>Convocatorias Anteriores</h3>
 
 <div class="ui middle aligned divided list">
   {#each prepraii.filter(p => !p.activo) as p}
