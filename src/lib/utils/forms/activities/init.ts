@@ -45,7 +45,7 @@ export const init = function (kind: kinds, user?: User, data?: Activity): activi
         [{ old: '?', new: '0'}]
     , autores_externos: data?.autores_externos || []
     , autores_usb: data?.autores_usb || [{
-      nombre: user?.professor?.profile ?? ''
+        nombre: user?.dean ?? user?.professor?.profile ?? 'usuario, ficticio'
       , es_estudiante: false
       , es_ponente: false
       , es_tutor: false
