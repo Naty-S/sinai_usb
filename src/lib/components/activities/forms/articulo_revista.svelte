@@ -105,7 +105,7 @@
       name="articulo_revista.fecha_publicacion"
       bind:value={$form.articulo_revista.fecha_publicacion}
       error={$errors.articulo_revista.fecha_publicacion}
-      class="field"
+      class="required field"
     />
   {/if}
 </div>

@@ -17,7 +17,11 @@ const articulo_revista = yup.object().shape({
     articulo_invitado: yup.boolean().typeError("No es booleano")
   , con_estudiantes: yup.boolean().typeError("No es booleano")
   , estado: yup.string().oneOf(["Aceptado_via_publicacion", "Publicado"])
-  , fecha_publicacion: yup.date().transform(parse_date).nullable()
+  , fecha_publicacion: yup.date().transform(parse_date).nullable().when("estado", {
+    is: "Publicado",
+    then: (s) => s.required("El artículo publicado debe tener fecha"),
+    otherwise: (s) => s.notRequired().nullable(),
+  })
   , indice: yup.string().nullable()
   , pag_final: yup.string().required("Requerido")
   , pag_inicial: yup.string().required("Requerido")
