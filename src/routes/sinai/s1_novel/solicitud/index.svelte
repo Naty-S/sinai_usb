@@ -140,6 +140,28 @@
               </div>
             </div>
             <div class="item">
+              <i class="file pdf icon"/>
+              <div class="content">
+                Proyecto:
+                <a href={URL.createObjectURL(base64_to_blob(s1.proyecto))} target=”_blank”>
+                  Ver/Descargar
+                </a>
+              </div>
+            </div>
+            <div class="item">
+              <i class="folder open icon"/>
+              <div class="content">
+                <div class="">Soportes:</div>
+                <ol class="ui items">
+                  {#each s1.soportes as s}
+                    <div class="item"><li><a href={URL.createObjectURL(base64_to_blob(s))} target=”_blank”>
+                      Ver/Descargar
+                    </a></li></div>
+                  {/each}
+                </ol>
+              </div>
+            </div>
+            <div class="item">
               <i class="users icon"/>
               <div class="content">
                 <div class="">Jurado:</div>
