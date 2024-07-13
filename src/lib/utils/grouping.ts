@@ -25,7 +25,7 @@ export const group_by = function (
     let key: any;
 
     if (prop === "fecha_creacion") { key = new Date(act[prop]).getFullYear() }
-    else if (prop === "groups") { key = act.groups[0].nombre } // take first
+    else if (prop === "groups") { key = act.groups[0]?.nombre } // take first
     else { key = kind as keyof typeof acc };
 
     if (!acc[key]) {

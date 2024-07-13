@@ -43,6 +43,7 @@
   import Select from "$lib/components/forms/select.svelte";
   import YearActivities from "$lib/components/activities/year_activities.svelte";
   import ResumeTable from "$lib/components/activities/resume_table.svelte";
+	import { select_value } from "svelte/internal";
 
   const initialValues = init();
   const onSubmit = submit();
@@ -97,10 +98,13 @@
     };
   };
 
-  const _reset = function() {
-    handleReset();
+  const reset = function(e: any, search: number) {
+    handleChange(e);
+    $form.search = search;
     activities = [];
     kind = '';
+    pagination_size = 20;
+    current_page = 1;
     start_pagination = 0;
     end_pagination = pagination_size;
     start_date = '';
@@ -114,7 +118,7 @@
     end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
+      activities, kind, start_date, end_date, start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
   };
 
   const show_page = function (page: number) {
@@ -124,7 +128,7 @@
     end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
+      activities, kind, start_date, end_date, start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
   };
 
   const show_next = function () {
@@ -134,20 +138,27 @@
     end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
+      activities, kind, start_date, end_date, start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
   };
 
   const resize_pagination = function (size: number) {
+    
     pagination_size = size;
     start_pagination = 0;
     end_pagination = pagination_size;
+    
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
+      activities, kind, start_date, end_date, start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
   };
 
   const filter = function() {
+    
+    pagination_size = 20;
+    start_pagination = 0;
+    end_pagination = pagination_size;
+
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
+      activities, kind, start_date, end_date, start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
   };
 
   onMount(async () => {
@@ -175,12 +186,11 @@
     };
   });
 
-  setContext(key, { form, errors, handleChange });  
+  setContext(key, { form, errors, handleChange });
 </script>
 
 
-
-<form class="ui large form" on:submit|preventDefault={show_search} on:reset={_reset}>
+<form class="ui large form" on:submit|preventDefault={show_search}>
   <div class="field fields">
     <label for="search_type">
       Seleccione el tipo de búsqueda que desea realizar
@@ -194,8 +204,8 @@
           name="search_type"
           value="professor"
           class="uk-radio"
-          on:change={handleChange}
-          on:blur={handleChange}
+          on:change={(e) => {reset(e, 1223)}}
+          on:blur={(e) => {reset(e, 1223)}}
           checked
         >
         Profesor
@@ -208,8 +218,8 @@
           name="search_type"
           value="group"
           class="uk-radio"
-          on:change={handleChange}
-          on:blur={handleChange}
+          on:change={(e) => {reset(e, 1)}}
+          on:blur={(e) => {reset(e, 1)}}
         >
         Grupo
       </label>
@@ -221,8 +231,8 @@
           name="search_type"
           value="department"
           class="uk-radio"
-          on:change={handleChange}
-          on:blur={handleChange}
+          on:change={(e) => {reset(e, 2)}}
+          on:blur={(e) => {reset(e, 2)}}
         >
         Departamento
       </label>
@@ -234,8 +244,8 @@
           name="search_type"
           value="division"
           class="uk-radio"
-          on:change={handleChange}
-          on:blur={handleChange}
+          on:change={(e) => {reset(e, 1)}}
+          on:blur={(e) => {reset(e, 1)}}
         >
         División
       </label>
@@ -247,8 +257,8 @@
           name="search_type"
           value="coordination"
           class="uk-radio"
-          on:change={handleChange}
-          on:blur={handleChange}
+          on:change={(e) => {reset(e, 1)}}
+          on:blur={(e) => {reset(e, 1)}}
         >
         Coordinación
       </label>
@@ -297,15 +307,9 @@
   {/if}
 
   <div id="action_buttons">
-    {#if activities.length >0}
-      <button type="reset" name="reset_form" class="ui red button">
-        Reset
-      </button>
-    {:else}
-      <button type="submit" name="submit_form" class="ui green button">
-        Buscar
-      </button>
-    {/if}
+    <button type="submit" name="submit_form" class="ui green button">
+      Buscar
+    </button>
   </div>
 </form>
 
@@ -338,6 +342,9 @@
         <button class="ui button" on:click={() => resize_pagination(30)}>30</button>
         <button class="ui button" on:click={() => resize_pagination(50)}>50</button>
         <button class="ui button" on:click={() => resize_pagination(100)}>100</button>
+        <button class="ui button" on:click={() => resize_pagination(200)}>200</button>
+        <button class="ui button" on:click={() => resize_pagination(300)}>300</button>
+        <button class="ui button" on:click={() => resize_pagination(500)}>500</button>
       </div>
 
       <div id="date_filter" class="ui horizontal stackable segments">
