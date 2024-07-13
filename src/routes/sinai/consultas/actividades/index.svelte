@@ -40,7 +40,6 @@
 	import Loader from "$lib/components/loader.svelte";
 	import Modal from '$lib/components/modals/modal.svelte';
   import Pagination from "$lib/components/pagination.svelte";
-	import Radio from "$lib/components/forms/radio.svelte";
   import Select from "$lib/components/forms/select.svelte";
   import YearActivities from "$lib/components/activities/year_activities.svelte";
   import ResumeTable from "$lib/components/activities/resume_table.svelte";
@@ -68,6 +67,7 @@
   let page_activities: YearActivitiesT[];
 
   let pagination_size = 20;
+  let current_page = 1;
   let start_pagination = 0;
   let end_pagination = pagination_size;
 
@@ -109,8 +109,9 @@
 
   const show_prev = function () {
 
-    start_pagination -= pagination_size;
-    end_pagination -= pagination_size;
+    current_page -= 1;
+    start_pagination = (current_page - 1) * pagination_size;
+    end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
       activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
@@ -118,8 +119,9 @@
 
   const show_page = function (page: number) {
 
-    start_pagination = page === 0 ? page : end_pagination;
-    end_pagination = page === 0 ? pagination_size : start_pagination + pagination_size;
+    current_page = page;
+    start_pagination = (page - 1) * pagination_size;
+    end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
       activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
@@ -127,8 +129,9 @@
 
   const show_next = function () {
 
-    start_pagination += pagination_size;
-    end_pagination += pagination_size;
+    current_page += 1;
+    start_pagination = (current_page - 1) * pagination_size;
+    end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
       activities, kind, start_date, end_date, start_pagination, end_pagination, show_invalid) as YearActivitiesT[];
@@ -317,6 +320,8 @@
   <ResumeTable
     headers={["Actividad"].concat(activities_by_year.map(a => a.year.toString()))}
     resume_kinds_counts={activities_years_counts}
+    {current_page}
+    {pagination_size}
     row_total
     col_total
   />
@@ -376,7 +381,7 @@
       page_size={pagination_size}
       start={start_pagination}
       end={end_pagination}
-      {show_prev} {show_next}
+      {show_prev} {show_page} {show_next}
     />
 
     {#key page_activities}
@@ -391,7 +396,7 @@
     page_size={pagination_size}
     start={start_pagination}
     end={end_pagination}
-    {show_prev} {show_next}
+    {show_prev} {show_page} {show_next}
   />
 {:else}
   <div>

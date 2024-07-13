@@ -68,6 +68,7 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
   const headers = ["Actividad"].concat(activities_by_year.map(a => a.year.toString()));
 
   let pagination_size = 100;
+  let current_page = 1;
   let start_pagination = 0;
   let end_pagination = pagination_size;
   let page_activities = acts_kinds_by_year(activities.slice(start_pagination, end_pagination));;
@@ -90,8 +91,9 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
 
   const show_prev = function () {
 
-    start_pagination -= pagination_size;
-    end_pagination -= pagination_size;
+    current_page -= 1;
+    start_pagination = (current_page - 1) * pagination_size;
+    end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
       activities, kind, start_date, end_date, start_pagination, end_pagination) as YearActivitiesT[];
@@ -99,8 +101,9 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
 
   const show_page = function (page: number) {
 
-    start_pagination = page === 0 ? page : end_pagination;
-    end_pagination = page === 0 ? pagination_size : start_pagination + pagination_size;
+    current_page = page;
+    start_pagination = (page - 1) * pagination_size;
+    end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
       activities, kind, start_date, end_date, start_pagination, end_pagination) as YearActivitiesT[];
@@ -108,8 +111,9 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
 
   const show_next = function () {
 
-    start_pagination += pagination_size;
-    end_pagination += pagination_size;
+    current_page += 1;
+    start_pagination = (current_page - 1) * pagination_size;
+    end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
       activities, kind, start_date, end_date, start_pagination, end_pagination) as YearActivitiesT[];
@@ -220,7 +224,7 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
     page_size={pagination_size}
     start={start_pagination}
     end={end_pagination}
-    {show_prev} {show_next}
+    {show_prev} {show_page} {show_next}
   />
 
   <!-- Activities by year -->
@@ -236,7 +240,7 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
   page_size={pagination_size}
   start={start_pagination}
   end={end_pagination}
-  {show_prev} {show_next}
+  {show_prev} {show_page} {show_next}
 />
 
 {#if $page.params.entity === "profesor"} 
