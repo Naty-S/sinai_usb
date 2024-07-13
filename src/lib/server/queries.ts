@@ -119,7 +119,7 @@ export const query_professor_activities = async function (id: number, email: str
   if (author_activities_ids.length > 0) {
 
     const author_activities = await Promise.all(
-      author_activities_ids.map(async a => await query_activity(a.actividad))
+      author_activities_ids.map(a => query_activity(a.actividad))
     );
 
     activities = professor_activities.concat(author_activities);

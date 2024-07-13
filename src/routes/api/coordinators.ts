@@ -32,8 +32,8 @@ export const GET: RequestHandler = async function () {
       orderBy: { id: "asc" }
     });
 
-    const deparments = await Promise.all(coordinations.map( async c =>
-      await prisma.departamento.findUniqueOrThrow({
+    const deparments = await Promise.all(coordinations.map(c =>
+      prisma.departamento.findUniqueOrThrow({
         select: {
           id: true,
           nombre: true,

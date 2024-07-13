@@ -11,7 +11,7 @@ export const submit = function (profesor_id: number, pathname: string) {
     data.profesor = profesor_id;
     data.proyecto = await file_to_base64(data.proyecto[0]);
     data.soportes = await Promise.all(
-      data.soportes.map(async (s: FileList) => await file_to_base64(s[0]))
+      data.soportes.map((s: FileList) => file_to_base64(s[0]))
     );
 
     const res = await api.post("/api/s1_novel/request", { data, pathname });

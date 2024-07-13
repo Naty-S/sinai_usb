@@ -33,7 +33,7 @@ export const GET: RequestHandler = async function ({ params }) {
     });
 
     const professor_activities = (await Promise.all(
-      professors.map(async p => (await query_professor_activities(p.id, p.correo)))
+      professors.map(p => (query_professor_activities(p.id, p.correo)))
     )).flat();
 
     const logs = await query_activities_logs(professor_activities.map(a => a.id));

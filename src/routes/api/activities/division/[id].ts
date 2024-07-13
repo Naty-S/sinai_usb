@@ -34,8 +34,8 @@ export const GET: RequestHandler = async function ({ request, params }) {
       where: { departamento: { in: division.departamentos.map(d => d.id) } }
     });
 
-    const professor_activities = (await Promise.all(professors.map(async p => (
-      await query_professor_activities(p.id, p.correo)
+    const professor_activities = (await Promise.all(professors.map(p => (
+      query_professor_activities(p.id, p.correo)
     )))).flat();
 
     const logs = await query_activities_logs(professor_activities.map(a => a.id));

@@ -43,7 +43,7 @@ export const GET: RequestHandler = async function ({ params }) {
       const groups = await prisma.grupo_investigacion.findMany({ select: { id: true } });
 
       const groups_activities = (await Promise.all(
-        groups.map(async g => (await query_group_activities(g.id)))
+        groups.map(g => (query_group_activities(g.id)))
       )).flat()
       
       const logs = await query_activities_logs(groups_activities.map(a => a.id));
@@ -58,13 +58,14 @@ export const GET: RequestHandler = async function ({ params }) {
       });
 
       const professor_activities = (await Promise.all(
-        professors.map(async p => (await query_professor_activities(p.id, p.correo)))
+        professors.map(p => (query_professor_activities(p.id, p.correo)))
       )).flat();
 
       const logs = await query_activities_logs(professor_activities.map(a => a.id));
 
       activities = professor_activities.map(a => (format_activity(a, logs)));
     };
+
     const owner_activities: Activities = {
       owner: {
           id: coordination.id
