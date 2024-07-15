@@ -7,8 +7,10 @@
   
   let hidden = true;
 
-  function goTop() {
+  function to_top() {
+    
     document.body.scrollIntoView();
+    
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   };
@@ -16,21 +18,14 @@
   function show() {
     const scroll_container = document.documentElement || document.body;
     
-    if (!scroll_container) {
-      return;
-    };
-
-    if (scroll_container.scrollTop > show_on_px) {
-      hidden = false;
-    } else {
-      hidden = true;
-    };
+    if (!scroll_container) {return};
+    if (scroll_container.scrollTop > show_on_px) {hidden = false} else {hidden = true};
   };
 </script>
 
 <svelte:window on:scroll={show} />
 
-<div class="back-to-top" class:hidden on:click={goTop}>
+<div class="back-to-top" class:hidden on:click={to_top}>
   <i class="large circular inverted primary angle double up icon"></i>
 </div>
 

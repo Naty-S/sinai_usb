@@ -52,7 +52,7 @@
     views.push({ href: "/sinai/BRA/profesor", click: void_click, name: "BRA" });
 
     requests.push({href: "/sinai/s1_novel/solicitud", click: void_click, name: "Solicitar S1 Novel"});
-    requests.push({href: "/sinai/prepraii/solicitud", click: void_click, name: "Solicitar PREPRAII"});
+    // requests.push({href: "/sinai/prepraii/solicitud", click: void_click, name: "Solicitar PREPRAII"});
 
     if (professor.is_dep_chief || professor.is_dep_representative) {
       
@@ -65,7 +65,7 @@
       
       views.push({ href: coord, click: void_click, name: "Coordinación" });
       requests.push({href: "/sinai/s1_novel/evaluar", click: void_click, name: "Evaluar S1 Novel"});
-      requests.push({href: "/sinai/prepraii/evaluar", click: void_click, name: "Evaluar PREPRAII"});
+      // requests.push({href: "/sinai/prepraii/evaluar", click: void_click, name: "Evaluar PREPRAII"});
       requests.push({href: "/sinai/validaciones/nuevos_profesores", click: void_click, name: "Nuevos Registros"});
 
       if (professor.coord_chief.id === 4) {
@@ -96,8 +96,8 @@
 
     views.push({ href: "/sinai/grupos", click: void_click, name: "Grupos de Investigación" });
 
-    requests.push({href: "/sinai/prepraii", click: void_click, name: "PREPRAII"});
-    requests.push({href: "/sinai/prepraii/pagos", click: void_click, name: "Pagos PREPRAII"});
+    // requests.push({href: "/sinai/prepraii", click: void_click, name: "PREPRAII"});
+    // requests.push({href: "/sinai/prepraii/pagos", click: void_click, name: "Pagos PREPRAII"});
     requests.push({href: "/sinai/validaciones/nuevos_profesores", click: void_click, name: "Nuevos Registros"});
 
     options = [
@@ -105,8 +105,8 @@
       {href: "/sinai/mesa_tecnica", click: void_click, name: "Modificar Mesa Técnica"},
       {href: "/sinai/coordinadores", click: void_click, name: "Modificar Coordinadores"},
       {href: void_link, click: show_modify_bra_period, name: "Modificar Período BRA"},
-      {href: void_link, click: show_create_prepraii, name: "Crear nueva convocatoria PREPRAII"},
-      {href: void_link, click: show_update_prepraii, name: "Actualizar convocatoria PREPRAII actual"}
+      // {href: void_link, click: show_create_prepraii, name: "Crear nueva convocatoria PREPRAII"},
+      // {href: void_link, click: show_update_prepraii, name: "Actualizar convocatoria PREPRAII actual"}
     ];
   };
 

@@ -9,10 +9,32 @@
   export let show_prev: () => void;
   export let show_page: (page: number) => void;
   export let show_next: () => void;
+
+  const to_top = function() {
+    
+    document.body.scrollIntoView();
+    
+    const top = document.getElementById("activities")?.getBoundingClientRect().top ?? 0;
+    const pagination_h = document.getElementById("pagination")?.getBoundingClientRect().height ?? 225;
+    const scroll = top - pagination_h - 225;
+
+    document.body.scrollTo(0, scroll); // For Safari
+    document.documentElement.scrollTo(0, scroll); // For Chrome, Firefox, IE and Opera
+  }
+
+  const to_bottom = function() {
+
+    document.body.scrollIntoView();
+
+    const scroll = document.documentElement.scrollHeight + 300;
+
+    document.body.scrollTop = scroll; // For Safari
+    document.documentElement.scrollTop = scroll; // For Chrome, Firefox, IE and Opera
+  }
 </script>
 
 <div id="pagination" class="ui stackable buttons">
-  <button class="ui blue icon button {start > 1 ? '' : "disabled"}" on:click={show_prev}>
+  <button class="ui blue icon button {start > 1 ? '' : "disabled"}" on:click={() => {show_prev(); to_bottom()}}>
     <i class="left chevron icon" />
     Atrás
   </button>
@@ -25,7 +47,7 @@
       </strong></div>
     {/each}
     </div>
-  <button class="ui blue icon button {end < size ? '' : "disabled"}" on:click={show_next}>
+  <button class="ui blue icon button {end < size ? '' : "disabled"}" on:click={() => {show_next(); to_top()}}>
     Siguiente
     <i class="right chevron icon" />
   </button>

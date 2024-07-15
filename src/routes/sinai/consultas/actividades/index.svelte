@@ -87,6 +87,8 @@
 
     if (typeof res !== "string") {
       
+      reset();
+      
       owner = res.owner.full_name;
       activities = res.activities;
       activities_by_year = acts_kinds_by_year(activities, show_invalid);
@@ -98,9 +100,7 @@
     };
   };
 
-  const reset = function(e: any, search: number) {
-    handleChange(e);
-    $form.search = search;
+  const reset = function() {
     activities = [];
     kind = '';
     pagination_size = 20;
@@ -204,8 +204,8 @@
           name="search_type"
           value="professor"
           class="uk-radio"
-          on:change={(e) => {reset(e, 1223)}}
-          on:blur={(e) => {reset(e, 1223)}}
+          on:change={(e) => {handleChange(e); $form.search = 1223; reset()}}
+          on:blur={(e) => {handleChange(e); $form.search = 1223; reset()}}
           checked
         >
         Profesor
@@ -218,8 +218,8 @@
           name="search_type"
           value="group"
           class="uk-radio"
-          on:change={(e) => {reset(e, 1)}}
-          on:blur={(e) => {reset(e, 1)}}
+          on:change={(e) => {handleChange(e); $form.search = 1; reset()}}
+          on:blur={(e) => {handleChange(e); $form.search = 1; reset()}}
         >
         Grupo
       </label>
@@ -231,8 +231,8 @@
           name="search_type"
           value="department"
           class="uk-radio"
-          on:change={(e) => {reset(e, 2)}}
-          on:blur={(e) => {reset(e, 2)}}
+          on:change={(e) => {handleChange(e); $form.search = 2; reset()}}
+          on:blur={(e) => {handleChange(e); $form.search = 2; reset()}}
         >
         Departamento
       </label>
@@ -244,8 +244,8 @@
           name="search_type"
           value="division"
           class="uk-radio"
-          on:change={(e) => {reset(e, 1)}}
-          on:blur={(e) => {reset(e, 1)}}
+          on:change={(e) => {handleChange(e); $form.search = 1; reset()}}
+          on:blur={(e) => {handleChange(e); $form.search = 1; reset()}}
         >
         División
       </label>
@@ -257,8 +257,8 @@
           name="search_type"
           value="coordination"
           class="uk-radio"
-          on:change={(e) => {reset(e, 1)}}
-          on:blur={(e) => {reset(e, 1)}}
+          on:change={(e) => {handleChange(e); $form.search = 1; reset()}}
+          on:blur={(e) => {handleChange(e); $form.search = 1; reset()}}
         >
         Coordinación
       </label>

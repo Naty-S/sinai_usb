@@ -127,6 +127,7 @@
 </script>
 
 {#if activities.length > 0}
+<div id="activities">
   <div
     id="{year_activities.year}_activities"
     class="uk-margin"
@@ -237,6 +238,7 @@
       </ol>
     {/each}
   </div>
+</div>
 {/if}
 
 <style>
