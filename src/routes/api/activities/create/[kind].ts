@@ -15,11 +15,13 @@ export const POST: RequestHandler = async ({ request, params }) => {
   const _data = await request.json();
 
   const professor = _data.user.professor?.id;
+  let actividades_grupos_create = [];
+  if (_data.actividades_grupos.lenght > 1) {
+    actividades_grupos_create = _data.actividades_grupos.map((g: any) => ({ grupo: Number(g.new) }))
+  }
   const data = {
     ..._data.actividad,
-    actividades_grupos: {
-      create: _data.actividades_grupos.map((g: any) => ( {grupo: Number(g.new)} ))
-    },
+    actividades_grupos: { create: actividades_grupos_create },
     autores_usb: { create: _data.autores_usb },
     autores_externos: { create: _data.autores_externos },
   };
