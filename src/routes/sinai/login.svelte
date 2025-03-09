@@ -49,8 +49,8 @@
 <form class="ui large form">
 
   <div class="required field">
-    <label for="">Correo</label>
-    <input type="email" bind:value={email}>
+    <label for="">USB ID</label>
+    <input type="text" bind:value={email}>
   </div>
 
   <button type="submit" class="ui blue button" on:click|preventDefault={login_dev}>
