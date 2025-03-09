@@ -1,9 +1,10 @@
-import { Prisma } from "@prisma/client";
+import Client from "@prisma/client";
 
 import PrismaClient, { get_known_error } from "$lib/server/prisma";
 import { ve_date } from "$lib/utils/formatting";
 
 
+const { Prisma } = Client;
 export const prisma = new PrismaClient();
 
 

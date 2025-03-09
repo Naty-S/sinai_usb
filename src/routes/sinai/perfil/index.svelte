@@ -39,12 +39,7 @@
 
 	import type { Profile } from "$lib/interfaces/professors";
 
-  import {
-      profesor_categoria_enum
-    , profesor_dedicacion_enum
-    , profesor_diploma_tipo_enum
-    , pei_nivel_enum
-  } from "@prisma/client";
+  import Client from "@prisma/client";
 
   import { session, page } from "$app/stores";
 
@@ -64,6 +59,12 @@
 
   export let profile: Profile;
   
+  const {
+      profesor_categoria_enum
+    , profesor_dedicacion_enum
+    , profesor_diploma_tipo_enum
+    , pei_nivel_enum
+  } = Client;
   const initialValues = init(profile);
   const onSubmit = submit($session.user?.email, $page.url.pathname);
   const validationSchema = validation();

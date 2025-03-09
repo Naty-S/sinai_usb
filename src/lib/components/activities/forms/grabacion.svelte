@@ -6,7 +6,7 @@
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";
   
-  import { grabacion_categoria_enum } from "@prisma/client";
+  import Client from "@prisma/client";
 
   import { page } from "$app/stores";
 
@@ -15,6 +15,7 @@
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
 
+  const { grabacion_categoria_enum } = Client;
   const param = $page.params.activity;
   const kind = param as kinds;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);

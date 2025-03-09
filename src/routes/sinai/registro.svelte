@@ -12,13 +12,7 @@
   import { onMount, setContext } from "svelte";
   import { createForm, key } from "svelte-forms-lib";
   
-  import {
-    profesor_categoria_enum,
-    profesor_condicion_enum,
-    profesor_dedicacion_enum,
-    profesor_diploma_tipo_enum,
-    pei_nivel_enum
-  } from "@prisma/client";
+  import Client from "@prisma/client";
 
   import { page } from "$app/stores";
 
@@ -37,6 +31,14 @@
 	import OrcidPosts from "$lib/components/forms/register/orcid_posts.svelte";
 	import ResearchGatePosts from "$lib/components/forms/register/research_gate_posts.svelte";
 
+  const {
+    profesor_categoria_enum,
+    profesor_condicion_enum,
+    profesor_dedicacion_enum,
+    profesor_diploma_tipo_enum,
+    pei_nivel_enum
+  } = Client;
+  
   // Config form
   const initialValues = init();
   const onSubmit = submit();
