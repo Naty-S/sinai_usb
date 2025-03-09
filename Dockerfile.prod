@@ -21,15 +21,10 @@ COPY package.json ./
 RUN apt-get update -y && apt-get install -y openssl
 RUN npm i pm2 -g
 RUN npm i
-RUN npm audit fix
 RUN npm fund
 
 # Copy all local files into the image.
 COPY . .
-
-
-## Generate prisma client
-RUN npx prisma migrate deploy
 
 
 ## Set the Node environment to production
