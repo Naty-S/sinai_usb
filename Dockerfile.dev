@@ -2,7 +2,7 @@
 FROM node:lts-slim as dev
 
 
-ARG DOCKER_APP_NAME
+ARG DEV_DIR
 
 
 ## Set the Node environment to development to ensure all packages are installed
@@ -10,7 +10,7 @@ ENV NODE_ENV development
 
 
 ## Change our current working directory, where app its developed
-WORKDIR /usr/src/${DOCKER_APP_NAME}
+WORKDIR ${DEV_DIR}
 
 
 ## Bundle APP files
@@ -26,10 +26,6 @@ RUN npm fund
 
 ## Copy all local files into the image.
 COPY . .
-
-
-## Generate prisma client
-#RUN npx prisma migrate dev
 
 
 ## Expose port 3000 to access from outside the container and SvelteKit app

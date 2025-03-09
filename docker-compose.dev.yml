@@ -9,7 +9,7 @@ services:
       context: ./
       dockerfile: ./Dockerfile.dev
       args:
-        - DOCKER_APP_NAME=${DOCKER_APP_NAME}
+        - DEV_DIR=${DEV_DIR}
     env_file:
       - .env
     links:
@@ -23,9 +23,9 @@ services:
       - 3000:3000
     volumes:
       # Ensure hot-module reload works, don't have to restart our container to see changes.
-      - ./:/usr/var/${DOCKER_APP_NAME}
+      - ./:${DEV_DIR}
       # To avoid copying over local Node modules to Docker
-      - docker_node_modules-dev:/usr/var/${DOCKER_APP_NAME}/node_modules
+      - docker_node_modules-dev:${DEV_DIR}/node_modules
       # Set timezone to host machine (Venezuela)
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
