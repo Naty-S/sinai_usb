@@ -8,7 +8,7 @@ import { stringify } from "zipson/lib";
 import { handle_error, prisma } from "$api/_api";
 
 import {
-    query_activities_logs
+    query_activity_logs
   , query_group_activities
   , query_professor_activities
 } from "$lib/server/queries";
@@ -44,11 +44,12 @@ export const GET: RequestHandler = async function ({ params }) {
 
       const groups_activities = (await Promise.all(
         groups.map(g => (query_group_activities(g.id)))
-      )).flat()
-      
-      const logs = await query_activities_logs(groups_activities.map(a => a.id));
+      )).flat();
 
-      activities = groups_activities.map(a => (format_activity(a, logs)));
+      activities = (await Promise.all(groups_activities.map(async a => {
+        const logs = await (query_activity_logs(a.id));
+        return format_activity(a, logs);
+      }))).flat();
 
     } else {
 
@@ -61,9 +62,10 @@ export const GET: RequestHandler = async function ({ params }) {
         professors.map(p => (query_professor_activities(p.id, p.correo)))
       )).flat();
 
-      const logs = await query_activities_logs(professor_activities.map(a => a.id));
-
-      activities = professor_activities.map(a => (format_activity(a, logs)));
+      activities = (await Promise.all(professor_activities.map(async a => {
+        const logs = await (query_activity_logs(a.id));
+        return format_activity(a, logs);
+      }))).flat();
     };
 
     const owner_activities: Activities = {
@@ -74,7 +76,7 @@ export const GET: RequestHandler = async function ({ params }) {
         , email: coordination.correo
       }
       , activities
-    }
+    };
 
     status = 200;
     body = stringify(owner_activities);

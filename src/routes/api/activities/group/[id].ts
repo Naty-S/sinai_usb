@@ -5,7 +5,7 @@ import type { Activity } from "$lib/types/activities";
 
 import { handle_error, prisma } from "$api/_api";
 
-import { query_activities_logs, query_group_activities } from "$lib/server/queries";
+import { query_activity_logs, query_group_activities } from "$lib/server/queries";
 import { format_activity } from "$lib/utils/formatting";
 
 
@@ -26,8 +26,11 @@ export const GET: RequestHandler = async function ({ params }) {
     });
 
     const group_activities = await query_group_activities(group.id)
-    const logs = await query_activities_logs(group_activities.map(a => a.id));
-    const activities: Activity[] = group_activities.map(a => (format_activity(a, logs)));
+    const activities: Activity[] = (await Promise.all(group_activities.map(async a => {
+      const logs = await (query_activity_logs(a.id));
+      return format_activity(a, logs);
+    }))).flat();
+
     const owner_activities: Activities = {
       owner: {
         id: group.id

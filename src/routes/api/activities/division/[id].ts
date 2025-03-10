@@ -7,7 +7,7 @@ import { stringify } from "zipson";
 
 import { handle_error, prisma } from "$api/_api";
 
-import { query_activities_logs, query_professor_activities } from "$lib/server/queries";
+import { query_activity_logs, query_professor_activities } from "$lib/server/queries";
 import { format_activity } from "$lib/utils/formatting";
 
 
@@ -38,8 +38,11 @@ export const GET: RequestHandler = async function ({ request, params }) {
       query_professor_activities(p.id, p.correo)
     )))).flat();
 
-    const logs = await query_activities_logs(professor_activities.map(a => a.id));
-    const activities: Activity[] = professor_activities.map(a => (format_activity(a, logs)));
+    const activities: Activity[] = (await Promise.all(professor_activities.map(async a => {
+      const logs = await (query_activity_logs(a.id));
+      return format_activity(a, logs);
+    }))).flat();
+
     const owner_activities: Activities = {
       owner: {
           id: division.id
@@ -47,7 +50,7 @@ export const GET: RequestHandler = async function ({ request, params }) {
         , full_name: `de la División de ${division.nombre}`
       }
       , activities
-    }
+    };
 
     status = 200;
     body = stringify(owner_activities);

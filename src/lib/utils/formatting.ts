@@ -106,7 +106,7 @@ export const format_activity = function (actividad: Actividad, logs: ActivityLog
     , kind_name
     , kind_data
     , groups
-    , logs: logs.filter(l => l.actividad === actividad.id).sort((a, b) => b.id - a.id)
+    , logs
   };
 
   return activity;

@@ -146,10 +146,10 @@ export const query_group_activities = async function (id: number): Promise<Activ
 
 /**
  * 
- * @param ids - Activities ids in which to look for the logs
+ * @param id - Activity id to get its logs
  * @returns 
  */
-export const query_activities_logs = async function (ids: number[]): Promise<ActivityLog[]> {
+export const query_activity_logs = async function (id: number): Promise<ActivityLog[]> {
   
   const logs = await prisma.log_operacion_actividad.findMany({
     select: {
@@ -165,7 +165,7 @@ export const query_activities_logs = async function (ids: number[]): Promise<Act
       hora: true,
       operacion: true
     },
-    where: { actividad: { in: ids } },
+    where: { actividad: id },
     orderBy: { id: "desc" }
   });
 
