@@ -87,7 +87,7 @@
     class="required field"
   />
 
-  <ActionsButtons action="Tomar decisión" />
+  <ActionsButtons action="Tomar Decisión" reload />
 </form>
 
 {#if action.info !== ''}

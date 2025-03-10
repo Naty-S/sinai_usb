@@ -16,6 +16,7 @@
   import { goto, afterNavigate } from "$app/navigation";
 
   export let action: string;
+  export let reload: boolean = false;
 
   let previousPage: string = "/sinai";
 
@@ -36,4 +37,9 @@
   <!-- <button type="button" class="ui button" on:click={() => goto(previousPage)}>
     Regresar
   </button> -->
+  {#if reload}    
+    <button type="button" class="ui gray button" on:click={() => location.reload()}>
+      Cancelar
+    </button>
+  {/if}
 </div>

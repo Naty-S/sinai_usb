@@ -206,7 +206,8 @@
     {/if}
   </div>
 
-  <ActionsButtons action="Asignar" />
+  <ActionsButtons action="Asignar" reload />
+
 </form>
 
 {#if action.info !== ''}

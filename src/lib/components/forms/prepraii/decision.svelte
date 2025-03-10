@@ -69,5 +69,5 @@
     class="required field"
   />
 
-  <ActionsButtons action="Tomar Decisión" />
+  <ActionsButtons action="Tomar Decisión" reload />
 </form>
