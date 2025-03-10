@@ -26,7 +26,9 @@
     {activity.articulo_invitado ? "Artículo Invitado." : ''}
     <span class="uk-text-emphasis">{activity.estado.replaceAll('_', ' ')}.</span>
     <span class="uk-text-emphasis">Vol.</span> {activity.volumen}, pp. {activity.pag_inicial} - {activity.pag_final}.
-    <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}
+    {#if activity.paginas.lenght > 0}
+      <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}
+    {/if}
     {activity.con_estudiantes ? "Con estudiantes." : ''}
 
   {:else if kind === "capitulo_libro"}
@@ -103,7 +105,9 @@
     {activity.medio_publicacion ? activity.medio_publicacion + '.' : ''}
     {activity.formato === "Libro" || activity.formato === "Revista" ? "Vol. " : ''} {activity.volumen}
     pp. {activity.pag_inicial || ''} - {activity.pag_final || ''}.
-    <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}.
+    {#if activity.paginas.lenght > 0}
+      <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}.
+    {/if}
     {activity.con_estudiantes ? "Con estudiantes." : ''}
     <span class="uk-text-emphasis">ISBN:</span> {activity.isbn || ''}.
     <span class="uk-text-emphasis">Tipo de Congreso:</span> {activity.tipo_congreso}.
