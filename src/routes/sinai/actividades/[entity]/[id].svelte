@@ -132,6 +132,16 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
       activities, kind, start_date, end_date, 0, activities.length) as YearActivitiesT[];
   };
 
+  const to_bottom = function() {
+
+    document.body.scrollIntoView();
+
+    const scroll = 400;
+
+    document.body.scrollTop = scroll; // For Safari
+    document.documentElement.scrollTop = scroll; // For Chrome, Firefox, IE and Opera
+  }
+
   $: can_filter = function() {
     return user?.dean || professor?.is_dep_chief || professor?.is_dep_representative ||
       professor?.coord_chief || professor?.division_chief;
@@ -162,7 +172,7 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
   <button
     type="button"
     class="ui right floated primary mini button"
-    on:click={() => show_buttons = !show_buttons}
+    on:click={() => {show_buttons = !show_buttons; to_bottom()}}
   >
     <i class="pen icon"/>Modificar
   </button>
