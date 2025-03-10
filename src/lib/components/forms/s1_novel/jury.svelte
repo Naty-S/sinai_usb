@@ -15,7 +15,7 @@
   import Modal from "$lib/components/modals/modal.svelte";
   import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";
   import Input from "$lib/components/forms/input.svelte";
-	import Datalist from "$lib/components/forms/datalist.svelte";
+  import Select from "$lib/components/forms/select.svelte";
 
   export let s1_novel: number;
 
@@ -101,7 +101,7 @@
     {#each jurado_usb as jury, i}
 
       <div class="two inline fields">
-        <Datalist
+        <Select
           label="Profesor"
           name="jurado_usb[{i}].profesor"
           bind:value={jurado_usb[i].profesor}
