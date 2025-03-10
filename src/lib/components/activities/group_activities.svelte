@@ -329,7 +329,7 @@
 {#if action.info !== ''}
   <Modal
     id="error"
-    title="Error. {action.code}"
+    title="Error. {action.code ?? "Desconocido"}"
     close_text="Ok"
     align="center"
     pop_up={action.info !== ''}
@@ -339,6 +339,6 @@
       Hubo un problema al intentar realizar la acción, por favor vuelva a intentar
       o contáctese con algún administrador.
     </p>
-    <span class="ui red text">Detalles: {action.info}</span>
+    <span class="ui red text">Detalles: {action.info ?? "No se encuentra en la lista de errores conocidos"}</span>
   </Modal>
 {/if}

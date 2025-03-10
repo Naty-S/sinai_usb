@@ -208,7 +208,7 @@
 {#if err}
   <Modal
     id="error"
-    title="Error. {err_code}"
+    title="Error. {err_code ?? "Desconocido"}"
     close_text="Ok"
     align="center"
     pop_up={Boolean(err)}
@@ -218,6 +218,6 @@
       Hubo un problema al intentar realizar la solicitud del S1 Novel, por favor vuelva a intentar
       o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
-    <span class="ui red text">Detalles: {err}</span>
+    <span class="ui red text">Detalles: {err ?? "No se encuentra en la lista de errores conocidos"}</span>
   </Modal>
 {/if}

@@ -285,7 +285,7 @@
 {#if action.info !== ''}
   <Modal
     id="error"
-    title="Error. {action.code}"
+    title="Error. {action.code ?? "Desconocido"}"
     close_text="Ok"
     align="center"
     pop_up={action.info !== ''}
@@ -295,7 +295,7 @@
       Hubo un problema al cargar los artículos, por favor recargue la página
       o contáctese con algún administrador proporcionando el código del error.
     </p>
-    <span class="ui red text">Detalles: {action.info}</span>
+    <span class="ui red text">Detalles: {action.info ?? "No se encuentra en la lista de errores conocidos"}</span>
   </Modal>
 {/if}
 
@@ -329,7 +329,7 @@
 {#if err}
   <Modal
     id="error"
-    title="Error. {err_code}"
+    title="Error. {err_code ?? "Desconocido"}"
     close_text="Ok"
     align="center"
     pop_up={Boolean(err)}
@@ -339,6 +339,6 @@
       Hubo un problema al intentar realizar la solicitud PREPRAII, por favor vuelva a intentar
       o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
-    <span class="ui red text">Detalles: {err}</span>
+    <span class="ui red text">Detalles: {err ?? "No se encuentra en la lista de errores conocidos"}</span>
   </Modal>
 {/if}

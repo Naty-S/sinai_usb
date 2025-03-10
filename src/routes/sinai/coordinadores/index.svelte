@@ -134,7 +134,7 @@
 {#if action.info !== ''}  
   <Modal
     id="error"
-    title="Error. {action.code}"
+    title="Error. {action.code ?? "Desconocido"}"
     close_text="Ok"
     align="center"
     pop_up={action.info !== ''}
@@ -144,6 +144,6 @@
       Hubo un error al intentar cambiar de Coordinador, por favor vuelva a intentar
       o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
-    <span class="ui red text">Detalles: {action.info}</span>
+    <span class="ui red text">Detalles: {action.info ?? "No se encuentra en la lista de errores conocidos"}</span>
   </Modal>
 {/if}
