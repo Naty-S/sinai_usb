@@ -82,6 +82,14 @@
     jury = false;
   };
 
+  function to_top() {
+    
+    document.body.scrollIntoView();
+    
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  };
+
   $: jury_assingned = Boolean($page.url.searchParams.get("jury_assingned"));
   $: decision_made = Boolean($page.url.searchParams.get("decision_made"));
   $: err = $page.url.searchParams.get("error");
@@ -108,7 +116,7 @@
               Tomar Decisión
             </button>
           {:else}
-            <button type="button" class="ui button" on:click={() => {s1_novel = r.id; jury = true; decision = false}}>
+            <button type="button" class="ui button" on:click={() => {s1_novel = r.id; jury = true; decision = false; to_top()}}>
               Asignar Jurado
             </button>
           {/if}
