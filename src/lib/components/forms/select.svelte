@@ -24,6 +24,7 @@
   export let name: string;
   export let value: any;
   export let options: { val: string | number, name: string }[];
+  export let customHandleChange: (e: any) => void = () => {};
   export let error: any = undefined;
 
   const param = $page.params.activity;
@@ -38,7 +39,10 @@
     {name}
     class="ui fluid selection dropdown"
     {value}
-    on:change={handleChange}
+    on:change={(e) => {
+      customHandleChange(e);
+      handleChange(e);
+    }}
   >
     {#each options as opt}
       <option value={opt.val}>{opt.name.replaceAll('_', ' ')}</option>
