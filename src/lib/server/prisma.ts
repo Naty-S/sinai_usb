@@ -159,6 +159,6 @@ export const get_known_error = function (error: PrismaAll.Prisma.PrismaClientKno
       return "Transacción fallida, por favor vuelva a intentar.";
     
     default:
-      return "Unkown Error.";
+      return "Error Desconocido.";
   }
 };

@@ -67,6 +67,6 @@
     pop_up={err_info !== ''}
     close={() => err_info = ''}
   >
-    <span class="ui red text">Detalles: {err_info}</span>
+    <span class="ui red text">Detalles: {err_info ?? "No se encuentra en la lista de errores conocidos"}</span>
   </Modal>
 {/if}
