@@ -8,14 +8,14 @@
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";
   import { page } from "$app/stores";
-  import Client from "@prisma/client";
+  import * as PrismaAll from "@prisma/client";
 
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
   
   import CountryStates from "./country_states.svelte";
 
-  const { composicion_categoria_enum } = Client;
+  const { composicion_categoria_enum } = PrismaAll;
   const param = $page.params.activity;
   const kind = param as kinds;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);

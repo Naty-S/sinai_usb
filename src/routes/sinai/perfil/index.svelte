@@ -39,7 +39,7 @@
 
 	import type { Profile } from "$lib/interfaces/professors";
 
-  import Client from "@prisma/client";
+  import * as PrismaAll from "@prisma/client";
 
   import { session, page } from "$app/stores";
 
@@ -64,7 +64,7 @@
     , profesor_dedicacion_enum
     , profesor_diploma_tipo_enum
     , pei_nivel_enum
-  } = Client;
+  } = PrismaAll;
   const initialValues = init(profile);
   const onSubmit = submit($session.user?.email, $page.url.pathname);
   const validationSchema = validation();

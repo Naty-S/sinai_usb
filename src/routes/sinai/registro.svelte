@@ -12,7 +12,7 @@
   import { onMount, setContext } from "svelte";
   import { createForm, key } from "svelte-forms-lib";
   
-  import Client from "@prisma/client";
+  import * as PrismaAll from "@prisma/client";
 
   import { page } from "$app/stores";
 
@@ -37,7 +37,7 @@
     profesor_dedicacion_enum,
     profesor_diploma_tipo_enum,
     pei_nivel_enum
-  } = Client;
+  } = PrismaAll;
   
   // Config form
   const initialValues = init();
