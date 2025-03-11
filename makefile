@@ -7,7 +7,7 @@ DOWN_CMD      = down ${ARGS}
 BUILD_CMD     = build --force ${ARGS}
 SH_CMD        = exec $1 sh ${ARGS}
 CLEAN_BUILDER = docker builder prune
-CLEAN_IMGS    = docker image prune
+CLEAN_IMGS    = docker image prune -f
 CLEAN_VOLUMES = docker volume rm sinai_usb_app_build sinai_usb_app_static sinai_usb_docker_node_modules
 CLEAN_VOLUMES_DEV = docker volume rm sinai_usb_docker_node_modules-dev
 
