@@ -6,9 +6,12 @@ import { parse } from "zipson";
 
 
 export const submit = function () {
-  return async function (data: { search_type: string, search: number }): Promise<Activities | string> {
+  return async function (data: any): Promise<Activities | string> {
 
-    const res = await api.get(`/api/activities/${data.search_type}/${data.search}`);
+    data.date_start = new Date(data.date_start);
+    data.date_end = new Date(data.date_end);
+
+    const res = await api.post(`/api/activities/${data.search_type}/${data.search}`, data);
 
     if (res.ok) {
 

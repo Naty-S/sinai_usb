@@ -28,7 +28,7 @@
 
   import * as api from "$lib/api";
 
-	import { detailed_kinds } from "$lib/constants";
+	import { detailed_kinds, kinds } from "$lib/constants";
 	import { filter_activities } from "$lib/utils/filters";
   import { acts_kinds_by_year } from "$lib/utils/grouping";
   import { count_acts_kinds_by_year } from "$lib/utils/maths";
@@ -41,9 +41,9 @@
 	import Modal from '$lib/components/modals/modal.svelte';
   import Pagination from "$lib/components/pagination.svelte";
   import Select from "$lib/components/forms/select.svelte";
+	import Input from "$lib/components/forms/input.svelte";
   import YearActivities from "$lib/components/activities/year_activities.svelte";
   import ResumeTable from "$lib/components/activities/resume_table.svelte";
-	import { select_value } from "svelte/internal";
 
   const initialValues = init();
   const onSubmit = submit();
@@ -72,10 +72,6 @@
   let start_pagination = 0;
   let end_pagination = pagination_size;
 
-  let kind = '';
-  let start_date: string = '';
-  let end_date: string = '';
-
   $: show_invalid = Boolean($session.user);
   $: show_invalid ? detailed_kinds : detailed_kinds.shift();
 
@@ -85,7 +81,7 @@
     const res: Activities | string = await handleSubmit(e);
     searching = false;
 
-    if (typeof res !== "string") {
+    if (res && typeof res !== "string") {
       
       reset();
       
@@ -102,13 +98,10 @@
 
   const reset = function() {
     activities = [];
-    kind = '';
     pagination_size = 20;
     current_page = 1;
     start_pagination = 0;
     end_pagination = pagination_size;
-    start_date = '';
-    end_date = '';
   };
 
   const show_prev = function () {
@@ -118,7 +111,7 @@
     end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
+      activities, '', '', '', start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
   };
 
   const show_page = function (page: number) {
@@ -128,7 +121,7 @@
     end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
+      activities, '', '', '', start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
   };
 
   const show_next = function () {
@@ -138,7 +131,7 @@
     end_pagination = start_pagination + pagination_size;
 
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
+      activities, '', '', '', start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
   };
 
   const resize_pagination = function (size: number) {
@@ -148,7 +141,7 @@
     end_pagination = pagination_size;
     
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
+      activities, '', '', '', start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
   };
 
   const filter = function() {
@@ -158,7 +151,7 @@
     end_pagination = pagination_size;
 
     page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
+      activities, '', '', '', start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
   };
 
   onMount(async () => {
@@ -187,6 +180,7 @@
   });
 
   setContext(key, { form, errors, handleChange });
+  // $: console.log($form)
 </script>
 
 
@@ -306,6 +300,81 @@
     />
   {/if}
 
+  <!-- Date filter -->
+  <div class="two inline fields">
+    <Input
+      type="date"
+      label="Fecha Inicio"
+      name="date_start"
+      bind:value={$form.date_start}
+      error={$errors.date_start}
+      class="required field"
+    />
+    <Input
+      type="date"
+      label="Fecha Final"
+      name="date_end"
+      bind:value={$form.date_end}
+      error={$errors.date_end}
+      class="required field"
+    />
+  </div>
+
+  <!-- Activities kind filter -->
+  <div>  
+    <div class="five inline fields">
+      {#each kinds.slice(0,5) as kind, i}
+        <Input
+          type="checkbox"
+          label={kind}
+          name={kind}
+          bind:value={$form[kind]}
+          error={$errors[kind]}
+          class="field"
+        />
+      {/each}
+    </div>
+  
+    <div class="five inline fields">
+      {#each kinds.slice(5,10) as kind, i}
+        <Input
+          type="checkbox"
+          label={kind}
+          name={kind}
+          bind:value={$form[kind]}
+          error={$errors[kind]}
+          class="field"
+        />
+      {/each}
+    </div>
+  
+    <div class="five inline fields">
+      {#each kinds.slice(10,14) as kind, i}
+        <Input
+          type="checkbox"
+          label={kind}
+          name={kind}
+          bind:value={$form[kind]}
+          error={$errors[kind]}
+          class="field"
+        />
+      {/each}
+    </div>
+  
+    <div class="four inline fields">
+      {#each kinds.slice(14,16) as kind, i}
+        <Input
+          type="checkbox"
+          label={kind}
+          name={kind}
+          bind:value={$form[kind]}
+          error={$errors[kind]}
+          class="field"
+        />
+      {/each}
+    </div>
+  </div>
+
   <div id="action_buttons">
     <button type="submit" name="submit_form" class="ui green button">
       Buscar
@@ -324,8 +393,6 @@
   <ResumeTable
     headers={["Actividad"].concat(activities_by_year.map(a => a.year.toString()))}
     resume_kinds_counts={activities_years_counts}
-    {current_page}
-    {pagination_size}
     row_total
     col_total
   />
@@ -335,7 +402,7 @@
     
     <!-- Filters -->
     <div id="filters" class="ui segments">
-      <div class="ui vertically fitted segment"><strong>Filtrar Actividades:</strong></div>
+      <div class="ui vertically fitted segment"><strong>Actividades por página:</strong></div>
 
       <div id="page_size" class="ui stackable small compact buttons segment">
         <button class="ui button" on:click={() => resize_pagination(20)}>20</button>
@@ -345,41 +412,6 @@
         <button class="ui button" on:click={() => resize_pagination(200)}>200</button>
         <button class="ui button" on:click={() => resize_pagination(300)}>300</button>
         <button class="ui button" on:click={() => resize_pagination(500)}>500</button>
-      </div>
-
-      <div id="date_filter" class="ui horizontal stackable segments">
-        <div class="ui segment">
-          <label for="start_date">Fecha Inicio</label>
-          <input type="date" name="start_date" bind:value={start_date}>
-        </div>
-        <div class="ui segment">
-          <label for="end_date">Fecha Final</label>
-          <input type="date" name="end_date" bind:value={end_date}>
-        </div>
-        <div class="ui segment">        
-          <button type="button" class="ui green mini button" on:click={filter}>
-            Filtrar
-          </button>
-        </div>
-      </div>
-
-      <div id="kind_filter" class="ui segment segments">
-        <label class="ui segment" for="kinds">Tipos de Actividad</label>
-        <div class="ui segment">
-          <button class="ui blue mini button" on:click={() => {kind = ''; filter()}}>
-            TODAS
-          </button>
-          <select
-            name="kinds"
-            class="ui fluid selection dropdown"
-            bind:value={kind}
-            on:change={filter}
-          >
-            {#each detailed_kinds as k}
-              <option value={k}>{k}</option>
-            {/each}
-          </select>
-        </div>
       </div>
     </div>
 
@@ -420,7 +452,7 @@
     close={() => { search_err = ''; location.reload(); }}
   >
     <p>Hubo un error al realizar la búsqueda. Por favor vuelva a intentar.</p>
-    <span class="ui red text">Detalles: {search_err}</span>
+    <span class="ui red text">Detalles: {search_err ?? "No se encuentra en la lista de errores conocidos"}</span>
   </Modal>
 {/if}
 

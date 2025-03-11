@@ -20,7 +20,7 @@ import type {
   recital,
 } from "@prisma/client";
 
-import { format_date } from "$lib/utils/formatting";
+import { format_date, init_date } from "$lib/utils/formatting";
 
 
 export const init = function (kind: kinds, user?: User, data?: Activity): actividad_form<typeof kind> {
@@ -57,16 +57,6 @@ export const init = function (kind: kinds, user?: User, data?: Activity): activi
     , user_rank: user?.dean ? "dean" : "professor"
     , user: user || {email: "usuario ficticio", pending_professors: false}
     , kind
-  };
-
-  /**
-   * Initialize the date so it can be displayed in the form
-   * 
-   * @param date - Date to initialize for display in form
-   * @returns Date with format accepted to be displayed in the form
-   */
-  const init_date = function (date?: Date): Date {
-    return date ? format_date(date, "yyyy-MM-dd") as unknown as Date : new Date("yyyy-MM-dd");
   };
 
   let info;
