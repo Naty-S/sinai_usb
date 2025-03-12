@@ -11,7 +11,7 @@
 </script>
 
 <div id="pagination" class="ui stackable buttons">
-  <button class="ui blue icon button {start > 1990 ? '' : "disabled"}" on:click={() => {show_prev()}}>
+  <button class="ui blue icon button {start > 1995 ? '' : "disabled"}" on:click={() => {show_prev()}}>
     <i class="left chevron icon" />
     Atrás
   </button>

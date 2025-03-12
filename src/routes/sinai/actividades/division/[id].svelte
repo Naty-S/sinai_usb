@@ -119,13 +119,13 @@
       recital: true
     };
     const res = await api.post(`/api/activities/division/${$page.params.id}`, filters);
-    searching = false;
-
+    
     if (res.ok) {
       const activitys = parse(await res.text());
-
+      
       activities = activitys;
       deparments_activities = division_rank_activities(activities, divisions, profesores, $page.params.id);
+      searching = false;
       
     } else {
       const { message, code } = await res.json();
@@ -203,14 +203,16 @@
   {#key deparments_activities}
     {#each deparments_activities as rank_activities}
       <ResumeRank rank="departamento" {rank_activities} />
-      {#key date_start}
-        <PaginationTable
-          size={current_year}
-          start={date_start.getFullYear()}
-          end={date_end.getFullYear()}
-          {show_prev} {show_next}
-        />
-      {/key}
+      {#if rank_activities.activities.length > 0}
+        {#key date_start}
+          <PaginationTable
+            size={current_year}
+            start={date_start.getFullYear()}
+            end={date_end.getFullYear()}
+            {show_prev} {show_next}
+          />
+        {/key}
+      {/if}
     {/each}
   {/key}
 {/if}

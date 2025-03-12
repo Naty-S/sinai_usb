@@ -140,13 +140,13 @@
       recital: true
     };
     const res = await api.post(`/api/activities/coordination/${$page.params.id}`, filters);
-    searching = false;
-
+    
     if (res.ok) {
       const activitys = parse(await res.text());
-
+      
       activities = activitys;
       coordination_activities = coordination_rank_activities(activities, ranks, profesores, $page.params.id);
+      searching = false;
       
     } else {
       const { message, code } = await res.json();
@@ -224,14 +224,16 @@
   {#key coordination_activities}
     {#each coordination_activities as rank_activities}
       <ResumeRank {rank} {rank_activities} />
-      {#key date_start}  
-        <PaginationTable
-          size={current_year}
-          start={date_start.getFullYear()}
-          end={date_end.getFullYear()}
-          {show_prev} {show_next}
-        />
-      {/key}
+      {#if rank_activities.activities.length > 0}
+        {#key date_start}  
+          <PaginationTable
+            size={current_year}
+            start={date_start.getFullYear()}
+            end={date_end.getFullYear()}
+            {show_prev} {show_next}
+          />
+        {/key}
+      {/if}
     {/each}
   {/key}
 {/if}

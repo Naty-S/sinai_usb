@@ -86,8 +86,7 @@
     
     searching = true;
     const res: Activities | string = await handleSubmit(e);
-    searching = false;
-
+    
     if (res && typeof res !== "string") {
       
       reset();
@@ -99,6 +98,7 @@
       console.log(activities)
       console.log(activities_by_year)
       page_activities = acts_kinds_by_year(activities.slice(start_pagination, end_pagination), show_invalid);
+      searching = false;
 
     } else {
       search_err = res;

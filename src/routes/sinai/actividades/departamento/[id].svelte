@@ -157,12 +157,12 @@
       recital: true
     };
     const res = await api.post(`/api/activities/departamento/${$page.params.id}`, filters);
-    searching = false;
-
+    
     if (res.ok) {
       const activitys = await res.json();
-
+      
       professors_activities = department_rank_activities(activitys, profesores, $page.params.id);
+      searching = false;
 
     } else {
       const { message, code } = await res.json();
