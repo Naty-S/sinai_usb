@@ -17,7 +17,7 @@ export const group_by = function (
   acts: Activity[],
   detailed: boolean = true
 ): Record<string, any> {
-  
+
   return acts.reduce((acc: any, act: Activity) => {
     
     const _prop = prop as keyof Activity;
@@ -26,13 +26,12 @@ export const group_by = function (
 
     if (prop === "fecha_creacion") { key = new Date(act[prop]).getFullYear() }
     else if (prop === "groups") { key = act.groups[0]?.nombre } // take first
-    else { key = kind as keyof typeof acc };
-
-    if (!acc[key]) {
-      acc[key] = []
-    };
-
-    acc[key].push(act);
+    else if (act.kind_data) { key = kind as keyof typeof acc }
+    else { key = kind };
+    
+    if (!acc[key]) { acc[key] = [] };
+    
+    if (act.kind_data) { acc[key].push(act) };
 
     return acc;
   }, {});
@@ -51,7 +50,7 @@ export const acts_kinds_by_year = function (
   show_invalid: boolean = true
 ): YearActivities[] {
 
-  let a: Activity[] = acts.sort((a, b) =>
+  let a: Activity[] = acts.filter(a => a.kind_name !== "FILTER").sort((a, b) =>
     new Date(a.fecha_creacion).getFullYear() - new Date(b.fecha_creacion).getFullYear()
   );
 
@@ -81,7 +80,7 @@ export const acts_kinds_by_group = function (
   show_invalid: boolean = true
 ): GroupActivities[] {
 
-  let a: Activity[] = acts.sort((a, b) =>
+  let a: Activity[] = acts.filter(a => a.kind_name !== "FILTER").sort((a, b) =>
     new Date(a.fecha_creacion).getFullYear() - new Date(b.fecha_creacion).getFullYear()
   );
 

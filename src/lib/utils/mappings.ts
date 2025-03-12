@@ -172,10 +172,15 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
   
       case "recital":
         return "Recitales o Conciertos Arbitrados";
+      
+      case "FILTER":
+        return kind;
   
       default:
         return "ACTIVIDAD INVÁLIDA";
     };
+  } else if (kind == "FILTER") {
+    return kind;
   } else {
     return "ACTIVIDAD INVÁLIDA";
   }

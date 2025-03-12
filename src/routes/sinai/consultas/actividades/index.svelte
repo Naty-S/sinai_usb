@@ -30,6 +30,7 @@
 
 	import { detailed_kinds, kinds } from "$lib/constants";
 	import { filter_activities } from "$lib/utils/filters";
+  import { init_date } from "$lib/utils/formatting";
   import { acts_kinds_by_year } from "$lib/utils/grouping";
   import { count_acts_kinds_by_year } from "$lib/utils/maths";
 
@@ -45,11 +46,17 @@
   import YearActivities from "$lib/components/activities/year_activities.svelte";
   import ResumeTable from "$lib/components/activities/resume_table.svelte";
 
-  const initialValues = init();
+  const years = 15;
+  const initialValues = init(years);
   const onSubmit = submit();
   const validationSchema = validation();
   const formProps = { initialValues, onSubmit, validationSchema };
   const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
+  
+  const current_year = (new Date()).getFullYear();
+  const date_start = init_date(new Date(`01-01-${current_year-years}`));
+  const date_end = init_date(new Date(`01-01-${current_year}`));
+
 
   let professors: Profesor[] = [];
   let groups: Group[] = [];
@@ -89,11 +96,34 @@
       activities = res.activities;
       activities_by_year = acts_kinds_by_year(activities, show_invalid);
       activities_years_counts = count_acts_kinds_by_year(activities, show_invalid);
+      console.log(activities)
+      console.log(activities_by_year)
       page_activities = acts_kinds_by_year(activities.slice(start_pagination, end_pagination), show_invalid);
 
     } else {
       search_err = res;
     };
+  };
+
+  const select_all = function () {
+    $form.date_start = date_start;
+    $form.date_end = date_end;
+    $form.articulo_revista = true;
+    $form.capitulo_libro = true;
+    $form.composicion = true;
+    $form.evento = true;
+    $form.exposicion = true;
+    $form.grabacion = true;
+    $form.informe_tecnico = true;
+    $form.libro = true;
+    $form.memoria = true;
+    $form.partitura = true;
+    $form.patente = true;
+    $form.premio = true;
+    $form.premio_bienal = true;
+    $form.proyecto_grado = true;
+    $form.proyecto_investigacion = true;
+    $form.recital = true;
   };
 
   const reset = function() {
@@ -144,16 +174,6 @@
       activities, '', '', '', start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
   };
 
-  const filter = function() {
-    
-    pagination_size = 20;
-    start_pagination = 0;
-    end_pagination = pagination_size;
-
-    page_activities = filter_activities(
-      activities, '', '', '', start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
-  };
-
   onMount(async () => {
     const res1 = await api.get("/api/professors");
     const res2 = await api.get("/api/groups");
@@ -198,8 +218,20 @@
           name="search_type"
           value="professor"
           class="uk-radio"
-          on:change={(e) => {handleChange(e); $form.search = 1223; reset()}}
-          on:blur={(e) => {handleChange(e); $form.search = 1223; reset()}}
+          on:change={(e) => {
+            handleChange(e);
+            $form.search = 614;
+            $form.date_start = date_start;
+            $form.date_end = date_end;
+            reset();
+          }}
+          on:blur={(e) => {
+            handleChange(e);
+            $form.search = 614;
+            $form.date_start = date_start;
+            $form.date_end = date_end;
+            reset();
+          }}
           checked
         >
         Profesor
@@ -212,8 +244,20 @@
           name="search_type"
           value="group"
           class="uk-radio"
-          on:change={(e) => {handleChange(e); $form.search = 1; reset()}}
-          on:blur={(e) => {handleChange(e); $form.search = 1; reset()}}
+          on:change={(e) => {
+            handleChange(e);
+            $form.search = 1;
+            $form.date_start = date_start;
+            $form.date_end = date_end;
+            reset();
+          }}
+          on:blur={(e) => {
+            handleChange(e);
+            $form.search = 1;
+            $form.date_start = date_start;
+            $form.date_end = date_end;
+            reset();
+          }}
         >
         Grupo
       </label>
@@ -225,8 +269,20 @@
           name="search_type"
           value="department"
           class="uk-radio"
-          on:change={(e) => {handleChange(e); $form.search = 2; reset()}}
-          on:blur={(e) => {handleChange(e); $form.search = 2; reset()}}
+          on:change={(e) => {
+            handleChange(e);
+            $form.search = 2;
+            $form.date_start = date_start;
+            $form.date_end = date_end;
+            reset();
+          }}
+          on:blur={(e) => {
+            handleChange(e);
+            $form.search = 2;
+            $form.date_start = date_start;
+            $form.date_end = date_end;
+            reset();
+          }}
         >
         Departamento
       </label>
@@ -238,8 +294,20 @@
           name="search_type"
           value="division"
           class="uk-radio"
-          on:change={(e) => {handleChange(e); $form.search = 1; reset()}}
-          on:blur={(e) => {handleChange(e); $form.search = 1; reset()}}
+          on:change={(e) => {
+            handleChange(e);
+            $form.search = 1;
+            $form.date_start = date_start;
+            $form.date_end = date_end;
+            reset();
+          }}
+          on:blur={(e) => {
+            handleChange(e);
+            $form.search = 1;
+            $form.date_start = date_start;
+            $form.date_end = date_end;
+            reset();
+          }}
         >
         División
       </label>
@@ -251,8 +319,20 @@
           name="search_type"
           value="coordination"
           class="uk-radio"
-          on:change={(e) => {handleChange(e); $form.search = 1; reset()}}
-          on:blur={(e) => {handleChange(e); $form.search = 1; reset()}}
+          on:change={(e) => {
+            handleChange(e);
+            $form.search = 1;
+            $form.date_start = date_start;
+            $form.date_end = date_end;
+            reset();
+          }}
+          on:blur={(e) => {
+            handleChange(e);
+            $form.search = 1;
+            $form.date_start = date_start;
+            $form.date_end = date_end;
+            reset();
+          }}
         >
         Coordinación
       </label>
@@ -268,6 +348,7 @@
       label="Buscar Grupo"
       name="search"
       bind:value={$form.search}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
       options={groups.map(o => ({ val: o.id.toString(), name: `Grupo ${o.id.toString()} - ${o.nombre}` }))}
     />
   {:else if $form.search_type === "department"}
@@ -275,6 +356,7 @@
       label="Buscar Departamento"
       name="search"
       bind:value={$form.search}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
       options={departments.map(o => ({ val: o.id.toString(), name: o.nombre }))}
     />
   {:else if $form.search_type === "division"}
@@ -282,6 +364,7 @@
       label="Buscar División"
       name="search"
       bind:value={$form.search}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
       options={divisions.map(o => ({ val: o.id.toString(), name: o.nombre }))}
     />
   {:else if $form.search_type === "coordination"}
@@ -289,6 +372,7 @@
       label="Buscar Coordinación"
       name="search"
       bind:value={$form.search}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
       options={coordinations.map(o => ({ val: o.id.toString(), name: o.nombre }))}
     />
   {:else}
@@ -296,6 +380,7 @@
       label="Buscar Profesor"
       name="search"
       bind:value={$form.search}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
       options={professors.map(o => ({ val: o.id.toString(), name: `${o.apellido1}, ${o.nombre1}` }))}
     />
   {/if}
@@ -307,6 +392,7 @@
       label="Fecha Inicio"
       name="date_start"
       bind:value={$form.date_start}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
       error={$errors.date_start}
       class="required field"
     />
@@ -315,6 +401,7 @@
       label="Fecha Final"
       name="date_end"
       bind:value={$form.date_end}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
       error={$errors.date_end}
       class="required field"
     />
@@ -329,6 +416,7 @@
           label={kind}
           name={kind}
           bind:value={$form[kind]}
+          customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
           error={$errors[kind]}
           class="field"
         />
@@ -342,6 +430,7 @@
           label={kind}
           name={kind}
           bind:value={$form[kind]}
+          customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
           error={$errors[kind]}
           class="field"
         />
@@ -355,6 +444,7 @@
           label={kind}
           name={kind}
           bind:value={$form[kind]}
+          customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
           error={$errors[kind]}
           class="field"
         />
@@ -368,6 +458,7 @@
           label={kind}
           name={kind}
           bind:value={$form[kind]}
+          customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
           error={$errors[kind]}
           class="field"
         />
@@ -378,6 +469,9 @@
   <div id="action_buttons">
     <button type="submit" name="submit_form" class="ui green button">
       Buscar
+    </button>
+    <button type="button" name="select_all" class="ui button" on:click={() => select_all()}>
+      Seleccionar Todas
     </button>
   </div>
 </form>

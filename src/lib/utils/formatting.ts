@@ -72,21 +72,28 @@ export const format_date = function (date: Date | string | null, format: string 
  * 
  * @param actividad - Raw activity data
  * @param logs - Log info
+ * @param filters - filter kind info
  * @returns Activity data with kind data, groups, and logs
  */
-export const format_activity = function (actividad: Actividad, logs: ActivityLog[] = [])
+export const format_activity = function (actividad: Actividad, logs: ActivityLog[] = [], filters?: any)
 : Activity {
 
   let kind_name = "ACTIVIDAD INVÁLIDA";
   let kind_data;
+  let _kinds = kinds;
+
+  if (filters) { _kinds = kinds.filter(kind => filters[kind]) };
 
   // Find kind data
-  kinds.map(kind => {
-    
+  _kinds.map(kind => {
     const _kind = kind as keyof typeof actividad ;
     const _kind_data = actividad[_kind];
+
     
     if (!_kind_data) { delete actividad[_kind]; }
+    // con select algunas las toma como invalidas, si lo pongo en un solo if antes o despues de todo
+    // solo me mostrará el ultimo seleccionado, y si pongo como condicion 'filters' al select all no me muestra nada
+    else if ( _kinds.length != kinds.length && !_kind_data ) { kind_name = "FILTER" }
     else {
       kind_name = kind;
       kind_data = _kind_data;
@@ -127,3 +134,15 @@ export const parse_date = function (value: any, originalValue: any) {
 
   return parsed_date;
 };
+
+
+/**
+ * Initialize the date so it can be displayed in the form
+ * 
+ * @param date - Date to initialize for display in form
+ * @returns Date with format accepted to be displayed in the form
+ */
+export const init_date = function (date?: Date): Date {
+  return date ? format_date(date, "yyyy-MM-dd") as unknown as Date : new Date("yyyy-MM-dd");
+};
+

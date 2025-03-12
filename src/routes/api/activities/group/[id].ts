@@ -25,10 +25,60 @@ export const GET: RequestHandler = async function ({ params }) {
       where: { id: Number(params.id) }
     });
 
-    const group_activities = await query_group_activities(group.id)
+    const group_activities = await query_group_activities(group.id);
     const activities: Activity[] = (await Promise.all(group_activities.map(async a => {
-      const logs = await (query_activity_logs(a.id));
+      const logs = await query_activity_logs(a.id);
       return format_activity(a, logs);
+    }))).flat();
+
+    const owner_activities: Activities = {
+      owner: {
+        id: group.id
+        , name: group.nombre
+        , full_name: `del Grupo ${group.nombre}`
+      }
+      , activities
+    };
+
+    status = 200;
+    body = owner_activities;
+    
+  } catch (error: any) {
+    const message = await handle_error(error);
+    const code = error.code || '';
+
+    body = { message, code };
+  };
+
+  return {
+    status,
+    body
+  };
+};
+
+
+/**
+ * Query filtered research group activities.
+ * 
+ * @returns The research group activities with logs.
+*/
+export const POST: RequestHandler = async function ({ params, request }) {
+  
+  const data = await request.json();
+
+  let status = 500;
+  let body = {};
+
+  try {
+    const group = await prisma.grupo_investigacion.findUniqueOrThrow({
+      select: { id: true, nombre: true },
+      where: { id: Number(params.id) }
+    });
+
+    const group_activities = await query_group_activities(group.id, data);
+    const activities: Activity[] = (await Promise.all(group_activities.map(async a => {
+      const logs = await query_activity_logs(a.id);
+      return format_activity(a, logs, data);
     }))).flat();
 
     const owner_activities: Activities = {

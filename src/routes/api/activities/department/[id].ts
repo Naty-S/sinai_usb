@@ -37,8 +37,68 @@ export const GET: RequestHandler = async function ({ params }) {
     )).flat();
 
     const activities: Activity[] = (await Promise.all(professor_activities.map(async a => {
-      const logs = await (query_activity_logs(a.id));
+      const logs = await query_activity_logs(a.id);
       return format_activity(a, logs);
+    }))).flat();
+
+    const owner_activities: Activities = {
+      owner: {
+          id: department.id
+        , name: department.nombre
+        , full_name: `del Departamento de ${department.nombre}`
+        , email: department.correo
+      }
+      , activities
+    };
+
+    status = 200;
+    body = owner_activities;
+
+  } catch (error: any) {
+    const message = await handle_error(error);
+    const code = error.code || '';
+
+    body = { message, code };
+  };
+
+  return {
+    status,
+    body
+  };
+};
+
+
+/**
+ * Query filtered department activities.
+ * 
+ * @returns The department activities with logs
+*/
+export const POST: RequestHandler = async function ({ params, request }) {
+  
+  const _id = Number(params.id);
+  const data = await request.json();
+
+  let status = 500;
+  let body = {};
+
+  try {
+    const department = await prisma.departamento.findUniqueOrThrow({
+      select: { id: true, nombre: true, correo: true },
+      where: { id: _id }
+    });
+    
+    const professors = await prisma.profesor.findMany({
+      select: { id: true, correo: true },
+      where: { departamento: _id }
+    });
+
+    const professor_activities = (await Promise.all(
+      professors.map(p => (query_professor_activities(p.id, p.correo, data)))
+    )).flat();
+
+    const activities: Activity[] = (await Promise.all(professor_activities.map(async a => {
+      const logs = await query_activity_logs(a.id);
+      return format_activity(a, logs, data);
     }))).flat();
 
     const owner_activities: Activities = {
