@@ -6,19 +6,16 @@
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";
   
-  import * as PrismaAll from "@prisma/client";
-  import Client from "@prisma/client";
-
   import { page } from "$app/stores";
 
   import type { activity_form_ctx, kinds } from "$lib/types/forms";
 
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
+  import { memoria_formato_enum, memoria_tipo_congreso_enum } from "$lib/constants";
 
   import CountryStates from "./country_states.svelte";
 
-  const { memoria_formato_enum, memoria_tipo_congreso_enum } = PrismaAll ?? Client;
   const param = $page.params.activity;
   const kind = param as kinds;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
@@ -109,14 +106,14 @@
       label="Formato"
       name="memoria.formato"
       bind:value={$form.memoria.formato}
-      options={Object.entries(memoria_formato_enum).map(([_, f]) => ({ val: f, name: f }))}
+      options={memoria_formato_enum.map(f => ({ val: f, name: f }))}
       class="field"
     />
     <Select
       label="Tipo de Congreso"
       name="memoria.tipo_congreso"
       bind:value={$form.memoria.tipo_congreso}
-      options={Object.entries(memoria_tipo_congreso_enum).map(([_, t]) => ({ val: t, name: t }))}
+      options={memoria_tipo_congreso_enum.map(t => ({ val: t, name: t }))}
       class=" field"
     />
   </div>

@@ -12,9 +12,6 @@
   import { onMount, setContext } from "svelte";
   import { createForm, key } from "svelte-forms-lib";
   
-  import * as PrismaAll from "@prisma/client";
-  import Client from "@prisma/client";
-
   import { page } from "$app/stores";
 
   import * as api from "$lib/api";
@@ -32,13 +29,13 @@
 	import OrcidPosts from "$lib/components/forms/register/orcid_posts.svelte";
 	import ResearchGatePosts from "$lib/components/forms/register/research_gate_posts.svelte";
 
-  const {
+  import {
     profesor_categoria_enum,
     profesor_condicion_enum,
     profesor_dedicacion_enum,
     profesor_diploma_tipo_enum,
     pei_nivel_enum
-  } = PrismaAll ?? Client;
+  } from "$lib/constants";
   
   // Config form
   const initialValues = init();
@@ -167,21 +164,21 @@
         label="Categoría"
         name="professor.categoria"
         bind:value={$form.professor.categoria}
-        options={Object.entries(profesor_categoria_enum).map(([_, categoria]) => ({ val: categoria, name: categoria }))}
+        options={profesor_categoria_enum.map(categoria => ({ val: categoria, name: categoria }))}
         class="inline field"
       />
       <Select
         label="Condición"
         name="professor.condicion"
         bind:value={$form.professor.condicion}
-        options={Object.entries(profesor_condicion_enum).map(([_, condicion]) => ({ val: condicion, name: condicion }))}
+        options={profesor_condicion_enum.map(condicion => ({ val: condicion, name: condicion }))}
         class="inline field"
       />
       <Select
         label="Dedicación"
         name="professor.dedicacion"
         bind:value={$form.professor.dedicacion}
-        options={Object.entries(profesor_dedicacion_enum).map(([_, dedicacion]) => ({ val: dedicacion, name: dedicacion }))}
+        options={profesor_dedicacion_enum.map(dedicacion => ({ val: dedicacion, name: dedicacion }))}
         class="inline field"
       />
     </div>
@@ -207,7 +204,7 @@
           label="Nivel"
           name="pei.nivel"
           bind:value={$form.pei.nivel}
-          options={Object.entries(pei_nivel_enum).map(([_, nivel]) => ({ val: nivel, name: nivel }))}
+          options={pei_nivel_enum.map(nivel => ({ val: nivel, name: nivel }))}
           class="inline field"
         />
       </div>
@@ -217,7 +214,7 @@
         label="Último Diploma"
         name="professor.diploma_tipo"
         bind:value={$form.professor.diploma_tipo}
-        options={Object.entries(profesor_diploma_tipo_enum).map(([_, diploma]) => ({ val: diploma, name: diploma }))}
+        options={profesor_diploma_tipo_enum.map(diploma => ({ val: diploma, name: diploma }))}
         class="five wide inline field"
       />
       <Input

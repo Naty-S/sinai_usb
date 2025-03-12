@@ -6,19 +6,16 @@
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";
   
-  import * as PrismaAll from "@prisma/client";
-  import Client from "@prisma/client";
-
   import { page } from "$app/stores";
   
   import type { activity_form_ctx, kinds } from "$lib/types/forms";
 
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
+  import { evento_modalidad_enum } from "$lib/constants";
   
   import CountryStates from "./country_states.svelte";
 
-  const { evento_modalidad_enum } = PrismaAll ?? Client;
   const param = $page.params.activity;
   const kind = param as kinds;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
@@ -59,7 +56,7 @@
       label="Modalidad"
       name="evento.modalidad"
       bind:value={$form.evento.modalidad}
-      options={Object.entries(evento_modalidad_enum).map(([_, mod]) => ({ val: mod, name: mod }))}
+      options={evento_modalidad_enum.map(mod => ({ val: mod, name: mod }))}
       class="six wide field"
     />
     <Input

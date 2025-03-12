@@ -3,6 +3,15 @@
 export const void_link = "javascript:void(0)";
 export const void_click = () => {};
 
+export const profesor_dedicacion_enum = ["Convencional", "Exclusiva", "Integral"];
+export const profesor_diploma_tipo_enum = ["Lic.", "Ph.D.", "Doctor", "Magister", "Ing."];
+export const profesor_condicion_enum = ["Contratado", "Ordinario", "Jubilado"];
+export const pei_nivel_enum = ["A", "B", "C"];
+export const memoria_formato_enum = ["CD", "Libro", "Revista"];
+export const memoria_tipo_congreso_enum = ["Nacional", "Internacional"];
+export const evento_modalidad_enum = ["Cartel", "Oral", "Invitada"];
+export const composicion_categoria_enum = ["Composicion", "Arreglo", "Ejecucion"];
+
 export const kinds = [
     "articulo_revista"
   , "capitulo_libro"
@@ -60,4 +69,40 @@ export const detailed_kinds = [
   , "Proyectos de IYD (Vigentes)"
   , "Proyectos de IYD"
   , "Recitales o Conciertos Arbitrados"
+];
+
+export const profesor_categoria_enum = [
+    "Agregado"
+  , "Asistente"
+  , "Asociado"
+  , "Instructor"
+  , "Titular"
+];
+
+export const proyecto_grado_nivel_academico_enum = [
+    "Doctorado"
+  , "Maestria"
+  , "Especializacion"
+  , "Postgrado"
+  , "Licencitura"
+  , "Ingenieria"
+  , "Pasantia Larga"
+];
+
+export const partitura_categoria_enum = [
+    "Ejecucion en CD Nacional"
+  , "Ejecucion en CD Internacional"
+  , "CD Completo Nacional"
+  , "CD Completo Internacional"
+  , "Premio Nacional por Concurso"
+  , "Premio Internacional por Concurso"
+];
+
+export const grabacion_categoria_enum = [
+    "Ejecucion en CD Nacional"
+  , "Ejecucion en CD Internacional"
+  , "CD Completo Nacional"
+  , "CD Completo Internacional"
+  , "Premio Nacional por Concurso"
+  , "Premio Internacional por Concurso"
 ];

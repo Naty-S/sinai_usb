@@ -5,18 +5,16 @@
 <script lang="ts">
   import type { activity_form_ctx, kinds } from "$lib/types/forms";
 
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   import { key } from "svelte-forms-lib";
   import { page } from "$app/stores";
-  import * as PrismaAll from "@prisma/client";
-  import Client from "@prisma/client";
 
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
+	import { composicion_categoria_enum } from "$lib/constants";
   
   import CountryStates from "./country_states.svelte";
 
-  const { composicion_categoria_enum } = PrismaAll ?? Client;
   const param = $page.params.activity;
   const kind = param as kinds;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
@@ -56,7 +54,7 @@
     label="Categoría"
     name="composicion.categoria"
     bind:value={$form.composicion.categoria}
-    options={Object.entries(composicion_categoria_enum).map(([_, cat]) => ({ val: cat, name: cat }))}
+    options={composicion_categoria_enum.map(cat => ({ val: cat, name: cat }))}
     class="inline field"
   />
   <div class="two inline fields">

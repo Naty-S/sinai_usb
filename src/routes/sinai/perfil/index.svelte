@@ -39,9 +39,6 @@
 
 	import type { Profile } from "$lib/interfaces/professors";
 
-  import * as PrismaAll from "@prisma/client";
-  import Client from "@prisma/client";
-
   import { session, page } from "$app/stores";
 
   import { init } from "$lib/utils/forms/profile/init";
@@ -58,14 +55,15 @@
 	import OrcidPosts from "$lib/components/forms/profile/orcid_posts.svelte";
 	import ResearchGatePosts from "$lib/components/forms/profile/research_gate_posts.svelte";
 
-  export let profile: Profile;
-  
-  const {
+	import {
       profesor_categoria_enum
     , profesor_dedicacion_enum
     , profesor_diploma_tipo_enum
     , pei_nivel_enum
-  } = PrismaAll ?? Client;
+  } from "$lib/constants";
+
+  export let profile: Profile;
+  
   const initialValues = init(profile);
   const onSubmit = submit($session.user?.email, $page.url.pathname);
   const validationSchema = validation();
@@ -134,14 +132,14 @@
       label="Categoría"
       name="profile.categoria"
       bind:value={$form.profile.categoria}
-      options={Object.entries(profesor_categoria_enum).map(([_, cat]) => ({ val: cat, name: cat }))}
+      options={profesor_categoria_enum.map(cat => ({ val: cat, name: cat }))}
       class="inline field"
     />
     <Select
       label="Dedicación"
       name="profile.dedicacion"
       bind:value={$form.profile.dedicacion}
-      options={Object.entries(profesor_dedicacion_enum).map(([_, ded]) => ({ val: ded, name: ded }))}
+      options={profesor_dedicacion_enum.map(ded => ({ val: ded, name: ded }))}
       class="inline field"
     />
   </div>
@@ -187,7 +185,7 @@
         label="Nivel"
         name="pei.nivel"
         bind:value={$form.pei.nivel}
-        options={Object.entries(pei_nivel_enum).map(([_, nivel]) => ({ val: nivel, name: nivel }))}
+        options={pei_nivel_enum.map(nivel => ({ val: nivel, name: nivel }))}
         class="inline field"
       />
     </div>
@@ -198,7 +196,7 @@
       label="Último Diploma"
       name="profile.diploma_tipo"
       bind:value={$form.profile.diploma_tipo}
-      options={Object.entries(profesor_diploma_tipo_enum).map(([_, d]) => ({ val: d, name: d }))}
+      options={profesor_diploma_tipo_enum.map(d => ({ val: d, name: d }))}
       class="six wide inline field"
     />
     <Input
