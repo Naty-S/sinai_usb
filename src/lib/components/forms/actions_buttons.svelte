@@ -19,6 +19,7 @@
   export let reload: boolean = false;
 
   let previousPage: string = "/sinai";
+  let disable = false;
 
   afterNavigate(navigation => {
     if (navigation?.from) {
@@ -28,10 +29,13 @@
 </script>
 
 <div>
-  <button type="submit" name="submit_form" class="ui green button">
+  <button type="submit" name="submit_form" class="ui green button"
+    on:click={(e) => disable = true}
+    disabled={disable}
+  >
     {action}
   </button>
-  <button type="reset" name="reset_form" class="ui red button">
+  <button type="reset" name="reset_form" class="ui red button" disabled={disable}>
     Limpiar Todo
   </button>
   <!-- <button type="button" class="ui button" on:click={() => goto(previousPage)}>

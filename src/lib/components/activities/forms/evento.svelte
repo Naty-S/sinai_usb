@@ -7,7 +7,8 @@
   import { key } from "svelte-forms-lib";
   
   import * as PrismaAll from "@prisma/client";
-  
+  import Client from "@prisma/client";
+
   import { page } from "$app/stores";
   
   import type { activity_form_ctx, kinds } from "$lib/types/forms";
@@ -17,7 +18,7 @@
   
   import CountryStates from "./country_states.svelte";
 
-  const { evento_modalidad_enum } = PrismaAll;
+  const { evento_modalidad_enum } = PrismaAll ?? Client;
   const param = $page.params.activity;
   const kind = param as kinds;
   const { form, errors }: activity_form_ctx<typeof kind> = getContext(key);
