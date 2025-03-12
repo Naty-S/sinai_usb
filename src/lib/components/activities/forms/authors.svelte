@@ -37,6 +37,7 @@
       professors = profesors.filter(p => p.activo);
   
       autores_usb = autores_usb.concat($form.autores_usb);
+      autores_externos = autores_externos.concat($form.autores_externos);
 
     } else {
       const { message, code } = await res.json();
