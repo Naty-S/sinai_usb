@@ -111,7 +111,7 @@ export const query_user_activities = async function (email: string, filters?: an
     include: include(filters),
     orderBy: { fecha_creacion: "desc" }
   });
-  console.log("user acts", user_activities)
+  // console.log("user acts", user_activities)
 
   return user_activities;
 };

@@ -74,6 +74,7 @@
 
 	import { division_rank_activities } from "$lib/utils/formatting";
 
+	import Loader from "$lib/components/loader.svelte";
   import Modal from "$lib/components/modals/modal.svelte";
 	import PaginationTable from "$lib/components/pagination_table.svelte";
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";
@@ -87,6 +88,7 @@
   const date_start = new Date(`01-01-${current_year-years}`);
   const date_end = new Date(`01-01-${current_year}`);
 
+  let searching = false;
   let deparments_activities = division_rank_activities(activities, divisions, profesores, $page.params.id);
   let action = { info: '', code: '' };
 
@@ -95,6 +97,7 @@
     date_start.setFullYear(date_start.getFullYear() - years);
     date_end.setFullYear(date_end.getFullYear() - years);
     
+    searching = true;
     const filters = {
       date_start,
       date_end,
@@ -116,6 +119,7 @@
       recital: true
     };
     const res = await api.post(`/api/activities/division/${$page.params.id}`, filters);
+    searching = false;
 
     if (res.ok) {
       const activitys = parse(await res.text());
@@ -135,6 +139,7 @@
     date_start.setFullYear(date_start.getFullYear() + years);
     date_end.setFullYear(date_end.getFullYear() + years);
     
+    searching = true;
     const filters = {
       date_start,
       date_end,
@@ -156,6 +161,7 @@
       recital: true
     };
     const res = await api.post(`/api/activities/division/${$page.params.id}`, filters);
+    searching = false;
 
     if (res.ok) {
       const activitys = parse(await res.text());
@@ -171,33 +177,43 @@
   };
 </script>
 
-<PaginationTable
-  size={current_year}
-  start={date_start.getFullYear()}
-  end={date_end.getFullYear()}
-  {show_prev} {show_next}
-/>
-{#key activities}
-  <ResumeRank rank="division" rank_activities={activities} />
-{/key}
-<PaginationTable
-  size={current_year}
-  start={date_start.getFullYear()}
-  end={date_end.getFullYear()}
-  {show_prev} {show_next}
-/>
-
-{#key deparments_activities}
-  {#each deparments_activities as rank_activities}
-    <ResumeRank rank="departamento" {rank_activities} />
+{#if searching}
+  <Loader />
+{:else}
+  {#key date_start}  
     <PaginationTable
       size={current_year}
       start={date_start.getFullYear()}
       end={date_end.getFullYear()}
       {show_prev} {show_next}
     />
-  {/each}
-{/key}
+  {/key}
+  {#key activities}
+    <ResumeRank rank="division" rank_activities={activities} />
+  {/key}
+  {#key date_start}
+    <PaginationTable
+      size={current_year}
+      start={date_start.getFullYear()}
+      end={date_end.getFullYear()}
+      {show_prev} {show_next}
+    />
+  {/key}
+
+  {#key deparments_activities}
+    {#each deparments_activities as rank_activities}
+      <ResumeRank rank="departamento" {rank_activities} />
+      {#key date_start}
+        <PaginationTable
+          size={current_year}
+          start={date_start.getFullYear()}
+          end={date_end.getFullYear()}
+          {show_prev} {show_next}
+        />
+      {/key}
+    {/each}
+  {/key}
+{/if}
 
 {#if action.info !== ''}
   <Modal

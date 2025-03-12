@@ -94,6 +94,7 @@
 
 	import { coordination_rank_activities } from "$lib/utils/formatting";
 
+	import Loader from "$lib/components/loader.svelte";
   import Modal from "$lib/components/modals/modal.svelte";
 	import PaginationTable from "$lib/components/pagination_table.svelte";
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";
@@ -108,6 +109,7 @@
   const date_end = new Date(`01-01-${current_year}`);
   const rank = activities.owner.id === 4 ? "grupo" : "departamento";
 
+  let searching = false;
   let coordination_activities = coordination_rank_activities(activities, ranks, profesores, $page.params.id);
   let action = { info: '', code: '' };
 
@@ -116,6 +118,7 @@
     date_start.setFullYear(date_start.getFullYear() - years);
     date_end.setFullYear(date_end.getFullYear() - years);
     
+    searching = true;
     const filters = {
       date_start,
       date_end,
@@ -137,6 +140,7 @@
       recital: true
     };
     const res = await api.post(`/api/activities/coordination/${$page.params.id}`, filters);
+    searching = false;
 
     if (res.ok) {
       const activitys = parse(await res.text());
@@ -156,6 +160,7 @@
     date_start.setFullYear(date_start.getFullYear() + years);
     date_end.setFullYear(date_end.getFullYear() + years);
     
+    searching = true;
     const filters = {
       date_start,
       date_end,
@@ -177,6 +182,7 @@
       recital: true
     };
     const res = await api.post(`/api/activities/coordination/${$page.params.id}`, filters);
+    searching = false;
 
     if (res.ok) {
       const activitys = parse(await res.text());
@@ -192,33 +198,43 @@
   };
 </script>
 
-<PaginationTable
-  size={current_year}
-  start={date_start.getFullYear()}
-  end={date_end.getFullYear()}
-  {show_prev} {show_next}
-/>
-{#key activities}
-  <ResumeRank rank="coordinacion" rank_activities={activities} />
-{/key}
-<PaginationTable
-  size={current_year}
-  start={date_start.getFullYear()}
-  end={date_end.getFullYear()}
-  {show_prev} {show_next}
-/>
-
-{#key coordination_activities}
-  {#each coordination_activities as rank_activities}
-    <ResumeRank {rank} {rank_activities} />
+{#if searching}
+  <Loader />
+{:else}
+  {#key date_start}  
     <PaginationTable
       size={current_year}
       start={date_start.getFullYear()}
       end={date_end.getFullYear()}
       {show_prev} {show_next}
     />
-  {/each}
-{/key}
+  {/key}
+  {#key activities}
+    <ResumeRank rank="coordinacion" rank_activities={activities} />
+  {/key}
+  {#key date_start}  
+    <PaginationTable
+      size={current_year}
+      start={date_start.getFullYear()}
+      end={date_end.getFullYear()}
+      {show_prev} {show_next}
+    />
+  {/key}
+
+  {#key coordination_activities}
+    {#each coordination_activities as rank_activities}
+      <ResumeRank {rank} {rank_activities} />
+      {#key date_start}  
+        <PaginationTable
+          size={current_year}
+          start={date_start.getFullYear()}
+          end={date_end.getFullYear()}
+          {show_prev} {show_next}
+        />
+      {/key}
+    {/each}
+  {/key}
+{/if}
 
 {#if action.info !== ''}
   <Modal

@@ -70,6 +70,7 @@
 
 	import { department_rank_activities } from "$lib/utils/formatting";
 
+	import Loader from "$lib/components/loader.svelte";
   import Modal from "$lib/components/modals/modal.svelte";
 	import PaginationTable from "$lib/components/pagination_table.svelte";
   import ResumeEntity from "$lib/components/activities/resume_entity.svelte";
@@ -83,15 +84,16 @@
   const date_start = new Date(`01-01-${current_year-years}`);
   const date_end = new Date(`01-01-${current_year}`);
 
+  let searching = false;
   let professors_activities = department_rank_activities(activities, profesores, $page.params.id);
   let action = { info: '', code: '' };
-
 
   const show_prev = async function () {
 
     date_start.setFullYear(date_start.getFullYear() - years);
     date_end.setFullYear(date_end.getFullYear() - years);
     
+    searching = true;
     const filters = {
       date_start,
       date_end,
@@ -113,6 +115,7 @@
       recital: true
     };
     const res = await api.post(`/api/activities/departamento/${$page.params.id}`, filters);
+    searching = false;
 
     if (res.ok) {
       const activitys = await res.json();
@@ -132,6 +135,7 @@
     date_start.setFullYear(date_start.getFullYear() + years);
     date_end.setFullYear(date_end.getFullYear() + years);
     
+    searching = true;
     const filters = {
       date_start,
       date_end,
@@ -153,6 +157,7 @@
       recital: true
     };
     const res = await api.post(`/api/activities/departamento/${$page.params.id}`, filters);
+    searching = false;
 
     if (res.ok) {
       const activitys = await res.json();
@@ -167,55 +172,67 @@
   };
 </script>
 
-<PaginationTable
-  size={current_year}
-  start={date_start.getFullYear()}
-  end={date_end.getFullYear()}
-  {show_prev} {show_next}
-/>
-{#key activities}
-  <ResumeRank rank="departamento" rank_activities={activities} />
-{/key}
-<PaginationTable
-  size={current_year}
-  start={date_start.getFullYear()}
-  end={date_end.getFullYear()}
-  {show_prev} {show_next}
-/>
-
-<div class="uk-text-center">
-  <a href="/sinai/BRA/departamento/{$page.params.id}" class="ui button disabled">
-    Vista BRA Departamental
-  </a>
-</div>
-
-{#key professors_activities}  
-  <div class="uk-text-center">
-    Número total de profesores de su departamento resgistrados en el sistema:
-    ({professors_activities.length})
-  </div>
+{#if searching}
+  <Loader />
+{:else}
+  {#key date_start}
+    <PaginationTable
+      size={current_year}
+      start={date_start.getFullYear()}
+      end={date_end.getFullYear()}
+      {show_prev} {show_next}
+    />
+  {/key}
+  {#key activities}
+    <ResumeRank rank="departamento" rank_activities={activities} />
+  {/key}
+  {#key date_start}
+    <PaginationTable
+      size={current_year}
+      start={date_start.getFullYear()}
+      end={date_end.getFullYear()}
+      {show_prev} {show_next}
+    />
+  {/key}
 
   <div class="uk-text-center">
-    Nota: La suma de las actividades de los profesores no es igual al total del departamento,
-    pues pueden tener varios autores del mismo departamento.
+    <a href="/sinai/BRA/departamento/{$page.params.id}" class="ui button disabled">
+      Vista BRA Departamental
+    </a>
   </div>
 
-  <div class="ui divider" />
+  {#key professors_activities}  
+    <div class="uk-text-center">
+      Número total de profesores de su departamento resgistrados en el sistema:
+      ({professors_activities.length})
+    </div>
 
-  <PaginationTable
-    size={current_year}
-    start={date_start.getFullYear()}
-    end={date_end.getFullYear()}
-    {show_prev} {show_next}
-  />
-  <ResumeEntity entity="profesor" entity_activities={professors_activities} />
-  <PaginationTable
-    size={current_year}
-    start={date_start.getFullYear()}
-    end={date_end.getFullYear()}
-    {show_prev} {show_next}
-  />
-{/key}
+    <div class="uk-text-center">
+      Nota: La suma de las actividades de los profesores no es igual al total del departamento,
+      pues pueden tener varios autores del mismo departamento.
+    </div>
+
+    <div class="ui divider" />
+
+    {#key date_start}
+      <PaginationTable
+        size={current_year}
+        start={date_start.getFullYear()}
+        end={date_end.getFullYear()}
+        {show_prev} {show_next}
+      />
+    {/key}
+    <ResumeEntity entity="profesor" entity_activities={professors_activities} />
+    {#key date_start}
+      <PaginationTable
+        size={current_year}
+        start={date_start.getFullYear()}
+        end={date_end.getFullYear()}
+        {show_prev} {show_next}
+      />
+    {/key}
+  {/key}
+{/if}
 
 {#if action.info !== ''}
   <Modal

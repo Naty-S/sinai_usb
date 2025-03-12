@@ -158,7 +158,7 @@ export const init_date = function (date?: Date): Date {
  * 
  * @returns 
  */
-export const department_rank_activities = function (activities: Activities, profesores: Profesor[], id: number)
+export const department_rank_activities = function (activities: Activities, profesores: Profesor[], id: string)
 : Activities[] {
 
   const activitys = activities.activities;
@@ -212,7 +212,7 @@ export const division_rank_activities = function (
   activities: Activities,
   divisions: Division[],
   profesores: Profesor[],
-  id: number
+  id: string
 ): Activities[] {
 
   const departments = divisions.find(c => c.id === Number(id))?.departamentos || [];
@@ -238,7 +238,7 @@ export const coordination_rank_activities = function(
   activities: Activities,
   ranks: Department[] | GroupE[],
   profesores: Profesor[],
-  id: number
+  id: string
 ): Activities[] {
 
   return ranks.map(r => {
