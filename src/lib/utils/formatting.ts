@@ -1,11 +1,15 @@
 import type { Activity, Actividad } from "$lib/types/activities";
-import type { Group } from "$lib/interfaces/groups";
+import type { Group, GroupE } from "$lib/interfaces/groups";
 import type { ActivityLog } from "$lib/interfaces/logs";
 
 import { parse, isDate } from "date-fns";
 import { DateTime } from "luxon";
 
 import { kinds } from "$lib/constants";
+import { Activities } from "$lib/interfaces/activities";
+import { Profesor } from "$lib/interfaces/professors";
+import { Division } from "$lib/interfaces/divisions";
+import { Department } from "$lib/interfaces/departments";
 
 
 /**
@@ -146,3 +150,118 @@ export const init_date = function (date?: Date): Date {
   return date ? format_date(date, "yyyy-MM-dd") as unknown as Date : new Date("yyyy-MM-dd");
 };
 
+
+/**
+ * 
+ * @param activities - 
+ * @param professors_activities - 
+ * 
+ * @returns 
+ */
+export const department_rank_activities = function (activities: Activities, profesores: Profesor[], id: number)
+: Activities[] {
+
+  const activitys = activities.activities;
+  const acts_owners = activitys.map(a => a.creada_por);
+  const professors = profesores.filter(p => p.departamento === Number(id));
+  const p_with_acts = professors.filter(p => acts_owners.includes(p.correo))
+  const p_without_acts = professors.filter(p => !acts_owners.includes(p.correo))
+
+  const professors_with_acts: Activities[] = p_with_acts.map(p => ({
+    owner: {
+      id: p.id,
+      name: p.nombre1 + ", " + p.apellido1,
+      full_name: ''
+    },
+    activities: activitys.filter(a => a.creada_por === p.correo)
+  }));
+
+  const professors_without_acts: Activities[] = p_without_acts.map(p => ({
+    owner: {
+      id: p.id,
+      name: p.nombre1 + ", " + p.apellido1,
+      full_name: ''
+    },
+    activities: []
+  }));
+
+  const profesor_ficticio: Activities = {
+    owner: {
+      id: 0,
+      name: "profesor ficticio",
+      full_name: ''
+    },
+    activities: activitys.filter(a => a.creada_por === "usuario ficticio")
+  };
+
+  const professors_activities = professors_with_acts.concat(professors_without_acts).concat(profesor_ficticio);
+
+  return professors_activities;
+};
+
+
+/**
+ * 
+ * @param activities - 
+ * @param divisions - 
+ * @param profesores - 
+ * @param id - 
+ * @returns 
+ */
+export const division_rank_activities = function (
+  activities: Activities,
+  divisions: Division[],
+  profesores: Profesor[],
+  id: number
+): Activities[] {
+
+  const departments = divisions.find(c => c.id === Number(id))?.departamentos || [];
+  const deparments_activities: Activities[] = departments.map(d => {
+
+    const dep_profs = profesores.filter(p => p.departamento === d.id).map(p => p.correo);
+
+    return {
+      owner: {
+        id: d.id,
+        name: d.nombre,
+        full_name: `del Departamento de ${d.nombre}`
+      },
+      activities: activities.activities.filter(a => dep_profs.includes(a.creada_por))
+    }
+  });
+
+  return deparments_activities;
+};
+
+
+export const coordination_rank_activities = function(
+  activities: Activities,
+  ranks: Department[] | GroupE[],
+  profesores: Profesor[],
+  id: number
+): Activities[] {
+
+  return ranks.map(r => {
+
+    let full_name = '';
+    let activitys: Activity[] = [];
+
+    if (Number(id) === 4) {
+      full_name = `del Grupo de ${r.nombre}`;
+      activitys = activities.activities.filter(a => a.groups.map(g => g.id).includes(r.id))
+    } else {
+      full_name = `del Departamento de ${r.nombre}`;
+      const dep_profs = profesores.filter(p => p.departamento === r.id).map(p => p.correo);
+      activitys = activities.activities.filter(a => dep_profs.includes(a.creada_por))
+    };
+
+    return {
+      owner: {
+        id: r.id,
+        name: r.nombre,
+        full_name
+      },
+      activities: activitys
+    }
+  })
+};

@@ -10,7 +10,27 @@
 
     if (session.user?.professor?.division_chief || session.user?.dean) {
 
-      const res1 = await fetch(`/api/activities/division/${_id}`);
+      const current_year = (new Date()).getFullYear();
+      const res1 = await api.post(`/api/activities/division/${_id}`, {
+        date_start: new Date(`01-01-${current_year-10}`),
+        date_end: new Date(`01-01-${current_year}`),
+        articulo_revista: true,
+        capitulo_libro: true,
+        composicion: true,
+        evento: true,
+        exposicion: true,
+        grabacion: true,
+        informe_tecnico: true,
+        libro: true,
+        memoria: true,
+        partitura: true,
+        patente: true,
+        premio: true,
+        premio_bienal: true,
+        proyecto_grado: true,
+        proyecto_investigacion: true,
+        recital: true
+      });
       const res2 = await fetch("/api/divisions");
       const res3 = await fetch("/api/professors");
 
@@ -20,23 +40,8 @@
         const divisions: Division[] = await res2.json();
         const profesores: Profesor[] = await res3.json();
 
-        const departments = divisions.find(c => c.id === Number(_id))?.departamentos || [];
-        const deparments_activities: Activities[] = departments.map(d => {
-
-          const dep_profs = profesores.filter(p => p.departamento === d.id).map(p => p.correo);
-
-          return {
-            owner: {
-              id: d.id,
-              name: d.nombre,
-              full_name: `del Departamento de ${d.nombre}`
-            },
-            activities: activities.activities.filter(a => dep_profs.includes(a.creada_por))
-          }
-        });
-
         return {
-          props: {activities, deparments_activities}
+          props: {activities, divisions, profesores}
         };
       };
   
@@ -57,20 +62,156 @@
   };
 </script>
 <script lang="ts">
+  import { page } from "$app/stores";
+
   import type { Activities } from "$lib/interfaces/activities";
 	import type { Division } from "$lib/interfaces/divisions";
 	import type { Profesor } from "$lib/interfaces/professors";
   
   import { parse } from "zipson";
 
+  import * as api from "$lib/api";
+
+	import { division_rank_activities } from "$lib/utils/formatting";
+
+  import Modal from "$lib/components/modals/modal.svelte";
+	import PaginationTable from "$lib/components/pagination_table.svelte";
   import ResumeRank from "$lib/components/activities/resume_rank.svelte";
 
   export let activities: Activities;
-  export let deparments_activities: Activities[];
+  export let divisions: Division[];
+  export let profesores: Profesor[];
+
+  const years = 10;
+  const current_year = (new Date()).getFullYear();
+  const date_start = new Date(`01-01-${current_year-years}`);
+  const date_end = new Date(`01-01-${current_year}`);
+
+  let deparments_activities = division_rank_activities(activities, divisions, profesores, $page.params.id);
+  let action = { info: '', code: '' };
+
+  const show_prev = async function () {
+
+    date_start.setFullYear(date_start.getFullYear() - years);
+    date_end.setFullYear(date_end.getFullYear() - years);
+    
+    const filters = {
+      date_start,
+      date_end,
+      articulo_revista: true,
+      capitulo_libro: true,
+      composicion: true,
+      evento: true,
+      exposicion: true,
+      grabacion: true,
+      informe_tecnico: true,
+      libro: true,
+      memoria: true,
+      partitura: true,
+      patente: true,
+      premio: true,
+      premio_bienal: true,
+      proyecto_grado: true,
+      proyecto_investigacion: true,
+      recital: true
+    };
+    const res = await api.post(`/api/activities/division/${$page.params.id}`, filters);
+
+    if (res.ok) {
+      const activitys = parse(await res.text());
+
+      activities = activitys;
+      deparments_activities = division_rank_activities(activities, divisions, profesores, $page.params.id);
+      
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
+    };
+  };
+
+  const show_next = async function () {
+
+    date_start.setFullYear(date_start.getFullYear() + years);
+    date_end.setFullYear(date_end.getFullYear() + years);
+    
+    const filters = {
+      date_start,
+      date_end,
+      articulo_revista: true,
+      capitulo_libro: true,
+      composicion: true,
+      evento: true,
+      exposicion: true,
+      grabacion: true,
+      informe_tecnico: true,
+      libro: true,
+      memoria: true,
+      partitura: true,
+      patente: true,
+      premio: true,
+      premio_bienal: true,
+      proyecto_grado: true,
+      proyecto_investigacion: true,
+      recital: true
+    };
+    const res = await api.post(`/api/activities/division/${$page.params.id}`, filters);
+
+    if (res.ok) {
+      const activitys = parse(await res.text());
+
+      activities = activitys;
+      deparments_activities = division_rank_activities(activities, divisions, profesores, $page.params.id);
+      
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
+    };
+  };
 </script>
 
-<ResumeRank rank="division" rank_activities={activities} />
+<PaginationTable
+  size={current_year}
+  start={date_start.getFullYear()}
+  end={date_end.getFullYear()}
+  {show_prev} {show_next}
+/>
+{#key activities}
+  <ResumeRank rank="division" rank_activities={activities} />
+{/key}
+<PaginationTable
+  size={current_year}
+  start={date_start.getFullYear()}
+  end={date_end.getFullYear()}
+  {show_prev} {show_next}
+/>
 
-{#each deparments_activities as rank_activities}
-  <ResumeRank rank="departamento" {rank_activities} />
-{/each}
+{#key deparments_activities}
+  {#each deparments_activities as rank_activities}
+    <ResumeRank rank="departamento" {rank_activities} />
+    <PaginationTable
+      size={current_year}
+      start={date_start.getFullYear()}
+      end={date_end.getFullYear()}
+      {show_prev} {show_next}
+    />
+  {/each}
+{/key}
+
+{#if action.info !== ''}
+  <Modal
+    id="error"
+    title="Error. {action.code ?? "Desconocido"}"
+    close_text="Ok"
+    align="center"
+    pop_up={action.info !== ''}
+    close={() => location.reload()}
+  >
+    <p>
+      Hubo un problema al intentar realizar la acción, por favor vuelva a intentar
+      o contáctese con algún administrador.
+    </p>
+    <span class="ui red text">Detalles: {action.info ?? "No se encuentra en la lista de errores conocidos"}</span>
+  </Modal>
+{/if}
