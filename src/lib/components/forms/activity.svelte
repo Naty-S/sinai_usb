@@ -30,6 +30,7 @@
   export let handleReset: any;
   export let activity: string;
   export let action: string;
+  export let reset: string;
 </script>
 
 <form class="ui large form" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
@@ -67,7 +68,7 @@
   {:else if activity === "recital"}
     <Recital />
   {:else}
-    ERROR, actividad invalida
+    ERROR, actividad inválida
   {/if}
 
   {#if activity !== "patente" && activity !== "premio"}
@@ -75,5 +76,5 @@
   {/if}
   <Authors />
   <Observaciones />
-  <ActionsButtons {action} />
+  <ActionsButtons {action} {reset}/>
 </form>

@@ -61,4 +61,6 @@
   });
 </script>
 
-<ActivityForm {handleSubmit} {handleReset} {activity} action="Modificar"/>
+{#key $form}
+  <ActivityForm {handleSubmit} {handleReset} {activity} action="Modificar" reset="Restablecer Datos" />
+{/key}

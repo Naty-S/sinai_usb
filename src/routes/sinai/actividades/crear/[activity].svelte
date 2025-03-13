@@ -41,4 +41,6 @@
   });
 </script>
 
-<ActivityForm {handleSubmit} {handleReset} {activity} action="Crear"/>
+<!-- {#key $form} -->
+  <ActivityForm {handleSubmit} {handleReset} {activity} action="Crear" reset="Limpiar Todo"/>
+<!-- {/key} -->

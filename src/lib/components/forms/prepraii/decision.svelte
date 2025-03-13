@@ -69,5 +69,5 @@
     class="required field"
   />
 
-  <ActionsButtons action="Tomar Decisión" reload />
+  <ActionsButtons action="Tomar Decisión" button="Cancelar" on_click={() => location.reload()} />
 </form>

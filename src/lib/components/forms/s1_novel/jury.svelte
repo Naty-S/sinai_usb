@@ -206,7 +206,7 @@
     {/if}
   </div>
 
-  <ActionsButtons action="Asignar" reload />
+  <ActionsButtons action="Asignar" button="Cancelar" on_click={() => location.reload()} />
 
 </form>
 
