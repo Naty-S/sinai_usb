@@ -1,5 +1,7 @@
 import * as yup from "yup";
 
+import { parse_date } from "$lib/utils/formatting";
+
 
 export const validation = function ()/* : ObjectSchema<M> */ {
 
@@ -15,6 +17,7 @@ export const validation = function ()/* : ObjectSchema<M> */ {
 
   return yup.object().shape({
       comentario: yup.string()
+    , fecha_solicitud: yup.date().transform(parse_date).typeError("Requerido")
     , estado: yup.string().oneOf(["Aprobado", "En_Revision", "Rechazado"])
     , observaciones_evaluador: yup.string()
     , observaciones_profesor: yup.string().required("Por favor ingrese alguna observación")

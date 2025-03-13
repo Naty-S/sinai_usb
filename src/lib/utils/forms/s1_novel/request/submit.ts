@@ -8,6 +8,7 @@ import { file_to_base64 } from "$lib/utils/conversions";
 export const submit = function (profesor_id: number, pathname: string) {
   return async function (data: any) {
     
+    data.fecha_solicitud = new Date(data.fecha_solicitud);
     data.profesor = profesor_id;
     data.proyecto = await file_to_base64(data.proyecto[0]);
     data.soportes = await Promise.all(

@@ -4,6 +4,7 @@ export const init = function () { // TODO: create types for inits, so makes easi
   
   return {
       comentario: ''
+    , fecha_solicitud: ''
     , estado: "En_Revision"
     , observaciones_evaluador: ''
     , observaciones_profesor: "Sin Observaciones"

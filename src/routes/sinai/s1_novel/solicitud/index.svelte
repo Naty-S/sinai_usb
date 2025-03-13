@@ -37,6 +37,7 @@
   import { session, page } from "$app/stores";
 
 	import { base64_to_blob } from "$lib/utils/conversions";
+	import { format_date } from "$lib/utils/formatting";
 
   import * as api from "$lib/api";
 
@@ -48,6 +49,7 @@
   import ActionsButtons from "$lib/components/forms/actions_buttons.svelte";
   import ErrorMsg from "$lib/components/forms/error_msg.svelte";
   import Textarea from "$lib/components/forms/textarea.svelte";
+	import Input from "$lib/components/forms/input.svelte";
 
 	import BackupFiles from "$lib/components/forms/s1_novel/backup_files.svelte";
 
@@ -106,6 +108,14 @@
 {#if show_s1_form}
   <form id="s1_novel_request_form" class="ui large form segment" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
 
+    <Input
+      type="date"
+      label="Fecha de la Solicitud"
+      name="fecha_solicitud"
+      bind:value={$form.fecha_solicitud}
+      error={$errors.fecha_solicitud}
+      class="required field"
+    />
     <div class="required field" class:error={$errors.proyecto}>
       <label for="proyecto">Archivo de especificación del Proyecto</label>
       <input
@@ -139,11 +149,14 @@
     <section id="s1_novel_request_{s1.id}">
       
       <div class="uk-accordion-title title">
-        <div class="ui grid">
-          <div class="ten wide column">
+        <div class="ui three column grid">
+          <div class="column">
             Evaluador: {`${s1.Evaluador.nombre1}, ${s1.Evaluador.apellido1}`}.
           </div>
-          <div class="six wide right aligned column">
+          <div class="center aligned column">
+            Solicitado el: {format_date(s1.fecha_solicitud, "long-day")}
+          </div>
+          <div class="right aligned column">
             {s1.estado == "En_Revision" ? "En Revisión" : s1.estado}.
 
             {#if s1.estado == "En_Revision" && s1.jurado_usb.length == 0 && s1.jurado_externo.length == 0}              
