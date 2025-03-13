@@ -8,18 +8,36 @@
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";
   import { page } from "$app/stores";
-  import { getCountries, getStatesByName } from 'cs-list';
+  // import { getCountries, getStatesByName } from 'cs-list';
 
-  import Select from "$lib/components/forms/select.svelte";
+  // import Select from "$lib/components/forms/select.svelte";
+	import Input from "$lib/components/forms/input.svelte";
 
   const param = $page.params.activity;
   const kind = param as kinds;
   const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
-  const countries = getCountries();
+  // const countries = getCountries();
   
-  $: states = getStatesByName($form[kind].pais);
+  // $: states = getStatesByName($form[kind].pais);
 </script>
 
+<Input
+  label="País"
+  name="{kind}.pais"
+  bind:value={$form[kind].pais}
+  error={$errors[kind].pais}
+  class="field"
+/>
+<Input
+  label="Ciudad"
+  name="{kind}.ciudad"
+  bind:value={$form[kind].ciudad}
+  error={$errors[kind].ciudad}
+  class="field"
+/>
+
+
+<!-- TODO: COnseguir una api o lista de pai-ciudad en español
 <Select
   label="Pais"
   name="{kind}.pais"
@@ -55,3 +73,4 @@
     </div>
   {/if}
 </div>
+-->

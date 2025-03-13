@@ -60,11 +60,11 @@
       error={$errors.patente.numero}
       class="field"
     />
-    <Select
+    <Input
       label="País que otorga"
       name="patente.pais"
       bind:value={$form.patente.pais}
-      options={countries.map(c => ({ val: c.name, name: c.name }))}
+      error={$errors.patente.pais}
       class="field"
     />
   </div>
