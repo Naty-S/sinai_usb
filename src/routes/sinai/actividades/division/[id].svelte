@@ -11,25 +11,30 @@
     if (session.user?.professor?.division_chief || session.user?.dean) {
 
       const current_year = (new Date()).getFullYear();
-      const res1 = await api.post(`/api/activities/division/${_id}`, {
-        date_start: new Date(`01-01-${current_year-10}`),
-        date_end: new Date(`01-01-${current_year}`),
-        articulo_revista: true,
-        capitulo_libro: true,
-        composicion: true,
-        evento: true,
-        exposicion: true,
-        grabacion: true,
-        informe_tecnico: true,
-        libro: true,
-        memoria: true,
-        partitura: true,
-        patente: true,
-        premio: true,
-        premio_bienal: true,
-        proyecto_grado: true,
-        proyecto_investigacion: true,
-        recital: true
+      const res1 = await fetch(`/api/activities/division/${_id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          date_start: new Date(`01-01-${current_year-10}`),
+          date_end: new Date(`01-01-${current_year}`),
+          articulo_revista: true,
+          capitulo_libro: true,
+          composicion: true,
+          evento: true,
+          exposicion: true,
+          grabacion: true,
+          informe_tecnico: true,
+          libro: true,
+          memoria: true,
+          partitura: true,
+          patente: true,
+          premio: true,
+          premio_bienal: true,
+          proyecto_grado: true,
+          proyecto_investigacion: true,
+          recital: true
+        })
       });
       const res2 = await fetch("/api/divisions");
       const res3 = await fetch("/api/professors");

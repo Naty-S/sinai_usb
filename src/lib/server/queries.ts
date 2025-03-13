@@ -111,7 +111,6 @@ export const query_user_activities = async function (email: string, filters?: an
     include: include(filters),
     orderBy: { fecha_creacion: "desc" }
   });
-  // console.log("user acts", user_activities)
 
   return user_activities;
 };
@@ -145,7 +144,6 @@ export const query_professor_activities = async function (id: number, email: str
   });
 
   activities = professor_activities.concat(author_activities.map(a => a.Actividad));
-  console.log(activities.length)
 
   return activities;
 };

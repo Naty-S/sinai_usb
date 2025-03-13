@@ -14,25 +14,30 @@
         professor?.is_dep_chief || professor?.is_dep_representative
     ) {
       const current_year = (new Date()).getFullYear();
-      const res1 = await api.post(`/api/activities/department/${_id}`, {
-        date_start: new Date(`01-01-${current_year-10}`),
-        date_end: new Date(`01-01-${current_year}`),
-        articulo_revista: true,
-        capitulo_libro: true,
-        composicion: true,
-        evento: true,
-        exposicion: true,
-        grabacion: true,
-        informe_tecnico: true,
-        libro: true,
-        memoria: true,
-        partitura: true,
-        patente: true,
-        premio: true,
-        premio_bienal: true,
-        proyecto_grado: true,
-        proyecto_investigacion: true,
-        recital: true
+      const res1 = await fetch(`/api/activities/department/${_id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          date_start: new Date(`01-01-${current_year-10}`),
+          date_end: new Date(`01-01-${current_year}`),
+          articulo_revista: true,
+          capitulo_libro: true,
+          composicion: true,
+          evento: true,
+          exposicion: true,
+          grabacion: true,
+          informe_tecnico: true,
+          libro: true,
+          memoria: true,
+          partitura: true,
+          patente: true,
+          premio: true,
+          premio_bienal: true,
+          proyecto_grado: true,
+          proyecto_investigacion: true,
+          recital: true
+        })
       });
       const res2 = await fetch("/api/professors");
      
@@ -114,14 +119,14 @@
       proyecto_investigacion: true,
       recital: true
     };
-    const res = await api.post(`/api/activities/departamento/${$page.params.id}`, filters);
-    searching = false;
-
+    const res = await api.post(`/api/activities/department/${$page.params.id}`, filters);
+    
     if (res.ok) {
       const activitys = await res.json();
-
+      
       activities = activitys;
       professors_activities = department_rank_activities(activitys, profesores, $page.params.id);
+      searching = false;
       
     } else {
       const { message, code } = await res.json();
@@ -156,7 +161,7 @@
       proyecto_investigacion: true,
       recital: true
     };
-    const res = await api.post(`/api/activities/departamento/${$page.params.id}`, filters);
+    const res = await api.post(`/api/activities/department/${$page.params.id}`, filters);
     
     if (res.ok) {
       const activitys = await res.json();
