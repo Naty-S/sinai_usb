@@ -38,6 +38,8 @@
 
 	import { base64_to_blob } from "$lib/utils/conversions";
 
+  import * as api from "$lib/api";
+
   import { init } from "$lib/utils/forms/s1_novel/request/init";
   import { validation } from "$lib/utils/forms/s1_novel/request/validation";
   import { submit } from "$lib/utils/forms/s1_novel/request/submit";
@@ -58,6 +60,29 @@
   const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
 
   let show_s1_form = false;
+  let pop_delete = false;
+  let actual_s1_id = -1;
+  let action = { info: '', code: '' };
+
+  const popup_delete = function (s1_id: number) {
+    pop_delete = true;
+    actual_s1_id = s1_id;
+  };
+
+  const confirm_delete = async function() {
+    const res = await api.del(`/api/s1_novel/request/${actual_s1_id}`, {});
+
+    if (res.ok) {
+      const { code } = await res.json();
+      action.code = code;
+      pop_delete = false;
+
+    } else {
+      const { message, code } = await res.json();
+      action.info = message;
+      action.code = code;
+    };
+  };
 
   setContext(key, {
     form, errors, handleChange
@@ -120,6 +145,12 @@
           </div>
           <div class="six wide right aligned column">
             {s1.estado == "En_Revision" ? "En Revisión" : s1.estado}.
+
+            {#if s1.estado == "En_Revision" && s1.jurado_usb.length == 0 && s1.jurado_externo.length == 0}              
+              <button type="button" class="ui negative small button" on:click={() => popup_delete(s1.id)}>
+                Eliminar
+              </button>
+            {/if}
           </div>
         </div>
       </div>
@@ -202,6 +233,49 @@
     close={() => location.replace($page.url.pathname)}
   >
     <p>Solicitud exitosa!!!</p>
+  </Modal>
+{/if}
+
+{#if pop_delete}
+  <Modal 
+    id="delete_{actual_s1_id}"
+    title="Eliminar S1 Novel"
+    ok_text="Eliminar"
+    align="center"
+    pop_up={pop_delete}
+    close={() => pop_delete = false}
+    confirm={confirm_delete}
+  >
+    <p>Está seguro(a) que quiere ELIMINAR ésta solicitud?</p>
+  </Modal>
+{/if}
+{#if action.code === "s1_deleted"}
+  <Modal
+    id="{actual_s1_id}_deleted"
+    title="Eliminar S1 Novel"
+    align="center"
+    pop_up={action.code === "s1_deleted"}
+    close_text="Cerrar"
+    close={() => { action.code = ''; location.reload(); }}
+  >
+    <p>Solicitud S1 Novel Eliminada con Éxito !!!</p>
+  </Modal>
+{/if}
+
+{#if action.info !== ''}
+  <Modal
+    id="error"
+    title="Error. {action.code ?? "Desconocido"}"
+    close_text="Ok"
+    align="center"
+    pop_up={action.info !== ''}
+    close={() => location.reload()}
+  >
+    <p>
+      Hubo un problema al intentar realizar la acción, por favor vuelva a intentar
+      o contáctese con algún administrador.
+    </p>
+    <span class="ui red text">Detalles: {action.info ?? "No se encuentra en la lista de errores conocidos"}</span>
   </Modal>
 {/if}
 
