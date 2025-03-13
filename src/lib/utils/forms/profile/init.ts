@@ -16,13 +16,10 @@ export const init = function (p: Profile) {
     , url: p.url
     , orcid_id: p.orcid_id
     , orcid_profile: p.orcid_profile
-    , orcid_posts: p.orcid_posts || ['']
     , google_schoolar_id: p.google_schoolar_id
     , google_schoolar_profile: p.google_schoolar_profile
-    , google_schoolar_posts: p.google_schoolar_posts || ['']
     , research_gate_id: p.research_gate_id
     , research_gate_profile: p.research_gate_profile
-    , research_gate_posts: p.research_gate_posts || ['']
     }
     , pei: {
       anio: pei?.anio || 2022,

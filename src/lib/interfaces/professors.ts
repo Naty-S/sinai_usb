@@ -34,13 +34,10 @@ import type { Division } from "./divisions"
  * - `url`: string | null
  * - `orcid_id`: number | null
  * - `orcid_profile`: string | null
- * - `orcid_posts`: string[]
  * - `google_schoolar_id`: number | null
  * - `google_schoolar_profile`: string | null
- * - `google_schoolar_posts`: string[]
  * - `research_gate_id`: number | null
  * - `research_gate_profile`: string | null
- * - `research_gate_posts`: string[]
  */
 export interface Profesor {
     id: number
@@ -62,13 +59,10 @@ export interface Profesor {
   ; url: string | null
   ; orcid_id: number | null
   ; orcid_profile: string | null
-  ; orcid_posts: string[]
   ; google_schoolar_id: number | null
   ; google_schoolar_profile: string | null
-  ; google_schoolar_posts: string[]
   ; research_gate_id: number | null
   ; research_gate_profile: string | null
-  ; research_gate_posts: string[]
 };
 
 /**
@@ -124,13 +118,10 @@ export interface ProfessorE extends Professor {
  * - `pei`: PEI
  * - `orcid_id`: number | null
  * - `orcid_profile`: string | null
- * - `orcid_posts`: string[]
  * - `google_schoolar_id`: number | null
  * - `google_schoolar_profile`: string | null
- * - `google_schoolar_posts`: string[]
  * - `research_gate_id`: number | null
  * - `research_gate_profile`: string | null
- * - `research_gate_posts`: string[]
  */
 export interface Profile {
     perfil: string
@@ -143,13 +134,10 @@ export interface Profile {
   ; url: string | null
   ; orcid_id: number | null
   ; orcid_profile: string | null
-  ; orcid_posts: string[]
   ; google_schoolar_id: number | null
   ; google_schoolar_profile: string | null
-  ; google_schoolar_posts: string[]
   ; research_gate_id: number | null
   ; research_gate_profile: string | null
-  ; research_gate_posts: string[]
 };
 
 /**

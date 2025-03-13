@@ -25,10 +25,6 @@
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
 
-	import GoogleSchoolarPosts from "$lib/components/forms/register/google_schoolar_posts.svelte";
-	import OrcidPosts from "$lib/components/forms/register/orcid_posts.svelte";
-	import ResearchGatePosts from "$lib/components/forms/register/research_gate_posts.svelte";
-
   import {
     profesor_categoria_enum,
     profesor_condicion_enum,
@@ -261,7 +257,6 @@
           class="twelve wide field"
         />
       </div>
-      <OrcidPosts />
     </div>
 
     <div class="field">
@@ -284,7 +279,6 @@
           class="twelve wide field"
         />
       </div>
-      <GoogleSchoolarPosts />
     </div>
 
     <div class="field">
@@ -307,7 +301,6 @@
           class="twelve wide field"
         />
       </div>
-      <ResearchGatePosts />
     </div>
 
     <ActionsButtons action="Registrarse" />

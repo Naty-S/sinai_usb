@@ -31,13 +31,10 @@ export const GET: RequestHandler = async function ({ params }) {
       , url: professor.url
       , orcid_id: professor.orcid_id
       , orcid_profile: professor.orcid_profile
-      , orcid_posts: professor.orcid_posts
       , google_schoolar_id: professor.google_schoolar_id
       , google_schoolar_profile: professor.google_schoolar_profile
-      , google_schoolar_posts: professor.google_schoolar_posts
       , research_gate_id: professor.research_gate_id
       , research_gate_profile: professor.research_gate_profile
-      , research_gate_posts: professor.research_gate_posts
       , pei: {
           anio: pei?.anio
         , nivel: pei?.nivel

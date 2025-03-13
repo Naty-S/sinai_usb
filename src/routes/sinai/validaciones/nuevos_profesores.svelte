@@ -242,10 +242,6 @@
                   <i class="user circle icon"/>
                   Link del perfil: {p.orcid_profile || ''}
                 </div>
-                <div class="item">
-                  <i class="pen alternate icon"/>
-                  Publicaciones: {p.orcid_posts?.join(", ") || ''}
-                </div>
               </div>
             </div>
             <div class="item">
@@ -260,10 +256,6 @@
                   <i class="user circle icon"/>
                   Link del perfil: {p.google_schoolar_profile || ''}
                 </div>
-                <div class="item">
-                  <i class="pen alternate icon"/>
-                  Publicaciones: {p.google_schoolar_posts?.join(", ") || ''}
-                </div>
               </div>
             </div>
             <div class="item">
@@ -277,10 +269,6 @@
                 <div class="item">
                   <i class="user circle icon"/>
                   Link del perfil: {p.research_gate_profile || ''}
-                </div>
-                <div class="item">
-                  <i class="pen alternate icon"/>
-                  Publicaciones: {p.research_gate_posts?.join(", ") || ''}
                 </div>
               </div>
             </div>
