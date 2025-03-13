@@ -43,7 +43,7 @@
   };
 </script>
 <script lang="ts">
-import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activities";
+  import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activities";
   import type { Activities } from "$lib/interfaces/activities";
   import type { Activity } from "$lib/types/activities";
   
@@ -132,14 +132,15 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
       activities, kind, start_date, end_date, 0, activities.length) as YearActivitiesT[];
   };
 
-  const to_bottom = function() {
+  const go_down = function() {
 
     document.body.scrollIntoView();
+    
+    const top = document.getElementById("pagination")?.getBoundingClientRect().top ?? 0;
+    const scroll = top - 150;
 
-    const scroll = 400;
-
-    document.body.scrollTop = scroll; // For Safari
-    document.documentElement.scrollTop = scroll; // For Chrome, Firefox, IE and Opera
+    document.body.scrollTo(0, scroll); // For Safari
+    document.documentElement.scrollTo(0, scroll); // For Chrome, Firefox, IE and Opera
   }
 
   $: can_filter = function() {
@@ -169,13 +170,15 @@ import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activiti
       <i class="filter icon"/>Filtro
     </button>
   {/if}
-  <button
-    type="button"
-    class="ui right floated primary mini button"
-    on:click={() => {show_buttons = !show_buttons; to_bottom()}}
-  >
-    <i class="pen icon"/>Modificar
-  </button>
+  {#if $page.params.entity !== "grupo"}
+    <button
+      type="button"
+      class="ui right floated primary mini button"
+      on:click={() => {show_buttons = !show_buttons; go_down()}}
+    >
+      <i class="pen icon"/>Modificar
+    </button>
+  {/if}
 </div>
 
 <!-- Display activities by year -->
