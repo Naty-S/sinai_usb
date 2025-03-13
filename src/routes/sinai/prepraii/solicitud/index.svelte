@@ -141,13 +141,26 @@
 
     {#key $form.prepraii_solicitud.actividad}
       {#if article}
-        <KindInfo activity={article.kind_data} kind="articulo_revista" />
-        <a
-          href="/sinai/actividades/modificar/articulo_revista/{article.id}" 
-          class="ui green small button"
-        >
-          Modificar
-        </a>
+        <div class="ui segment">
+          <strong class="authors">
+            {#if article.autores_usb.length > 0}
+              {#each article.autores_usb as a}
+                {a.nombre}
+              {/each}.
+            {/if}
+            {article.autores_externos.length > 0 ? article.autores_externos.map(a => a.nombre).join("; ") + '.' : ''}
+          </strong>
+          
+          "{article.titulo}".
+
+          <KindInfo activity={article.kind_data} kind="articulo_revista" />
+          <a
+            href="/sinai/actividades/modificar/articulo_revista/{article.id}" 
+            class="ui green small button"
+          >
+            Modificar
+          </a>
+      </div>
       {/if}
     {/key}
 
