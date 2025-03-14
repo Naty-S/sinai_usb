@@ -76,3 +76,8 @@ services:
 volumes:
   pgdata:
   docker_node_modules-dev:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./node_modules
