@@ -44,7 +44,7 @@
     />
     <Radio
       label="Institución que financia o patrocina"
-      name="estado"
+      name="proyecto_investigacion.institucion"
       value1="Fonacit"
       value2="Otro"
       click1={() => fonacit = true}

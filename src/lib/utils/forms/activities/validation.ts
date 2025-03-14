@@ -200,6 +200,9 @@ const proyecto_investigacion = yup.object().shape({
     .min(1, "Minimo 1")
   , moneda: yup.string().required("Requerido")
   , monto: yup.number().required("Requerido")
+    .positive("Ingrese número positivo")
+    .integer("Ingrese número entero")
+    .min(1, "Minimo 1")
 });
 
 const recital = yup.object().shape({
