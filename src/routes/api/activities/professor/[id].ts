@@ -5,14 +5,14 @@ import type { Activity } from "$lib/types/activities";
 
 import { handle_error, prisma } from "$api/_api";
 
-import { query_professor_activities, query_activity_logs } from "$lib/server/queries";
+import { query_professor_activities, query_activity_last_log } from "$lib/server/queries";
 import { format_activity } from "$lib/utils/formatting";
 
 
 /**
  * Query professor's activities
  * 
- * @returns Professor activities with logs
+ * @returns Professor activities
  */
 export const GET: RequestHandler = async function({ params }) {
 
@@ -25,7 +25,7 @@ export const GET: RequestHandler = async function({ params }) {
     const professor = await prisma.profesor.findUniqueOrThrow({ where: {id: _id} });
     const professor_activities = await query_professor_activities(professor.id, professor.correo);
     const activities: Activity[] = (await Promise.all(professor_activities.map(async a => {
-      const logs = await query_activity_logs(a.id);
+      const logs = await query_activity_last_log(a.id);
       return format_activity(a, logs);
     }))).flat();
 
@@ -59,7 +59,7 @@ export const GET: RequestHandler = async function({ params }) {
 /**
  * Query filtered professor's activities
  * 
- * @returns Professor activities with logs
+ * @returns Professor activities
  */
 export const POST: RequestHandler = async function({ params, request }) {
 
@@ -72,10 +72,13 @@ export const POST: RequestHandler = async function({ params, request }) {
   try {
     const professor = await prisma.profesor.findUniqueOrThrow({ where: {id: _id} });
     const professor_activities = await query_professor_activities(professor.id, professor.correo, data);
-    const activities: Activity[] = (await Promise.all(professor_activities.map(async a => {
-      const logs = await query_activity_logs(a.id);
-      return format_activity(a, logs, data);
-    }))).flat();
+    const activities: Activity[] = (await Promise.all(
+      professor_activities.map(async a => {
+        const log = await query_activity_last_log(a.id);
+        return format_activity(a, log, data);
+      })
+    )).flat().filter(a => a.kind_name != "FILTER");
+    // console.log("INVALID ACTIVITIES:", activities.filter(a => a.kind_name == "ACTIVIDAD INVÁLIDA").map(a => a.id))
 
     const owner_activities: Activities = {
       owner: {

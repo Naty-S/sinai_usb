@@ -35,7 +35,7 @@ export type Activity = actividad & {
   kind_name: string,
   kind_data: ActivityKind,
   groups: Group[],
-  logs: ActivityLog[]
+  log: ActivityLog | null
 };
 
 /**

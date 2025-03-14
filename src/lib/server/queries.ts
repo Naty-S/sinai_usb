@@ -4,46 +4,28 @@ import type { Actividad } from "$lib/types/activities";
 import { prisma } from "$api/_api";
 
 
-const include = function (filters?: any) { return {
+const include = {
   actividades_grupos: { select: { Grupo: { select: { id: true, nombre: true } } } },
   autores_usb: true,
   autores_externos: true,
-  articulo_revista: filters?.articulo_revista ?? true,
-  capitulo_libro: filters?.capitulo_libro ?? true,
-  composicion: filters?.composicion ?? true,
-  evento: filters?.evento ?? true,
-  exposicion: filters?.exposicion ?? true,
-  grabacion: filters?.grabacion ?? true,
-  informe_tecnico: filters?.informe_tecnico ?? true,
-  libro: filters?.libro ?? true,
-  memoria: filters?.memoria ?? true,
-  partitura: filters?.partitura ?? true,
-  patente: filters?.patente ?? true,
-  premio: filters?.premio ?? true,
-  premio_bienal: filters?.premio_bienal ?? true,
-  proyecto_grado: filters?.proyecto_grado ?? true,
-  proyecto_investigacion: filters?.proyecto_investigacion ?? true,
-  recital: filters?.recital ?? true
-}};
-
-const null_kinds = {
-  articulo_revista: null,
-  capitulo_libro: null,
-  composicion: null,
-  evento: null,
-  exposicion: null,
-  grabacion: null,
-  informe_tecnico: null,
-  libro: null,
-  memoria: null,
-  partitura: null,
-  patente: null,
-  premio: null,
-  premio_bienal: null,
-  proyecto_grado: null,
-  proyecto_investigacion: null,
-  recital: null
+  articulo_revista: true,
+  capitulo_libro: true,
+  composicion: true,
+  evento: true,
+  exposicion: true,
+  grabacion: true,
+  informe_tecnico: true,
+  libro: true,
+  memoria: true,
+  partitura: true,
+  patente: true,
+  premio: true,
+  premio_bienal: true,
+  proyecto_grado: true,
+  proyecto_investigacion: true,
+  recital: true
 };
+
 
 export const query_user = async function (email: string) {
 
@@ -85,11 +67,11 @@ export const query_user = async function (email: string) {
  * @param id - 
  * @returns 
  */
-export const query_activity = async function (id: number, filters?: any): Promise<Actividad> {
+export const query_activity = async function (id: number): Promise<Actividad> {
 
   const user_activities = await prisma.actividad.findUniqueOrThrow({
     where: { id: id },
-    include: include(filters)
+    include
   });
 
   return user_activities;
@@ -106,9 +88,8 @@ export const query_user_activities = async function (email: string, filters?: an
     where: {
       creada_por: email,
       fecha_creacion: filters ? { gte: filters.date_start, lte: filters.date_end } : {},
-      // NOT: [null_kinds]
     },
-    include: include(filters),
+    include,
     orderBy: { fecha_creacion: "desc" }
   });
 
@@ -131,13 +112,12 @@ export const query_professor_activities = async function (id: number, email: str
 
   // Find professor's activities where is author
   const author_activities = await prisma.autor_usb.findMany({
-    select: { Actividad: { include: include(filters), } },
+    select: { Actividad: { include } },
     where: {
       profesor_id: id,
       actividad: { notIn: professor_activities.map(a => a.id) },
       Actividad: {
         fecha_creacion: filters ? { gte: filters.date_start, lte: filters.date_end } : {},
-        // NOT: [null_kinds]
       }
     },
     orderBy: { actividad: "asc" }
@@ -157,11 +137,10 @@ export const query_group_activities = async function (id: number, filters?: any)
   
   const group = await prisma.grupo_investigacion.findUniqueOrThrow({
     select: { actividades_grupos: {
-      select: { Actividad: { include: include(filters) }},
+      select: { Actividad: { include }},
       where: {
         Actividad: {
           fecha_creacion: filters ? { gte: filters.date_start, lte: filters.date_end } : {},
-          // NOT: [null_kinds]
         }
       }
     }},
@@ -173,13 +152,14 @@ export const query_group_activities = async function (id: number, filters?: any)
 
 
 /**
+ * Query activity last modification log info
  * 
- * @param id - Activity id to get its logs
+ * @param id - Activity id to get last log
  * @returns 
  */
-export const query_activity_logs = async function (id: number): Promise<ActivityLog[]> {
+export const query_activity_last_log = async function (id: number): Promise<ActivityLog | null> {
   
-  const logs = await prisma.log_operacion_actividad.findMany({
+  const last_log = await prisma.log_operacion_actividad.findFirst({
     select: {
       id: true,
       actividad: true,
@@ -190,12 +170,11 @@ export const query_activity_logs = async function (id: number): Promise<Activity
         }
       },
       fecha: true,
-      hora: true,
-      operacion: true
+      hora: true
     },
-    where: { actividad: id },
+    where: { actividad: id, operacion: "Modificacion" },
     orderBy: { id: "desc" }
   });
 
-  return logs;
+  return last_log;
 };

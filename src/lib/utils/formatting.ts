@@ -1,4 +1,4 @@
-import type { Activity, Actividad } from "$lib/types/activities";
+import type { Activity, Actividad, ActivityKind } from "$lib/types/activities";
 import type { Group, GroupE } from "$lib/interfaces/groups";
 import type { ActivityLog } from "$lib/interfaces/logs";
 
@@ -75,34 +75,26 @@ export const format_date = function (date: Date | string | null, format: string 
  * Format the raw activity data into the actual data to display in client.
  * 
  * @param actividad - Raw activity data
- * @param logs - Log info
+ * @param log - Last modification log info
  * @param filters - filter kind info
  * @returns Activity data with kind data, groups, and logs
  */
-export const format_activity = function (actividad: Actividad, logs: ActivityLog[] = [], filters?: any)
+export const format_activity = function (actividad: Actividad, log: ActivityLog | null, filters?: any)
 : Activity {
+
+  const filter_kinds = filters ? kinds.filter(kind => filters[kind]) : kinds;
+  const activity_kind = Object.entries(actividad).filter(([key, value]) => value && kinds.includes(key))[0];
 
   let kind_name = "ACTIVIDAD INVÁLIDA";
   let kind_data;
-  let _kinds = kinds;
 
-  if (filters) { _kinds = kinds.filter(kind => filters[kind]) };
-
-  // Find kind data
-  _kinds.map(kind => {
-    const _kind = kind as keyof typeof actividad ;
-    const _kind_data = actividad[_kind];
-
+  if (activity_kind) {
     
-    if (!_kind_data) { delete actividad[_kind]; }
-    // con select algunas las toma como invalidas, si lo pongo en un solo if antes o despues de todo
-    // solo me mostrará el ultimo seleccionado, y si pongo como condicion 'filters' al select all no me muestra nada
-    else if ( _kinds.length != kinds.length && !_kind_data ) { kind_name = "FILTER" }
-    else {
-      kind_name = kind;
-      kind_data = _kind_data;
-    };
-  });
+    kind_name = activity_kind[0];
+    kind_data = activity_kind[1] as ActivityKind;
+
+    if (!filter_kinds.includes(kind_name)) kind_name = "FILTER";
+  }
 
   const groups: Group[] = actividad.actividades_grupos.map((g: any) => ({
     id: g.Grupo.id,
@@ -117,7 +109,7 @@ export const format_activity = function (actividad: Actividad, logs: ActivityLog
     , kind_name
     , kind_data
     , groups
-    , logs
+    , log
   };
 
   return activity;

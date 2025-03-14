@@ -5,14 +5,14 @@ import type { Activity } from "$lib/types/activities";
 
 import { handle_error, prisma } from "$api/_api";
 
-import { query_activity_logs, query_user_activities } from "$lib/server/queries";
+import { query_activity_last_log, query_user_activities } from "$lib/server/queries";
 import { format_activity } from "$lib/utils/formatting";
 
 
 /**
  * Query dean activities.
  * 
- * @returns Dean activities with logs.
+ * @returns Dean activities.
  */
 export const GET: RequestHandler = async function ({ params }) {
 
@@ -25,8 +25,8 @@ export const GET: RequestHandler = async function ({ params }) {
     const dean = await prisma.administrador.findUniqueOrThrow({ where: { login: _email } });
     const dean_activities = await query_user_activities(_email);
     const activities: Activity[] = (await Promise.all(dean_activities.map(async a => {
-      const logs = await (query_activity_logs(a.id));
-      return format_activity(a, logs);
+      const log = await query_activity_last_log(a.id);
+      return format_activity(a, log);
     }))).flat();
 
     const owner_activities: Activities = {

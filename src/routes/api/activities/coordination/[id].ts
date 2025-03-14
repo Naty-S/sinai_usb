@@ -8,7 +8,7 @@ import { stringify } from "zipson/lib";
 import { handle_error, prisma } from "$api/_api";
 
 import {
-    query_activity_logs
+    query_activity_last_log
   , query_group_activities
   , query_professor_activities
 } from "$lib/server/queries";
@@ -47,8 +47,8 @@ export const GET: RequestHandler = async function ({ params }) {
       )).flat();
 
       activities = (await Promise.all(groups_activities.map(async a => {
-        const logs = await query_activity_logs(a.id);
-        return format_activity(a, logs);
+        const log = await query_activity_last_log(a.id);
+        return format_activity(a, log);
       }))).flat();
 
     } else {
@@ -63,8 +63,8 @@ export const GET: RequestHandler = async function ({ params }) {
       )).flat();
 
       activities = (await Promise.all(professor_activities.map(async a => {
-        const logs = await query_activity_logs(a.id);
-        return format_activity(a, logs);
+        const log = await query_activity_last_log(a.id);
+        return format_activity(a, log);
       }))).flat();
     };
 
@@ -128,10 +128,13 @@ export const POST: RequestHandler = async function ({ params, request }) {
         groups.map(g => (query_group_activities(g.id, data)))
       )).flat();
 
-      activities = (await Promise.all(groups_activities.map(async a => {
-        const logs = await query_activity_logs(a.id);
-        return format_activity(a, logs, data);
-      }))).flat();
+      activities = (await Promise.all(
+        groups_activities.map(async a => {
+          const log = await query_activity_last_log(a.id);
+          return format_activity(a, log, data);
+        })
+      )).flat().filter(a => a.kind_name != "FILTER");
+      // console.log("INVALID ACTIVITIES:", activities.filter(a => a.kind_name == "ACTIVIDAD INVÁLIDA").map(a => a.id))
 
     } else {
 
@@ -144,10 +147,13 @@ export const POST: RequestHandler = async function ({ params, request }) {
         professors.map(p => (query_professor_activities(p.id, p.correo, data)))
       )).flat();
 
-      activities = (await Promise.all(professor_activities.map(async a => {
-        const logs = await query_activity_logs(a.id);
-        return format_activity(a, logs, data);
-      }))).flat();
+      activities = (await Promise.all(
+        professor_activities.map(async a => {
+          const log = await query_activity_last_log(a.id);
+          return format_activity(a, log, data);
+        })
+      )).flat().filter(a => a.kind_name != "FILTER");
+      // console.log("INVALID ACTIVITIES:", activities.filter(a => a.kind_name == "ACTIVIDAD INVÁLIDA").map(a => a.id))
     };
 
     const owner_activities: Activities = {

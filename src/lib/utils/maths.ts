@@ -15,7 +15,7 @@ export const count_acts_kinds_by_year = function (
   show_invalid: boolean = true
 ): ActivitiesCounts[] {
 
-  let a: Activity[] = acts.filter(a => a.kind_name !== "FILTER").sort((a, b) =>
+  let a: Activity[] = acts.sort((a, b) =>
     new Date(a.fecha_creacion).getFullYear() - new Date(b.fecha_creacion).getFullYear()
   );
 

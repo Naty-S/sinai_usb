@@ -16,7 +16,7 @@ export const GET: RequestHandler = async function ({ params }) {
 
   try {
 
-    const act = await query_activity(Number(params.id), {[params.kind]: true});
+    const act = await query_activity(Number(params.id));
     const activity = format_activity(act);
 
     status = 200;

@@ -50,7 +50,7 @@ export const acts_kinds_by_year = function (
   show_invalid: boolean = true
 ): YearActivities[] {
 
-  let a: Activity[] = acts.filter(a => a.kind_name !== "FILTER").sort((a, b) =>
+  let a: Activity[] = acts.sort((a, b) =>
     new Date(a.fecha_creacion).getFullYear() - new Date(b.fecha_creacion).getFullYear()
   );
 
@@ -80,7 +80,7 @@ export const acts_kinds_by_group = function (
   show_invalid: boolean = true
 ): GroupActivities[] {
 
-  let a: Activity[] = acts.filter(a => a.kind_name !== "FILTER").sort((a, b) =>
+  let a: Activity[] = acts.sort((a, b) =>
     new Date(a.fecha_creacion).getFullYear() - new Date(b.fecha_creacion).getFullYear()
   );
 

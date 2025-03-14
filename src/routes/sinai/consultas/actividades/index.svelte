@@ -96,8 +96,6 @@
       activities = res.activities;
       activities_by_year = acts_kinds_by_year(activities, show_invalid);
       activities_years_counts = count_acts_kinds_by_year(activities, show_invalid);
-      console.log(activities)
-      console.log(activities_by_year)
       page_activities = acts_kinds_by_year(activities.slice(start_pagination, end_pagination), show_invalid);
       searching = false;
 
@@ -209,147 +207,132 @@
   });
 
   setContext(key, { form, errors, handleChange });
-  // $: console.log($form)
 </script>
 
-{#key $form}
-  <form class="ui large form" on:submit|preventDefault={show_search} on:reset={handleReset}>
-    <div class="field fields">
-      <label for="search_type">
-        Seleccione el tipo de búsqueda que desea realizar
+<form class="ui large form" on:submit|preventDefault={show_search} on:reset={handleReset}>
+  <div class="field fields">
+    <label for="search_type">
+      Seleccione el tipo de búsqueda que desea realizar
+    </label>
+    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+      <!-- professor -->
+      <label>
+        <input
+          type="radio"
+          id="search_type-professor"
+          name="search_type"
+          value="professor"
+          class="uk-radio"
+          on:change={(e) => handleRadioChange(e, 614)}
+          on:blur={(e) => handleRadioChange(e, 614)}
+          checked
+        >
+        Profesor
       </label>
-      <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-        <!-- professor -->
-        <label>
-          <input
-            type="radio"
-            id="search_type-professor"
-            name="search_type"
-            value="professor"
-            class="uk-radio"
-            on:change={(e) => handleRadioChange(e, 614)}
-            on:blur={(e) => handleRadioChange(e, 614)}
-            checked
-          >
-          Profesor
-        </label>
-        <!-- group -->
-        <label>
-          <input
-            type="radio"
-            id="search_type-group"
-            name="search_type"
-            value="group"
-            class="uk-radio"
-            on:change={(e) => handleRadioChange(e, 1)}
-            on:blur={(e) => handleRadioChange(e, 1)}
-          >
-          Grupo
-        </label>
-        <!-- department -->
-        <label>
-          <input
-            type="radio"
-            id="search_type-departament"
-            name="search_type"
-            value="department"
-            class="uk-radio"
-            on:change={(e) => {
-              handleChange(e);
-              $form.search = 2;
-              $form.date_start = date_start;
-              $form.date_end = date_end;
-              reset();
-            }}
-            on:blur={(e) => {
-              handleChange(e);
-              $form.search = 2;
-              $form.date_start = date_start;
-              $form.date_end = date_end;
-              reset();
-            }}
-          >
-          Departamento
-        </label>
-        <!-- division -->
-        <label>
-          <input
-            type="radio"
-            id="search_type-division"
-            name="search_type"
-            value="division"
-            class="uk-radio"
-            on:change={(e) => handleRadioChange(e, 1)}
-            on:blur={(e) => handleRadioChange(e, 1)}
-          >
-          División
-        </label>
-        <!-- coordination -->
-        <label>
-          <input
-            type="radio"
-            id="search_type-coordination"
-            name="search_type"
-            value="coordination"
-            class="uk-radio"
-            on:change={(e) => handleRadioChange(e, 1)}
-            on:blur={(e) => handleRadioChange(e, 1)}
-          >
-          Coordinación
-        </label>
-      </div>
-
-      {#if $errors.search_type}
-        {$errors.search_type}
-      {/if}
+      <!-- group -->
+      <label>
+        <input
+          type="radio"
+          id="search_type-group"
+          name="search_type"
+          value="group"
+          class="uk-radio"
+          on:change={(e) => handleRadioChange(e, 1)}
+          on:blur={(e) => handleRadioChange(e, 1)}
+        >
+        Grupo
+      </label>
+      <!-- department -->
+      <label>
+        <input
+          type="radio"
+          id="search_type-departament"
+          name="search_type"
+          value="department"
+          class="uk-radio"
+          on:change={(e) => {handleRadioChange(e, 2)}}
+          on:blur={(e) => {handleRadioChange(e, 2)}}
+        >
+        Departamento
+      </label>
+      <!-- division -->
+      <label>
+        <input
+          type="radio"
+          id="search_type-division"
+          name="search_type"
+          value="division"
+          class="uk-radio"
+          on:change={(e) => handleRadioChange(e, 1)}
+          on:blur={(e) => handleRadioChange(e, 1)}
+        >
+        División
+      </label>
+      <!-- coordination -->
+      <label>
+        <input
+          type="radio"
+          id="search_type-coordination"
+          name="search_type"
+          value="coordination"
+          class="uk-radio"
+          on:change={(e) => handleRadioChange(e, 1)}
+          on:blur={(e) => handleRadioChange(e, 1)}
+        >
+        Coordinación
+      </label>
     </div>
 
-    {#if $form.search_type === "group"}
-      <Select
-        label="Buscar Grupo"
-        name="search"
-        bind:value={$form.search}
-        customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
-        options={groups.map(o => ({ val: o.id.toString(), name: `Grupo ${o.id.toString()} - ${o.nombre}` }))}
-      />
-    {:else if $form.search_type === "department"}
-      <Select
-        label="Buscar Departamento"
-        name="search"
-        bind:value={$form.search}
-        customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
-        options={departments.map(o => ({ val: o.id.toString(), name: o.nombre }))}
-      />
-    {:else if $form.search_type === "division"}
-      <Select
-        label="Buscar División"
-        name="search"
-        bind:value={$form.search}
-        customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
-        options={divisions.map(o => ({ val: o.id.toString(), name: o.nombre }))}
-      />
-    {:else if $form.search_type === "coordination"}
-      <Select
-        label="Buscar Coordinación"
-        name="search"
-        bind:value={$form.search}
-        customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
-        options={coordinations.map(o => ({ val: o.id.toString(), name: o.nombre }))}
-      />
-    {:else}
-      <Select
-        label="Buscar Profesor"
-        name="search"
-        bind:value={$form.search}
-        customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
-        options={professors.map(o => ({ val: o.id.toString(), name: `${o.apellido1}, ${o.nombre1}` }))}
-      />
+    {#if $errors.search_type}
+      {$errors.search_type}
     {/if}
+  </div>
 
-    <ActivitiesFilter {date_start} {date_end} />
-    <ActionsButtons action="Buscar" reset="Reiniciar Filtros" button="Seleccionar Todas" on_click={select_all} />
-  </form>
-{/key}
+  {#if $form.search_type === "group"}
+    <Select
+      label="Buscar Grupo"
+      name="search"
+      bind:value={$form.search}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
+      options={groups.map(o => ({ val: o.id.toString(), name: `Grupo ${o.id.toString()} - ${o.nombre}` }))}
+    />
+  {:else if $form.search_type === "department"}
+    <Select
+      label="Buscar Departamento"
+      name="search"
+      bind:value={$form.search}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
+      options={departments.map(o => ({ val: o.id.toString(), name: o.nombre }))}
+    />
+  {:else if $form.search_type === "division"}
+    <Select
+      label="Buscar División"
+      name="search"
+      bind:value={$form.search}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
+      options={divisions.map(o => ({ val: o.id.toString(), name: o.nombre }))}
+    />
+  {:else if $form.search_type === "coordination"}
+    <Select
+      label="Buscar Coordinación"
+      name="search"
+      bind:value={$form.search}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
+      options={coordinations.map(o => ({ val: o.id.toString(), name: o.nombre }))}
+    />
+  {:else}
+    <Select
+      label="Buscar Profesor"
+      name="search"
+      bind:value={$form.search}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
+      options={professors.map(o => ({ val: o.id.toString(), name: `${o.apellido1}, ${o.nombre1}` }))}
+    />
+  {/if}
+
+  <ActivitiesFilter {date_start} {date_end} />
+  <ActionsButtons action="Buscar" reset="Reiniciar Filtros" button="Seleccionar Todas" on_click={select_all} />
+</form>
 
 <div class="ui divider" />
 

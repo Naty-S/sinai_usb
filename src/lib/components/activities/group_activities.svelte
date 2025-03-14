@@ -180,11 +180,11 @@
                     {#if act.validado_por && act.fecha_validacion}
                       (Validada por {act.validado_por} el {format_date(act.fecha_validacion, "long-day")}).
                     {/if}
-                    {#if act.logs.length > 0}
+                    {#if act.log}
                       (Modificado recientemente por
-                        {act.logs[0].Usuario.profesor?.perfil || act.logs[0].Usuario.administrador?.nombre}
-                        el {format_date(act.logs[0].fecha, "long-day")}
-                        a las {format_date(act.logs[0].hora, "time")}
+                        {act.log.Usuario.profesor?.perfil || act.log.Usuario.administrador?.nombre}
+                        el {format_date(act.log.fecha, "long-day")}
+                        a las {format_date(act.log.hora, "time")}
                       ).
                     {/if}
                   </span>
