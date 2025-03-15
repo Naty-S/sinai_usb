@@ -66,7 +66,7 @@
   let show_prepraii_form = false;
   let show_authors = false;
   let prepraii_confirm = false;
-  let actual = false;
+  let actual = true;
   let articles: Activity[] = [];
   let action = { info: '', code: '' };
 
@@ -95,6 +95,8 @@
           ((new Date(prepraii.inicio)).getTime() <= (new Date(a.kind_data?.fecha_publicacion)).getTime() &&
            (new Date(a.kind_data?.fecha_publicacion)).getTime() <= (new Date(prepraii.fin)).getTime())
         );
+      } else {
+        actual = false;
       };
     } else {
       const { message, code } = await acts.json();
@@ -111,7 +113,6 @@
   $: requested = Boolean($page.url.searchParams.get("prepraii_requested"));
   $: err = $page.url.searchParams.get("error");
   $: err_code = $page.url.searchParams.get("code");
-  $: console.log($form.prepraii_profesores)
 </script>
 
 <h2>Solicitar PREPRAII</h2>

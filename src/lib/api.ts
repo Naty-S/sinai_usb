@@ -1,6 +1,8 @@
 /* 
  * Helper for requests
 */
+import type { Load, LoadEvent } from "@sveltejs/kit";
+import { ExternalFetch } from "@sveltejs/kit";
 
 
 type Method = "GET" | "POST" | "PATCH" | "DELETE";
@@ -10,10 +12,10 @@ type Method = "GET" | "POST" | "PATCH" | "DELETE";
  * Fetch response from endpoint
 */
 const request = async function (method: Method, endpoint: string, data?: any) {
-  const opts: any = { method, headers: {}, credentials: "same-origin" };
+  const opts: any = { method, credentials: "same-origin" };
   
   if (data) {
-    opts.headers["Content-Type"] = "application/json";
+    opts.headers = { "Content-Type": "application/json"};
     opts.body = JSON.stringify(data);
   };
 

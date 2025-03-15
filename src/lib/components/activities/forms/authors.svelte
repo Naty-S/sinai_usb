@@ -152,6 +152,7 @@
             class="ten wide required field"
             error={$errors.autores_externos[i]?.nombre}
           />
+            <!-- disabled={professors.includes($session.user?.professor?.profile ?? '')} -->
         {/if}
         
         <Input
