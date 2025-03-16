@@ -48,7 +48,7 @@
 </script>
 
 <Modal
-  title="Actualizar PREPRAII"
+  title="Crear PREPRAII"
   id="create_prepraii"
   {ok_text}
   {close_text}
