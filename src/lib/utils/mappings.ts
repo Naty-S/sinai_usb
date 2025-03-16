@@ -37,7 +37,7 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
           return "Publicaciones en Revistas Indexadas en el SCI-SSCI-ARTS"
   
         } else if (_articulo_revista.indice && _articulo_revista.estado === "Publicado") {
-          return "Publicaciones en Revistas Indexadas en Otros Indices"
+          return "Publicaciones en Revistas Indexadas en Otros Índices"
   
           // TODO: No se sabe exactamente que condicion hace falta para diferenciarlo de la anterior.
           // En el codigo viejo al parecer solo se usa en 'sinai/evaluacion_gid.php', pero no hay
@@ -144,7 +144,7 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
           return "Proyectos de Grado (Postgrados)"
   
         } else if (_proyecto_grado.nivel_academico === "Licencitura") {
-          return "Tutoría de Proyectos de Grado (Licencituras)"
+          return "Tutoría de Proyectos de Grado (Licenciaturas)"
   
         } else if (_proyecto_grado.nivel_academico === "Ingenieria") {
           return "Tutoría de Proyectos de Grado (Ingenierías)"
