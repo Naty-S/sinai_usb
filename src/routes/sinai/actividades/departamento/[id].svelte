@@ -10,7 +10,7 @@
     const user = session.user;
     const professor = user?.professor;
 
-    if (user?.dean || professor?.coord_chief ||
+    if (user?.dean || professor?.coord_chief || professor?.division_chief ||
         professor?.is_dep_chief || professor?.is_dep_representative
     ) {
       const current_year = (new Date()).getFullYear();
@@ -208,7 +208,7 @@
 
   {#key professors_activities}  
     <div class="uk-text-center">
-      Número total de profesores de su departamento resgistrados en el sistema:
+      Número total de profesores de su departamento registrados en el sistema:
       ({professors_activities.length})
     </div>
 
