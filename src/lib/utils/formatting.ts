@@ -172,7 +172,8 @@ export const department_rank_activities = function (activities: Activities, prof
     owner: {
       id: p.id,
       name: p.nombre1 + ", " + p.apellido1,
-      full_name: ''
+      full_name: '',
+      email: p.correo
     },
     activities: []
   }));
