@@ -107,7 +107,7 @@
       class="required field"
     />
     <Input
-      label="Página url"
+      label="Página Web Personal"
       name="profile.url"
       placeholder="http://www.example.com"
       bind:value={$form.profile.url}

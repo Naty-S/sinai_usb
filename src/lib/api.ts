@@ -1,8 +1,6 @@
 /* 
  * Helper for requests
 */
-import type { Load, LoadEvent } from "@sveltejs/kit";
-import { ExternalFetch } from "@sveltejs/kit";
 
 
 type Method = "GET" | "POST" | "PATCH" | "DELETE";

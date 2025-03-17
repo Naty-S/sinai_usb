@@ -190,7 +190,7 @@
           class="required field"
         />
         <Input
-          label="Anio"
+          label="Año"
           name="pei.anio"
           bind:value={$form.pei.anio}
           error={$errors.pei.anio}
