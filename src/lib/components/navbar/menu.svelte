@@ -112,7 +112,7 @@
 
   const logout = async function () {
 
-    await api.post("/api/auth/logout", Buffer.from(JSON.stringify(user)).toString("base64"));
+    await api.post("/api/auth/logout", user);
 
     $session.user = null;
   
