@@ -20,6 +20,7 @@
       const user = jwt ? JSON.parse(jwt) : null;
 
       $session.user = user;
+      // goto("/sinai") // for redirect??
     });
   };
 

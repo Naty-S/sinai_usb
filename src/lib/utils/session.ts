@@ -17,6 +17,8 @@ import { CAS_LOGIN_URL } from "$lib/api";
  */
 export const redirect: Load = async function ({ fetch, session, url }) {
 
+  console.log("-------------------------------------------------------------------------_______________________________________")
+  // console.log("Redirect, url:", url)
   const user = session.user;
   const professor = user?.professor;
 
@@ -42,6 +44,8 @@ export const redirect: Load = async function ({ fetch, session, url }) {
     const login = await fetch(`/api/auth/login/${origin}/${cas_ticket}`);
     
     if (login.status === 302) {
+      console.log("-------------------------------------------------------------------------")
+      console.log("status 302")
       return {
         status: 302,
         redirect: login.url

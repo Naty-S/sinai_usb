@@ -24,8 +24,10 @@ import { query_user } from "$lib/server/queries";
  * 
  * If the user is registered but not active redirects to register page and notify of status
  */
-export const GET: RequestHandler = async function ({ params }) {
+export const GET: RequestHandler = async function ({ params, request }) {
 
+  console.log("-------------------------------------------------------------------------_______________________________________")
+  console.log("Login, headers", request.headers)
   const cas_ticket = params.ticket;
   const origin = params.origin;
 
@@ -128,7 +130,7 @@ export const GET: RequestHandler = async function ({ params }) {
     // cookie expires in 24 hours = 86400 seg
     // must specify Domain so the cookie is propagated to subdomains
     headers = {
-      "set-cookie": `jwt=${jwt}; Path=/sinai; HttpOnly; Max-Age=86400;`// Domain=/sinai;`
+      "set-cookie": `jwt=${jwt}; Path=/sinai; HttpOnly; Max-Age=86400;`// Domain=.stilgar.ldc.usb.ve;`
     };
     body = user;
 
