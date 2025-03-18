@@ -1,6 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
 import { handle_error, prisma } from "$api/_api";
+import { Prepraii } from "$lib/interfaces/prepraii";
 
 
 /**
@@ -15,9 +16,14 @@ export const GET: RequestHandler = async function () {
     const prepraii = await prisma.prepraii_convocatoria.findMany({
       include: {
         solicitudes: { include: {
-          Actividad: { include: {articulo_revista: true} },
+          Actividad: { include: {articulo_revista: true, autores_usb: true, autores_externos: true} },
+          Convocatoria: true,
           Evaluador: { select: {nombre1: true, apellido1: true, correo: true} },
-          Profesor: { select: {nombre1: true, apellido1: true, correo: true} }
+          Profesor: { select: {nombre1: true, apellido1: true, correo: true} },
+          prepraii_profesores: { select: {
+            contrato_constancia: true,
+            Profesor: { select: {nombre1: true, apellido1: true, correo: true} }
+          }}
         }
       }},
       orderBy: { id: "asc" }

@@ -9,21 +9,7 @@ import type {
 } from "@prisma/client";
 
 
-export type Prepraii = prepraii_convocatoria & {
-    solicitudes: (prepraii_solicitud & {
-      Actividad: actividad & { articulo_revista?: articulo_revista | null }
-    ; Evaluador: {
-        nombre1: string
-      ; apellido1: string
-      ; correo: string
-    }
-    ; Profesor: {
-        nombre1: string
-      ; apellido1: string
-      ; correo: string
-    }
-  })[]
-};
+export type Prepraii = prepraii_convocatoria & { solicitudes: PrepraiiRequest[] };
 
 
 export type PrepraiiRequest = prepraii_solicitud & {

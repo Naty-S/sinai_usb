@@ -4,10 +4,6 @@
   Only available for Dean
  -->
 <script lang="ts">
-	import type { Prepraii } from "$lib/interfaces/prepraii";
-
-  import { onMount } from "svelte";
-  
   import * as api from "$lib/api";
 
   import { format_date } from "$lib/utils/formatting";

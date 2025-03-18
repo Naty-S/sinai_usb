@@ -26,128 +26,88 @@
   };
 </script>
 <script lang="ts">
-  import type { ProfessorE } from "$lib/interfaces/professors";
 	import type { PrepraiiRequest } from "$lib/interfaces/prepraii";
   
-	import { onMount } from "svelte";
-
-  import * as api from "$lib/api";
-
 	import { base64_to_blob } from "$lib/utils/conversions";
 
-	import Modal from '$lib/components/modals/modal.svelte';
-  
   import Pay from "$lib/components/forms/prepraii/pay.svelte";
-  import Reasign from "$lib/components/forms/prepraii/reasign.svelte";
 
   export let requests: PrepraiiRequest[];
 
-  let reasign = false;
   let pay = false;
   let prepraii: PrepraiiRequest;
-  let chiefs: ProfessorE[];
-  let action = { info: '', code: '' };
-
-  const pay_request = function (r: PrepraiiRequest) {
-    pay = true;
-    reasign = false;
-    prepraii = r;
-  };
-
-  const reasign_coord = function (r: PrepraiiRequest) {
-    reasign = true;
-    pay = false;
-    prepraii = r;
-  };
-
-  onMount( async () => {
-    const res1 = await api.get("/api/coordinators");
-
-    if (res1.ok) { chiefs = await res1.json();
-    } else {
-      const { message, code } = await res1.json();
-      action.info = message;
-      action.code = code;
-    };
-  });
 </script>
 
 <h2>Pagos PREPRAII</h2>
 <h3>Solicitudes aprobadas pendientes por pagar</h3>
 
-<div class="ui middle aligned divided list">
-  {#if pay}
-    <Pay {prepraii}  show_pay={pay} />
-  {/if}
-  {#if reasign}
-    <Reasign {prepraii} {chiefs} show_reasign={reasign}/>
-  {/if}
+{#if pay}
+  <Pay {prepraii} show_pay={pay} />
+{/if}
 
+<div id="s1_novel_requests" class="ui fluid styled accordion" uk-accordion="animation: false;">
   {#each requests as r}    
-    <div class="item">
-      <div class="right floated content">
-        {#if r.estado == "Aprobado" && !r.pagada}
-          <button type="button" class="ui button" on:click={() => pay_request(r)}>
-            Pagar
-          </button>
-          <button type="button" class="ui button" on:click={() => reasign_coord(r)}>
-            Reasignar Coordinador
-          </button>
-        {:else}
-          {r.estado}
-        {/if}
+    <section id="prepraii_request_{r.id}">
+      <div class="uk-accordion-title title">
+        <div class="ui three column grid">
+          <div class="column">
+            Profesor solicitante: {`${r.Profesor.nombre1}, ${r.Profesor.apellido1}`}.
+          </div>
+          <div class="center aligned column">
+            Profesor evaluador: {`${r.Evaluador.nombre1}, ${r.Evaluador.apellido1}`}.
+          </div>
+          <div class="right aligned column">
+            {#if r.estado == "Aprobado" && !r.pagada}
+              <button type="button" class="ui button" on:click={() => {pay = true; prepraii = r;}}>
+                Pagar
+              </button>
+            {:else}
+              {r.estado}
+            {/if}
+          </div>
+        </div>
       </div>
-      <div class="content">
-        Profesor solicitante: {`${r.Profesor.nombre1}, ${r.Profesor.apellido1}`}.
-        <div class="ui list">
-          <div class="item">
-            <i class="comment icon"/>
-            <div class="content">
-              Titulo del artículo: {r.Actividad.titulo}
+
+      <div class="uk-accordion-content">
+        <div class="content">
+          <div class="ui list">
+            <div class="item">
+              <div class="content">
+                <div class="ui list">
+                  <div class="item">
+                    <i class="comment icon"/>
+                    <div class="content">
+                      Titulo del artículo: {r.Actividad.titulo}
+                    </div>
+                  </div>
+                  <div class="item">
+                    <i class="money bill wave icon"/>
+                    <div class="content">
+                      Monto: {r.monto} Bs.
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="item">
-            <i class="money bill wave icon"/>
-            <div class="content">
-              Monto: {r.monto} Bs.
-            </div>
-          </div>
-          <div class="item">
-            <i class="users icon"/>
-            <div class="content">
-              <div class="">Coautores:</div>
-              <ul class="ui items">
-                {#each r.prepraii_profesores as p}
-                  <div class="item"><li>
-                    {p.Profesor.nombre1}, {p.Profesor.apellido1}:
-                    <a href={URL.createObjectURL(base64_to_blob(p.contrato_constancia))} target=”_blank”>
-                      Ver/Descargar
-                    </a>
-                  </li></div>
-                {/each}
-              </ul>
+            <div class="item">
+              <i class="users icon"/>
+              <div class="content">
+                <div class="medium header">Contratos y Constancias de los Autores:</div>
+                <ul class="ui items">
+                  {#each r.prepraii_profesores as p}
+                    <div class="item"><li>
+                      {p.Profesor.nombre1}, {p.Profesor.apellido1}:
+                      <a href={URL.createObjectURL(base64_to_blob(p.contrato_constancia))} target=”_blank”>
+                        Ver/Descargar
+                      </a>
+                    </li></div>
+                  {/each}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   {/each}
 </div>
-
-{#if action.info !== ''}
-  <Modal
-    id="error"
-    title="Error. {action.code ?? "Desconocido"}"
-    close_text="Ok"
-    align="center"
-    pop_up={action.info !== ''}
-    close={() => { action.info = ''; location.reload(); }}
-  >
-    <p>
-      Hubo un error al intentar cargar los Coordinadores,
-      por favor vuelva a intentar o contáctese con algún administrador proporcionando
-      el código de error y detalles.
-    </p>
-    <span class="ui red text">Detalles: {action.info ?? "No se encuentra en la lista de errores conocidos"}</span>
-  </Modal>
-{/if}

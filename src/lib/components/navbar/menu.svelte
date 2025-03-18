@@ -96,7 +96,7 @@
 
     views.push({ href: "/sinai/grupos", click: void_click, name: "Grupos de Investigación" });
 
-    requests.push({href: "/sinai/prepraii", click: void_click, name: "PREPRAII"});
+    requests.push({href: "/sinai/prepraii", click: void_click, name: "Histórico PREPRAII"});
     requests.push({href: "/sinai/prepraii/pagos", click: void_click, name: "Pagos PREPRAII"});
     requests.push({href: "/sinai/validaciones/nuevos_profesores", click: void_click, name: "Nuevos Registros"});
 
