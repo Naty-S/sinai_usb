@@ -4,7 +4,9 @@ import { handle_error, prisma } from "$api/_api";
 
 
 /**
- * Updates .
+ * Updates prepraii request.
+ * 
+ * If approved 
  * 
  * @returns Redidercts . The code `decision_made`
 */
@@ -31,12 +33,15 @@ export const PATCH: RequestHandler = async function ({ request }) {
 
     const n_autores = req.Actividad.autores_usb.length + req.Actividad.autores_externos.length;
 
-    data.monto = data.tipo == 1 ? convocatoria.monto_tipo1 : convocatoria.monto_tipo2;
-    
-    if (n_autores > 1) { data.monto = (data.monto * 2) / n_autores;
-    } else if (n_autores <= 0) {
-      throw new Error("No authors in the article selected. Should not happen.");
-    };
+    if (data.estado === "Aprobado") {
+
+      data.monto = data.tipo == 1 ? convocatoria.monto_tipo1 : convocatoria.monto_tipo2;
+
+      if (n_autores > 1) { data.monto = Number(((data.monto * 2) / n_autores).toFixed(0));
+      } else if (n_autores <= 0) {
+        throw new Error("No authors in the article selected. Should not happen.");
+      };
+    }
 
     await prisma.prepraii_solicitud.update({ data, where: { id: prepraii_id } });
 
