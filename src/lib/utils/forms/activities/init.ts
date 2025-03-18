@@ -44,16 +44,16 @@ export const init = function (kind: kinds, user?: User, data?: Activity): activi
         data?.groups.map(g => ({ old: g.id.toString(), new: g.id.toString() })) ||
         [{ old: '?', new: '0'}]
     , autores_externos: data?.autores_externos || []
-    , autores_usb: data?.autores_usb || [{
-        nombre: user?.dean ?? user?.professor?.profile ?? 'usuario, ficticio'
+    , autores_usb: data?.autores_usb || (user?.professor && [{
+        nombre: user.professor.profile ?? 'usuario, ficticio'
       , es_estudiante: false
       , es_ponente: false
       , es_tutor: false
       , tipo_actividad: kind
-      , correo: user?.email || null
-      , profesor_id: user?.professor?.id || null
+      , correo: user.email || null
+      , profesor_id: user.professor.id || null
       , estudiante_carrera: null
-    }]
+    }]) || []
     , user_rank: user?.dean ? "dean" : "professor"
     , user: user || {email: "usuario ficticio", pending_professors: false}
     , kind
