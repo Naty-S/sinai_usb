@@ -207,7 +207,6 @@ model usuario {
   actividades                  actividad[]               @relation("actividad_creada_por_fkey")
   validaciones                 actividad[]               @relation("actividad_validado_por_fkey")
   administrador                administrador?
-  autores                      autor_usb[]
   profesor                     profesor?
   logs_operaciones_actividades log_operacion_actividad[]
 
@@ -718,7 +717,6 @@ model autor_usb {
 
   // Postgres relations
   Actividad   actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Correo      usuario?  @relation(fields: [correo], references: [login], onDelete: NoAction, onUpdate: Cascade)
   Profesor_id profesor? @relation(fields: [profesor_id], references: [id], onDelete: NoAction, onUpdate: Cascade)
 
   @@unique([actividad, nombre])

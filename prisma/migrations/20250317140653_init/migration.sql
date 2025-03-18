@@ -942,9 +942,6 @@ ALTER TABLE "autor_externo" ADD CONSTRAINT "autor_externo_actividad_fkey" FOREIG
 ALTER TABLE "autor_usb" ADD CONSTRAINT "autor_usb_actividad_fkey" FOREIGN KEY ("actividad") REFERENCES "actividad"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "autor_usb" ADD CONSTRAINT "autor_usb_correo_fkey" FOREIGN KEY ("correo") REFERENCES "usuario"("login") ON DELETE NO ACTION ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "autor_usb" ADD CONSTRAINT "autor_usb_profesor_id_fkey" FOREIGN KEY ("profesor_id") REFERENCES "profesor"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
