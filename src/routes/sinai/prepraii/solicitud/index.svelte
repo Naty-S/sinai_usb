@@ -130,7 +130,10 @@
 {/if}
 
 {#if show_prepraii_form}
-  <form id="prepraii_request_form" class="ui large form segment" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
+  <form id="prepraii_request_form" class="ui large form segment"
+    on:submit|preventDefault={handleSubmit}
+    on:reset={handleReset}
+  >
 
     <Select
       label="Actividad"
@@ -250,14 +253,14 @@
     <section id="prepraii_request_{pre.id}">
 
       <div class="uk-accordion-title title">
-        <div class="ui grid">
-          <div class="ten wide column">
+        <div class="ui two column grid">
+          <div class="column">
             {pre.Actividad.titulo}
           </div>
-          <div class="six wide right aligned column">
+          <div class="right aligned column">
             {pre.tipo ? "Tipo" + pre.tipo + '.' : ''}
             {pre.estado == "En_Revision" ? "En Revisión" : pre.estado}.
-            {pre.pagada ? "Pagada." : ''}
+            {pre.pagada ? "Pagada." : "Sin Pagar."}
           </div>
         </div>
       </div>
