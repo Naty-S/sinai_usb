@@ -20,8 +20,7 @@
 
 <h2>Tomar decision</h2>
 
-<form
-  id="s1_novel_request_decision_form" class="ui large form segment"
+<form id="s1_novel_request_decision_form" class="ui large form segment"
   on:submit|preventDefault={handleSubmit}
   on:reset={handleReset}
 >
@@ -87,7 +86,7 @@
     class="required field"
   />
 
-  <ActionsButtons action="Tomar Decisión" button="Cancelar" on_click={() => location.reload()} />
+  <ActionsButtons action="Tomar Decisión" />
 </form>
 
 {#if action.info !== ''}

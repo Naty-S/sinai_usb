@@ -78,16 +78,8 @@
       action.code = code;
     };
 
-    decision = true;
+    decision = !decision;
     jury = false;
-  };
-
-  function to_top() {
-    
-    document.body.scrollIntoView();
-    
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   };
 
   $: jury_assingned = Boolean($page.url.searchParams.get("jury_assingned"));
@@ -99,96 +91,128 @@
 <h2>Evaluar S1 Novel</h2>
 <h3>Solicitudes</h3>
 
-<div class="ui middle aligned divided list">
-  {#if jury}
-    <Jury {s1_novel} />
-  {/if}
-  {#if decision}
-    <Decision {action} {jury_usb} {jury_out} f={form} />
-  {/if}
-
-  {#each requests as r}    
-    <div class="item">
-      <div class="right floated content">
-        {#if r.estado == "En_Revision"}
-          {#if r.jurado_usb.length > 0 || r.jurado_externo.length > 0}
-            <button type="button" class="ui button" on:click={() => make_decision(r.id)}>
-              Tomar Decisión
-            </button>
-          {:else}
-            <button type="button" class="ui button" on:click={() => {s1_novel = r.id; jury = true; decision = false; to_top()}}>
-              Asignar Jurado
-            </button>
-          {/if}
-        {:else}
-          {r.estado}
-        {/if}
+<div id="s1_novel_requests" class="ui fluid styled accordion" uk-accordion="animation: false;">
+  {#each requests as r}
+    <section id="s1_novel_request_{r.id}">
+      <div class="uk-accordion-title title">
+        <div class="ui two column grid">
+          <div class="column">
+            Profesor solicitante: {`${r.Profesor.nombre1}, ${r.Profesor.apellido1}`}.
+          </div>
+          <div class="right aligned column">
+            {r.estado == "En_Revision" ? "En Revisión" : r.estado}.
+          </div>
+        </div>
       </div>
-      <div class="content">
-        Profesor solicitante: {`${r.Profesor.nombre1}, ${r.Profesor.apellido1}`}.
-        <div class="ui list">
-          <div class="item">
-            <i class="comment icon"/>
-            <div class="content">
-              Observaciones: {r.observaciones_profesor}
+
+      <div class="uk-accordion-content">
+        <div class="content">
+          <div class="ui list">
+            <div class="item">
+              <div class="content">
+                <div class="ui list">
+                  <div class="item">
+                    <i class="comment icon"/>
+                    <div class="content">
+                      Observaciones: {r.observaciones_profesor}
+                    </div>
+                  </div>
+                  <div class="item">
+                    <i class="file pdf icon"/>
+                    <div class="content">
+                      Proyecto:
+                      <a href={URL.createObjectURL(base64_to_blob(r.proyecto))} target=”_blank”>
+                        Ver/Descargar
+                      </a>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <i class="folder open icon"/>
+                    <div class="content">
+                      <div class="">Soportes:</div>
+                      <ol class="ui items">
+                        {#each r.soportes as s}
+                          <div class="item"><li><a href={URL.createObjectURL(base64_to_blob(s))} target=”_blank”>
+                            Ver/Descargar
+                          </a></li></div>
+                        {/each}
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="item">
-            <i class="file pdf icon"/>
-            <div class="content">
-              Proyecto:
-              <a href={URL.createObjectURL(base64_to_blob(r.proyecto))} target=”_blank”>
-                Ver/Descargar
-              </a>
-            </div>
-          </div>
-          <div class="item">
-            <i class="folder open icon"/>
-            <div class="content">
-              <div class="">Soportes:</div>
-              <ol class="ui items">
-                {#each r.soportes as s}
-                  <div class="item"><li><a href={URL.createObjectURL(base64_to_blob(s))} target=”_blank”>
-                    Ver/Descargar
-                  </a></li></div>
-                {/each}
-              </ol>
+            {#if r.jurado_usb.length > 0}
+              <div class="item">
+                <div class="content">
+                  <div class="medium header">Jurado USB:</div>
+                  <div class="ui horizontal list">
+                    {#each r.jurado_usb as j_usb}
+                      <div class="item">
+                        <i class="user tie icon"/>
+                        <div class="content">
+                          <div class="header">{`${j_usb.Profesor.nombre1}, ${j_usb.Profesor.apellido1}`}</div>
+                          <div class="description">{j_usb.Profesor.correo}</div>
+                        </div>
+                      </div>
+                    {/each}
+                  </div>
+                </div>
+              </div>
+            {/if}
+            {#if r.jurado_externo.length > 0}
+              <div class="item">
+                <div class="content">
+                  <div class="medium header">Jurado Externo:</div>
+                  <div class="ui horizontal list">
+                    {#each r.jurado_externo as j_e}
+                      <div class="item">
+                        <i class="user tie icon"/>
+                        <div class="content">
+                          <div class="header">{j_e.nombre}</div>
+                          <div>{j_e.universidad || ''}</div>
+                          <div>{j_e.correo || ''}</div>
+                        </div>
+                      </div>
+                    {/each}
+                  </div>
+                </div>
+              </div>
+            {/if}
+            <div class="item">
+              <div class="content">
+                {#if r.estado == "En_Revision"}
+                  {#if r.jurado_usb.length > 0 || r.jurado_externo.length > 0}
+                    <button type="button" class="ui button" on:click={() => make_decision(r.id)}>
+                      {#if decision}
+                        Cancelar
+                      {:else}
+                        Tomar Decisión
+                      {/if}
+                    </button>
+                  {:else}
+                    <button type="button" class="ui button" on:click={() => {s1_novel = r.id; jury = !jury; decision = false}}>
+                      {#if jury}
+                        Cancelar
+                      {:else}
+                        Asignar Jurado
+                      {/if}
+                    </button>
+                  {/if}
+                {/if}
+
+                {#if jury}
+                  <Jury {s1_novel} />
+                {/if}
+                {#if decision}
+                  <Decision {action} {jury_usb} {jury_out} f={form} />
+                {/if}
+              </div>
             </div>
           </div>
         </div>
-
-        {#if r.jurado_usb.length > 0}
-          <div class="medium header">Jurado USB:</div>
-          <div class="ui horizontal list">
-            {#each r.jurado_usb as j_usb}
-              <div class="item">
-                <i class="user tie icon"/>
-                <div class="content">
-                  <div class="header">{`${j_usb.Profesor.nombre1}, ${j_usb.Profesor.apellido1}`}</div>
-                  <div class="description">{j_usb.Profesor.correo}</div>
-                </div>
-              </div>
-            {/each}
-          </div>
-        {/if}
-
-        {#if r.jurado_externo.length > 0}
-          <div class="medium header">Jurado Externo:</div>
-          <div class="ui horizontal list">
-            {#each r.jurado_externo as j_e}
-              <div class="item">
-                <i class="user tie icon"/>
-                <div class="content">
-                  <div class="header">{j_e.nombre}</div>
-                  <div>{j_e.universidad || ''}</div>
-                  <div>{j_e.correo || ''}</div>
-                </div>
-              </div>
-            {/each}
-          </div>
-        {/if}
       </div>
-    </div>
+    </section>
   {/each}
 </div>
 

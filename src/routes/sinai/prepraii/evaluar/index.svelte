@@ -57,111 +57,136 @@
 <h2>Evaluar PREPRAII</h2>
 <h3>Solicitudes</h3>
 
-<div class="ui middle aligned divided list">
-  {#if decision}
-    <Decision {prepraii} />
-  {/if}
-
-  {#each requests as r}    
-    <div class="item">
-      <div class="right floated content">
-        {#if !r.pagada && r.Convocatoria.activo}
-          {r.estado == "En_Revision" ? "En Revisión" : r.estado}
-          <button type="button" class="ui button" on:click={() => {decision = true; prepraii = r}}>
-            Tomar Decisión
-          </button>
-        {:else}
-          {r.estado == "En_Revision" ? "Convocatoria cerrada" : r.estado}
-        {/if}
-      </div>
-      <div class="content">
-        Profesor solicitante: {`${r.Profesor.nombre1}, ${r.Profesor.apellido1}`}.
-        <div class="ui list">
-          <div class="item">
-            <i class="comment icon"/>
-            <div class="content">
-              Observaciones: {r.observaciones_profesor}
-            </div>
+<div id="prepraii_requests" class="ui fluid styled accordion" uk-accordion="animation: false;">
+  {#each requests as r}
+    <section id="prepraii_request_{r.id}">
+      <div class="uk-accordion-title title">
+        <div class="ui two column grid">
+          <div class="column">
+            Profesor solicitante: {`${r.Profesor.nombre1}, ${r.Profesor.apellido1}`}.
           </div>
-          <div class="item">
-            <i class="file pdf icon"/>
-            <div class="content">
-              Artículo:
-              <a href={URL.createObjectURL(base64_to_blob(r.articulo))} target=”_blank”>
-                Ver/Descargar
-              </a>
-            </div>
+          <div class="right aligned column">
+            {#if !r.pagada && r.Convocatoria.activo}
+              {r.estado == "En_Revision" ? "En Revisión" : r.estado}.
+            {:else}
+              {r.estado == "En_Revision" ? "Convocatoria cerrada" : r.estado}.
+            {/if}
           </div>
-          <div class="item">
-            <i class="folder open icon"/>
-            <div class="content">
-              <div class="">Contratos/Constancias:</div>
-              <ul class="ui items">
-                {#each r.prepraii_profesores as p}
-                  <div class="item"><li>
-                    {p.Profesor.nombre1}, {p.Profesor.apellido1}:
-                    <a href={URL.createObjectURL(base64_to_blob(p.contrato_constancia))} target=”_blank”>
-                      Ver/Descargar
-                    </a>
-                  </li></div>
-                {/each}
-              </ul>
-            </div>
-          </div>
-          <div class="item">
-            <i class="newspaper outline icon"/>
-            <div class="content">
-              Datos del artículo:
-              {#if r.Actividad.articulo_revista}
-                <KindInfo activity={r.Actividad.articulo_revista} kind="articulo_revista" />
-              {/if}
-            </div>
-          </div>
-          {#if r.Actividad.autores_usb.length > 0}
-            <div class="item">
-              <i class="users icon"/>
-              <div class="content">
-                <div class="">Autores USB:</div>
-                <ul class="ui items">
-                  {#each r.Actividad.autores_usb as au}
-                    <div class="item"><li>
-                      {#if au.es_estudiante}
-                        Estudiante: {au.nombre} ({null_to_empty(au.estudiante_carrera)})
-                      {:else}
-                        Profesor: {au.nombre} {au.es_tutor ? "(Tutor)" : ''}.
-                      {/if}
-                      {null_to_empty(au.correo)}
-                      {au.es_ponente ? "(Ponente)" : ''}
-                    </li></div>
-                  {/each}
-                </ul>
-              </div>
-            </div>
-          {/if}
-          {#if r.Actividad.autores_externos.length > 0}
-            <div class="item">
-              <i class="users icon"/>
-              <div class="content">
-                <div class="">Autores Externos:</div>
-                <ul class="ui items">
-                  {#each r.Actividad.autores_externos as ae}
-                    <div class="item"><li>
-                      {#if ae.es_estudiante}
-                        Estudiante: {ae.nombre} ({null_to_empty(ae.estudiante_carrera)})
-                      {:else}
-                        Profesor: {ae.nombre} {ae.es_tutor ? "(Tutor)" : ''}.
-                      {/if}
-                      {null_to_empty(ae.correo)}
-                      {ae.es_ponente ? "(Ponente)" : ''}
-                    </li></div>
-                  {/each}
-                </ul>
-              </div>
-            </div>
-          {/if}
         </div>
       </div>
-    </div>
+
+      <div class="uk-accordion-content">
+        <div class="content">
+          <div class="ui list">
+            <div class="item">
+              <div class="content">
+                <div class="ui list">
+                  <div class="item">
+                    <i class="comment icon"/>
+                    <div class="content">
+                      Observaciones: {r.observaciones_profesor}
+                    </div>
+                  </div>
+                  <div class="item">
+                    <i class="file pdf icon"/>
+                    <div class="content">
+                      Artículo:
+                      <a href={URL.createObjectURL(base64_to_blob(r.articulo))} target=”_blank”>
+                        Ver/Descargar
+                      </a>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <i class="folder open icon"/>
+                    <div class="content">
+                      <div class="">Contratos/Constancias:</div>
+                      <ul class="ui items">
+                        {#each r.prepraii_profesores as p}
+                          <div class="item"><li>
+                            {p.Profesor.nombre1}, {p.Profesor.apellido1}:
+                            <a href={URL.createObjectURL(base64_to_blob(p.contrato_constancia))} target=”_blank”>
+                              Ver/Descargar
+                            </a>
+                          </li></div>
+                        {/each}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <i class="newspaper outline icon"/>
+              <div class="content">
+                Datos del artículo:
+                {#if r.Actividad.articulo_revista}
+                  <KindInfo activity={r.Actividad.articulo_revista} kind="articulo_revista" />
+                {/if}
+              </div>
+            </div>
+            {#if r.Actividad.autores_usb.length > 0}
+              <div class="item">
+                <i class="users icon"/>
+                <div class="content">
+                  <div class="medium header">Autores USB:</div>
+                  <ul class="ui items">
+                    {#each r.Actividad.autores_usb as au}
+                      <div class="item"><li>
+                        {#if au.es_estudiante}
+                          Estudiante: {au.nombre} ({null_to_empty(au.estudiante_carrera)})
+                        {:else}
+                          Profesor: {au.nombre} {au.es_tutor ? "(Tutor)" : ''}.
+                        {/if}
+                        {null_to_empty(au.correo)}
+                        {au.es_ponente ? "(Ponente)" : ''}
+                      </li></div>
+                    {/each}
+                  </ul>
+                </div>
+              </div>
+            {/if}
+            {#if r.Actividad.autores_externos.length > 0}
+              <div class="item">
+                <i class="users icon"/>
+                <div class="content">
+                  <div class="medium header">Autores Externos:</div>
+                  <ul class="ui items">
+                    {#each r.Actividad.autores_externos as ae}
+                      <div class="item"><li>
+                        {#if ae.es_estudiante}
+                          Estudiante: {ae.nombre} ({null_to_empty(ae.estudiante_carrera)})
+                        {:else}
+                          Profesor: {ae.nombre} {ae.es_tutor ? "(Tutor)" : ''}.
+                        {/if}
+                        {null_to_empty(ae.correo)}
+                        {ae.es_ponente ? "(Ponente)" : ''}
+                      </li></div>
+                    {/each}
+                  </ul>
+                </div>
+              </div>
+            {/if}
+            {#if !r.pagada && r.Convocatoria.activo && r.estado === "En_Revision"}
+              <div class="item">
+                <div class="content">
+                    <button type="button" class="ui button" on:click={() => {decision = !decision; prepraii = r}}>
+                      {#if decision}
+                        Cancelar
+                      {:else}
+                        Tomar Decisión
+                      {/if}
+                    </button>
+
+                  {#if decision}
+                    <Decision {prepraii} />
+                  {/if}
+                </div>
+              </div>
+            {/if}
+          </div>
+        </div>
+      </div>
+    </section>
   {/each}
 </div>
 

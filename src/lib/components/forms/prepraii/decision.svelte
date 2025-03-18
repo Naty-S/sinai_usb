@@ -29,9 +29,7 @@
 
 <h2>Tomar Decisión</h2>
 
-<form
-  id="prepraii_request_decision_form"
-  class="ui large form segment"
+<form id="prepraii_request_decision_form" class="ui large form segment"
   on:submit|preventDefault={handleSubmit}
   on:reset={handleReset}
 >
@@ -69,5 +67,5 @@
     class="required field"
   />
 
-  <ActionsButtons action="Tomar Decisión" button="Cancelar" on_click={() => location.reload()} />
+  <ActionsButtons action="Tomar Decisión" />
 </form>

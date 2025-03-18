@@ -106,7 +106,10 @@
 </button>
 
 {#if show_s1_form}
-  <form id="s1_novel_request_form" class="ui large form segment" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
+  <form id="s1_novel_request_form" class="ui large form segment"
+    on:submit|preventDefault={handleSubmit}
+    on:reset={handleReset}
+  >
 
     <Input
       type="date"
