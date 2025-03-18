@@ -49,7 +49,7 @@
     {placeholder}
     on:change={(e) => {
       if (customHandleChange) customHandleChange(e);
-      handleChange(e);
+      else handleChange(e);
     }}
     class={type === "checkbox" ? "ui checkbox" : ''}
     checked={value}

@@ -125,6 +125,7 @@ export type s1_novel_form = {
 export type jury = {
     jurado_usb: {
       profesor: number
+    , nombre: string
     , s1_novel: number
     , veredicto?: FileList | null
   }[]

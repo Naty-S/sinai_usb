@@ -25,7 +25,7 @@
   export let name: string;
   export let value: any;
   export let options: { val: string | number, name: string }[];
-  export let customHandleChange: (e: any) => void;
+  export let customHandleChange: ((e: any) => void) | undefined = undefined;
   export let error: any = undefined;
 
   const param = $page.params.activity;
@@ -40,8 +40,8 @@
     {name}
     {value}
     on:change={(e) => {
-      customHandleChange(e);
-      handleChange(e);
+      if (customHandleChange) customHandleChange(e);
+      else handleChange(e);
     }}
   >
   <datalist

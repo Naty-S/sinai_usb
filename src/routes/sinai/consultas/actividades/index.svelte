@@ -293,7 +293,7 @@
       label="Buscar Grupo"
       name="search"
       bind:value={$form.search}
-      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
       options={groups.map(o => ({ val: o.id.toString(), name: `Grupo ${o.id.toString()} - ${o.nombre}` }))}
     />
   {:else if $form.search_type === "department"}
@@ -301,7 +301,7 @@
       label="Buscar Departamento"
       name="search"
       bind:value={$form.search}
-      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
       options={departments.map(o => ({ val: o.id.toString(), name: o.nombre }))}
     />
   {:else if $form.search_type === "division"}
@@ -309,7 +309,7 @@
       label="Buscar División"
       name="search"
       bind:value={$form.search}
-      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
       options={divisions.map(o => ({ val: o.id.toString(), name: o.nombre }))}
     />
   {:else if $form.search_type === "coordination"}
@@ -317,7 +317,7 @@
       label="Buscar Coordinación"
       name="search"
       bind:value={$form.search}
-      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
       options={coordinations.map(o => ({ val: o.id.toString(), name: o.nombre }))}
     />
   {:else}
@@ -325,7 +325,7 @@
       label="Buscar Profesor"
       name="search"
       bind:value={$form.search}
-      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; }}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
       options={professors.map(o => ({ val: o.id.toString(), name: `${o.apellido1}, ${o.nombre1}` }))}
     />
   {/if}

@@ -51,10 +51,12 @@
     
     const init_jury = {
         profesor: 0
+      , nombre: ''
       , s1_novel
     };
 
     jurado_usb = jurado_usb.concat(init_jury);
+    $form.jurado_usb = jurado_usb;
 		$errors.jurado_usb = $errors.jurado_usb.concat(init_jury);
 	};
 
@@ -74,6 +76,7 @@
     };
 		
 		jurado_externo = jurado_externo.concat(init_jury);
+    $form.jurado_externo = jurado_externo;
 		$errors.jurado_externo = $errors.jurado_externo.concat(init_jury);
 	};
 
@@ -82,11 +85,18 @@
     $form.jurado_externo = jurado_externo;
     $errors.jurado_externo = $errors.jurado_externo.filter((_, j) => j !== i);
   };
+
+  $: $form.jurado_usb.map(j => {
+    j.profesor = professors.find(p => p.perfil === j.nombre)?.id || 0;
+  });
 </script>
 
 <h2>Asignar Jurado</h2>
 
-<form id="s1_novel_assing_jury_form" class="ui large form segment" on:submit|preventDefault={handleSubmit} on:reset={handleReset}>
+<form id="s1_novel_assing_jury_form" class="ui large form segment"
+  on:submit|preventDefault={handleSubmit}
+  on:reset={() => {handleReset(); $form.jurado_usb = []; jurado_usb = []; $form.jurado_externo = []; jurado_externo = []}}
+>
 
   {#if $form.jurado_usb.length === 0 && $form.jurado_externo.length === 0}
     <div class="ui field tiny negative message">
@@ -103,18 +113,18 @@
       <div class="two inline fields">
         <Select
           label="Profesor"
-          name="jurado_usb[{i}].profesor"
-          bind:value={jurado_usb[i].profesor}
+          name="jurado_usb[{i}].nombre"
+          bind:value={jurado_usb[i].nombre}
           customHandleChange={(e) => {
             $form.jurado_usb = jurado_usb;
-            $form.jurado_usb[i].profesor = e.target.value;
+            $form.jurado_usb[i].nombre = e.target.value;
           }}
           options={professors.map(p => ({
-            val: p.id,
+            val: p.perfil,
             name: `${p.apellido2 ?? ''} ${p.apellido1}, ${p.nombre2 ?? ''} ${p.nombre1} - ${p.correo}`
           }))}
           class="twelve wide required field"
-          error={$errors.jurado_usb[i]?.profesor}
+          error={$errors.jurado_usb[i]?.nombre}
         />
         
         <!-- TODO: #81 -->
@@ -206,8 +216,7 @@
     {/if}
   </div>
 
-  <ActionsButtons action="Asignar" button="Cancelar" on_click={() => location.reload()} />
-
+  <ActionsButtons action="Asignar" />
 </form>
 
 {#if action.info !== ''}
