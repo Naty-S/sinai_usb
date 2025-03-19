@@ -47,7 +47,7 @@
   import YearActivities from "$lib/components/activities/year_activities.svelte";
   import ResumeTable from "$lib/components/activities/resume_table.svelte";
 
-  const years = 15;
+  const years = 10;
   const initialValues = init("professor", 614, years);
   const onSubmit = submit();
   const validationSchema = validation();

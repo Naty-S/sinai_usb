@@ -15,9 +15,7 @@ export const count_acts_kinds_by_year = function (
   show_invalid: boolean = true
 ): ActivitiesCounts[] {
 
-  let a: Activity[] = acts.sort((a, b) =>
-    new Date(a.fecha_creacion).getFullYear() - new Date(b.fecha_creacion).getFullYear()
-  );
+  let a: Activity[] = acts.sort((a, b) => a.id - b.id);
 
   if (!show_invalid) {
     a = a.filter(a => a.kind_name !== "ACTIVIDAD INVÁLIDA")
@@ -27,7 +25,7 @@ export const count_acts_kinds_by_year = function (
     .map(([_kind, _acts]) => {
 
       const years = acts_kinds_by_year(a).map(a => a["year"]);
-      const acts_by_year = group_by("fecha_creacion", _acts, false)
+      const acts_by_year = group_by("fecha", _acts, false)
       const counts: { count: number, year: number }[] = []
 
       // count activities by year

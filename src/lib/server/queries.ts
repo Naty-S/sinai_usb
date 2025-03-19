@@ -3,6 +3,8 @@ import type { Actividad } from "$lib/types/activities";
 
 import { prisma } from "$api/_api";
 
+import { kinds } from "$lib/constants";
+
 
 const include = {
   actividades_grupos: { select: { Grupo: { select: { id: true, nombre: true } } } },
@@ -27,6 +29,11 @@ const include = {
 };
 
 
+/**
+ * 
+ * @param email 
+ * @returns 
+ */
 export const query_user = async function (email: string) {
 
   const user = await prisma.usuario.findUnique({
@@ -79,19 +86,107 @@ export const query_activity = async function (id: number): Promise<Actividad> {
 
 /**
  * 
+ * @param kind 
+ * @param email 
+ * @param date 
+ * @returns 
+ */
+export const query_user_activity_kind = async function (
+  kind: string,
+  email: string,
+  date: any
+): Promise<Actividad[]> {
+
+  let fecha = "fecha";
+  switch (kind) {
+    case "articulo_revista": fecha = "fecha_publicacion"; break;
+    case "informe_tecnico":
+    case "patente":
+    case "proyecto_investigacion": fecha = "fecha_inicio"; break;
+    case "proyecto_grado": fecha = "fecha_defensa"; break;
+    case "recital": fecha = "fecha_evento"; break;
+    default: break;
+  };
+
+  const activity = await prisma.actividad.findMany({
+    where: {
+      creada_por: email,
+      [kind]: { [fecha]: date }
+    },
+    include,
+    orderBy: { id: "desc" }
+  });
+
+  return activity;
+}
+
+/**
+ * 
+ * @param kind 
+ * @param id 
+ * @param date 
+ * @param professor_activities 
+ * @returns 
+ */
+export const query_entity_activity_kind = async function (
+  kind: string,
+  id: number,
+  date: any,
+  professor_activities?: Actividad[]
+): Promise<{ Actividad: Actividad }[] | { actividades_grupos: { Actividad: Actividad }[] }[]> {
+
+  let fecha = "fecha";
+  switch (kind) {
+    case "articulo_revista": fecha = "fecha_publicacion"; break;
+    case "informe_tecnico":
+    case "patente":
+    case "proyecto_investigacion": fecha = "fecha_inicio"; break;
+    case "proyecto_grado": fecha = "fecha_defensa"; break;
+    case "recital": fecha = "fecha_evento"; break;
+    default: break;
+  };
+
+  let activity: { Actividad: Actividad }[] | { actividades_grupos: { Actividad: Actividad }[] }[] = [];
+
+  if (professor_activities) { // authors
+
+    activity = await prisma.autor_usb.findMany({
+      select: { Actividad: { include } },
+      where: {
+        profesor_id: id,
+        actividad: { notIn: professor_activities.map(a => a.id) },
+        Actividad: { [kind]: { [fecha]: date } }
+      },
+      orderBy: { actividad: "asc" }
+    });
+  } else { // groups
+
+    activity = await prisma.grupo_investigacion.findMany({
+      select: {
+        actividades_grupos: {
+          select: { Actividad: { include } },
+          where: { Actividad: { [kind]: { [fecha]: date } } }
+        }
+      },
+      where: { id: id }
+    });
+  }
+
+  return activity;
+}
+
+/**
+ * 
  * @param email - 
  * @returns 
  */
 export const query_user_activities = async function (email: string, filters?: any): Promise<Actividad[]> {
 
-  const user_activities = await prisma.actividad.findMany({
-    where: {
-      creada_por: email,
-      fecha_creacion: filters ? { gte: filters.date_start, lte: filters.date_end } : {},
-    },
-    include,
-    orderBy: { fecha_creacion: "desc" }
-  });
+  const date = filters ? { gte: filters.date_start, lte: filters.date_end } : {};
+
+  const user_activities = (await Promise.all(
+    kinds.map(k => query_user_activity_kind(k, email, date))
+  )).flat();
 
   return user_activities;
 };
@@ -111,17 +206,11 @@ export const query_professor_activities = async function (id: number, email: str
   let activities = professor_activities;
 
   // Find professor's activities where is author
-  const author_activities = await prisma.autor_usb.findMany({
-    select: { Actividad: { include } },
-    where: {
-      profesor_id: id,
-      actividad: { notIn: professor_activities.map(a => a.id) },
-      Actividad: {
-        fecha_creacion: filters ? { gte: filters.date_start, lte: filters.date_end } : {},
-      }
-    },
-    orderBy: { actividad: "asc" }
-  });
+  const date = filters ? { gte: filters.date_start, lte: filters.date_end } : {};
+
+  const author_activities: { Actividad: Actividad }[] = (await Promise.all(
+    kinds.map(k => query_entity_activity_kind(k, id, date, professor_activities))
+  )).flat();
 
   activities = professor_activities.concat(author_activities.map(a => a.Actividad));
 
@@ -135,19 +224,13 @@ export const query_professor_activities = async function (id: number, email: str
  */
 export const query_group_activities = async function (id: number, filters?: any): Promise<Actividad[]> {
   
-  const group = await prisma.grupo_investigacion.findUniqueOrThrow({
-    select: { actividades_grupos: {
-      select: { Actividad: { include }},
-      where: {
-        Actividad: {
-          fecha_creacion: filters ? { gte: filters.date_start, lte: filters.date_end } : {},
-        }
-      }
-    }},
-    where: { id: id }
-  });
+  const date = filters ? { gte: filters.date_start, lte: filters.date_end } : {};
 
-  return group.actividades_grupos.map(a => a.Actividad);
+  const group: { actividades_grupos: { Actividad: Actividad }[] }[] = (await Promise.all(
+    kinds.map(k => query_entity_activity_kind(k, id, date))
+  )).flat();
+
+  return group.flatMap(a => a.actividades_grupos).map(a => a.Actividad);
 };
 
 
