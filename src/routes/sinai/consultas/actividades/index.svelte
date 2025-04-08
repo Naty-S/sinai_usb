@@ -90,7 +90,7 @@
     
     if (res && typeof res !== "string") {
       
-      reset();
+      reset_show();
       
       owner = res.owner.full_name;
       activities = res.activities;
@@ -123,7 +123,7 @@
     $form.recital = true;
   };
 
-  const reset = function() {
+  const reset_show = function() {
     activities = [];
     pagination_size = 20;
     current_page = 1;
@@ -135,8 +135,11 @@
     $form.date_start = date_start;
     $form.date_end = date_end;
 
-    if ($form.search_type == "professor") { select_all(); }
-    else {
+    if ($form.search_type == "professor") {
+      $form.date_start = init_date(new Date(`01-01-1100`));
+      $form.date_end = init_date();
+      select_all();
+    } else {
       $form.articulo_revista = true,
       $form.capitulo_libro = false,
       $form.composicion = false,
@@ -159,10 +162,15 @@
   const handleRadioChange = function(e: any, search: number) {
     handleChange(e);
     $form.search = search;
-    reset();
-
-    if (e.target.value == "professor") { select_all(); }
-    else {
+    $form.date_start = date_start;
+    $form.date_end = date_end;
+    reset_show();
+    
+    if (e.target.value == "professor") {
+      $form.date_start = init_date(new Date(`01-01-1100`));
+      $form.date_end = init_date();
+      select_all();
+    } else {
       $form.articulo_revista = true,
       $form.capitulo_libro = false,
       $form.composicion = false,
@@ -248,7 +256,6 @@
   });
 
   setContext(key, { form, errors, handleChange });
-  $: console.log($form)
 </script>
 
 <form class="ui large form" on:submit|preventDefault={show_search} on:reset={handleReset}>
@@ -367,11 +374,15 @@
     />
   {/if}
 
-  <ActivitiesFilter {date_start} {date_end} />
   {#if $form.search_type != "professor"}
+    <ActivitiesFilter date_start={$form.date_start} date_end={$form.date_end} />
     <ActionsButtons action="Buscar" reset="Reiniciar Filtros" on_reset={reset_filters} button="Seleccionar Todas" on_click={select_all} />
   {:else}
-    <ActionsButtons action="Buscar" reset="Reiniciar Filtros" on_reset={reset_filters} />
+    <div id="action_buttons">
+      <button type="submit" name="submit_form" class="ui green button">
+        Buscar
+      </button>
+    </div>
   {/if}
 </form>
 

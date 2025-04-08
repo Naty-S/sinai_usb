@@ -139,7 +139,10 @@ export const parse_date = function (value: any, originalValue: any) {
  * @returns Date with format accepted to be displayed in the form
  */
 export const init_date = function (date?: Date): Date {
-  return date ? format_date(date, "yyyy-MM-dd") as unknown as Date : new Date("yyyy-MM-dd");
+  
+  const _date = date ?? new Date();
+  
+  return format_date(_date, "yyyy-MM-dd") as unknown as Date;
 };
 
 
