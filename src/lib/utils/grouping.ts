@@ -49,8 +49,7 @@ export const group_by = function (
             case "recital": date = act.kind_data.fecha_evento; break;
           };
         };
-
-        key = new Date(date).getFullYear();
+        key = date.slice(0, 4); // year
         break;
     
       case "groups": // take first
