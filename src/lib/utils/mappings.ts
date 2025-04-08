@@ -22,7 +22,7 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
       case "articulo_revista":
         const _articulo_revista = act as articulo_revista;
   
-        const indexes = ["SCI", "SSCI", "SCIENCE CITATION INDEX", "SOCIAL SCIENCES CITATION INDEX"];
+        const indexes = ["Scopus", "SCI", "SSCI", "SCIENCE CITATION INDEX", "SOCIAL SCIENCES CITATION INDEX"];
         const is_indexed = function (): boolean {
           return indexes.some(i => {
             const index = _articulo_revista.indice;
@@ -34,7 +34,7 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         };
   
         if (is_indexed()) {
-          return "Publicaciones en Revistas Indexadas en el SCI-SSCI-ARTS"
+          return "Publicaciones en Revistas Indexadas en el SCI-SSCI-ARTS-Scopus"
   
         } else if (_articulo_revista.indice && _articulo_revista.estado === "Publicado") {
           return "Publicaciones en Revistas Indexadas en Otros Índices"
