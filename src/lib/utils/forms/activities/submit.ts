@@ -9,38 +9,46 @@ import * as api from "$lib/api";
 export const submit = function (kind: kinds, user: User, update: boolean = false, id?: string) {
   return async function (data: actividad_form<typeof kind>) {
     
+    let date = data[kind].fecha.split('-');
     switch (kind) {
       case "articulo_revista":
         const con_estudiantes = data.autores_usb?.some(a => a.es_estudiante) ||
                                 data.autores_externos?.some(a => a.es_estudiante);
-
+        
         data.articulo_revista.con_estudiantes = con_estudiantes === undefined ? false : con_estudiantes;
-        data.articulo_revista.fecha_publicacion = data.articulo_revista.fecha_publicacion &&
-                                                  new Date(data.articulo_revista.fecha_publicacion);
         data.articulo_revista.paginas = Number(data.articulo_revista.paginas);
+        date = data.articulo_revista.fecha_publicacion.split('-');
+        data.articulo_revista.fecha_publicacion = data.articulo_revista.fecha_publicacion &&
+                                                  new Date(date[0], date[1] - 1, date[2]);
         break;
 
       case "evento":
         data.evento.internacional = data.evento.pais !== "Venezuela";
-        data.evento.fecha = new Date(data.evento.fecha);
+        date = data.evento.fecha.split('-');
+        data.evento.fecha = new Date(date[0], date[1] - 1, date[2]);
         break;
 
       case "informe_tecnico":
-        data.informe_tecnico.fecha_inicio = new Date(data.informe_tecnico.fecha_inicio);
+        date = data.informe_tecnico.fecha_inicio.split('-');
+        data.informe_tecnico.fecha_inicio = new Date(date[0], date[1] - 1, date[2]);
         data.informe_tecnico.meses_duracion = Number(data.informe_tecnico.meses_duracion);
         break;
 
       case "patente":
-        data.patente.fecha_inicio = new Date(data.patente.fecha_inicio);
-        data.patente.fecha_fin = new Date(data.patente.fecha_fin);
+        date = data.patente.fecha_inicio.split('-');
+        data.patente.fecha_inicio = new Date(date[0], date[1] - 1, date[2]);
+        date = data.patente.fecha_fin.split('-');
+        data.patente.fecha_fin = new Date(date[0], date[1] - 1, date[2]);
         break;
 
       case "proyecto_grado":
-        data.proyecto_grado.fecha_defensa = new Date(data.proyecto_grado.fecha_defensa);
+        date = data.proyecto_grado.fecha_defensa.split('-');
+        data.proyecto_grado.fecha_defensa = new Date(date[0], date[1] - 1, date[2]);
         break;
 
       case "proyecto_investigacion":
-        data.proyecto_investigacion.fecha_inicio = new Date(data.proyecto_investigacion.fecha_inicio);
+        date = data.proyecto_investigacion.fecha_inicio.split('-');
+        data.proyecto_investigacion.fecha_inicio = new Date(date[0], date[1] - 1, date[2]);
         data.proyecto_investigacion.meses_duracion = Number(data.proyecto_investigacion.meses_duracion);
 
         // TODO: Remove when fix confusion in db with 'institucion'
@@ -48,11 +56,12 @@ export const submit = function (kind: kinds, user: User, update: boolean = false
         break;
 
       case "recital":
-        data.recital.fecha_evento = new Date(data.recital.fecha_evento);
+        date = data.recital.fecha_evento.split('-');
+        data.recital.fecha_evento = new Date(date[0], date[1] - 1, date[2]);
         break;
 
       default:
-        data[kind].fecha = new Date(data[kind].fecha);
+        data[kind].fecha = new Date(date[0], date[1] - 1, date[2]);
         break;
     };
 
@@ -60,7 +69,6 @@ export const submit = function (kind: kinds, user: User, update: boolean = false
 
     if (update) {
 
-      data.actividad.fecha_ultima_modificacion = new Date();
       res = await api.patch(`/api/activities/modify/${kind}/${id}`, data);
 
     } else {
