@@ -1,7 +1,6 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { key } from "svelte-forms-lib";
-  import { page } from "$app/stores";
 
 	import { kinds } from "$lib/constants";
 
@@ -10,9 +9,7 @@
   export let date_start: Date;
   export let date_end: Date;
 
-
-  const { form, errors, handleChange }: any = getContext(key);
-  
+  const { form, errors }: any = getContext(key);
 </script>
 
 <div class="ui container center aligned segment">
@@ -23,7 +20,6 @@
       label="Fecha Inicio"
       name="date_start"
       bind:value={$form.date_start}
-      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
       error={$errors.date_start}
       class="required field"
     />
@@ -32,7 +28,6 @@
       label="Fecha Final"
       name="date_end"
       bind:value={$form.date_end}
-      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
       error={$errors.date_end}
       class="required field"
     />
@@ -47,7 +42,6 @@
           label={kind.replaceAll('_', ' ').replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())}
           name={kind}
           bind:value={$form[kind]}
-          customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
           error={$errors[kind]}
           class="field"
         />
