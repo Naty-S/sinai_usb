@@ -25,11 +25,13 @@ export const POST: RequestHandler = async function ({ request }) {
     await prisma.usuario.create({ data: data_usuario });
     const new_p = await prisma.profesor.create({ data: _data.professor });
 
-    const data_pei = {
-      ..._data.pei,
-      profesor: new_p.id,
+    if (Object.values(_data.pei).some(x => x != null)) {
+      const data_pei = {
+        ..._data.pei,
+        profesor: new_p.id,
+      };
+      await prisma.pei.create({ data: data_pei });
     };
-    await prisma.pei.create({ data: data_pei });
 
     const coord = await prisma.departamento.findUniqueOrThrow({
       where: { id: _data.professor.departamento },

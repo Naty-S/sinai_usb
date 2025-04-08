@@ -84,8 +84,11 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
     const pei = _data.new.pei;
     if (pei) { // Its professor
 
-      pei.profesor = p.id;
-      await prisma.pei.create({ data: pei });
+      if (Object.values(pei).some(x => x != null)) {
+
+        pei.profesor = p.id;
+        await prisma.pei.create({ data: pei });
+      }
 
       // Update professor's profile name as author
       await prisma.autor_usb.updateMany({

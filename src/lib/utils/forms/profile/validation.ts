@@ -55,9 +55,17 @@ export const validation = function () {
     , lineas_investigacion: yup.array(yup.string())
     })
     , pei: yup.object().shape({
-      anio: yup.string().required("Requerido").oneOf(pei_years, "Ingrese un año entre 1997 y el actual"),
-      nivel: yup.string().oneOf(["A", "B", "C"]),
-      numero: yup.string().required("Requerido"),
+      anio: yup.lazy(value => !value ? yup.string().nullable() : yup.string().when("anio", {
+        is: null,
+        then: yup.string().nullable(),
+        otherwise: yup.string().oneOf(pei_years, "Ingrese un año entre 1997 y el actual"),
+      })),
+      nivel: yup.lazy(value => !value ? yup.string().nullable() : yup.string().when("nivel", {
+        is: null,
+        then: yup.string().nullable(),
+        otherwise: yup.string().oneOf(["A", "B", "C"]),
+      })),
+      numero: yup.string().nullable(),
     })
   });
 };

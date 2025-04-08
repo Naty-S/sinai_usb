@@ -4,7 +4,7 @@ export const void_link = "javascript:void(0)";
 export const void_click = () => {};
 
 export const profesor_dedicacion_enum = ["Convencional", "Exclusiva", "Integral"];
-export const profesor_diploma_tipo_enum = ["Lic.", "Ph.D.", "Doctor", "Magister", "Ing."];
+export const profesor_diploma_tipo_enum = ["Lic_", "Ph_D_", "Doctor", "Magister", "Ing_"];
 export const profesor_condicion_enum = ["Contratado", "Ordinario", "Jubilado"];
 export const pei_nivel_enum = ["A", "B", "C"];
 export const memoria_formato_enum = ["CD", "Libro", "Revista"];

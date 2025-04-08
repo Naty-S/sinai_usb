@@ -169,22 +169,24 @@
         placeholder="v-xxxxxxxx-xx-xxxx"
         bind:value={$form.pei.numero}
         error={$errors.pei.numero}
-        class="required field"
+        class="field"
       />
       <Input
-        label="Anio"
+        label="Año"
         name="pei.anio"
         bind:value={$form.pei.anio}
         error={$errors.pei.anio}
-        class="required field"
+        class="field"
       />
-      <Select
-        label="Nivel"
-        name="pei.nivel"
-        bind:value={$form.pei.nivel}
-        options={pei_nivel_enum.map(nivel => ({ val: nivel, name: nivel }))}
-        class="inline field"
-      />
+      {#if $form.pei.numero || $form.pei.anio}
+        <Select
+          label="Nivel"
+          name="pei.nivel"
+          bind:value={$form.pei.nivel}
+          options={pei_nivel_enum.map(nivel => ({ val: nivel, name: nivel }))}
+          class="inline field"
+        />
+      {/if}
     </div>
   </div>
 

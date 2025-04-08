@@ -28,9 +28,9 @@ export const init = function () {
       research_gate_profile: null,
     },
     pei: {
-      anio: 2022,
-      nivel: "A",
-      numero: '',
+      anio: null,
+      nivel: null,
+      numero: null,
     }
   };
 };

@@ -4,7 +4,7 @@ import type { Profile } from "$lib/interfaces/professors";
 export const init = function (p: Profile) {
 
   const pei = p.pei;
-
+  
   return {
     profile: {
       perfil: p.perfil
@@ -22,9 +22,9 @@ export const init = function (p: Profile) {
     , research_gate_profile: p.research_gate_profile
     }
     , pei: {
-      anio: pei?.anio || 2022,
-      nivel: pei?.nivel || "A",
-      numero: pei?.numero || '',
+      anio: pei?.anio || null,
+      nivel: pei?.nivel || null,
+      numero: pei?.numero || null,
     }
   };
 };
