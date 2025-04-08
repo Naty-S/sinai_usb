@@ -34,18 +34,20 @@
   </div>
 
   <!-- Activities kind filter -->
-  <div class="ui five column grid container">  
-    {#each kinds as kind}
-      <div class="column">
-        <Input
-          type="checkbox"
-          label={kind.replaceAll('_', ' ').replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())}
-          name={kind}
-          bind:value={$form[kind]}
-          error={$errors[kind]}
-          class="field"
-        />
-      </div>
-    {/each}
-  </div>
+  {#if $form.search_type != "professor"}
+    <div class="ui five column grid container">  
+      {#each kinds as kind}
+        <div class="column">
+          <Input
+            type="checkbox"
+            label={kind.replaceAll('_', ' ').replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())}
+            name={kind}
+            bind:value={$form[kind]}
+            error={$errors[kind]}
+            class="field"
+          />
+        </div>
+      {/each}
+    </div>
+  {/if}
 </div>

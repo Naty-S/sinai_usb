@@ -131,12 +131,55 @@
     end_pagination = pagination_size;
   };
 
+  const reset_filters = function() {
+    $form.date_start = date_start;
+    $form.date_end = date_end;
+
+    if ($form.search_type == "professor") { select_all(); }
+    else {
+      $form.articulo_revista = true,
+      $form.capitulo_libro = false,
+      $form.composicion = false,
+      $form.evento = false,
+      $form.exposicion = false,
+      $form.grabacion = false,
+      $form.informe_tecnico = false,
+      $form.libro = false,
+      $form.memoria = false,
+      $form.partitura = false,
+      $form.patente = false,
+      $form.premio = false,
+      $form.premio_bienal = false,
+      $form.proyecto_grado = false,
+      $form.proyecto_investigacion = false,
+      $form.recital = false
+    }
+  };
+
   const handleRadioChange = function(e: any, search: number) {
     handleChange(e);
     $form.search = search;
-    $form.date_start = date_start;
-    $form.date_end = date_end;
     reset();
+
+    if (e.target.value == "professor") { select_all(); }
+    else {
+      $form.articulo_revista = true,
+      $form.capitulo_libro = false,
+      $form.composicion = false,
+      $form.evento = false,
+      $form.exposicion = false,
+      $form.grabacion = false,
+      $form.informe_tecnico = false,
+      $form.libro = false,
+      $form.memoria = false,
+      $form.partitura = false,
+      $form.patente = false,
+      $form.premio = false,
+      $form.premio_bienal = false,
+      $form.proyecto_grado = false,
+      $form.proyecto_investigacion = false,
+      $form.recital = false
+    }
   };
 
   const show_prev = function () {
@@ -205,6 +248,7 @@
   });
 
   setContext(key, { form, errors, handleChange });
+  $: console.log($form)
 </script>
 
 <form class="ui large form" on:submit|preventDefault={show_search} on:reset={handleReset}>
@@ -323,10 +367,12 @@
     />
   {/if}
 
+  <ActivitiesFilter {date_start} {date_end} />
   {#if $form.search_type != "professor"}
-    <ActivitiesFilter {date_start} {date_end} />
+    <ActionsButtons action="Buscar" reset="Reiniciar Filtros" on_reset={reset_filters} button="Seleccionar Todas" on_click={select_all} />
+  {:else}
+    <ActionsButtons action="Buscar" reset="Reiniciar Filtros" on_reset={reset_filters} />
   {/if}
-  <ActionsButtons action="Buscar" reset="Reiniciar Filtros" button="Seleccionar Todas" on_click={select_all} />
 </form>
 
 <div class="ui divider" />

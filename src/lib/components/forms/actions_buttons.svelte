@@ -19,6 +19,7 @@
   export let reset: string = "Limpiar Todo";
   export let button: string = '';
   export let on_click: () => void = () => {};
+  export let on_reset: (() => void) | undefined = undefined;
 
   let previousPage: string = "/sinai";
   let disable = false;
@@ -34,9 +35,15 @@
   <button type="submit" name="submit_form" class="ui green button">
     {action}
   </button>
-  <button type="reset" name="reset_form" class="ui red button">
-    {reset}
-  </button>
+  {#if on_reset}
+    <button type="button" name="reset_form" class="ui red button" on:click={on_reset}>
+      {reset}
+    </button>
+  {:else}
+    <button type="reset" name="reset_form" class="ui red button">
+      {reset}
+    </button>
+  {/if}
   <!-- <button type="button" class="ui button" on:click={() => goto(previousPage)}>
     Regresar
   </button> -->
