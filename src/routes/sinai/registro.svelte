@@ -123,7 +123,7 @@
       />
     </div>
     <Input
-      label="Perfil"
+      label="Perfil (sus artículos aparecerán con este nombre en el sistema)"
       name="professor.perfil"
       placeholder="Apellido, Nombre"
       bind:value={$form.professor.perfil}
