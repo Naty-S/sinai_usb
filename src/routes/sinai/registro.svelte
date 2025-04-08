@@ -227,7 +227,7 @@
       label="Departamento"
       name="professor.departamento"
       bind:value={$form.professor.departamento}
-      options={departments.map(d => ({ val: d.id.toString(), name: `${d.id} - ${d.nombre}`}))}
+      options={departments.map(d => ({ val: d.id.toString(), name: d.nombre}))}
       class="field"
     />
     <Input
