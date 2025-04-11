@@ -7,8 +7,8 @@ import type { RequestHandler } from "@sveltejs/kit";
 export const POST: RequestHandler = async ({ request }) => {
   const user = await request.json();
   const jwt = Buffer.from(JSON.stringify(user)).toString("base64");
-  console.log("-------------------------------------------------------------------------_______________________________________")
-  console.log("Logout jwt:", jwt)
+  // console.log("-------------------------------------------------------------------------_______________________________________")
+  // console.log("Logout jwt:", jwt)
 
   return {
     headers: {

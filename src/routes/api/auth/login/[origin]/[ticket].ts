@@ -26,8 +26,8 @@ import { query_user } from "$lib/server/queries";
  */
 export const GET: RequestHandler = async function ({ params, request }) {
 
-  console.log("-------------------------------------------------------------------------_______________________________________")
-  console.log("Login, headers", request.headers)
+  // console.log("-------------------------------------------------------------------------_______________________________________")
+  // console.log("Login, headers", request.headers)
   const cas_ticket = params.ticket;
   const origin = params.origin;
 

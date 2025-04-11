@@ -161,7 +161,6 @@
     return user?.dean || professor?.is_dep_chief || professor?.is_dep_representative ||
       professor?.coord_chief || professor?.division_chief;
   };
-$: console.log(activities)
 </script>
 
 <h3>Resumen de Actividades {owner}</h3>

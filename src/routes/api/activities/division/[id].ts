@@ -105,7 +105,7 @@ export const POST: RequestHandler = async function ({ params, request }) {
         return format_activity(a, log, data);
       })
     )).flat().filter(a => a.kind_name != "FILTER");
-    console.log("INVALID ACTIVITIES:", activities.filter(a => a.kind_name == "ACTIVIDAD INVÁLIDA").map(a => a.id))
+    // console.log("INVALID ACTIVITIES:", activities.filter(a => a.kind_name == "ACTIVIDAD INVÁLIDA").map(a => a.id))
 
     const owner_activities: Activities = {
       owner: {

@@ -114,7 +114,6 @@
     paginated_activities = paginate(filtered_activities, pagination_size, true, "groups");
     page_activities = paginated_activities[current_page-1];
   };
-  $: console.log(paginated_activities)
 </script>
 
 <h3>Actividades de los Grupos de Investigación</h3>
