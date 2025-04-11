@@ -1,4 +1,4 @@
-import type { GroupActivities, YearActivities } from "$lib/interfaces/activities";
+import type { KindActivities, PropActivities } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
 import { map_to_detailed_kind } from "$lib/utils/mappings";
@@ -65,9 +65,9 @@ export const group_by = function (
   prop: "fecha" | "groups" | "kind_name",
   acts: Activity[],
   detailed: boolean = true
-): Record<string, Activity[]> {
+): KindActivities {
 
-  return acts.reduce((acc: Record<string, Activity[]>, act: Activity, i) => {
+  return acts.reduce((acc: KindActivities, act: Activity, i) => {
     
     let key: any;
 
@@ -122,7 +122,7 @@ export const acts_kinds_by_prop = function (
   acts: Activity[],
   show_invalid: boolean = true,
   prop: "fecha" | "groups" = "fecha"
-): YearActivities[] | GroupActivities[] {
+): PropActivities[] {
 
   let a: Activity[] = sort_by_date(acts);
 
@@ -159,7 +159,7 @@ export const paginate = function (
   size: number,
   show_invalid: boolean = true,
   group: "fecha" | "groups" = "fecha"
-): YearActivities[][] | GroupActivities[][] {
+): PropActivities[][] {
 
   let a: Activity[] = sort_by_date(acts);
 
@@ -177,11 +177,10 @@ export const paginate = function (
   return paginated_acts.map(a => {
 
     const acts_group = Object.entries(group_by(group, a, false));
-    const year_acts = acts_group.map(([_year, _acts]) => ({
-        year: Number(_year)
+    
+    return acts_group.map(([_prop, _acts]) => ({
+        prop: _prop
       , kind_activities: group_by("kind_name", _acts)
     }));
-
-    return year_acts;
   });
 };

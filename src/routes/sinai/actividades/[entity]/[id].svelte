@@ -43,7 +43,7 @@
   };
 </script>
 <script lang="ts">
-  import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activities";
+  import type { PropActivities } from "$lib/interfaces/activities";
   import type { Activities } from "$lib/interfaces/activities";
   import type { Activity } from "$lib/types/activities";
   
@@ -63,16 +63,16 @@
   export let owner: string;
   export let activities: Activity[];
 
-  const activities_by_year = acts_kinds_by_prop(activities) as YearActivitiesT[];
+  const activities_by_year = acts_kinds_by_prop(activities) as PropActivities[];
   const activities_years_counts = count_acts_kinds_by_year(activities);
-  const headers = ["Actividad"].concat(activities_by_year.map(a => a.year.toString()));
+  const headers = ["Actividad"].concat(activities_by_year.map(a => a.prop));
 
   let pagination_size = 100;
   let current_page = 1;
   let start_pagination = 0;
   let end_pagination = pagination_size;
   let filtered_activities = activities;
-  let paginated_activities = paginate(activities, pagination_size) as YearActivitiesT[][];
+  let paginated_activities = paginate(activities, pagination_size) as PropActivities[][];
   let page_activities = paginated_activities[current_page-1];
 
   let kind = '';
@@ -98,7 +98,7 @@
     end_pagination = start_pagination + pagination_size;
 
     filtered_activities = filter_activities(activities, kind, start_date, end_date);
-    paginated_activities = paginate(filtered_activities, pagination_size) as YearActivitiesT[][];
+    paginated_activities = paginate(filtered_activities, pagination_size) as PropActivities[][];
     page_activities = paginated_activities[current_page-1];
   };
 
@@ -109,7 +109,7 @@
     end_pagination = start_pagination + pagination_size;
 
     filtered_activities = filter_activities(activities, kind, start_date, end_date);
-    paginated_activities = paginate(filtered_activities, pagination_size) as YearActivitiesT[][];
+    paginated_activities = paginate(filtered_activities, pagination_size) as PropActivities[][];
     page_activities = paginated_activities[current_page-1];
   };
 
@@ -120,7 +120,7 @@
     end_pagination = start_pagination + pagination_size;
 
     filtered_activities = filter_activities(activities, kind, start_date, end_date);
-    paginated_activities = paginate(filtered_activities, pagination_size) as YearActivitiesT[][];
+    paginated_activities = paginate(filtered_activities, pagination_size) as PropActivities[][];
     page_activities = paginated_activities[current_page-1];
   };
 
@@ -131,7 +131,7 @@
     end_pagination = pagination_size;
 
     filtered_activities = filter_activities(activities, kind, start_date, end_date);
-    paginated_activities = paginate(filtered_activities, pagination_size) as YearActivitiesT[][];
+    paginated_activities = paginate(filtered_activities, pagination_size) as PropActivities[][];
     page_activities = paginated_activities[current_page-1];
   };
 
@@ -142,7 +142,7 @@
     end_pagination = pagination_size;
 
     filtered_activities = filter_activities(activities, kind, start_date, end_date);
-    paginated_activities = paginate(filtered_activities, pagination_size) as YearActivitiesT[][];
+    paginated_activities = paginate(filtered_activities, pagination_size) as PropActivities[][];
     page_activities = paginated_activities[current_page-1];
   };
 

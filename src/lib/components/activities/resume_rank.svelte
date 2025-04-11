@@ -3,7 +3,7 @@
   Activities count resume table for group, department, coordination or division
  -->
 <script lang="ts">
-  import type {	Activities, YearActivities } from "$lib/interfaces/activities";
+  import type {	Activities } from "$lib/interfaces/activities";
 
   import { acts_kinds_by_prop } from "$lib/utils/grouping";
   import { count_acts_kinds_by_year } from "$lib/utils/maths";
@@ -16,7 +16,7 @@
   const rank_id = rank_activities.owner.id;
   const rank_name = rank_activities.owner.name;
   const rank_page = `/sinai/actividades/${rank}/${rank_id}`;
-  const activities_by_year = acts_kinds_by_prop(rank_activities.activities) as YearActivities[];
+  const activities_by_year = acts_kinds_by_prop(rank_activities.activities);
   const activities_count = count_acts_kinds_by_year(rank_activities.activities);
 </script>
 
@@ -32,7 +32,7 @@
   </h2>
 
   <ResumeTable
-    headers={["Actividad"].concat(activities_by_year.map(a => a.year.toString()))}
+    headers={["Actividad"].concat(activities_by_year.map(a => a.prop))}
     resume_kinds_counts={activities_count}
     row_total
   />

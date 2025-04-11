@@ -49,7 +49,7 @@
 </script>
 <script lang="ts">
   import type { periodo_bra } from "@prisma/client";
-  import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activities";
+  import type { PropActivities } from "$lib/interfaces/activities";
   import type { Activity } from "$lib/types/activities";
 	import type { Profile } from "$lib/interfaces/professors";
 
@@ -66,27 +66,27 @@
   export let profile: Profile;
   export let period_bra: periodo_bra;
 
-  const activities_by_year = acts_kinds_by_prop(activities) as YearActivitiesT[];
+  const activities_by_year = acts_kinds_by_prop(activities) as PropActivities[];
   const period = format_date(period_bra.inicio, "long-day") + " - " + format_date(period_bra.fin, "long-day");
-  const start_year = new Date(period_bra.inicio).getFullYear();
-  const final_year = new Date(period_bra.fin).getFullYear();
+  const start_year = (new Date(period_bra.inicio).getFullYear()).toString();
+  const final_year = (new Date(period_bra.fin).getFullYear()).toString();
   const years = start_year + " - " + final_year;
   
-  const last_acts_by_year = activities_by_year.find(a => a.year === start_year) || {kind_activities: {}};
+  const last_acts_by_year = activities_by_year.find(a => a.prop === start_year) || {kind_activities: {}};
   const last_year_acts = Object.entries(last_acts_by_year.kind_activities).filter(([_, acts]) =>
     acts.filter(a => new Date(a.fecha_creacion).getMonth() > 7).length > 0
   );
-  const curr_acts_by_year = activities_by_year.find(a => a.year === final_year) || {kind_activities: {}};
+  const curr_acts_by_year = activities_by_year.find(a => a.prop === final_year) || {kind_activities: {}};
   const curr_year_acts = Object.entries(curr_acts_by_year.kind_activities).filter(([_, acts]) =>
     acts.filter(a => new Date(a.fecha_creacion).getMonth() < 8).length > 0
   );
   const acts_count = curr_year_acts.concat(last_year_acts).reduce((n, [_, a]) => n + a.length, 0);
 
-  const period_activities: YearActivitiesT[] = [
-    { year: final_year
+  const period_activities: PropActivities[] = [
+    { prop: final_year
     , kind_activities: Object.fromEntries(curr_year_acts)
     },
-    { year: start_year
+    { prop: start_year
     , kind_activities: Object.fromEntries(last_year_acts)
     }
   ];

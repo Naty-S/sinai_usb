@@ -24,7 +24,7 @@ export const count_acts_kinds_by_year = function (
   return Object.entries(group_by("kind_name", a))
     .map(([_kind, _acts]) => {
 
-      const years = acts_kinds_by_prop(a).map(a => a.year);
+      const years = acts_kinds_by_prop(a).map(a => a.prop);
       const acts_by_year = group_by("fecha", _acts, false)
       const counts: { count: number, year: number }[] = []
 

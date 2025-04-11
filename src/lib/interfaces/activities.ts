@@ -27,25 +27,23 @@ export interface Activities {
 };
 
 /**
- * Activities by year.
+ * Activities by property: year or group.
  * 
- * - `year`: number
+ * - `prop`: string
  * - `kind_activities`: `Record<string, Activity[]>` - Activities grouped by kind
  */
-export interface YearActivities {
-    year: number
-  ; kind_activities: Record<string, Activity[]>
+export interface PropActivities {
+    prop: string
+  ; kind_activities: KindActivities
 };
 
 /**
- * Activities by group.
+ * Activities grouped by kind.
  * 
- * - `group`: string
- * - `kind_activities`: `Record<string, Activity[]>` - Activities grouped by kind
+ * - `key`: Activity[]. This key is the kind name of the activity, detailed or not
  */
-export interface GroupActivities {
-    group: string
-  ; kind_activities: Record<string, Activity[]>
+export interface KindActivities {
+  [key:string]: Activity[]
 };
 
 /**

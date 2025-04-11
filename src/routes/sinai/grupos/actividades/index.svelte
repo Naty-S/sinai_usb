@@ -31,7 +31,7 @@
   };
 </script>
 <script lang="ts">
-  import type { GroupActivities as GroupActivitiesT } from "$lib/interfaces/activities";
+  import type { PropActivities } from "$lib/interfaces/activities";
   import type { Activities } from "$lib/interfaces/activities";
   import type { Activity } from "$lib/types/activities";
   
@@ -52,7 +52,7 @@
   let start_pagination = 0;
   let end_pagination = pagination_size;
   let filtered_activities = activities;
-  let paginated_activities = paginate(activities, pagination_size) as GroupActivitiesT[][];
+  let paginated_activities = paginate(activities, pagination_size);
   let page_activities = paginated_activities[current_page-1];
 
   let kind = '';
@@ -67,7 +67,7 @@
     end_pagination = start_pagination + pagination_size;
 
     filtered_activities = filter_activities(activities, kind, start_date, end_date);
-    paginated_activities = paginate(filtered_activities, pagination_size, true, "groups") as GroupActivitiesT[][];
+    paginated_activities = paginate(filtered_activities, pagination_size, true, "groups");
     page_activities = paginated_activities[current_page-1];
   };
 
@@ -78,7 +78,7 @@
     end_pagination = start_pagination + pagination_size;
 
     filtered_activities = filter_activities(activities, kind, start_date, end_date);
-    paginated_activities = paginate(filtered_activities, pagination_size, true, "groups") as GroupActivitiesT[][];
+    paginated_activities = paginate(filtered_activities, pagination_size, true, "groups");
     page_activities = paginated_activities[current_page-1];
   };
 
@@ -89,7 +89,7 @@
     end_pagination = start_pagination + pagination_size;
 
     filtered_activities = filter_activities(activities, kind, start_date, end_date);
-    paginated_activities = paginate(filtered_activities, pagination_size, true, "groups") as GroupActivitiesT[][];
+    paginated_activities = paginate(filtered_activities, pagination_size, true, "groups");
     page_activities = paginated_activities[current_page-1];
   };
 
@@ -100,7 +100,7 @@
     end_pagination = pagination_size;
 
     filtered_activities = filter_activities(activities, kind, start_date, end_date);
-    paginated_activities = paginate(filtered_activities, pagination_size, true, "groups") as GroupActivitiesT[][];
+    paginated_activities = paginate(filtered_activities, pagination_size, true, "groups");
     page_activities = paginated_activities[current_page-1];
   };
 
@@ -111,7 +111,7 @@
     end_pagination = pagination_size;
 
     filtered_activities = filter_activities(activities, kind, start_date, end_date);
-    paginated_activities = paginate(filtered_activities, pagination_size, true, "groups") as GroupActivitiesT[][];
+    paginated_activities = paginate(filtered_activities, pagination_size, true, "groups");
     page_activities = paginated_activities[current_page-1];
   };
   $: console.log(paginated_activities)

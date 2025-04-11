@@ -1,8 +1,6 @@
-import type { YearActivities, GroupActivities } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
 import { format_date } from "./formatting";
-import { paginate } from "./grouping";
 import { map_to_detailed_kind } from "./mappings";
 
 

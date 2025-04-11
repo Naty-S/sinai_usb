@@ -11,7 +11,7 @@
   import type {
       Activities
     , ActivitiesCounts
-    , YearActivities as YearActivitiesT
+    , PropActivities
   } from "$lib/interfaces/activities";
 	import type { Profesor } from "$lib/interfaces/professors";
 	import type { Group } from "$lib/interfaces/groups";
@@ -70,10 +70,10 @@
 
   let owner: string;
   let activities: Activity[] = [];
-  let activities_by_year: YearActivitiesT[];
+  let activities_by_year: PropActivities[];
   let activities_years_counts: ActivitiesCounts[];
-  let page_activities: YearActivitiesT[];
-  let paginated_activities: YearActivitiesT[][];
+  let page_activities: PropActivities[];
+  let paginated_activities: PropActivities[][];
 
   let pagination_size = 20;
   let current_page = 1;
@@ -94,9 +94,9 @@
       
       owner = res.owner.full_name;
       activities = res.activities;
-      activities_by_year = acts_kinds_by_prop(activities, show_invalid) as YearActivitiesT[];
+      activities_by_year = acts_kinds_by_prop(activities, show_invalid);
       activities_years_counts = count_acts_kinds_by_year(activities, show_invalid);
-      paginated_activities = paginate(activities, pagination_size, show_invalid) as YearActivitiesT[][];
+      paginated_activities = paginate(activities, pagination_size, show_invalid);
       page_activities = paginated_activities[current_page-1];
       searching = false;
 
@@ -196,7 +196,7 @@
     pagination_size = size;
     start_pagination = 0;
     end_pagination = pagination_size;
-    paginated_activities = paginate(activities, pagination_size, show_invalid) as YearActivitiesT[][];
+    paginated_activities = paginate(activities, pagination_size, show_invalid);
     page_activities = paginated_activities[current_page-1];
   };
 
@@ -369,7 +369,7 @@
 
   <!-- Display all activities resume table -->
   <ResumeTable
-    headers={["Actividad"].concat(activities_by_year.map(a => a.year.toString()))}
+    headers={["Actividad"].concat(activities_by_year.map(a => a.prop))}
     resume_kinds_counts={activities_years_counts}
     row_total
     col_total

@@ -3,11 +3,11 @@
   Activities by year
 
   Props:
-  * `group_activities`: GroupActivities
+  * `group_activities`: PropActivities
  -->
 <script lang="ts">
   import type { Activity } from "$lib/types/activities";
-  import type { GroupActivities } from "$lib/interfaces/activities";
+  import type { PropActivities } from "$lib/interfaces/activities";
   
   import { session } from "$app/stores";
   
@@ -19,7 +19,7 @@
   import KindInfo from "./kind_info.svelte";
   
   // Props
-  export let group_activities: GroupActivities;
+  export let group_activities: PropActivities;
   export let editable = false;
   export let show_buttons = false;
 
@@ -127,17 +127,17 @@
 {#if activities.length > 0}
 <div id="activities">
   <div
-    id="{group_activities.group}_activities"
+    id="{group_activities.prop}_activities"
     class="uk-margin"
     style="scroll-margin: 225px;"
   >
     <h2 class="ui blue header uk-text-center">
-      Actividades Correspondientes al Grupo {group_activities.group}
+      Actividades Correspondientes al Grupo {group_activities.prop}
     </h2>
 
     {#each activities as [kind, acts]}
     <!-- Display activities kind -->
-      <h3 id="{group_activities.group}_{kind}" style="scroll-margin: 225px;">
+      <h3 id="{group_activities.prop}_{kind}" style="scroll-margin: 225px;">
         {kind}
       </h3>
       
