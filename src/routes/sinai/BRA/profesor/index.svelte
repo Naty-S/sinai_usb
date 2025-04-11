@@ -51,22 +51,22 @@
   import type { periodo_bra } from "@prisma/client";
   import type { YearActivities as YearActivitiesT } from "$lib/interfaces/activities";
   import type { Activity } from "$lib/types/activities";
+	import type { Profile } from "$lib/interfaces/professors";
 
   import { onMount } from "svelte";
 
   import { format_date } from "$lib/utils/formatting";
-  import { acts_kinds_by_year } from "$lib/utils/grouping";
+  import { acts_kinds_by_prop } from "$lib/utils/grouping";
 
   import YearActivities from "$lib/components/activities/year_activities.svelte";
   import BraHeader from "$lib/components/bra/header.svelte";
   import Notifications from "$lib/components/notifications.svelte";
-	import type { Profile } from "$lib/interfaces/professors";
 
   export let activities: Activity[];
   export let profile: Profile;
   export let period_bra: periodo_bra;
 
-  const activities_by_year = acts_kinds_by_year(activities);
+  const activities_by_year = acts_kinds_by_prop(activities) as YearActivitiesT[];
   const period = format_date(period_bra.inicio, "long-day") + " - " + format_date(period_bra.fin, "long-day");
   const start_year = new Date(period_bra.inicio).getFullYear();
   const final_year = new Date(period_bra.fin).getFullYear();

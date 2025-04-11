@@ -1,7 +1,7 @@
 import type { ActivitiesCounts } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
-import { group_by, acts_kinds_by_year } from "$lib/utils/grouping";
+import { group_by, acts_kinds_by_prop } from "$lib/utils/grouping";
 import { detailed_kinds } from "$lib/constants";
 
 /**
@@ -24,7 +24,7 @@ export const count_acts_kinds_by_year = function (
   return Object.entries(group_by("kind_name", a))
     .map(([_kind, _acts]) => {
 
-      const years = acts_kinds_by_year(a).map(a => a["year"]);
+      const years = acts_kinds_by_prop(a).map(a => a.year);
       const acts_by_year = group_by("fecha", _acts, false)
       const counts: { count: number, year: number }[] = []
 

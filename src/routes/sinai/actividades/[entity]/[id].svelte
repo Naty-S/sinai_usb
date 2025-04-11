@@ -51,7 +51,7 @@
 
 	import { detailed_kinds } from "$lib/constants";
 	import { filter_activities } from "$lib/utils/filters";
-  import { acts_kinds_by_year } from "$lib/utils/grouping";
+  import { acts_kinds_by_prop, paginate } from "$lib/utils/grouping";
   import { count_acts_kinds_by_year } from "$lib/utils/maths";
   
 	import Modal from '$lib/components/modals/modal.svelte';
@@ -63,7 +63,7 @@
   export let owner: string;
   export let activities: Activity[];
 
-  const activities_by_year = acts_kinds_by_year(activities);
+  const activities_by_year = acts_kinds_by_prop(activities) as YearActivitiesT[];
   const activities_years_counts = count_acts_kinds_by_year(activities);
   const headers = ["Actividad"].concat(activities_by_year.map(a => a.year.toString()));
 
@@ -71,7 +71,9 @@
   let current_page = 1;
   let start_pagination = 0;
   let end_pagination = pagination_size;
-  let page_activities = acts_kinds_by_year(activities.slice(start_pagination, end_pagination));;
+  let filtered_activities = activities;
+  let paginated_activities = paginate(activities, pagination_size) as YearActivitiesT[][];
+  let page_activities = paginated_activities[current_page-1];
 
   let kind = '';
   let start_date = '';
@@ -95,8 +97,9 @@
     start_pagination = (current_page - 1) * pagination_size;
     end_pagination = start_pagination + pagination_size;
 
-    page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination) as YearActivitiesT[];
+    filtered_activities = filter_activities(activities, kind, start_date, end_date);
+    paginated_activities = paginate(filtered_activities, pagination_size) as YearActivitiesT[][];
+    page_activities = paginated_activities[current_page-1];
   };
 
   const show_page = function (page: number) {
@@ -105,8 +108,9 @@
     start_pagination = (page - 1) * pagination_size;
     end_pagination = start_pagination + pagination_size;
 
-    page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination) as YearActivitiesT[];
+    filtered_activities = filter_activities(activities, kind, start_date, end_date);
+    paginated_activities = paginate(filtered_activities, pagination_size) as YearActivitiesT[][];
+    page_activities = paginated_activities[current_page-1];
   };
 
   const show_next = function () {
@@ -115,21 +119,31 @@
     start_pagination = (current_page - 1) * pagination_size;
     end_pagination = start_pagination + pagination_size;
 
-    page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination) as YearActivitiesT[];
+    filtered_activities = filter_activities(activities, kind, start_date, end_date);
+    paginated_activities = paginate(filtered_activities, pagination_size) as YearActivitiesT[][];
+    page_activities = paginated_activities[current_page-1];
   };
 
   const resize_pagination = function (size: number) {
+    
     pagination_size = size;
     start_pagination = 0;
     end_pagination = pagination_size;
-    page_activities = filter_activities(
-      activities, kind, start_date, end_date, start_pagination, end_pagination) as YearActivitiesT[];
+
+    filtered_activities = filter_activities(activities, kind, start_date, end_date);
+    paginated_activities = paginate(filtered_activities, pagination_size) as YearActivitiesT[][];
+    page_activities = paginated_activities[current_page-1];
   };
 
   const filter = function() {
-    page_activities = filter_activities(
-      activities, kind, start_date, end_date, 0, activities.length) as YearActivitiesT[];
+    
+    current_page = 1;
+    start_pagination = 0;
+    end_pagination = pagination_size;
+
+    filtered_activities = filter_activities(activities, kind, start_date, end_date);
+    paginated_activities = paginate(filtered_activities, pagination_size) as YearActivitiesT[][];
+    page_activities = paginated_activities[current_page-1];
   };
 
   const go_down = function() {
@@ -147,6 +161,7 @@
     return user?.dean || professor?.is_dep_chief || professor?.is_dep_representative ||
       professor?.coord_chief || professor?.division_chief;
   };
+$: console.log(activities)
 </script>
 
 <h3>Resumen de Actividades {owner}</h3>
@@ -159,7 +174,7 @@
   col_total
 />
 
-<div class="uk-clearfix">
+<div id="buttons" class="uk-clearfix">
   {#if can_filter()}  
     <button
       type="button"
@@ -180,59 +195,66 @@
   {/if}
 </div>
 
-<!-- Display activities by year -->
-<div>
-  <!-- Filters -->
-  {#if show_filters}    
-    <div id="filters" class="ui segments">
-      <div class="ui vertically fitted segment"><strong>Filtrar Actividades:</strong></div>
+<!-- Filters -->
+{#if show_filters}
+  <div id="filters" class="ui segments">
 
-      <div id="page_size" class="ui stackable small compact buttons segment">
+    <div id="pagination_size" class="ui segment">
+      <strong>Actividades por página:</strong>
+      <div id="page_size" class="ui stackable small compact buttons">
         <button class="ui button" on:click={() => resize_pagination(20)}>20</button>
         <button class="ui button" on:click={() => resize_pagination(30)}>30</button>
         <button class="ui button" on:click={() => resize_pagination(50)}>50</button>
         <button class="ui button" on:click={() => resize_pagination(100)}>100</button>
       </div>
+    </div>
 
-      <div id="date_filter" class="ui horizontal stackable segments">
-        <div class="ui segment">
-          <label for="start_date">Fecha Inicio</label>
-          <input type="date" name="start_date" bind:value={start_date}>
-        </div>
-        <div class="ui segment">
-          <label for="end_date">Fecha Final</label>
-          <input type="date" name="end_date" bind:value={end_date}>
-        </div>
-        <div class="ui segment">        
-          <button type="button" class="ui green mini button" on:click={filter}>
-            Filtrar
-          </button>
-        </div>
+    <div id="date_filter" class="ui horizontal stackable segments segment">
+      <div class="ui segment">
+        <label for="start_date">Fecha Inicio</label>
+        <input type="date" name="start_date" bind:value={start_date}>
       </div>
-
-      <div id="kind_filter" class="ui segment segments">
-        <label class="ui segment" for="kinds">Tipos de Actividad</label>
-        <div class="ui segment">
-          <button class="ui blue mini button" on:click={() => {kind = ''; filter()}}>
-            TODAS
-          </button>
-          <select
-            name="kinds"
-            class="ui fluid selection dropdown"
-            bind:value={kind}
-            on:change={filter}
-          >
-            {#each detailed_kinds as k}
-              <option value={k}>{k}</option>
-            {/each}
-          </select>
-        </div>
+      <div class="ui segment">
+        <label for="end_date">Fecha Final</label>
+        <input type="date" name="end_date" bind:value={end_date}>
+      </div>
+      <div class="ui segment">        
+        <button type="button" class="ui green mini button" on:click={filter}>
+          Filtrar
+        </button>
       </div>
     </div>
-  {/if}
+
+    <div id="kind_filter" class="ui stackable grid segment">
+      <label class="two wide column" for="kinds">
+        <strong>
+          Tipo de Actividad
+        </strong>
+        <button class="ui blue mini button" on:click={() => {kind = ''; filter()}}>
+          TODAS
+        </button>
+      </label>
+      <div class="fourteen wide column">
+        <select
+        name="kinds"
+        class="ui fluid selection dropdown"
+        bind:value={kind}
+        on:change={filter}
+        >
+        {#each detailed_kinds as k}
+        <option value={k}>{k}</option>
+        {/each}
+      </select>
+    </div>
+    </div>
+  </div>
+{/if}
   
+<!-- Display activities by year -->
+{#if page_activities?.length > 0}
+
   <Pagination
-    size={activities.length}
+    size={filtered_activities.length}
     page_size={pagination_size}
     start={start_pagination}
     end={end_pagination}
@@ -240,20 +262,22 @@
   />
 
   <!-- Activities by year -->
-  {#key page_activities}    
+  {#key page_activities}
     {#each page_activities as year_activities}
       <YearActivities {year_activities} {editable} {show_buttons}/>
     {/each}
   {/key}
-</div>
-
-<Pagination
-  size={activities.length}
-  page_size={pagination_size}
-  start={start_pagination}
-  end={end_pagination}
-  {show_prev} {show_page} {show_next}
-/>
+  
+  <Pagination
+    size={filtered_activities.length}
+    page_size={pagination_size}
+    start={start_pagination}
+    end={end_pagination}
+    {show_prev} {show_page} {show_next}
+  />
+{:else}
+  <div />
+{/if}
 
 {#if $page.params.entity === "profesor"} 
   <div class="uk-text-center">
@@ -310,6 +334,8 @@
       Hubo un problema al intentar realizar la acción, por favor vuelva a intentar
       o contáctese con algún administrador proporcionando el código de error y detalles.
     </p>
-    <span class="ui red text">Detalles: {err ?? "No se encuentra en la lista de errores conocidos"}</span>
+    <span class="ui red text">
+      Detalles: {err ?? "No se encuentra en la lista de errores conocidos"}
+    </span>
   </Modal>
 {/if}

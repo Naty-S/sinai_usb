@@ -2,7 +2,7 @@ import type { YearActivities, GroupActivities } from "$lib/interfaces/activities
 import type { Activity } from "$lib/types/activities";
 
 import { format_date } from "./formatting";
-import { acts_kinds_by_group, acts_kinds_by_year } from "./grouping";
+import { paginate } from "./grouping";
 import { map_to_detailed_kind } from "./mappings";
 
 
@@ -16,20 +16,37 @@ import { map_to_detailed_kind } from "./mappings";
  * @param end_pagination -
  * @param by_group -
  * @param show_invalid -
- * @returns Filtered and paginated activites by year
+ * @returns Filtered activites
  */
 export const filter_activities = function (
   activities: Activity[],
   kind: string,
   start_date: string,
   end_date: string,
-  start_pagination: number,
-  end_pagination: number,
-  by_group: boolean = false,
-  show_invalid: boolean = true
-): YearActivities[] | GroupActivities[] {
+): Activity[] {
 
   let aa = activities;
+  const date_att = function(act: Activity) {
+    switch (act.kind_name) {
+      case "articulo_revista": return "fecha_publicacion";
+      case "capitulo_libro":
+      case "composicion":
+      case "evento":
+      case "exposicion":
+      case "grabacion":
+      case "libro":
+      case "memoria":
+      case "partitura":
+      case "premio":
+      case "premio_bienal": return "fecha";
+      case "informe_tecnico":
+      case "patente":
+      case "proyecto_investigacion": return "fecha_inicio";
+      case "proyecto_grado": return "fecha_defensa";
+      case "recital": return "fecha_evento";
+      default: return "fecha_creacion"
+    };
+  };
   
   if (kind !== '') {
     aa = aa.filter(a => (map_to_detailed_kind(a.kind_name, a.kind_data) === kind));
@@ -38,26 +55,25 @@ export const filter_activities = function (
   if (start_date !== '' && end_date !== '') {
 
     aa = aa.filter(a => {
-      const date = format_date(a.fecha_creacion, "yyyy-MM-dd");
+      const att = date_att(a);
+      const date = format_date(a.kind_data[att] || a[att], "yyyy-MM-dd");
       return start_date <= date && date <= end_date
     });
   } else if (start_date !== '' && end_date === '') {
 
     aa = aa.filter(a => {
-      const date = format_date(a.fecha_creacion, "yyyy-MM-dd");
+      const att = date_att(a);
+      const date = format_date(a.kind_data[att] || a[att], "yyyy-MM-dd");
       return start_date <= date
     });
   } else if (start_date === '' && end_date !== '') {
     
     aa = aa.filter(a => {
-      const date = format_date(a.fecha_creacion, "yyyy-MM-dd");
+      const att = date_att(a);
+      const date = format_date(a.kind_data[att] || a[att], "yyyy-MM-dd");
       return date <= end_date
     });
   };
 
-  if (by_group) {
-    return acts_kinds_by_group(aa.slice(start_pagination, end_pagination), show_invalid);
-  };
-
-  return acts_kinds_by_year(aa.slice(start_pagination, end_pagination), show_invalid);
+  return aa;
 };

@@ -18,7 +18,6 @@
 	import type { Department } from "$lib/interfaces/departments";
 	import type { Division } from "$lib/interfaces/divisions";
 	import type { Coordination } from "$lib/interfaces/coordinations";
-	
   import type { Activity } from "$lib/types/activities";
 
   import { onMount, setContext } from "svelte";
@@ -29,9 +28,8 @@
   import * as api from "$lib/api";
 
 	import { detailed_kinds } from "$lib/constants";
-	import { filter_activities } from "$lib/utils/filters";
   import { init_date } from "$lib/utils/formatting";
-  import { acts_kinds_by_year } from "$lib/utils/grouping";
+  import { acts_kinds_by_prop, paginate } from "$lib/utils/grouping";
   import { count_acts_kinds_by_year } from "$lib/utils/maths";
 
   import { init } from "$lib/utils/forms/searchs/init";
@@ -46,6 +44,7 @@
   import Select from "$lib/components/forms/select.svelte";
   import YearActivities from "$lib/components/activities/year_activities.svelte";
   import ResumeTable from "$lib/components/activities/resume_table.svelte";
+
 
   const years = 10;
   const initialValues = init("professor", 614, years);
@@ -74,6 +73,7 @@
   let activities_by_year: YearActivitiesT[];
   let activities_years_counts: ActivitiesCounts[];
   let page_activities: YearActivitiesT[];
+  let paginated_activities: YearActivitiesT[][];
 
   let pagination_size = 20;
   let current_page = 1;
@@ -94,9 +94,10 @@
       
       owner = res.owner.full_name;
       activities = res.activities;
-      activities_by_year = acts_kinds_by_year(activities, show_invalid);
+      activities_by_year = acts_kinds_by_prop(activities, show_invalid) as YearActivitiesT[];
       activities_years_counts = count_acts_kinds_by_year(activities, show_invalid);
-      page_activities = acts_kinds_by_year(activities.slice(start_pagination, end_pagination), show_invalid);
+      paginated_activities = paginate(activities, pagination_size, show_invalid) as YearActivitiesT[][];
+      page_activities = paginated_activities[current_page-1];
       searching = false;
 
     } else {
@@ -162,32 +163,8 @@
   const handleRadioChange = function(e: any, search: number) {
     handleChange(e);
     $form.search = search;
-    $form.date_start = date_start;
-    $form.date_end = date_end;
     reset_show();
-    
-    if (e.target.value == "professor") {
-      $form.date_start = init_date(new Date(`01-01-1100`));
-      $form.date_end = init_date();
-      select_all();
-    } else {
-      $form.articulo_revista = true,
-      $form.capitulo_libro = false,
-      $form.composicion = false,
-      $form.evento = false,
-      $form.exposicion = false,
-      $form.grabacion = false,
-      $form.informe_tecnico = false,
-      $form.libro = false,
-      $form.memoria = false,
-      $form.partitura = false,
-      $form.patente = false,
-      $form.premio = false,
-      $form.premio_bienal = false,
-      $form.proyecto_grado = false,
-      $form.proyecto_investigacion = false,
-      $form.recital = false
-    }
+    reset_filters();
   };
 
   const show_prev = function () {
@@ -195,9 +172,7 @@
     current_page -= 1;
     start_pagination = (current_page - 1) * pagination_size;
     end_pagination = start_pagination + pagination_size;
-
-    page_activities = filter_activities(
-      activities, '', '', '', start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
+    page_activities = paginated_activities[current_page-1];
   };
 
   const show_page = function (page: number) {
@@ -205,9 +180,7 @@
     current_page = page;
     start_pagination = (page - 1) * pagination_size;
     end_pagination = start_pagination + pagination_size;
-
-    page_activities = filter_activities(
-      activities, '', '', '', start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
+    page_activities = paginated_activities[current_page-1];
   };
 
   const show_next = function () {
@@ -215,9 +188,7 @@
     current_page += 1;
     start_pagination = (current_page - 1) * pagination_size;
     end_pagination = start_pagination + pagination_size;
-
-    page_activities = filter_activities(
-      activities, '', '', '', start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
+    page_activities = paginated_activities[current_page-1];
   };
 
   const resize_pagination = function (size: number) {
@@ -225,9 +196,8 @@
     pagination_size = size;
     start_pagination = 0;
     end_pagination = pagination_size;
-    
-    page_activities = filter_activities(
-      activities, '', '', '', start_pagination, end_pagination, false, show_invalid) as YearActivitiesT[];
+    paginated_activities = paginate(activities, pagination_size, show_invalid) as YearActivitiesT[][];
+    page_activities = paginated_activities[current_page-1];
   };
 
   onMount(async () => {
@@ -376,7 +346,11 @@
 
   {#if $form.search_type != "professor"}
     <ActivitiesFilter date_start={$form.date_start} date_end={$form.date_end} />
-    <ActionsButtons action="Buscar" reset="Reiniciar Filtros" on_reset={reset_filters} button="Seleccionar Todas" on_click={select_all} />
+    <ActionsButtons
+      action="Buscar"
+      reset="Reiniciar Filtros" on_reset={reset_filters}
+      button="Seleccionar Todas" on_click={select_all}
+    />
   {:else}
     <div id="action_buttons">
       <button type="submit" name="submit_form" class="ui green button">
@@ -402,36 +376,17 @@
   />
 
   <!-- Display activities by year -->
-  <div>
-    
-    <!-- Filters -->
-    <div id="filters" class="ui segments">
-      <div class="ui vertically fitted segment"><strong>Actividades por página:</strong></div>
-
-      <div id="page_size" class="ui stackable small compact buttons segment">
-        <button class="ui button" on:click={() => resize_pagination(20)}>20</button>
-        <button class="ui button" on:click={() => resize_pagination(30)}>30</button>
-        <button class="ui button" on:click={() => resize_pagination(50)}>50</button>
-        <button class="ui button" on:click={() => resize_pagination(100)}>100</button>
-        <button class="ui button" on:click={() => resize_pagination(200)}>200</button>
-        <button class="ui button" on:click={() => resize_pagination(300)}>300</button>
-        <button class="ui button" on:click={() => resize_pagination(500)}>500</button>
-      </div>
+  <div id="pagination_size" class="ui segment">
+    <strong>Actividades por página:</strong>
+    <div id="page_size" class="ui stackable small compact spaced buttons">
+      <button class="ui button" on:click={() => resize_pagination(20)}>20</button>
+      <button class="ui button" on:click={() => resize_pagination(30)}>30</button>
+      <button class="ui button" on:click={() => resize_pagination(50)}>50</button>
+      <button class="ui button" on:click={() => resize_pagination(100)}>100</button>
+      <button class="ui button" on:click={() => resize_pagination(200)}>200</button>
+      <button class="ui button" on:click={() => resize_pagination(300)}>300</button>
+      <button class="ui button" on:click={() => resize_pagination(500)}>500</button>
     </div>
-
-    <Pagination
-      size={activities.length}
-      page_size={pagination_size}
-      start={start_pagination}
-      end={end_pagination}
-      {show_prev} {show_page} {show_next}
-    />
-
-    {#key page_activities}
-      {#each page_activities as year_activities}
-        <YearActivities {year_activities}/>
-      {/each}
-    {/key}
   </div>
 
   <Pagination
@@ -441,9 +396,23 @@
     end={end_pagination}
     {show_prev} {show_page} {show_next}
   />
+
+  {#key page_activities}
+    {#each page_activities as year_activities}
+      <YearActivities {year_activities}/>
+    {/each}
+  {/key}
+
+  <Pagination
+    size={activities.length}
+    page_size={pagination_size}
+    start={start_pagination}
+    end={end_pagination}
+    {show_prev} {show_page} {show_next}
+  />
+
 {:else}
-  <div>
-  </div>
+  <div />
 {/if}
 
 {#if search_err !== ''}
@@ -456,7 +425,9 @@
     close={() => { search_err = ''; location.reload(); }}
   >
     <p>Hubo un error al realizar la búsqueda. Por favor vuelva a intentar.</p>
-    <span class="ui red text">Detalles: {search_err ?? "No se encuentra en la lista de errores conocidos"}</span>
+    <span class="ui red text">
+      Detalles: {search_err ?? "No se encuentra en la lista de errores conocidos"}
+    </span>
   </Modal>
 {/if}
 
@@ -473,6 +444,8 @@
       Hubo un problema al cargar la lista de profesores, por favor recargue la página
       o contáctese con algún administrador proporcionando el código del error.
     </p>
-    <span class="ui red text">Detalles: {action.info ?? "No se encuentra en la lista de errores conocidos"}</span>
+    <span class="ui red text">
+      Detalles: {action.info ?? "No se encuentra en la lista de errores conocidos"}
+    </span>
   </Modal>
 {/if}
