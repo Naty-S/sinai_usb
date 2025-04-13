@@ -84,15 +84,12 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
       case "libro":
         const _libro = act as libro;
 
-        if (_libro.pais === "Venezuela") {
-          return "Libro Nacional"
-  
-        } else if (_libro.pais !== "Venezuela") {
-          return "Libro Internacional"
+        if (_libro.pais.toUpperCase().includes("VENEZUELA")) {
+          return "Libro Nacional";
   
         } else {
-          return "Publicaciones de Libros"
-        }
+          return "Libro Internacional";
+        };
   
       case "memoria":
         return "Memorias *Arbitradas* de Congresos";
@@ -103,15 +100,12 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
       case "patente":
         const _patente = act as patente;
 
-        if (_patente.pais === "Venezuela") {
-          return "Patentes Nacional"
-  
-        } else if (_patente.pais !== "Venezuela") {
-          return "Patentes Internacional"
-  
+        if (_patente.pais.toUpperCase().includes("VENEZUELA")) {
+          return "Patentes Nacional";
+          
         } else {
-          return "Patentes"
-        }
+          return "Patentes Internacional";
+        };
   
       case "premio":
         return "Premios";
