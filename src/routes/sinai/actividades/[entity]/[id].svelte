@@ -13,12 +13,26 @@
     const in_group = professor?.groups.historico_grupos.map(g => g.Grupo.id).includes(_id);
 
     // si es decano que ve otros prof no mostrar las del decano
-    if (professor?.id === _id || in_group || user?.dean ||
-      professor?.is_dep_chief || professor?.is_dep_representative ||
-      professor?.coord_chief || professor?.division_chief
-    ) {
+    if (user) {
 
-      const _entity = entity === "grupo" ? "group" : (entity === "decano" ? "dean" : "professor")
+      let _entity = entity === "decano" ? "dean" : "professor";
+
+      if (entity === "grupo") {
+
+        if (in_group || user?.dean ||
+          professor?.is_dep_chief || professor?.is_dep_representative ||
+          professor?.coord_chief || professor?.division_chief
+        ) {
+          _entity = "group";
+  
+        } else {
+          return {
+            error: new Error("Acceso denegado. Inicie sesión con el usuario adecuado."),
+            status: 401
+          };
+        };
+      }
+
       const api = user?.dean && _entity === "dean" ? `/api/activities/dean/${user?.email}`
                                                   : `/api/activities/${_entity}/${id}`;
       const res = await fetch(api);
@@ -36,7 +50,7 @@
       };
     } else {
       return {
-        error: new Error("Acceso denegado. Inicie sesión con el usuario adecuado."),
+        error: new Error("Acceso denegado. Inicie sesión en el sistema."),
         status: 401
       };
     }
