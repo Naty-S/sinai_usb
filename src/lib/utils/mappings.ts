@@ -116,30 +116,15 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
       case "proyecto_grado":
         const _proyecto_grado = act as proyecto_grado;
 
-        if (_proyecto_grado.nivel_academico === "Doctorado") {
-          return "Tutoría de Tesis Doctorales"
-  
-        } else if (_proyecto_grado.nivel_academico === "Maestria") {
-          return "Tutoría de Trabajos de Grado (Maestrías)"
-  
-        } else if (_proyecto_grado.nivel_academico === "Especializacion") {
-          return "Tutoría de Proyectos de Grado (Especializaciones)"
-  
-        } else if (_proyecto_grado.nivel_academico === "Postgrado") {
-          return "Proyectos de Grado (Postgrados)"
-  
-        } else if (_proyecto_grado.nivel_academico === "Licenciatura") {
-          return "Tutoría de Proyectos de Grado (Licenciaturas)"
-  
-        } else if (_proyecto_grado.nivel_academico === "Ingenieria") {
-          return "Tutoría de Proyectos de Grado (Ingenierías)"
-  
-        } else if (_proyecto_grado.nivel_academico === "Pasantia_Larga") {
-          return "Proyectos de Grado (Pasantías Largas)"
-  
-        } else {
-          return "Proyectos de Grado Dirigidos";
-        }
+        switch (_proyecto_grado.nivel_academico) {
+          case "Doctorado": return "Tutoría de Tesis Doctorales";
+          case "Maestria": return "Tutoría de Trabajos de Grado (Maestrías)";
+          case "Especializacion": return "Tutoría de Proyectos de Grado (Especializaciones)";
+          case "Postgrado": return "Proyectos de Grado (Postgrados)";
+          case "Licenciatura": return "Tutoría de Proyectos de Grado (Licenciaturas)";
+          case "Ingenieria": return "Tutoría de Proyectos de Grado (Ingenierías)";
+          default: return "Proyectos de Grado (Pasantías Largas)";
+        };
   
       case "proyecto_investigacion":
         const _proyecto_investigacion = act as proyecto_investigacion;
@@ -153,7 +138,7 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
   
         } else {
           return "Proyectos de IYD";
-        }
+        };
   
       case "recital":
         return "Recitales o Conciertos Arbitrados";
