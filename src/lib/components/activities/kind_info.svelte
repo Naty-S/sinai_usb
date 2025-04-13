@@ -147,7 +147,7 @@
 
     <span class="uk-text-emphasis">Título Académico:</span> {activity.titulo_academico}.
     <span class="uk-text-emphasis">Coordinación Académica:</span> {activity.coordinacion_academica}.
-    <span class="uk-text-emphasis">Nivel Académico:</span> {activity.nivel_academico.replaceAll('_', ' ')}.
+    <span class="uk-text-emphasis">Tipo de Tutoría:</span> {activity.nivel_academico.replaceAll('_', ' ')}.
     <span class="uk-text-emphasis">Fecha de Defensa:</span> {format_date(activity.fecha_defensa)}.
 
   {:else if kind === "proyecto_investigacion"}
