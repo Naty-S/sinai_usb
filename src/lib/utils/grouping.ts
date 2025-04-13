@@ -129,20 +129,11 @@ export const acts_kinds_by_prop = function (
   if (!show_invalid) a = a.filter(a => a.kind_name !== "ACTIVIDAD INVÁLIDA");
 
   const acts_group = Object.entries(group_by(prop, a, false));
-
-  if (prop == "fecha") {
-
-    return acts_group.map(([_year, _acts]) => ({
-        year: Number(_year)
-      , kind_activities: group_by("kind_name", _acts)
-    }));
-  } else {
-
-    return acts_group.map(([_group, _acts]) => ({
-      group: _group
-      , kind_activities: group_by("kind_name", _acts)
-    }));
-  };
+  
+  return acts_group.map(([_prop, _acts]) => ({
+    prop: _prop
+    , kind_activities: group_by("kind_name", _acts)
+  }));
 };
 
 
