@@ -313,6 +313,7 @@
       name="search"
       bind:value={$form.search}
       options={groups.map(o => ({ val: o.id.toString(), name: `Grupo ${o.id.toString()} - ${o.nombre}` }))}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
     />
   {:else if $form.search_type === "department"}
     <Select
@@ -320,6 +321,7 @@
       name="search"
       bind:value={$form.search}
       options={departments.map(o => ({ val: o.id.toString(), name: o.nombre }))}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
     />
   {:else if $form.search_type === "division"}
     <Select
@@ -327,6 +329,7 @@
       name="search"
       bind:value={$form.search}
       options={divisions.map(o => ({ val: o.id.toString(), name: o.nombre }))}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
     />
   {:else if $form.search_type === "coordination"}
     <Select
@@ -334,6 +337,7 @@
       name="search"
       bind:value={$form.search}
       options={coordinations.map(o => ({ val: o.id.toString(), name: o.nombre }))}
+      customHandleChange={(e) => { $form.date_start = date_start; $form.date_end = date_end; handleChange(e);}}
     />
   {:else}
     <Select
@@ -341,6 +345,7 @@
       name="search"
       bind:value={$form.search}
       options={professors.map(o => ({ val: o.id.toString(), name: `${o.apellido1}, ${o.nombre1}` }))}
+      customHandleChange={(e) => { $form.date_start = init_date(new Date(`01-01-1100`)); $form.date_end = init_date(); handleChange(e);}}
     />
   {/if}
 
