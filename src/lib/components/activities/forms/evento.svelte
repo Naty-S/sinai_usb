@@ -51,13 +51,21 @@
       class="field"
     />
   </div>
-  <div class="two inline fields">
+  <div class="three inline fields">
     <Select
       label="Modalidad"
       name="evento.modalidad"
       bind:value={$form.evento.modalidad}
       options={evento_modalidad_enum.map(mod => ({ val: mod, name: mod }))}
       class="six wide field"
+    />
+    <Input
+      type="checkbox"
+      label="Evento Internacional"
+      name="evento.internacional"
+      bind:value={$form.evento.internacional}
+      error={$errors.evento.internacional}
+      class="three wide field"
     />
     <Input
       label="Institución que financia o patrocina"

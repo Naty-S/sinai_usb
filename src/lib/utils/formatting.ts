@@ -79,7 +79,7 @@ export const format_date = function (date: Date | string | null, format: string 
  * @param filters - filter kind info
  * @returns Activity data with kind data, groups, and logs
  */
-export const format_activity = function (actividad: Actividad, log: ActivityLog | null, filters?: any)
+export const format_activity = function (actividad: Actividad, log?: ActivityLog | null, filters?: any)
 : Activity {
 
   const filter_kinds = filters ? kinds.filter(kind => filters[kind]) : kinds;

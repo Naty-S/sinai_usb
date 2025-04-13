@@ -65,21 +65,12 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
       case "evento":
         const _evento = act as evento;
 
-        if (_evento.modalidad === "Invitada" && _evento.pais === "Venezuela") {
-          return "Asistencia a Eventos Nacionales"
-  
-        } else if (_evento.modalidad === "Invitada" && _evento.pais !== "Venezuela") {
-          return "Asistencia a Eventos Internacionales"
-  
-        } else if (_evento.pais === "Venezuela") {
-          return "Eventos en Venezuela"
-  
-        } else if (_evento.pais !== "Venezuela") {
-          return "Eventos en el Exterior"
-  
+        if (_evento.internacional) {
+          return "Asistencia a Eventos Internacionales";
+          
         } else {
-          return "Eventos";
-        }
+          return "Asistencia a Eventos Nacionales";
+        };
   
       case "exposicion":
         return "Selección en Exposiciones, Bienales, Salones o Concursos Arbitrados";
