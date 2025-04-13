@@ -22,7 +22,7 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
       case "articulo_revista":
         const _articulo_revista = act as articulo_revista;
   
-        const indexes = ["Scopus", "SCI", "SSCI", "SCIENCE CITATION INDEX", "SOCIAL SCIENCES CITATION INDEX"];
+        const indexes = ["SCOPUS", "SCI", "SSCI", "SCIENCE CITATION INDEX", "SOCIAL SCIENCES CITATION INDEX"];
         const is_indexed = function (): boolean {
           return indexes.some(i => {
             const index = _articulo_revista.indice;
