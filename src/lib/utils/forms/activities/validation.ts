@@ -184,7 +184,7 @@ const proyecto_grado = yup.object().shape({
     , "Maestria"
     , "Especializacion"
     , "Postgrado"
-    , "Licencitura"
+    , "Licenciatura"
     , "Ingenieria"
     , "Pasantia_Larga"
   ])

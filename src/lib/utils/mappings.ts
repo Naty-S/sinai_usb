@@ -143,7 +143,7 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
         } else if (_proyecto_grado.nivel_academico === "Postgrado") {
           return "Proyectos de Grado (Postgrados)"
   
-        } else if (_proyecto_grado.nivel_academico === "Licencitura") {
+        } else if (_proyecto_grado.nivel_academico === "Licenciatura") {
           return "Tutoría de Proyectos de Grado (Licenciaturas)"
   
         } else if (_proyecto_grado.nivel_academico === "Ingenieria") {
