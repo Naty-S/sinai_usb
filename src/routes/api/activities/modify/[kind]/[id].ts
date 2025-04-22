@@ -50,7 +50,7 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
   data[params.kind] = { update: _data[params.kind] };
 
   let actividades_grupos_create: { grupo: number }[] = [];
-  let actividades_grupos_delete: { actividad: number, grupo: number }[] = [];
+  let actividades_grupos_delete: { actividad_grupo: {actividad: number, grupo: number} }[] = [];
   
   _data.actividades_grupos.forEach((group: { old: string, new: string }) => {
     
@@ -59,8 +59,10 @@ export const PATCH: RequestHandler = async function ({ request, params }) {
       actividades_grupos_create.push( {grupo: Number(group.new)} );
       
       actividades_grupos_delete.push({
-        actividad: Number(params.id),
-        grupo: Number(group.old)
+        actividad_grupo: {
+          actividad: Number(params.id),
+          grupo: Number(group.old)
+        }
       });
     };
 

@@ -47,12 +47,15 @@
       class="eight wide field"
     />
   </div>
-  <div class="two inline required fields">
+  <div class="three inline fields">
     <Select
       label="Tipo de Tutoría"
       name="proyecto_grado.nivel_academico"
       bind:value={$form.proyecto_grado.nivel_academico}
-      options={proyecto_grado_nivel_academico_enum.map(nivel => ({ val: nivel, name: nivel }))}
+      options={proyecto_grado_nivel_academico_enum.map(nivel => ({
+        val: nivel,
+        name: nivel === "Pasantia_Larga" ? "Pasantia Larga (Lic. ó Ing.)" : nivel
+      }))}
       class="five wide field"
     />
     <Input
@@ -61,7 +64,7 @@
       name="proyecto_grado.fecha_defensa"
       bind:value={$form.proyecto_grado.fecha_defensa}
       error={$errors.proyecto_grado.fecha_defensa}
-      class="field"
+      class="five wide field"
     />
   </div>
 </div>

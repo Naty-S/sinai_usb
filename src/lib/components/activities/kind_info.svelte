@@ -21,12 +21,20 @@
   {#if kind === "articulo_revista"}
 
     <u>{activity.revista}</u>.
-    <span class="uk-text-emphasis">Fecha de publicación:</span> {format_date(activity.fecha_publicacion)}.
+    {#if activity.fecha_publicacion}
+      <span class="uk-text-emphasis">Fecha de publicación:</span> {format_date(activity.fecha_publicacion)}.
+    {/if}
     {activity.indice ? "Indexada en el " + activity.indice + '.' : ''}
     {activity.articulo_invitado ? "Artículo Invitado." : ''}
-    <span class="uk-text-emphasis">{activity.estado.replaceAll('_', ' ')}.</span>
+    <span class="uk-text-emphasis">
+      {#if activity.estado === "Aceptado_via_publicacion"}
+        Aceptado en Vías de Publicación.
+      {:else}
+        {activity.estado}.
+      {/if}
+    </span>
     <span class="uk-text-emphasis">Vol.</span> {activity.volumen}, pp. {activity.pag_inicial} - {activity.pag_final}.
-    {#if activity.paginas.lenght > 0}
+    {#if activity.paginas.length > 0}
       <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}
     {/if}
     {activity.con_estudiantes ? "Con estudiantes." : ''}
@@ -105,7 +113,7 @@
     {activity.medio_publicacion ? activity.medio_publicacion + '.' : ''}
     {activity.formato === "Libro" || activity.formato === "Revista" ? "Vol. " : ''} {activity.volumen}
     pp. {activity.pag_inicial || ''} - {activity.pag_final || ''}.
-    {#if activity.paginas.lenght > 0}
+    {#if activity.paginas.length > 0}
       <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}.
     {/if}
     {activity.con_estudiantes ? "Con estudiantes." : ''}
