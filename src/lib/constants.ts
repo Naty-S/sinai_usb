@@ -86,7 +86,7 @@ export const proyecto_grado_nivel_academico_enum = [
   , "Postgrado"
   , "Licenciatura"
   , "Ingenieria"
-  , "Pasantia Larga"
+  , "Pasantia_Larga"
 ];
 
 export const partitura_categoria_enum = [
