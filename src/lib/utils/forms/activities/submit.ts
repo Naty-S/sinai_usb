@@ -10,7 +10,7 @@ export const submit = function (kind: kinds, user: User, update: boolean = false
   return async function (data: actividad_form<typeof kind>) {
     
     let date = data[kind].fecha && data[kind].fecha.split('-');
-    
+
     switch (kind) {
       case "articulo_revista":
         const con_estudiantes = data.autores_usb?.some(a => a.es_estudiante) ||

@@ -314,7 +314,7 @@ const actividades_grupos = yup.array(yup.object().shape({
     old: yup.string().oneOf(groups),
     new: yup.string().oneOf(groups)
   })
-);
+).min(1, "Ingrese al menos un grupo");
 
 
 export const validation = function (kind: kinds) {
