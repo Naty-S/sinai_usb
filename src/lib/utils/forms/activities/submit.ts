@@ -9,7 +9,8 @@ import * as api from "$lib/api";
 export const submit = function (kind: kinds, user: User, update: boolean = false, id?: string) {
   return async function (data: actividad_form<typeof kind>) {
     
-    let date = data[kind].fecha.split('-');
+    let date = data[kind].fecha && data[kind].fecha.split('-');
+    
     switch (kind) {
       case "articulo_revista":
         const con_estudiantes = data.autores_usb?.some(a => a.es_estudiante) ||
@@ -17,14 +18,16 @@ export const submit = function (kind: kinds, user: User, update: boolean = false
         
         data.articulo_revista.con_estudiantes = con_estudiantes === undefined ? false : con_estudiantes;
         data.articulo_revista.paginas = Number(data.articulo_revista.paginas);
-        date = data.articulo_revista.fecha_publicacion.split('-');
-        data.articulo_revista.fecha_publicacion = data.articulo_revista.fecha_publicacion &&
-                                                  new Date(date[0], date[1] - 1, date[2]);
+
+        if (data.articulo_revista.fecha_publicacion) {
+          date = data.articulo_revista.fecha_publicacion.split('-');
+          data.articulo_revista.fecha_publicacion = new Date(date[0], date[1] - 1, date[2]);
+        };
+
         break;
 
       case "evento":
-        data.evento.internacional = data.evento.pais !== "Venezuela";
-        date = data.evento.fecha.split('-');
+        data.evento.internacional = data.evento.pais.toLowerCase() !== "venezuela";
         data.evento.fecha = new Date(date[0], date[1] - 1, date[2]);
         break;
 
