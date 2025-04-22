@@ -34,7 +34,7 @@
       {/if}
     </span>
     <span class="uk-text-emphasis">Vol.</span> {activity.volumen}, pp. {activity.pag_inicial} - {activity.pag_final}.
-    {#if activity.paginas.lenght > 0}
+    {#if activity.paginas.length > 0}
       <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}
     {/if}
     {activity.con_estudiantes ? "Con estudiantes." : ''}
@@ -113,7 +113,7 @@
     {activity.medio_publicacion ? activity.medio_publicacion + '.' : ''}
     {activity.formato === "Libro" || activity.formato === "Revista" ? "Vol. " : ''} {activity.volumen}
     pp. {activity.pag_inicial || ''} - {activity.pag_final || ''}.
-    {#if activity.paginas.lenght > 0}
+    {#if activity.paginas.length > 0}
       <span class="uk-text-emphasis">Páginas:</span> {activity.paginas}.
     {/if}
     {activity.con_estudiantes ? "Con estudiantes." : ''}
