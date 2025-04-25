@@ -60,16 +60,16 @@
   <div class="two inline fields">
     <Input
       label="Financiado Por"
-      name="composicion.jurado"
-      bind:value={$form.composicion.jurado}
-      error={$errors.composicion.jurado}
+      name="composicion.financiado_por"
+      bind:value={$form.composicion.financiado_por}
+      error={$errors.composicion.financiado_por}
       class="ten wide required field"
     />
     <Input
       label="Jurado, Árbitro o Comité Editorial"
-      name="composicion.financiado_por"
-      bind:value={$form.composicion.financiado_por}
-      error={$errors.composicion.financiado_por}
+      name="composicion.jurado"
+      bind:value={$form.composicion.jurado}
+      error={$errors.composicion.jurado}
       class="eight wide field"
     />
   </div>
