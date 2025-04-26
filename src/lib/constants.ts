@@ -90,19 +90,20 @@ export const proyecto_grado_nivel_academico_enum = [
 ];
 
 export const partitura_categoria_enum = [
-    "Ejecucion en CD Nacional"
-  , "Ejecucion en CD Internacional"
-  , "CD Completo Nacional"
-  , "CD Completo Internacional"
-  , "Premio Nacional por Concurso"
-  , "Premio Internacional por Concurso"
+    "Ejecucion_CD_Nacional"
+  , "Ejecucion_CD_Internacional"
+  , "CD_Completo_Nacional"
+  , "CD_Completo_Internacional"
+  , "Premio_Nacional_Concurso"
+  , "Premio_Internacional_Concurso"
+  , "Partitura"
 ];
 
 export const grabacion_categoria_enum = [
-    "Ejecucion en CD Nacional"
-  , "Ejecucion en CD Internacional"
-  , "CD Completo Nacional"
-  , "CD Completo Internacional"
-  , "Premio Nacional por Concurso"
-  , "Premio Internacional por Concurso"
+    "Ejecucion_CD_Nacional"
+  , "Ejecucion_CD_Internacional"
+  , "CD_Completo_Nacional"
+  , "CD_Completo_Internacional"
+  , "Premio_Nacional_Concurso"
+  , "Premio_Internacional_Concurso"
 ];

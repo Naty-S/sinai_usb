@@ -79,7 +79,7 @@ const exposicion = yup.object().shape({
 
 const grabacion = yup.object().shape({
   categoria: yup.string().oneOf([
-    "Ejecucion_CD_Nacional"
+      "Ejecucion_CD_Nacional"
     , "Ejecucion_CD_Internacional"
     , "CD_Completo_Nacional"
     , "CD_Completo_Internacional"
@@ -136,7 +136,7 @@ const memoria = yup.object().shape({
 
 const partitura = yup.object().shape({
   categoria: yup.string().oneOf([
-    "Ejecucion_CD_Nacional"
+      "Ejecucion_CD_Nacional"
     , "Ejecucion_CD_Internacional"
     , "CD_Completo_Nacional"
     , "CD_Completo_Internacional"

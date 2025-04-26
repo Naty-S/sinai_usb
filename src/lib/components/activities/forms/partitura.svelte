@@ -61,7 +61,7 @@
       name="partitura.categoria"
       bind:value={$form.partitura.categoria}
       options={partitura_categoria_enum.map(cat => ({ val: cat, name: cat }))}
-      class="five wide field"
+      class="six wide field"
     />
     <Input
       label="Jurado, Árbitro o Comité Editorial"
