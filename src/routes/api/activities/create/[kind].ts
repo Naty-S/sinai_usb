@@ -13,6 +13,10 @@ import { ve_date } from "$lib/utils/formatting";
 export const POST: RequestHandler = async ({ request, params }) => {
 
   const _data = await request.json();
+  const pathname = _data.user_rank == "professor" ?
+    `/sinai/actividades/profesor/${_data.user.professor?.id}` :
+    "/sinai/actividades/decano/0";
+
   let actividades_grupos_create = [];
   if (_data.actividades_grupos.length > 0) {
     actividades_grupos_create = _data.actividades_grupos.map((g: any) => ({ grupo: Number(g.new) }))
@@ -24,11 +28,10 @@ export const POST: RequestHandler = async ({ request, params }) => {
     autores_usb: { create: _data.autores_usb },
     autores_externos: { create: _data.autores_externos },
   };
-  
+
   data[params.kind] = { create: _data[params.kind] };
 
-  let status = 500;
-  let body = {};
+  let status = 303;
   let headers = {
     location: '/'
   };
@@ -54,22 +57,17 @@ export const POST: RequestHandler = async ({ request, params }) => {
       }
     });
 
-    status = 303;
-    if (_data.user_rank == "professor") {
-      headers = {
-        location: `/sinai/actividades/profesor/${_data.user.professor?.id}?creada=true`
-      };
-    } else {
-      headers = {
-        location: "/sinai/actividades/decano/0?creada=true"
-      };
+    headers = {
+      location: `${pathname}?creada=true`
     };
-    
+
   } catch (error: any) {
     const message = await handle_error(error);
     const code = error.code || '';
 
-    body = { message, code };
+    headers = {
+      location: `${pathname}?error=${message}&code=${code}`
+    };
   };
 
   return {

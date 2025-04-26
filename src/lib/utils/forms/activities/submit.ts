@@ -78,17 +78,6 @@ export const submit = function (kind: kinds, user: User, update: boolean = false
       res = await api.post(`/api/activities/create/${kind}`, data);
     };
     
-    if (res.ok) {
-      goto(res.url);
-
-    } else {
-      const { message, code } = await res.json();
-
-      if (user.professor) {
-        goto(`/sinai/actividades/profesor/${user.professor?.id}?error=${message}&code=${code}`);
-      } else {
-        goto(`/sinai/actividades/decano/0?error=${message}&code=${code}`);
-      };
-    };
+    goto(res.url);
   };
-}
+};
