@@ -310,11 +310,19 @@ const groups = [
   "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "76", "77",
   "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89"
 ];
-const actividades_grupos = yup.array(yup.object().shape({
-    old: yup.string().oneOf(groups),
-    new: yup.string().oneOf(groups)
-  })
-).min(1, "Ingrese al menos un grupo");
+const actividades_grupos = yup.lazy(value => {
+  if (value !== undefined) {
+    return yup.array().ensure().when(["patente", "premio"], {
+      is: yup.object(),
+      then: yup.array().of((yup.object().shape({
+        old: yup.string().oneOf(groups),
+        new: yup.string().oneOf(groups)
+      }))).min(1, "Ingrese al menos un grupo"),
+      otherwise: yup.array().notRequired()
+    });
+  };
+  return yup.mixed().notRequired();
+})
 
 
 export const validation = function (kind: kinds) {
