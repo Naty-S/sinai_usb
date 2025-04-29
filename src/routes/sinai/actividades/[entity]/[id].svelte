@@ -105,6 +105,8 @@
   $: err_code = $page.url.searchParams.get("code");
   $: editable = $page.params.entity !== "grupo" || $session.user?.dean !== undefined;
 
+  $: console.log($page.url.pathname)
+
   const show_prev = function () {
 
     current_page -= 1;
@@ -331,7 +333,7 @@
 {/if}
 
 {#if pop_create_act}
-  <CreateActivities pop_up={pop_create_act} close={() => location.replace($page.url.pathname)} />
+  <CreateActivities pop_up={pop_create_act} close={() => pop_create_act = false} />
 {/if}
 
 {#if err}
