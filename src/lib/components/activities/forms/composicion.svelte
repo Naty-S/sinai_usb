@@ -63,14 +63,14 @@
       name="composicion.financiado_por"
       bind:value={$form.composicion.financiado_por}
       error={$errors.composicion.financiado_por}
-      class="ten wide required field"
+      class="ten wide field"
     />
     <Input
       label="Jurado, Árbitro o Comité Editorial"
       name="composicion.jurado"
       bind:value={$form.composicion.jurado}
       error={$errors.composicion.jurado}
-      class="eight wide field"
+      class="eight wide required field"
     />
   </div>
 </div>
