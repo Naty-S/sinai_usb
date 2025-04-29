@@ -18,8 +18,8 @@
 	};  
 
 	const remove_editor = function (i: number) {
-    $form.capitulo_libro.editores.splice(i, 1);
-    $errors.capitulo_libro.editores.splice(i, 1);
+    $form.capitulo_libro.editores = $form.capitulo_libro.editores.filter((_, j) => j !== i);
+    $errors.capitulo_libro.editores = $errors.capitulo_libro.editores.filter((_, j) => j !== i);
   };
 
 </script>

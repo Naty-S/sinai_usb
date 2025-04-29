@@ -37,13 +37,13 @@
   });
 
   const add_group = function () {
-    $form.actividades_grupos = $form.actividades_grupos.concat([{ old: '?', new: '0'}]);
+    $form.actividades_grupos = $form.actividades_grupos.concat([{ old: '?', new: '1'}]);
     $errors.actividades_grupos = $errors.actividades_grupos.concat([{ old: '', new: ''}]);
   };
 
   const remove_group = function (i: number) {
-    $form.actividades_grupos.splice(i, 1);
-    $errors.actividades_grupos.splice(i, 1);
+    $form.actividades_grupos = $form.actividades_grupos.filter((_, j) => j !== i);
+    $errors.actividades_grupos = $errors.actividades_grupos.filter((_, j) => j !== i);
   };
 </script>
 
@@ -97,6 +97,8 @@
       Hubo un problema al cargar los grupos, por favor recargue la página
       o contáctese con algún administrador proporcionando el código del error.
     </p>
-    <span class="ui red text">Detalles: {action.info ?? "No se encuentra en la lista de errores conocidos"}</span>
+    <span class="ui red text">
+      Detalles: {action.info ?? "No se encuentra en la lista de errores conocidos"}
+    </span>
   </Modal>
 {/if}
