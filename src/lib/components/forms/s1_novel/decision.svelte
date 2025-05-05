@@ -13,9 +13,9 @@
   export let action: { info: string, code: string };
   export let f;
   
-  const { form, errors, handleChange, handleSubmit, handleReset } = f;
+  const { form, errors, handleChange, handleSubmit, handleReset, isSubmitting } = f;
   
-  setContext(key, { form, errors, handleChange });
+  setContext(key, { form, errors, handleChange, isSubmitting });
 </script>
 
 <h2>Tomar decision</h2>

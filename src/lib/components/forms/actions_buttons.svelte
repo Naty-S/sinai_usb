@@ -13,6 +13,10 @@
   * `action`: string
  -->
 <script lang="ts">
+  import type { activity_form_ctx } from "$lib/types/forms";
+
+  import { getContext } from "svelte";
+  import { key } from "svelte-forms-lib";
   import { goto, afterNavigate } from "$app/navigation";
 
   export let action: string;
@@ -21,8 +25,9 @@
   export let on_click: () => void = () => {};
   export let on_reset: (() => void) | undefined = undefined;
 
+  const { isSubmitting }: activity_form_ctx<any> = getContext(key);
+
   let previousPage: string = "/sinai";
-  let disable = false;
 
   afterNavigate(navigation => {
     if (navigation?.from) {
@@ -32,7 +37,7 @@
 </script>
 
 <div id="action_buttons">
-  <button type="submit" name="submit_form" class="ui green button">
+  <button type="submit" name="submit_form" class="ui green button" disabled={$isSubmitting}>
     {action}
   </button>
   {#if on_reset}

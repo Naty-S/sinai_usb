@@ -59,7 +59,7 @@
   const onSubmit = submit($session.user?.professor?.id, $page.url.pathname);
   const validationSchema = validation();
   const formProps = { initialValues, onSubmit, validationSchema };
-  const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
+  const { form, errors, handleChange, handleSubmit, handleReset, isSubmitting } = createForm(formProps);
 
   let show_s1_form = false;
   let pop_delete = false;
@@ -87,7 +87,7 @@
   };
 
   setContext(key, {
-    form, errors, handleChange
+    form, errors, handleChange, isSubmitting
   });
 
   $: requested = Boolean($page.url.searchParams.get("s1_requested"));

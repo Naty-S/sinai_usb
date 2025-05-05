@@ -23,7 +23,7 @@
   const onSubmit = submit($page.url.pathname);
   const validationSchema = validation();
   const formProps = { initialValues, onSubmit, validationSchema };
-  const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
+  const { form, errors, handleChange, handleSubmit, handleReset, isSubmitting } = createForm(formProps);
 
   let professors: Profesor[] = [];
   let action = { info: '', code: '' };
@@ -45,7 +45,7 @@
     };
   });
 
-  setContext(key, { form, errors, handleChange });
+  setContext(key, { form, errors, handleChange, isSubmitting });
 
   const add_jury_usb = function () {
     

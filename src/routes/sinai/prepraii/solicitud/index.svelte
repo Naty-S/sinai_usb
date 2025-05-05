@@ -61,7 +61,7 @@
   const onSubmit = submit($session.user?.professor?.id, $page.url.pathname);
   const validationSchema = validation();
   const formProps = { initialValues, onSubmit, validationSchema };
-  const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
+  const { form, errors, handleChange, handleSubmit, handleReset, isSubmitting } = createForm(formProps);
 
   let show_prepraii_form = false;
   let show_authors = false;
@@ -107,7 +107,7 @@
     };
   });
 
-  setContext(key, { form, errors, handleChange });
+  setContext(key, { form, errors, handleChange, isSubmitting });
 
   $: article = articles.find(a => a.id == $form.prepraii_solicitud.actividad);
   $: requested = Boolean($page.url.searchParams.get("prepraii_requested"));

@@ -51,7 +51,7 @@
   const onSubmit = submit();
   const validationSchema = validation();
   const formProps = { initialValues, onSubmit, validationSchema };
-  const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
+  const { form, errors, handleChange, handleSubmit, handleReset, isSubmitting } = createForm(formProps);
   
   const current_year = (new Date()).getFullYear();
   const date_start = init_date(new Date(`01-01-${current_year-years}`));
@@ -225,7 +225,7 @@
     };
   });
 
-  setContext(key, { form, errors, handleChange });
+  setContext(key, { form, errors, handleChange, isSubmitting });
 </script>
 
 <form class="ui large form" on:submit|preventDefault={show_search} on:reset={handleReset}>

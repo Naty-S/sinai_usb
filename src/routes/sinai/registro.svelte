@@ -38,7 +38,7 @@
   const onSubmit = submit();
   const validationSchema = validation();
   const formProps = { initialValues, onSubmit, validationSchema };
-  const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
+  const { form, errors, handleChange, handleSubmit, handleReset, isSubmitting } = createForm(formProps);
 
   let departments: Department[] = [];
   let action = { info: '', code: '' };
@@ -73,7 +73,7 @@
   });
 
   setContext(key, {
-    form, errors, handleChange
+    form, errors, handleChange, isSubmitting
   });
 </script>
 

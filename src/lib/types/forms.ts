@@ -186,4 +186,5 @@ export type activity_form_ctx<kind extends kinds> = {
   form: Writable<actividad_form<kind>>,
   errors: Writable<actividad_form<kind>>,
   handleChange: (event: Event) => any,
+  isSubmitting: Writable<boolean>
 };

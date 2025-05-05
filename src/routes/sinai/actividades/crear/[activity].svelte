@@ -34,13 +34,11 @@
   const onSubmit = submit(kind, $session.user);
   const validationSchema = validation(kind);
   const formProps = { initialValues, onSubmit, validationSchema };
-  const { form, errors, handleChange, handleSubmit, handleReset } = createForm(formProps);
+  const { form, errors, handleChange, handleSubmit, handleReset, isSubmitting } = createForm(formProps);
 
   setContext(key, {
-    form, errors, handleChange
+    form, errors, handleChange, isSubmitting
   });
 </script>
 
-<!-- {#key $form} -->
-  <ActivityForm {handleSubmit} {handleReset} {activity} action="Crear" reset="Limpiar Todo"/>
-<!-- {/key} -->
+<ActivityForm {handleSubmit} {handleReset} {activity} action="Crear" reset="Limpiar Todo"/>
