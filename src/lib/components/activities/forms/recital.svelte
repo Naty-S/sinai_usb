@@ -23,7 +23,7 @@
   RECITALES O CONCIERTOS ARBITRADOS
 </h2>
 
-<div name="recital form">
+<div class="grouped fields" name="recital form">
   <Input
     label="Título de la Obra"
     name="actividad.titulo"
@@ -49,7 +49,7 @@
       class="required field"
     />
   </div>
-  <div class="two inline fields">
+  <div class="two fields">
     <Input
       label="Jurado o Árbitro"
       name="recital.jurado"

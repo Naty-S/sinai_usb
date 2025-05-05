@@ -109,7 +109,7 @@
 </script>
 
 <div class="required field">
-  <label for="">Autores</label>
+  <h3 class="ui dividing header">Autores</h3>
 
   {#if $form.autores_usb.length === 0 && $form.autores_externos.length === 0}
     <div class="ui five wide field tiny negative message">
@@ -119,7 +119,7 @@
 
   <!-- Autores USB -->
   <div class="field">
-    <span class="ui header">USB</span>
+    <div class="ui dividing small header">USB</div>
 
     {#each autores_usb as author, i}
 
@@ -181,7 +181,7 @@
       </div>
 
       {#if student_usb(i)}
-        <div class="two inline fields">
+        <div class="two fields">
           <Input
             label="Carrera"
             name="autores_usb[{i}].estudiante_carrera"
@@ -223,11 +223,11 @@
   
   <!-- Autores Externos -->
   <div class="field">
-    <span class="ui header">Externos</span>
+    <div class="ui dividing small header">Externos</div>
 
     {#each autores_externos as author, i}
 
-      <div class="two inline fields">
+      <div class="two fields">
         <Input
           label="Nombre"
           name="autores_externos[{i}].nombre"
@@ -252,7 +252,7 @@
         />
       </div>
 
-      <div class="two inline fields">
+      <div class="{student_out(i) ? "two fields": 'field'}">
         {#if student_out(i)}
           <Input
             label="Carrera"
@@ -263,7 +263,7 @@
               $form.autores_externos[i].estudiante_carrera = e.target.value;
             }}
             error={$errors.autores_externos[i]?.estudiante_carrera}
-            class="ten wide required field"
+            class="required field"
           />
         {/if}
         <Input
@@ -275,7 +275,7 @@
             $form.autores_externos[i].correo = e.target.value;
           }}
           error={$errors.autores_externos[i]?.correo}
-          class="ten wide field"
+          class="field"
         />
         </div>
       

@@ -23,7 +23,7 @@
   TRABAJOS RECONOCIDOS O PREMIADOS EN BIENALES, SALONES, CONCURSOS O EXPOSICIONES
 </h2>
 
-<div name="premio_bienal form">
+<div class="grouped fields" name="premio_bienal form">
   <Input
     label="Título de la Obra"
     name="actividad.titulo"
@@ -45,7 +45,7 @@
     error={$errors.premio_bienal.nombre_evento}
     class="required field"
   />
-  <div class="three inline required fields">
+  <div class="three required fields">
     <CountryStates />
     <Input
       type="date"
@@ -53,7 +53,7 @@
       name="premio_bienal.fecha"
       bind:value={$form.premio_bienal.fecha}
       error={$errors.premio_bienal.fecha}
-      class="field"
+      class="six wide field"
     />
   </div>
   <Input
@@ -63,9 +63,9 @@
     error={$errors.premio_bienal.categoria}
     class="required field"
   />
-  <div class="two inline fields">
+  <div class="two fields">
     <Input
-      label="Institución organizadora"
+      label="Institución Organizadora"
       name="premio_bienal.organizado_por"
       bind:value={$form.premio_bienal.organizado_por}
       error={$errors.premio_bienal.organizado_por}

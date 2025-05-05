@@ -25,7 +25,7 @@
 </script>
 
 <div class="required field">
-  <label for="">Editores del Libro</label>
+  <h3 class="ui dividing header">Editores del Libro</h3>
 
   {#if $form.capitulo_libro.editores.length === 0 }
     <div class="ui five wide field tiny negative message">

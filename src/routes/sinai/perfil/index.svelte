@@ -161,7 +161,7 @@
   </div>
 
   <div class="field">
-    <label for="">Actualizar datos PEI</label>
+    <h3 class="ui dividing header">Actualizar datos PEI</h3>
     <div class="three inline fields">
       <Input
         label="Número"
@@ -190,13 +190,13 @@
     </div>
   </div>
 
-  <div class="two inline required fields">
+  <div class="two required fields">
     <Select
       label="Último Diploma"
       name="profile.diploma_tipo"
       bind:value={$form.profile.diploma_tipo}
       options={profesor_diploma_tipo_enum.map(d => ({ val: d, name: d }))}
-      class="six wide inline field"
+      class="six wide field"
     />
     <Input
       label="Universidad del Diploma"
@@ -210,7 +210,8 @@
   <ResearchLines />
 
   <div class="field">
-    <label for="">Perfil de Orcid</label>
+    <h3 class="ui dividing header">Perfiles de Investigación</h3>
+    <div class="ui small header">Orcid</div>
     <div class="two inline fields">
       <Input
         type="number"
@@ -232,7 +233,7 @@
   </div>
 
   <div class="field">
-    <label for="">Perfil de Google Schoolar</label>
+    <div class="ui small header">Google Schoolar</div>
     <div class="two inline fields">
       <Input
         type="number"
@@ -254,7 +255,7 @@
   </div>
 
   <div class="field">
-    <label for="">Perfil de Research Gate</label>
+    <div class="ui small header">Research Gate</div>
     <div class="two inline fields">
       <Input
         type="number"

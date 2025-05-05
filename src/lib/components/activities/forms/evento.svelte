@@ -25,7 +25,7 @@
   ASISTENCIA A EVENTOS
 </h2>
 
-<div name="evento form">
+<div class="grouped fields" name="evento form">
   <Input
     label="Título del Trabajo"
     name="actividad.titulo"
@@ -40,7 +40,7 @@
     error={$errors.evento.nombre}
     class="required field"
   />
-  <div class="three inline required fields">
+  <div class="three required fields">
     <CountryStates />
     <Input
       type="date"
@@ -51,20 +51,12 @@
       class="field"
     />
   </div>
-  <div class="three inline fields">
+  <div class="three fields">
     <Select
       label="Modalidad"
       name="evento.modalidad"
       bind:value={$form.evento.modalidad}
       options={evento_modalidad_enum.map(mod => ({ val: mod, name: mod }))}
-      class="six wide field"
-    />
-    <Input
-      type="checkbox"
-      label="Evento Internacional"
-      name="evento.internacional"
-      bind:value={$form.evento.internacional}
-      error={$errors.evento.internacional}
       class="three wide field"
     />
     <Input
@@ -73,6 +65,14 @@
       bind:value={$form.evento.institucion}
       error={$errors.evento.institucion}
       class="ten wide field"
+    />
+    <Input
+      type="checkbox"
+      label="Evento Internacional"
+      name="evento.internacional"
+      bind:value={$form.evento.internacional}
+      error={$errors.evento.internacional}
+      class="three wide field"
     />
   </div>
 </div>

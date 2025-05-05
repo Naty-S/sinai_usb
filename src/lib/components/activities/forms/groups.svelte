@@ -48,7 +48,7 @@
 </script>
 
 <div class="required field">
-  <label for="">Grupos asociados</label>
+  <h3 class="ui dividing header">Grupos asociados</h3>
 
   {#if $form.actividades_grupos.length === 0 }
     <div class="ui five wide field tiny negative message">

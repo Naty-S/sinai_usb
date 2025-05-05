@@ -25,7 +25,7 @@
   PATENTES
 </h2>
 
-<div name="patente form">
+<div class="grouped fields" name="patente form">
   <Input
     label="Título"
     name="actividad.titulo"
@@ -33,39 +33,40 @@
     error={$errors.actividad.titulo}
     class="required field"
   />
-  <div class="two inline fields">
-    <label class="required two wide field" for="">Vigencia</label>
-    <Input
-      type="date"
-      label="Fecha de Inicio"
-      name="patente.fecha_inicio"
-      bind:value={$form.patente.fecha_inicio}
-      error={$errors.patente.fecha_inicio}
-      class="field"
-    />
-    <Input
-      type="date"
-      label="Fecha Fin"
-      name="patente.fecha_fin"
-      bind:value={$form.patente.fecha_fin}
-      error={$errors.patente.fecha_fin}
-      class="field"
-    />
+  <div class="ui dividing small header">Vigencia
+    <div class="two fields">
+      <Input
+        type="date"
+        label="Fecha de Inicio"
+        name="patente.fecha_inicio"
+        bind:value={$form.patente.fecha_inicio}
+        error={$errors.patente.fecha_inicio}
+        class="eight wide field"
+      />
+      <Input
+        type="date"
+        label="Fecha Fin"
+        name="patente.fecha_fin"
+        bind:value={$form.patente.fecha_fin}
+        error={$errors.patente.fecha_fin}
+        class="eight wide field"
+      />
+    </div>
   </div>
-  <div class="two required inline fields">
+  <div class="two required fields">
     <Input
       label="Número"
       name="patente.numero"
       bind:value={$form.patente.numero}
       error={$errors.patente.numero}
-      class="field"
+      class="eight wide field"
     />
     <Input
       label="País que otorga"
       name="patente.pais"
       bind:value={$form.patente.pais}
       error={$errors.patente.pais}
-      class="field"
+      class="eight wide field"
     />
   </div>
 </div>

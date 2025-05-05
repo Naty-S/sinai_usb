@@ -23,7 +23,7 @@
   PROYECTOS DE GRADO DIRIGIDOS
 </h2>
 
-<div name="proyecto_grado form">
+<div class="grouped fields" name="proyecto_grado form">
   <Input
     label="Título del Proyecto"
     name="actividad.titulo"
@@ -31,7 +31,7 @@
     error={$errors.actividad.titulo}
     class="required field"
   />
-  <div class="two inline required fields">
+  <div class="two required fields">
     <Input
       label="Título Académico al que se optó"
       name="proyecto_grado.titulo_academico"
@@ -47,7 +47,7 @@
       class="eight wide field"
     />
   </div>
-  <div class="three inline fields">
+  <div class="two fields">
     <Select
       label="Tipo de Tutoría"
       name="proyecto_grado.nivel_academico"
@@ -56,7 +56,7 @@
         val: nivel,
         name: nivel === "Pasantia_Larga" ? "Pasantia Larga (Lic. ó Ing.)" : nivel
       }))}
-      class="five wide field"
+      class="eight wide field"
     />
     <Input
       type="date"
@@ -64,7 +64,7 @@
       name="proyecto_grado.fecha_defensa"
       bind:value={$form.proyecto_grado.fecha_defensa}
       error={$errors.proyecto_grado.fecha_defensa}
-      class="five wide field"
+      class="eight wide field"
     />
   </div>
 </div>

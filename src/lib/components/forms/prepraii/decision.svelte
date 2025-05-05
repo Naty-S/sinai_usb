@@ -39,7 +39,7 @@
     value1="Aprobado"
     value2="Rechazado"
     error={$errors.estado}
-    class="ten wide field fields"
+    class="ten wide field"
   />
 
   <Radio
@@ -48,7 +48,7 @@
     value1=1
     value2=2
     error={$errors.tipo}
-    class="ten wide field fields"
+    class="ten wide field"
   />
 
   <Textarea

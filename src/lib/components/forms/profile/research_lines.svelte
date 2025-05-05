@@ -29,7 +29,7 @@
 </script>
 
 <div class="required field">
-  <label for="">Líneas de Investigación</label>
+  <h3 class="ui dividing header">Líneas de Investigación</h3>
 
   {#if $form.profile.lineas_investigacion.length === 0 }
     <div class="ui five wide field tiny negative message">

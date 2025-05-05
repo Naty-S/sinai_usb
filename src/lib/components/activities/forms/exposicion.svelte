@@ -23,7 +23,7 @@
   SELECCIÓN EN EXPOSICIONES, BIENALES, SALONES O CONCURSOS ARBITRADOS
 </h2>
 
-<div name="exposicion form">
+<div class="grouped fields" name="exposicion form">
   <Input
     label="Título de la Obra"
     name="actividad.titulo"
@@ -38,7 +38,7 @@
     error={$errors.exposicion.nombre_evento}
     class="required field"
   />
-  <div class="three inline required fields">
+  <div class="three required fields">
     <CountryStates />
     <Input
       type="date"
@@ -46,7 +46,7 @@
       name="exposicion.fecha"
       bind:value={$form.exposicion.fecha}
       error={$errors.exposicion.fecha}
-      class="field"
+      class="six wide field"
     />
   </div>
   <Input
@@ -54,9 +54,9 @@
     name="exposicion.categoria"
     bind:value={$form.exposicion.categoria}
     error={$errors.exposicion.categoria}
-    class="inline field"
+    class="field"
   />  
-  <div class="two inline fields">
+  <div class="two fields">
     <Input
       label="Organizado Por"
       name="exposicion.organizado_por"

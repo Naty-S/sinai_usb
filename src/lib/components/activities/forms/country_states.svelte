@@ -26,14 +26,14 @@
   name="{kind}.pais"
   bind:value={$form[kind].pais}
   error={$errors[kind].pais}
-  class="required field"
+  class="six wide required field"
 />
 <Input
   label="Ciudad"
   name="{kind}.ciudad"
   bind:value={$form[kind].ciudad}
   error={$errors[kind].ciudad}
-  class="required field"
+  class="six wide required field"
 />
 
 

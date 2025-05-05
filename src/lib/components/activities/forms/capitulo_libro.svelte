@@ -23,7 +23,7 @@
   CAPÍTULOS DE LIBROS
 </h2>
 
-<div name="capitulo_libro form">
+<div class="grouped fields" name="capitulo_libro form">
   <Input
     label="Título del Capítulo"
     name="actividad.titulo"
@@ -31,20 +31,20 @@
     error={$errors.actividad.titulo}
     class="required field"
   />
-  <div class="two required inline fields">
+  <div class="two required fields">
     <Input
       label="Página Inicial"
       name="capitulo_libro.pag_inicial"
       bind:value={$form.capitulo_libro.pag_inicial}
       error={$errors.capitulo_libro.pag_inicial}
-      class="required field"
+      class="eight wide field"
     />
     <Input
       label="Página Final"
       name="capitulo_libro.pag_final"
       bind:value={$form.capitulo_libro.pag_final}
       error={$errors.capitulo_libro.pag_final}
-      class="required field"
+      class="eight wide field"
     />
   </div>
   <Input
@@ -61,7 +61,7 @@
     error={$errors.capitulo_libro.editorial}
     class="required field"
   />
-  <div class="three inline required fields">
+  <div class="three required fields">
     <CountryStates />
     <Input
       type="date"
@@ -69,7 +69,7 @@
       name="capitulo_libro.fecha"
       bind:value={$form.capitulo_libro.fecha}
       error={$errors.capitulo_libro.fecha}
-      class="field"
+      class="six wide field"
     />
   </div>
   <div class="three inline fields">

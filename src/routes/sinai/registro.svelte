@@ -90,7 +90,7 @@
   </p>
 {:else}
   <form class="ui large form" on:submit|preventDefault={register} on:reset={handleReset}>
-    <div id="name" class="two inline fields">
+    <div id="name" class="two fields">
       <Input
         label="Primer Nombre"
         name="professor.nombre1"
@@ -106,7 +106,7 @@
         class="field"
       />
     </div>
-    <div id="surname" class="two inline fields">
+    <div id="surname" class="two fields">
       <Input
         label="Primer Apellido"
         name="professor.apellido1"
@@ -130,7 +130,7 @@
       error={$errors.professor.perfil}
       class="required field"
     />
-    <div class="three inline fields">
+    <div class="three fields">
       <Input
         label="Cédula"
         name="professor.cedula"
@@ -152,10 +152,10 @@
         name="professor.sexo"
         bind:value={$form.professor.sexo}
         options={[{ val: 'F', name: 'F'}, { val: 'M', name: 'M'}]}
-        class="inline field"
+        class="field"
       />
     </div>
-    <div class="three inline fields">
+    <div class="three fields">
       <Select
         label="Categoría"
         name="professor.categoria"
@@ -179,8 +179,8 @@
       />
     </div>
     <div class="field">
-      <label for="">PEI</label>
-      <div class="three inline fields">
+      <div class="ui dividing big header">PEI</div>
+      <div class="three fields">
         <Input
           label="Número"
           name="pei.numero"
@@ -202,18 +202,19 @@
             name="pei.nivel"
             bind:value={$form.pei.nivel}
             options={pei_nivel_enum.map(nivel => ({ val: nivel, name: nivel }))}
-            class="inline field"
+            class="field"
           />
         {/if}
       </div>
+      <div class="ui divider" />
     </div>
-    <div class="two inline fields">
+    <div class="two fields">
       <Select
         label="Último Diploma"
         name="professor.diploma_tipo"
         bind:value={$form.professor.diploma_tipo}
         options={profesor_diploma_tipo_enum.map(diploma => ({ val: diploma, name: diploma }))}
-        class="five wide inline field"
+        class="five wide field"
       />
       <Input
         label="Universidad donde lo obtuvo"
@@ -239,8 +240,9 @@
       class="field"
     />
 
+    <h2 class="ui dividing header">Perfiles de Investigación</h2>
     <div class="field">
-      <label for="">Perfil de Orcid</label>
+      <div class="ui small header">Orcid</div>
       <div class="two inline fields">
         <Input
           type="number"
@@ -262,7 +264,7 @@
     </div>
 
     <div class="field">
-      <label for="">Perfil de Google Schoolar</label>
+      <div class="ui small header">Google Schoolar</div>
       <div class="two inline fields">
         <Input
           type="number"
@@ -284,7 +286,7 @@
     </div>
 
     <div class="field">
-      <label for="">Perfil de Research Gate</label>
+      <div class="ui small header">Research Gate</div>
       <div class="two inline fields">
         <Input
           type="number"

@@ -23,7 +23,7 @@
   INFORMES TÉCNICOS
 </h2>
 
-<div name="informe_tecnico form">
+<div class="grouped fields" name="informe_tecnico form">
   <Input
     label="Título"
     name="actividad.titulo"
@@ -31,14 +31,14 @@
     error={$errors.actividad.titulo}
     class="required field"
   />
-  <div class="two inline required fields">
+  <div class="two required fields">
     <Input
       type="date"
       label="Fecha de Inicio"
       name="informe_tecnico.fecha_inicio"
       bind:value={$form.informe_tecnico.fecha_inicio}
       error={$errors.informe_tecnico.fecha_inicio}
-      class="field"
+      class="four wide field"
     />
     <Input
       label="Institución que financia"

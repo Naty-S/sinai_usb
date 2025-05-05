@@ -23,7 +23,7 @@
   PARTITURAS, VIDEOS O CDs PUBLICADOS EN EDITORIALES RECONOCIDAS
 </h2>
 
-<div name="partitura form">
+<div class="grouped fields" name="partitura form">
   <Input
     label="Título de la Obra"
     name="actividad.titulo"
@@ -55,7 +55,7 @@
       class="inline field"
     />
   </div>
-  <div class="two inline fields">
+  <div class="two fields">
     <Select
       label="Categoría"
       name="partitura.categoria"
@@ -71,7 +71,7 @@
       class="ten wide field"
     />
   </div>
-  <div class="two inline fields">
+  <div class="two fields">
     <Input
       label="Depósito Legal"
       name="partitura.deposito_legal"

@@ -24,7 +24,7 @@
   COMPOSICIONES SOLICITADAS POR ORQUESTAS SINFÓNICAS O AGRUPACIONES RECONOCIDAS
 </h2>
 
-<div name="composicion form">
+<div class="grouped fields" name="composicion form">
   <Input
     label="Título de la Obra"
     name="actividad.titulo"
@@ -57,20 +57,20 @@
     options={composicion_categoria_enum.map(cat => ({ val: cat, name: cat }))}
     class="inline field"
   />
-  <div class="two inline fields">
-    <Input
-      label="Financiado Por"
-      name="composicion.financiado_por"
-      bind:value={$form.composicion.financiado_por}
-      error={$errors.composicion.financiado_por}
-      class="ten wide field"
-    />
+  <div class="two fields">
     <Input
       label="Jurado, Árbitro o Comité Editorial"
       name="composicion.jurado"
       bind:value={$form.composicion.jurado}
       error={$errors.composicion.jurado}
       class="eight wide required field"
+    />
+    <Input
+      label="Financiado Por"
+      name="composicion.financiado_por"
+      bind:value={$form.composicion.financiado_por}
+      error={$errors.composicion.financiado_por}
+      class="eight wide field"
     />
   </div>
 </div>

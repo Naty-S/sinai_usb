@@ -22,7 +22,7 @@
   PREMIOS
 </h2>
 
-<div name="premio form">
+<div class="grouped fields" name="premio form">
   <Input
     label="Título del Premio"
     name="actividad.titulo"
@@ -30,14 +30,14 @@
     error={$errors.actividad.titulo}
     class="required field"
   />
-  <div class="two inline required fields">
+  <div class="two required fields">
     <Input
       type="date"
       label="Fecha"
       name="premio.fecha"
       bind:value={$form.premio.fecha}
       error={$errors.premio.fecha}
-      class="field"
+      class="four wide field"
     />
     <Input
       label="Institución que otorga"

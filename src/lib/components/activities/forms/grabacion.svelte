@@ -23,7 +23,7 @@
   GRABACIONES SONORAS EVALUADAS POR ÁRBITROS
 </h2>
 
-<div name="grabacion form">
+<div class="grouped fields" name="grabacion form">
   <Input
     label="Título de la Obra"
     name="actividad.titulo"
@@ -55,24 +55,24 @@
       class="inline field"
     />
   </div>
-  <div class="two inline fields">
+  <div class="two fields">
     <Select
       label="Categoría"
       name="grabacion.categoria"
       bind:value={$form.grabacion.categoria}
       options={grabacion_categoria_enum.map(cat => ({ val: cat, name: cat }))}
-      class="eight wide field"
+      class="five wide field"
     />
     <Input
       label="Jurado, Árbitro o Comité Editorial"
       name="grabacion.jurado"
       bind:value={$form.grabacion.jurado}
       error={$errors.grabacion.jurado}
-      class="eight wide field"
+      class="twelve wide field"
     />
   </div>
   
-  <div class="two inline fields">
+  <div class="two fields">
     <Input
       label="Depósito Legal"
       name="grabacion.deposito_legal"

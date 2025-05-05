@@ -23,7 +23,7 @@
   LIBROS PUBLICADOS
 </h2>
 
-<div name="libro form">
+<div class="grouped fields" name="libro form">
   <Input
     label="Título"
     name="actividad.titulo"
@@ -38,7 +38,7 @@
     error={$errors.libro.editorial}
     class="required field"
   />
-  <div class="three inline required fields">
+  <div class="three required fields">
     <CountryStates />
     <Input
       type="date"
@@ -46,7 +46,7 @@
       name="libro.fecha"
       bind:value={$form.libro.fecha}
       error={$errors.libro.fecha}
-      class="field"
+      class="six wide field"
     />
   </div>  
   <div class="two inline fields">

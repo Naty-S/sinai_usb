@@ -67,7 +67,7 @@
     value1="Aprobado"
     value2="Rechazado"
     error={$errors.s1_novel.estado}
-    class="ten wide field fields"
+    class="ten wide field"
   />
 
   <Textarea

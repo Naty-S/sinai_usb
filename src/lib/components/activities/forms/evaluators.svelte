@@ -25,7 +25,7 @@
 </script>
 
 <div class="required field">
-  <label for="">Evaluadores</label>
+  <h3 class="ui dividing header">Evaluadores</h3>
 
   {#if $form.informe_tecnico.evaluadores.length === 0 }
     <div class="ui five wide field tiny negative message">

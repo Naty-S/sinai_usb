@@ -28,7 +28,7 @@
   (In Extenso)
 </h4>
 
-<div name="memoria form">
+<div class="grouped fields" name="memoria form">
   <Input
     label="Título del Trabajo"
     name="actividad.titulo"
@@ -43,7 +43,7 @@
     error={$errors.memoria.congreso}
     class="required field"
   />
-  <div class="three inline required fields">
+  <div class="three required fields">
     <CountryStates />
     <Input
       type="date"
@@ -51,10 +51,10 @@
       name="memoria.fecha"
       bind:value={$form.memoria.fecha}
       error={$errors.memoria.fecha}
-      class="field"
+      class="six wide field"
     />
   </div>
-  <div class="three inline fields">    
+  <div class="three fields">    
     <Input
       label="Nombre del Medio de Publicación"
       name="memoria.medio_publicacion"
@@ -67,54 +67,54 @@
       name="memoria.volumen"
       bind:value={$form.memoria.volumen}
       error={$errors.memoria.volumen}
-      class="field"
+      class="five wide field"
     />
     <Input
       label="ISBN"
       name="memoria.isbn"
       bind:value={$form.memoria.isbn}
       error={$errors.memoria.isbn}
-      class="field"
+      class="six wide field"
     />
   </div>
-  <div class="three inline fields">
+  <div class="three fields">
     <Input
       type="number"
       label="Cantidad de Páginas"
       name="memoria.paginas"
       bind:value={$form.memoria.paginas}
       error={$errors.memoria.paginas}
-      class="field"
+      class="four wide field"
     />
     <Input
       label="Página Inicial"
       name="memoria.pag_inicial"
       bind:value={$form.memoria.pag_inicial}
       error={$errors.memoria.pag_inicial}
-      class="field"
+      class="six wide field"
     />
     <Input
       label="Página Final"
       name="memoria.pag_final"
       bind:value={$form.memoria.pag_final}
       error={$errors.memoria.pag_final}
-      class="field"
+      class="six wide field"
     />
   </div>
-  <div class="two inline fields">
+  <div class="two fields">
     <Select
       label="Formato"
       name="memoria.formato"
       bind:value={$form.memoria.formato}
       options={memoria_formato_enum.map(f => ({ val: f, name: f }))}
-      class="field"
+      class="eight wide field"
     />
     <Select
       label="Tipo de Congreso"
       name="memoria.tipo_congreso"
       bind:value={$form.memoria.tipo_congreso}
       options={memoria_tipo_congreso_enum.map(t => ({ val: t, name: t }))}
-      class=" field"
+      class="eight wide field"
     />
   </div>
 </div>
