@@ -18,14 +18,14 @@
   const kind = param as kinds;
   const { form, errors, handleChange }: activity_form_ctx<typeof kind> = getContext(key);
 
-  let fonacit = true;
+  let fonacit = $form.proyecto_investigacion.institucion === "Fonacit";
 </script>
 
 <h2 class="uk-text-center">
   PROYECTOS DE INVESTIGACIÓN Y DESARROLLO
 </h2>
 
-<div name="proyecto_investigacion form">
+<div class="grouped fields" name="proyecto_investigacion form">
   <Input
     label="Título del Trabajo"
     name="actividad.titulo"
@@ -33,37 +33,37 @@
     error={$errors.actividad.titulo}
     class="required field"
   />
-  <div class="two inline required fields">
+  <Radio
+    label="Institución que financia o patrocina"
+    name="proyecto_investigacion.institucion"
+    checked1={fonacit}
+    checked2={!fonacit}
+    value1="Fonacit"
+    value2="Otro"
+    click1={() => fonacit = true}
+    click2={() => {fonacit = false; $form.proyecto_investigacion.institucion = ''}}
+    error={$errors.proyecto_investigacion.institucion}
+    class="field"
+  >
+    <input
+      type="text"
+      id="proyecto_investigacion.institucion-Otro"
+      name="proyecto_investigacion.institucion"
+      bind:value={$form.proyecto_investigacion.institucion}
+      on:change={handleChange}
+      on:blur={handleChange}
+      hidden={fonacit}
+    >
+  </Radio>
+  <div class="four required fields">
     <Input
       type="date"
       label="Fecha de Inicio"
       name="proyecto_investigacion.fecha_inicio"
       bind:value={$form.proyecto_investigacion.fecha_inicio}
       error={$errors.proyecto_investigacion.fecha_inicio}
-      class="field"
+      class="five wide required field"
     />
-    <Radio
-      label="Institución que financia o patrocina"
-      name="proyecto_investigacion.institucion"
-      value1="Fonacit"
-      value2="Otro"
-      click1={() => fonacit = true}
-      click2={() => {fonacit = false; $form.proyecto_investigacion.institucion = ''}}
-      error={$errors.proyecto_investigacion.institucion}
-      class="twelve wide field fields"
-    >
-      <input
-        type="text"
-        id="proyecto_investigacion.institucion-Otro"
-        name="proyecto_investigacion.institucion"
-        bind:value={$form.proyecto_investigacion.institucion}
-        on:change={handleChange}
-        on:blur={handleChange}
-        hidden={fonacit}
-      >
-    </Radio>
-  </div>
-  <div class="two required inline fields">
     <Input
       type="number"
       label="Duración estimada (meses)"
@@ -72,23 +72,22 @@
       error={$errors.proyecto_investigacion.meses_duracion}
       class="five wide field"
     />
-    <div class="two inline twelve wide field fields">
-      <Input
-        type="number"
-        label="Monto Financiado"
-        name="proyecto_investigacion.monto"
-        bind:value={$form.proyecto_investigacion.monto}
-        error={$errors.proyecto_investigacion.monto}
-        class="eight wide required field"
-      />
-      <!-- TODO: #13 -->
-      <Select
-        label=""
-        name="proyecto_investigacion.moneda"
-        bind:value={$form.proyecto_investigacion.moneda}
-        options={[{ val: "Bs.", name: "Bs."}, ({ val: "$ (USD)", name: "$ (USD)" })]}
-        class="five wide field"
-      />
-    </div>
+    <Input
+      type="number"
+      label="Monto Financiado"
+      name="proyecto_investigacion.monto"
+      bind:value={$form.proyecto_investigacion.monto}
+      error={$errors.proyecto_investigacion.monto}
+      class="five wide field"
+    />
+    <!-- TODO: #13 -->
+    <Select
+      label="Moneda"
+      name="proyecto_investigacion.moneda"
+      bind:value={$form.proyecto_investigacion.moneda}
+      error={$errors.proyecto_investigacion.moneda}
+      options={[{ val: "Bs.", name: "Bs."}, ({ val: "$ (USD)", name: "$ (USD)" })]}
+      class="three wide field"
+    />
   </div>
 </div>
