@@ -30,13 +30,27 @@ export const validation = function () {
       ),
       cedula: yup.string().required("Requerido").matches(cedula, "Formato inválido"),
       correo: yup.string().required("Requerido").matches(/^[a-z]+@usb.ve$/, "Formato inválido"),
-      sexo: yup.string().oneOf(['F', 'M']),
-      categoria: yup.string().oneOf(["Agregado", "Asistente", "Asociado", "Instructor", "Titular"]),
-      condicion: yup.string().oneOf(["Contratado", "Ordinario", "Jubilado"]),
-      dedicacion: yup.string().oneOf(["Convencional", "Exclusiva", "Integral"]),
-      diploma_tipo: yup.string().oneOf(["Lic_", "Ph_D_", "Doctor", "Magister", "Ing_"]),
+      sexo: yup.string().oneOf(['F', 'M'], "Valor del sexo no pertenece a las opciones disponibles"),
+      categoria: yup.string().oneOf(
+        ["Agregado", "Asistente", "Asociado", "Instructor", "Titular"],
+        "Valor de la categoría no pertenece a las opciones disponibles"
+      ),
+      condicion: yup.string().oneOf(
+        ["Contratado", "Ordinario", "Jubilado"],
+        "Valor de la condición no pertenece a las opciones disponibles"
+      ),
+      dedicacion: yup.string().oneOf(
+        ["Convencional", "Exclusiva", "Integral"],
+        "Valor del tipo de dedicación no pertenece a las opciones disponibles"
+      ),
+      diploma_tipo: yup.string().oneOf(
+        ["Lic_", "Ph_D_", "Doctor", "Magister", "Ing_"],
+        "Valor del tipo de diploma no pertenece a las opciones disponibles"
+      ),
       diploma_universidad: yup.string().required("Requerido"),
-      departamento: yup.string().oneOf(deps_ids),
+      departamento: yup.string().oneOf(
+        deps_ids, "Valor de departamento no pertenece a las opciones disponibles"
+      ),
       perfil: yup.string().required("Requerido").matches(perfil, "Formato inválido. Escriba su primer Apellido, Nombre"),
       url: yup.lazy(value => !value ? yup.string().nullable() : 
         yup.string().when("url", {
@@ -79,7 +93,9 @@ export const validation = function () {
       nivel: yup.lazy(value => !value ? yup.string().nullable() : yup.string().when("nivel",{
         is: null,
         then: yup.string().nullable(),
-        otherwise: yup.string().oneOf(["A", "B", "C"]),
+        otherwise: yup.string().oneOf(
+          ["A", "B", "C"], "Valor del nivel no pertenece a las opciones disponibles"
+        ),
       })),
       numero: yup.string().nullable(),
     })

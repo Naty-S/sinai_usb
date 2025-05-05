@@ -60,6 +60,7 @@
       label="Categoría"
       name="grabacion.categoria"
       bind:value={$form.grabacion.categoria}
+      error={$errors.grabacion.categoria}
       options={grabacion_categoria_enum.map(cat => ({ val: cat, name: cat }))}
       class="five wide field"
     />

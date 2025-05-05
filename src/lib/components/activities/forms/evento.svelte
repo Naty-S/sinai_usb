@@ -56,6 +56,7 @@
       label="Modalidad"
       name="evento.modalidad"
       bind:value={$form.evento.modalidad}
+      error={$errors.evento.modalidad}
       options={evento_modalidad_enum.map(mod => ({ val: mod, name: mod }))}
       class="three wide field"
     />

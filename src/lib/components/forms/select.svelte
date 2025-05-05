@@ -34,19 +34,21 @@
 </script>
 
 <div class:error={error} {...$$props}>
-  <label for={name}>{label}</label>
-  <select
-    {name}
-    class="ui fluid selection dropdown"
-    {value}
-    on:change={(e) => {
-      if (customHandleChange) customHandleChange(e);
-      else handleChange(e);
-    }}
-  >
-    {#each options as opt}
-      <option value={opt.val}>{opt.name.replaceAll('_', ' ')}</option>
-    {/each}
-  </select>
+  <div class="top aligned">
+    <label for={name} class="uk-text-bold">{label}</label>
+    <select
+      {name}
+      class="ui fluid selection dropdown uk-padding-remove-vertical"
+      {value}
+      on:change={(e) => {
+        if (customHandleChange) customHandleChange(e);
+        else handleChange(e);
+      }}
+    >
+      {#each options as opt}
+        <option value={opt.val}>{opt.name.replaceAll('_', ' ')}</option>
+      {/each}
+    </select>
+  </div>
   <ErrorMsg {error} />
 </div>

@@ -54,6 +54,7 @@
     label="Categoría"
     name="composicion.categoria"
     bind:value={$form.composicion.categoria}
+    error={$errors.composicion.categoria}
     options={composicion_categoria_enum.map(cat => ({ val: cat, name: cat }))}
     class="inline field"
   />

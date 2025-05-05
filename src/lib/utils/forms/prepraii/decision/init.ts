@@ -5,7 +5,7 @@ export const init = function (req?: PrepraiiRequest) {
 
   return {
       comentario: req?.comentario || "Sin comentarios"
-    , estado: req?.estado == "En_Revision" ? "Aprobado" : req?.estado
+    , estado: "Aprobado"
     , tipo: req?.tipo || 1
     , observaciones_evaluador: req?.observaciones_evaluador || "Sin Observaciones"
   };

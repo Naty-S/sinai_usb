@@ -172,6 +172,7 @@
       label="Índice"
       name="prepraii_solicitud.indice"
       bind:value={$form.prepraii_solicitud.indice}
+      error={$errors.prepraii_solicitud.indice}
       options={indexes.map(i => ({ val: i, name: i }))}
       class="field"
     />

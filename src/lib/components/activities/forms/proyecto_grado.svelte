@@ -52,6 +52,7 @@
       label="Tipo de Tutoría"
       name="proyecto_grado.nivel_academico"
       bind:value={$form.proyecto_grado.nivel_academico}
+      error={$errors.proyecto_grado.nivel_academico}
       options={proyecto_grado_nivel_academico_enum.map(nivel => ({
         val: nivel,
         name: nivel === "Pasantia_Larga" ? "Pasantia Larga (Lic. ó Ing.)" : nivel

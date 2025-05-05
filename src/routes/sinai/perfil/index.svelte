@@ -129,6 +129,7 @@
       label="Categoría"
       name="profile.categoria"
       bind:value={$form.profile.categoria}
+      error={$errors.profile.categoria}
       options={profesor_categoria_enum.map(cat => ({ val: cat, name: cat }))}
       class="inline field"
     />
@@ -136,6 +137,7 @@
       label="Dedicación"
       name="profile.dedicacion"
       bind:value={$form.profile.dedicacion}
+      error={$errors.profile.dedicacion}
       options={profesor_dedicacion_enum.map(ded => ({ val: ded, name: ded }))}
       class="inline field"
     />
@@ -183,6 +185,7 @@
           label="Nivel"
           name="pei.nivel"
           bind:value={$form.pei.nivel}
+          error={$errors.pei.nivel}
           options={pei_nivel_enum.map(nivel => ({ val: nivel, name: nivel }))}
           class="inline field"
         />
@@ -195,6 +198,7 @@
       label="Último Diploma"
       name="profile.diploma_tipo"
       bind:value={$form.profile.diploma_tipo}
+      error={$errors.profile.diploma_tipo}
       options={profesor_diploma_tipo_enum.map(d => ({ val: d, name: d }))}
       class="six wide field"
     />

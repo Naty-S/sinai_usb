@@ -17,7 +17,10 @@ export const validation = function ()/* : ObjectSchema<M> */ {
 
     prepraii_solicitud: yup.object().shape({
         actividad: yup.number().required("Requerido")
-      , indice: yup.string().required("Requerido")
+      , indice: yup.string().oneOf(
+        ["SCI Expanded", "AHCI", "SSCI", "SCOPUS", "SciELO", "Latindex catálogo 2.0"],
+        "Valor del tipo de índice no pertenece a las opciones disponibles"
+      )
       , articulo: yup.mixed().required("Requerido")
           .test("fileFormat", "Adjunte solamente archivos pdf", value => is_pdf(value))
       , observaciones_profesor: yup.string().required("Requerido")

@@ -6,7 +6,10 @@ import { parse_date } from "$lib/utils/formatting";
 export const validation = function () {
 
   return yup.object().shape({
-    search_type: yup.string().oneOf(["professor","group","department","division","coordination"]),
+    search_type: yup.string().oneOf(
+      ["professor","group","department","division","coordination"],
+      "Valor del tipo de búsqueda no pertenece a las opciones disponibles"
+    ),
     search: yup.number().required("Requerido"),
     date_start: yup.date().transform(parse_date).typeError("Requerido"),
     date_end: yup.date().transform(parse_date).typeError("Requerido"),

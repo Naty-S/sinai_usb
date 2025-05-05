@@ -16,7 +16,10 @@ const actividad = yup.object().shape({
 const articulo_revista = yup.object().shape({
     articulo_invitado: yup.boolean().typeError("No es booleano")
   , con_estudiantes: yup.boolean().typeError("No es booleano")
-  , estado: yup.string().oneOf(["Aceptado_via_publicacion", "Publicado"])
+  , estado: yup.string().oneOf(
+    ["Aceptado_via_publicacion", "Publicado"],
+    "Valor del estado no pertenece a las opciones disponibles"
+  )
   , fecha_publicacion: yup.date().transform(parse_date).nullable().when("estado", {
     is: "Publicado",
     then: (s) => s.required("El artículo publicado debe tener fecha"),
@@ -48,7 +51,10 @@ const capitulo_libro = yup.object().shape({
 });
 
 const composicion = yup.object().shape({
-  categoria: yup.string().oneOf(["Composicion", "Arreglo", "Ejecucion"])
+  categoria: yup.string().oneOf(
+    ["Composicion", "Arreglo", "Ejecucion"],
+    "Valor de la categoría no pertenece a las opciones disponibles"
+  )
   , ciudad: yup.string().required("Requerido")
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , financiado_por: yup.string().nullable()
@@ -62,7 +68,10 @@ const evento = yup.object().shape({
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().nullable()
   , internacional: yup.boolean()
-  , modalidad: yup.string().oneOf(["Cartel", "Oral", "Invitada"])
+  , modalidad: yup.string().oneOf(
+    ["Cartel", "Oral", "Invitada"],
+    "Valor de la modalidad no pertenece a las opciones disponibles"
+  )
   , nombre: yup.string().required("Requerido")
   , pais: yup.string().required("Requerido")
 });
@@ -85,7 +94,7 @@ const grabacion = yup.object().shape({
     , "CD_Completo_Internacional"
     , "Premio_Nacional_Concurso"
     , "Premio_Internacional_Concurso"
-  ])
+  ], "Valor de la categoría no pertenece a las opciones disponibles")
   , deposito_legal: yup.string().nullable()
   , editorial: yup.string().required("Requerido")
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
@@ -120,7 +129,10 @@ const memoria = yup.object().shape({
   , con_estudiantes: yup.boolean().typeError("No es booleano")
   , congreso: yup.string().required("Requerido")
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
-  , formato: yup.string().oneOf(["CD", "Libro", "Revista"])
+  , formato: yup.string().oneOf(
+    ["CD", "Libro", "Revista"],
+    "Valor del formato no pertenece a las opciones disponibles"
+  )
   , isbn: yup.string().nullable()
   , medio_publicacion: yup.string().nullable()
   , pag_final: yup.string().nullable()
@@ -130,7 +142,10 @@ const memoria = yup.object().shape({
     .integer("Ingrese número entero")
     .min(1, "Minimo 1")
   , pais: yup.string().required("Requerido")
-  , tipo_congreso: yup.string().oneOf(["Nacional", "Internacional"])
+  , tipo_congreso: yup.string().oneOf(
+    ["Nacional", "Internacional"],
+    "Valor del tipo de congreso no pertenece a las opciones disponibles"
+  )
   , volumen: yup.string().nullable()
 });
 
@@ -143,7 +158,7 @@ const partitura = yup.object().shape({
     , "Premio_Nacional_Concurso"
     , "Premio_Internacional_Concurso"
     , "Partitura"
-  ])
+  ], "Valor de la categoría no pertenece a las opciones disponibles")
   , deposito_legal: yup.string().nullable()
   , editorial: yup.string().required("Requerido")
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
@@ -187,7 +202,7 @@ const proyecto_grado = yup.object().shape({
     , "Licenciatura"
     , "Ingenieria"
     , "Pasantia_Larga"
-  ])
+  ], "Valor del nivel académico no pertenece a las opciones disponibles")
   , titulo_academico: yup.string().required("Requerido")
 });
 
@@ -198,7 +213,10 @@ const proyecto_investigacion = yup.object().shape({
     .positive("Ingrese número positivo")
     .integer("Ingrese número entero")
     .min(1, "Minimo 1")
-  , moneda: yup.string().required("Requerido")
+  , moneda: yup.string().oneOf(
+    ["$ (USD)", "Bs."],
+    "Valor del tipo de moneda no pertenece a las opciones disponibles"
+  )
   , monto: yup.number().required("Requerido")
     .positive("Ingrese número positivo")
     .integer("Ingrese número entero")
@@ -315,8 +333,8 @@ const actividades_grupos = yup.lazy(value => {
     return yup.array().ensure().when(["patente", "premio"], {
       is: yup.object(),
       then: yup.array().of((yup.object().shape({
-        old: yup.string().oneOf(groups),
-        new: yup.string().oneOf(groups)
+        old: yup.string().oneOf(groups, "Valor de grupo no pertenece a las opciones disponibles"),
+        new: yup.string().oneOf(groups, "Valor de grupo no pertenece a las opciones disponibles")
       }))).min(1, "Ingrese al menos un grupo"),
       otherwise: yup.array().notRequired()
     });

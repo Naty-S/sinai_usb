@@ -151,6 +151,7 @@
         label="Sexo"
         name="professor.sexo"
         bind:value={$form.professor.sexo}
+        error={$errors.professor.sexo}
         options={[{ val: 'F', name: 'F'}, { val: 'M', name: 'M'}]}
         class="field"
       />
@@ -160,6 +161,7 @@
         label="Categoría"
         name="professor.categoria"
         bind:value={$form.professor.categoria}
+        error={$errors.professor.categoria}
         options={profesor_categoria_enum.map(categoria => ({ val: categoria, name: categoria }))}
         class="inline field"
       />
@@ -167,6 +169,7 @@
         label="Condición"
         name="professor.condicion"
         bind:value={$form.professor.condicion}
+        error={$errors.professor.condicion}
         options={profesor_condicion_enum.map(condicion => ({ val: condicion, name: condicion }))}
         class="inline field"
       />
@@ -174,6 +177,7 @@
         label="Dedicación"
         name="professor.dedicacion"
         bind:value={$form.professor.dedicacion}
+        error={$errors.professor.dedicacion}
         options={profesor_dedicacion_enum.map(dedicacion => ({ val: dedicacion, name: dedicacion }))}
         class="inline field"
       />
@@ -201,6 +205,7 @@
             label="Nivel"
             name="pei.nivel"
             bind:value={$form.pei.nivel}
+            error={$errors.pei.nivel}
             options={pei_nivel_enum.map(nivel => ({ val: nivel, name: nivel }))}
             class="field"
           />
@@ -213,6 +218,7 @@
         label="Último Diploma"
         name="professor.diploma_tipo"
         bind:value={$form.professor.diploma_tipo}
+        error={$errors.professor.diploma_tipo}
         options={profesor_diploma_tipo_enum.map(diploma => ({ val: diploma, name: diploma }))}
         class="five wide field"
       />
@@ -228,6 +234,7 @@
       label="Departamento"
       name="professor.departamento"
       bind:value={$form.professor.departamento}
+      error={$errors.professor.departamento}
       options={departments.map(d => ({ val: d.id.toString(), name: d.nombre}))}
       class="field"
     />

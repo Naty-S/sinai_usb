@@ -60,6 +60,7 @@
       label="Categoría"
       name="partitura.categoria"
       bind:value={$form.partitura.categoria}
+      error={$errors.partitura.categoria}
       options={partitura_categoria_enum.map(cat => ({ val: cat, name: cat }))}
       class="six wide field"
     />

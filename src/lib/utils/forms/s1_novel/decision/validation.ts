@@ -14,7 +14,9 @@ export const validation = function () {
   return yup.object().shape({
       s1_novel: yup.object().shape({
         comentario: yup.string().required("Debe escribir algún comentario")
-      , estado: yup.string().oneOf(["Aprobado", "En_Revision", "Rechazado"])
+      , estado: yup.string().oneOf(
+        ["Aprobado", "Rechazado"], "Valor de la decisión no pertenece a las opciones disponibles"
+      )
       , observaciones_evaluador: yup.string().required("Debe escribir alguna obervación")
     })
     , jurado_usb: yup.array().of(

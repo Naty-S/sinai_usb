@@ -106,6 +106,7 @@
       label="Formato"
       name="memoria.formato"
       bind:value={$form.memoria.formato}
+      error={$errors.memoria.formato}
       options={memoria_formato_enum.map(f => ({ val: f, name: f }))}
       class="eight wide field"
     />
@@ -113,6 +114,7 @@
       label="Tipo de Congreso"
       name="memoria.tipo_congreso"
       bind:value={$form.memoria.tipo_congreso}
+      error={$errors.memoria.tipo_congreso}
       options={memoria_tipo_congreso_enum.map(t => ({ val: t, name: t }))}
       class="eight wide field"
     />
