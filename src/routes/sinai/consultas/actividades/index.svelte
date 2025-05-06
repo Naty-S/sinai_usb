@@ -106,6 +106,8 @@
   };
 
   const select_all = function () {
+    $form.date_start = $form.date_start;
+    $form.date_end = $form.date_end;
     $form.articulo_revista = true;
     $form.capitulo_libro = true;
     $form.composicion = true;
