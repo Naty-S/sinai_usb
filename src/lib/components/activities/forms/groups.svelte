@@ -50,12 +50,6 @@
 <div class="required field">
   <h3 class="ui dividing header">Grupos asociados</h3>
 
-  {#if $form.actividades_grupos.length === 0 }
-    <div class="ui five wide field tiny negative message">
-      Ingrese al menos 1 Grupo
-    </div>
-  {/if}
-
   <div class="field">
     {#each $form.actividades_grupos as group, i}
       <div class="inline fields">

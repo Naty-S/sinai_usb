@@ -40,9 +40,7 @@ export const init = function (kind: kinds, user?: User, data?: Activity): activi
       , palabras_clave: data?.palabras_clave || []
       , validado_por: data?.validado_por || null
     }
-    , actividades_grupos:
-        data?.groups.map(g => ({ old: g.id.toString(), new: g.id.toString() })) ||
-        (kind !== "patente" && kind !== "premio" ? [{ old: '?', new: '0'}] : [])
+    , actividades_grupos: data?.groups.map(g => ({ old: g.id.toString(), new: g.id.toString() })) || []
     , autores_externos: data?.autores_externos || []
     , autores_usb: data?.autores_usb || (user?.professor && [{
         nombre: user.professor.profile ?? 'usuario, ficticio'
