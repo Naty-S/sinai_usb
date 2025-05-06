@@ -5,7 +5,7 @@ export const init = function () {
   
   return {
     prepraii_solicitud: {
-        actividad: -1
+        actividad: ''
       , articulo: []
       , comentario: ''
       , indice: ''

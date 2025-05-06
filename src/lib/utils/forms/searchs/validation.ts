@@ -10,7 +10,7 @@ export const validation = function () {
       ["professor","group","department","division","coordination"],
       "Valor del tipo de búsqueda no pertenece a las opciones disponibles"
     ),
-    search: yup.number().required("Requerido"),
+    search: yup.string().required("Requerido"),
     date_start: yup.date().transform(parse_date).typeError("Requerido"),
     date_end: yup.date().transform(parse_date).typeError("Requerido"),
     articulo_revista: yup.boolean().typeError("No es booleano"),

@@ -1,7 +1,7 @@
 import { init_date } from "$lib/utils/formatting";
 
 
-export const init = function (search_type: string, search: number, years: number) {
+export const init = function (search_type: string, search: string, years: number) {
 
   return {
     search_type,

@@ -16,7 +16,7 @@ export const validation = function ()/* : ObjectSchema<M> */ {
   return yup.object().shape({
 
     prepraii_solicitud: yup.object().shape({
-        actividad: yup.number().required("Requerido")
+        actividad: yup.string().required("Requerido")
       , indice: yup.string().oneOf(
         ["SCI Expanded", "AHCI", "SSCI", "SCOPUS", "SciELO", "Latindex catálogo 2.0"],
         "Valor del tipo de índice no pertenece a las opciones disponibles"

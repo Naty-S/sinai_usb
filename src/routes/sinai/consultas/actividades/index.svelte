@@ -47,7 +47,7 @@
 
 
   const years = 10;
-  const initialValues = init("professor", 614, years);
+  const initialValues = init("professor", "614", years);
   const onSubmit = submit();
   const validationSchema = validation();
   const formProps = { initialValues, onSubmit, validationSchema };
@@ -160,7 +160,7 @@
     }
   };
 
-  const handleRadioChange = function(e: any, search: number) {
+  const handleRadioChange = function(e: any, search: string) {
     handleChange(e);
     $form.search = search;
     reset_show();
@@ -242,8 +242,8 @@
           name="search_type"
           value="professor"
           class="uk-radio"
-          on:change={(e) => handleRadioChange(e, 614)}
-          on:blur={(e) => handleRadioChange(e, 614)}
+          on:change={(e) => handleRadioChange(e, "614")}
+          on:blur={(e) => handleRadioChange(e, "614")}
           checked
         >
         Profesor
@@ -256,8 +256,8 @@
           name="search_type"
           value="group"
           class="uk-radio"
-          on:change={(e) => handleRadioChange(e, 1)}
-          on:blur={(e) => handleRadioChange(e, 1)}
+          on:change={(e) => handleRadioChange(e, "1")}
+          on:blur={(e) => handleRadioChange(e, "1")}
         >
         Grupo
       </label>
@@ -269,8 +269,8 @@
           name="search_type"
           value="department"
           class="uk-radio"
-          on:change={(e) => {handleRadioChange(e, 2)}}
-          on:blur={(e) => {handleRadioChange(e, 2)}}
+          on:change={(e) => handleRadioChange(e, "2")}
+          on:blur={(e) => handleRadioChange(e, "2")}
         >
         Departamento
       </label>
@@ -282,8 +282,8 @@
           name="search_type"
           value="division"
           class="uk-radio"
-          on:change={(e) => handleRadioChange(e, 1)}
-          on:blur={(e) => handleRadioChange(e, 1)}
+          on:change={(e) => handleRadioChange(e, "1")}
+          on:blur={(e) => handleRadioChange(e, "1")}
         >
         División
       </label>
@@ -295,8 +295,8 @@
           name="search_type"
           value="coordination"
           class="uk-radio"
-          on:change={(e) => handleRadioChange(e, 1)}
-          on:blur={(e) => handleRadioChange(e, 1)}
+          on:change={(e) => handleRadioChange(e, "1")}
+          on:blur={(e) => handleRadioChange(e, "1")}
         >
         Coordinación
       </label>

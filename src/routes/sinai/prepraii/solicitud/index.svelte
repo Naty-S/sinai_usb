@@ -139,7 +139,7 @@
       label="Actividad"
       name="prepraii_solicitud.actividad"
       bind:value={$form.prepraii_solicitud.actividad}
-      options={articles.map(a => ({ val: a.id, name: a.titulo }))}
+      options={articles.map(a => ({ val: a.id.toString(), name: a.titulo }))}
       class="field"
     />
 
