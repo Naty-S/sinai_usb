@@ -10,7 +10,7 @@ export const validation = function () {
   const name = /^([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*$/;
   const cedula = /^\d{8}$/;
   const perfil = /^([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*, ([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*$/;
-  const url = /^(http|https):\/\/(www\.|[a-z]+)\.([a-z]+\.[a-z]+\.[a-z]+|[a-z]+\.[a-z]+|\2[a-z]+)\/.*$/;
+  const url = /^(?:https?:\/\/)?[\w\-]+(?:\.[\w\-]+)+(?:[\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?$/;
   
   const deps_ids = Array.from({ length: 30 }, (_, i) => (i + 2).toString());
   
@@ -64,7 +64,7 @@ export const validation = function () {
         yup.string().when("orcid_profile", {
           is: null,
           then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
+          otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
         })
       )
       , google_schoolar_id: yup.string().nullable()
@@ -72,7 +72,7 @@ export const validation = function () {
         yup.string().when("google_schoolar_profile", {
           is: null,
           then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
+          otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
         })
       )
       , research_gate_id: yup.string().nullable()
@@ -80,7 +80,7 @@ export const validation = function () {
         yup.string().when("research_gate_profile", {
           is: null,
           then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
+          otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
         })
       )
     }),

@@ -8,7 +8,7 @@ export const validation = function () {
   // ñ = \u00f1
   // Ñ = \u00d1
   const perfil = /^([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*, ([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*$/;
-  const url = /^(http|https):\/\/(www\.|[a-z]+)\.([a-z]+\.[a-z]+\.[a-z]+|[a-z]+\.[a-z]+|\2[a-z]+)\/.*$/;
+  const url = /^(?:https?:\/\/)?[\w\-]+(?:\.[\w\-]+)+(?:[\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?$/;
 
   // pei years from 1997 until current year
   const years_count = new Date().getFullYear() - 1996;
@@ -42,7 +42,7 @@ export const validation = function () {
         yup.string().when("orcid_profile", {
           is: null,
           then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
+          otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
         })
     )
     , google_schoolar_id: yup.string().nullable()
@@ -50,7 +50,7 @@ export const validation = function () {
         yup.string().when("google_schoolar_profile", {
           is: null,
           then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
+          otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
         })
     )
     , research_gate_id: yup.string().nullable()
@@ -58,7 +58,7 @@ export const validation = function () {
         yup.string().when("research_gate_profile", {
           is: null,
           then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
+          otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
         })
     )
     , lineas_investigacion: yup.array(yup.string())

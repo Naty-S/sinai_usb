@@ -261,7 +261,7 @@
         <Input
           label="Link del perfil"
           name="professor.orcid_profile"
-          placeholder="http://www.example.com"
+          placeholder="http://example.com"
           bind:value={$form.professor.orcid_profile}
           error={$errors.professor.orcid_profile}
           class="twelve wide field"
@@ -282,7 +282,7 @@
         <Input
           label="Link del perfil"
           name="professor.google_schoolar_profile"
-          placeholder="http://www.example.com"
+          placeholder="http://example.com"
           bind:value={$form.professor.google_schoolar_profile}
           error={$errors.professor.google_schoolar_profile}
           class="twelve wide field"
@@ -303,7 +303,7 @@
         <Input
           label="Link del perfil"
           name="professor.research_gate_profile"
-          placeholder="http://www.example.com"
+          placeholder="http://example.com"
           bind:value={$form.professor.research_gate_profile}
           error={$errors.professor.research_gate_profile}
           class="twelve wide field"
