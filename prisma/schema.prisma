@@ -559,7 +559,7 @@ model s1_novel {
   fecha_solicitud         DateTime              @db.Date
   profesor                Int
   comentario              String // Dirigido al profresor solicitante
-  estado                  estado_solicitud_enum
+  estado                  estado_solicitud_enum @default(En_Revision)
   observaciones_evaluador String // Privadas, no las ve el profesor
   observaciones_profesor  String // Las que escribe el profesor al hacer la solicitud
   proyecto                String
@@ -894,7 +894,7 @@ model partitura {
   editorial      String
   fecha          DateTime                 @db.Date
   financiado_por String?
-  jurado         String?
+  jurado         String? // Jurado, Árbitro o Comité Editorial
   nacional       Boolean                  @default(true)
 
   // Postgres relations
