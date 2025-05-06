@@ -41,7 +41,7 @@ export const GET: RequestHandler = async function () {
         research_gate_profile: true,
       },
       where: { id: {not: { equals: 0}} },
-      orderBy: { apellido1: "asc" }
+      orderBy: [{ apellido1: "asc" }, { nombre1: "asc" }]
     });
 
     status = 200;
