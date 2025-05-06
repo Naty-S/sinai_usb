@@ -109,7 +109,7 @@
 
   setContext(key, { form, errors, handleChange, isSubmitting });
 
-  $: article = articles.find(a => a.id == $form.prepraii_solicitud.actividad);
+  $: article = articles.find(a => a.id.toString() === $form.prepraii_solicitud.actividad);
   $: requested = Boolean($page.url.searchParams.get("prepraii_requested"));
   $: err = $page.url.searchParams.get("error");
   $: err_code = $page.url.searchParams.get("code");
