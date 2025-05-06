@@ -252,7 +252,6 @@
       <div class="ui small header">Orcid</div>
       <div class="two inline fields">
         <Input
-          type="number"
           label="Id"
           name="professor.orcid_id"
           bind:value={$form.professor.orcid_id}
@@ -274,7 +273,6 @@
       <div class="ui small header">Google Schoolar</div>
       <div class="two inline fields">
         <Input
-          type="number"
           label="Id"
           name="professor.google_schoolar_id"
           bind:value={$form.professor.google_schoolar_id}
@@ -296,7 +294,6 @@
       <div class="ui small header">Research Gate</div>
       <div class="two inline fields">
         <Input
-          type="number"
           label="Id"
           name="professor.research_gate_id"
           bind:value={$form.professor.research_gate_id}

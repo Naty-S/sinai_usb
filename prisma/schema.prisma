@@ -237,11 +237,11 @@ model profesor {
   perfil                  String
   sexo                    profesor_sexo_enum
   url                     String?
-  orcid_id                Int?
+  orcid_id                String?
   orcid_profile           String?
-  google_schoolar_id      Int?
+  google_schoolar_id      String?
   google_schoolar_profile String?
-  research_gate_id        Int?
+  research_gate_id        String?
   research_gate_profile   String?
 
   // Postgres relations
@@ -739,6 +739,7 @@ model articulo_revista {
   paginas           Int // cantidad de paginas
   revista           String // Nombre de la Revista Arbitrada
   volumen           String
+  jurado         String? // Jurado, Árbitro o Comité Editorial
 
   // Postgres relations
   Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -757,6 +758,7 @@ model capitulo_libro {
   pag_inicial       String
   pais              String
   titulo_libro      String
+  jurado         String? // Jurado, Árbitro o Comité Editorial
 
   // Postgres relations
   Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
