@@ -7,7 +7,7 @@ export const validation = function () {
   // acentos = À-ÿ
   // ñ = \u00f1
   // Ñ = \u00d1
-  const perfil = /^[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+, [A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+$/;
+  const perfil = /^([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*, ([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*$/;
   const url = /^(http|https):\/\/(www\.|[a-z]+)\.([a-z]+\.[a-z]+\.[a-z]+|[a-z]+\.[a-z]+|\2[a-z]+)\/.*$/;
 
   // pei years from 1997 until current year
@@ -16,7 +16,7 @@ export const validation = function () {
 
   return yup.object().shape({
     profile: yup.object().shape({
-      perfil: yup.string().required("Requerido").matches(perfil, "Formato inválido. Escriba su primer Apellido, Nombre")
+      perfil: yup.string().required("Requerido").matches(perfil, "Formato inválido: Apellido, Nombre")
     , categoria: yup.string().oneOf(
       ["Agregado", "Asistente", "Asociado", "Instructor", "Titular"],
       "Valor de la categoría no pertenece a las opciones disponibles"
