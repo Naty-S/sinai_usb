@@ -35,11 +35,11 @@ export const POST: RequestHandler = async function ({ request }) {
 
     const coord = await prisma.departamento.findUniqueOrThrow({
       where: { id: _data.professor.departamento },
-      select: { jefe: true }
+      select: { Coordinacion: { select: { correo: true } } }
     });
 
     status = 200;
-    body = { coord: coord.jefe };
+    body = { coord: coord.Coordinacion.correo };
 
   } catch (error: any) {
     const message = await handle_error(error);
