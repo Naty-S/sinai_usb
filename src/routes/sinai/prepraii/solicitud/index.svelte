@@ -194,42 +194,43 @@
         <h3 class="required field">Contratos y Constancias de los profesores</h3>
 
         <button type="button" class="ui button" on:click={() => {
-          $form.prepraii_profesores = Array.from({ length: article.autores_usb.length }, _ => ({profesor: 0, contrato_constancia: []}));
+          $form.prepraii_profesores = Array.from(
+            { length: article.autores_usb.filter(a => !a.es_estudiante).length }, _ =>
+            ({profesor: 0, contrato_constancia: []})
+          );
           show_authors = true;
         }}>
           Agregar
         </button>
 
         {#if show_authors}
-          {#each article.autores_usb as a, i}
-            {#if a.profesor_id !== null}        
-              <div class="required field" class:error={$errors.prepraii_profesores[i]?.contrato_constancia}>
-                <label for="prepraii_profesores[{i}].contrato_constancia">
-                  {a.nombre}
-                </label>
-                <input
-                  type="file"
-                  name="prepraii_profesores[{i}].contrato_constancia"
-                  accept=".pdf"
-                  bind:value={$form.prepraii_profesores[i].contrato_constancia}
-                  on:change={(e) => {
-                    
-                    $form.prepraii_profesores[i].profesor = a.profesor_id;
-                    // $form.prepraii_profesores.push({profesor: 0, contrato_constancia: []});
+          {#each article.autores_usb.filter(a => !a.es_estudiante) as a, i}
+            <div class="required field" class:error={$errors.prepraii_profesores[i]?.contrato_constancia}>
+              <label for="prepraii_profesores[{i}].contrato_constancia">
+                {a.nombre}
+              </label>
+              <input
+                type="file"
+                name="prepraii_profesores[{i}].contrato_constancia"
+                accept=".pdf"
+                bind:value={$form.prepraii_profesores[i].contrato_constancia}
+                on:change={(e) => {
+                  
+                  handleChange(e);
+                  $form.prepraii_profesores[i].profesor = a.profesor_id;
+                  // $form.prepraii_profesores.push({profesor: 0, contrato_constancia: []});
 
-                    // // check, didnt work
-                    // if(article.autores_usb.length - 1 == i &&
-                    //   article.autores_usb.length < $form.prepraii_profesores.length
-                    // ) {
-                    //   $form.prepraii_profesores = $form.prepraii_profesores.filter(p => p.profesor != 0);
-                    // };
-                    
-                    handleChange(e);
-                  }}
-                />
-                <ErrorMsg error={$errors.prepraii_profesores[i]?.contrato_constancia} />
-              </div>
-            {/if}
+                  // // check, didnt work
+                  // if(article.autores_usb.length - 1 == i &&
+                  //   article.autores_usb.length < $form.prepraii_profesores.length
+                  // ) {
+                  //   $form.prepraii_profesores = $form.prepraii_profesores.filter(p => p.profesor != 0);
+                  // };
+                  
+                }}
+              />
+              <ErrorMsg error={$errors.prepraii_profesores[i]?.contrato_constancia} />
+            </div>
           {/each}
         {/if}
       {/if}
