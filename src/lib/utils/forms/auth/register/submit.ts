@@ -24,9 +24,7 @@ export const submit = function () {
 
        www.sinai.did.usb.ve
       `;
-      const subject = `Validar Nuevo Profesor,
-        ${data.professor.nombre1} ${data.professor.apellido1}, C.I. ${data.professor.cedula}
-      `;
+      const subject = `Validar nuevo registro SINAI, ${data.professor.nombre1} ${data.professor.apellido1}, C.I. ${data.professor.cedula}`;
 
       window.location.href = "mailto:" + coord
         + "?subject=" + encodeURIComponent(subject)
