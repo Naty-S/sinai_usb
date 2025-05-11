@@ -39,8 +39,8 @@
 
   <div class="field">
     {#each $form.soportes as r_line, i}
-      <div class="two inline fields">
-        <div class="ten wide field" class:error={$errors.soportes[i]}>
+      <div class="two fields">
+        <div class="twelve wide field" class:error={$errors.soportes[i]}>
           <input
             type="file"
             name="soportes[{i}]"
