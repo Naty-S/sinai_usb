@@ -52,6 +52,7 @@
 	import Input from "$lib/components/forms/input.svelte";
 
 	import BackupFiles from "$lib/components/forms/s1_novel/backup_files.svelte";
+	import Notifications from "$lib/components/notifications.svelte";
 
   export let requests: S1Request[];
 
@@ -132,6 +133,7 @@
     </div>
     
     <BackupFiles />
+    <Notifications header_msg="La suma del tamaño de los archivos adjuntos no puede exceder 50Mb" />
 
     <Textarea
       label="Obervaciones"

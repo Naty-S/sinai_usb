@@ -14,5 +14,8 @@ server {
 
     # Redirects from port 80 to 3000 (where app is listening)
     proxy_pass ${NGINX_PROXY_PASS};
+
+    # Max files size
+    client_max_body_size 50M;
   }
 }

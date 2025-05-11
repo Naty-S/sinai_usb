@@ -21,6 +21,10 @@ export const submit = function (profesor_id: number, pathname: string) {
     if (res.ok) {
       goto(res.url);
 
+    } else if (res.status == 413) {
+
+      goto(`${pathname}?error=El tamaño de los archivos que intenta enviar excede el máximo total (50Mb) &code=413`);
+
     } else {
       const { message, code } = await res.json();
       goto(`${pathname}?error=${message}&code=${code}`);
