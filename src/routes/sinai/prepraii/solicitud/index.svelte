@@ -90,10 +90,7 @@
 
         actual = true;
         articles = activities.activities.filter(a => 
-  
-          (a.kind_name == "articulo_revista") &&
-          ((new Date(prepraii.inicio)).getTime() <= (new Date(a.kind_data?.fecha_publicacion)).getTime() &&
-           (new Date(a.kind_data?.fecha_publicacion)).getTime() <= (new Date(prepraii.fin)).getTime())
+          (a.kind_name == "articulo_revista") && a.kind_data?.estado === "Publicado"
         );
       } else {
         actual = false;
