@@ -13,6 +13,7 @@
   import { createForm, key } from "svelte-forms-lib";
   
   import { page } from "$app/stores";
+  import { goto } from "$app/navigation";
 
   import * as api from "$lib/api";
 
@@ -322,7 +323,7 @@
     close_text="Ok"
     align="center"
     pop_up={action.info !== ''}
-    close={location.reload}
+    close={() => {goto("/sinai/registro")}}
   >
     <p>
       Hubo un problema al cargar el formulario o registro, por favor recargue la página 
