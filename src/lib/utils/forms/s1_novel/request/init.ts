@@ -8,7 +8,7 @@ export const init = function () { // TODO: create types for inits, so makes easi
     , fecha_solicitud: init_date()
     , observaciones_evaluador: ''
     , observaciones_profesor: "Sin Observaciones"
-    , proyecto: []
+    , proyecto: undefined
     , soportes: []
   };
 };

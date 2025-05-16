@@ -22,6 +22,7 @@ export const DELETE: RequestHandler = async ({ request, params }) => {
     body = { code: "s1_deleted" };
 
   } catch (error: any) {
+
     const message = await handle_error(error);
     const code = error.code || '';
 
