@@ -28,7 +28,7 @@
   };
 </script>
 
-<div class="required field">
+<div id="research_lines" class="required field">
   <h3 class="ui dividing header">Líneas de Investigación</h3>
 
   {#if $form.profile.lineas_investigacion.length === 0 }

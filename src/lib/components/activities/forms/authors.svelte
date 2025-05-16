@@ -175,7 +175,7 @@
           />
         {/if}
 
-        <button type="button" class="ui red button" on:click={() => remove_author_usb(i)}>
+        <button id={`DelUSB-${i}`} type="button" class="ui red button" on:click={() => remove_author_usb(i)}>
           Elminar
         </button>
       </div>
@@ -297,7 +297,7 @@
           />
         {/if}
 
-        <button type="button" class="ui red button" on:click={() => remove_author_out(i)}>
+        <button id={`DelExterno-${i}`} type="button" class="ui red button" on:click={() => remove_author_out(i)}>
           Elminar
         </button>
       </div>

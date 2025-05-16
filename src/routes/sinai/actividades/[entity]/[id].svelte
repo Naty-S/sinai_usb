@@ -201,6 +201,7 @@
   {/if}
   {#if $page.params.entity !== "grupo"}
     <button
+      id="toggle-edit"
       type="button"
       class="ui right floated primary mini button"
       on:click={() => {show_buttons = !show_buttons; go_down()}}
