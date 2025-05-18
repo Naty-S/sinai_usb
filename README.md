@@ -76,3 +76,7 @@ If you don't want to use Docker you need to install these aswell:
 4. Exit postgres: `exit`
 5. Exit container: `exit`
 6. Copy dump from container: `docker cp postgres:/var/lib/postgresql/sinai_dump.gz ./sinai_dump.gz`
+
+## DB login format
+
+psql -x --pset format=wrapped --pset pager=off sinai
