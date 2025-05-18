@@ -14,8 +14,8 @@ export const actividad = yup.object().shape({
 });
 
 export const articulo_revista = yup.object().shape({
-    articulo_invitado: yup.boolean().typeError("No es booleano")
-  , con_estudiantes: yup.boolean().typeError("No es booleano")
+    articulo_invitado: yup.boolean().strict().typeError("No es booleano")
+  , con_estudiantes: yup.boolean().strict().typeError("No es booleano")
   , estado: yup.string().oneOf(
     ["Aceptado_via_publicacion", "Publicado"],
     "Valor del estado no pertenece a las opciones disponibles"
@@ -37,8 +37,8 @@ export const articulo_revista = yup.object().shape({
 });
 
 export const capitulo_libro = yup.object().shape({
-  aceptado: yup.boolean().typeError("No es booleano")
-  , articulo_invitado: yup.boolean().typeError("No es booleano")
+  aceptado: yup.boolean().strict().typeError("No es booleano")
+  , articulo_invitado: yup.boolean().strict().typeError("No es booleano")
   , ciudad: yup.string().required("Requerido")
   , editores: yup.array(yup.string().required("Requerido")).min(1, "Ingrese al menos 1 editor")
   , editorial: yup.string().required("Requerido")
@@ -67,7 +67,7 @@ export const evento = yup.object().shape({
   ciudad: yup.string().required("Requerido")
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().nullable()
-  , internacional: yup.boolean()
+  , internacional: yup.boolean().strict()
   , modalidad: yup.string().oneOf(
     ["Cartel", "Oral", "Invitada"],
     "Valor de la modalidad no pertenece a las opciones disponibles"
@@ -100,12 +100,12 @@ export const grabacion = yup.object().shape({
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , financiado_por: yup.string().nullable()
   , jurado: yup.string().nullable()
-  , nacional: yup.boolean().typeError("No es booleano")
+  , nacional: yup.boolean().strict().typeError("No es booleano")
 });
 
 export const informe_tecnico = yup.object().shape({
-  confidencial: yup.boolean().typeError("No es booleano")
-  , evaluacion_did: yup.boolean().typeError("No es booleano")
+  confidencial: yup.boolean().strict().typeError("No es booleano")
+  , evaluacion_did: yup.boolean().strict().typeError("No es booleano")
   , evaluadores: yup.array(yup.string().required("Requerido")).min(1, "Ingrese al menos 1 evaluador")
   , fecha_inicio: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().required("Requerido")
@@ -116,7 +116,7 @@ export const informe_tecnico = yup.object().shape({
 });
 
 export const libro = yup.object().shape({
-  aceptado: yup.boolean().typeError("No es booleano")
+  aceptado: yup.boolean().strict().typeError("No es booleano")
   , ciudad: yup.string().required("Requerido")
   , editorial: yup.string().required("Requerido")
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
@@ -126,7 +126,7 @@ export const libro = yup.object().shape({
 
 export const memoria = yup.object().shape({
   ciudad: yup.string().required("Requerido")
-  , con_estudiantes: yup.boolean().typeError("No es booleano")
+  , con_estudiantes: yup.boolean().strict().typeError("No es booleano")
   , congreso: yup.string().required("Requerido")
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , formato: yup.string().oneOf(
@@ -164,7 +164,7 @@ export const partitura = yup.object().shape({
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , financiado_por: yup.string().nullable()
   , jurado: yup.string().nullable()
-  , nacional: yup.boolean().typeError("No es booleano")
+  , nacional: yup.boolean().strict().typeError("No es booleano")
 });
 
 export const patente = yup.object().shape({
@@ -240,9 +240,9 @@ export const autores_externos = yup.lazy(value => {
         yup.object().shape({
           nombre: yup.string().required("Requerido")
           , universidad: yup.string().required("Requerido")
-          , es_estudiante: yup.boolean().typeError("No es booleano")
-          , es_ponente: yup.boolean().typeError("No es booleano")
-          , es_tutor: yup.boolean().typeError("No es booleano")
+          , es_estudiante: yup.boolean().strict().typeError("No es booleano")
+          , es_ponente: yup.boolean().strict().typeError("No es booleano")
+          , es_tutor: yup.boolean().strict().typeError("No es booleano")
           , correo: yup.string().email("Correo inválido").nullable()
           , estudiante_carrera: yup.string().when("es_estudiante", {
             is: true,
@@ -255,9 +255,9 @@ export const autores_externos = yup.lazy(value => {
         yup.object().shape({
           nombre: yup.string().required("Requerido")
           , universidad: yup.string().required("Requerido")
-          , es_estudiante: yup.boolean().typeError("No es booleano")
-          , es_ponente: yup.boolean().typeError("No es booleano")
-          , es_tutor: yup.boolean().typeError("No es booleano")
+          , es_estudiante: yup.boolean().strict().typeError("No es booleano")
+          , es_ponente: yup.boolean().strict().typeError("No es booleano")
+          , es_tutor: yup.boolean().strict().typeError("No es booleano")
           , correo: yup.string().email("Correo inválido").nullable()
           , estudiante_carrera: yup.string().when("es_estudiante", {
             is: true,
@@ -278,9 +278,9 @@ export const autores_usb = yup.lazy(value => {
       then: yup.array().of(
         yup.object().shape({
           nombre: yup.string().required("Requerido")
-          , es_estudiante: yup.boolean().typeError("No es booleano")
-          , es_ponente: yup.boolean().typeError("No es booleano")
-          , es_tutor: yup.boolean().typeError("No es booleano")
+          , es_estudiante: yup.boolean().strict().typeError("No es booleano")
+          , es_ponente: yup.boolean().strict().typeError("No es booleano")
+          , es_tutor: yup.boolean().strict().typeError("No es booleano")
           , correo: yup.string().email("Correo inválido").nullable()
           , profesor_id: yup.number().when("es_tutor", {
             is: true,
@@ -297,9 +297,9 @@ export const autores_usb = yup.lazy(value => {
       otherwise: yup.array().of(
         yup.object().shape({
           nombre: yup.string().required("Requerido")
-          , es_estudiante: yup.boolean().typeError("No es booleano")
-          , es_ponente: yup.boolean().typeError("No es booleano")
-          , es_tutor: yup.boolean().typeError("No es booleano")
+          , es_estudiante: yup.boolean().strict().typeError("No es booleano")
+          , es_ponente: yup.boolean().strict().typeError("No es booleano")
+          , es_tutor: yup.boolean().strict().typeError("No es booleano")
           , correo: yup.string().email("Correo inválido").nullable()
           , profesor_id: yup.number().when("es_tutor", {
             is: true,
