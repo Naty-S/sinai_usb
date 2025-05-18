@@ -5,7 +5,7 @@ import type { kinds } from "$lib/types/forms";
 import { parse_date } from "$lib/utils/formatting";
 
 
-const actividad = yup.object().shape({
+export const actividad = yup.object().shape({
     titulo: yup.string().required("Requerido")
   , descripcion: yup.string().nullable()
   , fecha_validacion: yup.date().nullable()
@@ -13,7 +13,7 @@ const actividad = yup.object().shape({
   , palabras_clave: yup.array(yup.string())
 });
 
-const articulo_revista = yup.object().shape({
+export const articulo_revista = yup.object().shape({
     articulo_invitado: yup.boolean().typeError("No es booleano")
   , con_estudiantes: yup.boolean().typeError("No es booleano")
   , estado: yup.string().oneOf(
@@ -36,7 +36,7 @@ const articulo_revista = yup.object().shape({
   , volumen: yup.string().required("Requerido")
 });
 
-const capitulo_libro = yup.object().shape({
+export const capitulo_libro = yup.object().shape({
   aceptado: yup.boolean().typeError("No es booleano")
   , articulo_invitado: yup.boolean().typeError("No es booleano")
   , ciudad: yup.string().required("Requerido")
@@ -50,7 +50,7 @@ const capitulo_libro = yup.object().shape({
   , titulo_libro: yup.string().required("Requerido")
 });
 
-const composicion = yup.object().shape({
+export const composicion = yup.object().shape({
   categoria: yup.string().oneOf(
     ["Composicion", "Arreglo", "Ejecucion"],
     "Valor de la categoría no pertenece a las opciones disponibles"
@@ -63,7 +63,7 @@ const composicion = yup.object().shape({
   , pais: yup.string().required("Requerido")
 });
 
-const evento = yup.object().shape({
+export const evento = yup.object().shape({
   ciudad: yup.string().required("Requerido")
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().nullable()
@@ -76,7 +76,7 @@ const evento = yup.object().shape({
   , pais: yup.string().required("Requerido")
 });
 
-const exposicion = yup.object().shape({
+export const exposicion = yup.object().shape({
   categoria: yup.string().nullable()
   , ciudad: yup.string().required("Requerido")
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
@@ -86,7 +86,7 @@ const exposicion = yup.object().shape({
   , pais: yup.string().required("Requerido")
 });
 
-const grabacion = yup.object().shape({
+export const grabacion = yup.object().shape({
   categoria: yup.string().oneOf([
       "Ejecucion_CD_Nacional"
     , "Ejecucion_CD_Internacional"
@@ -103,7 +103,7 @@ const grabacion = yup.object().shape({
   , nacional: yup.boolean().typeError("No es booleano")
 });
 
-const informe_tecnico = yup.object().shape({
+export const informe_tecnico = yup.object().shape({
   confidencial: yup.boolean().typeError("No es booleano")
   , evaluacion_did: yup.boolean().typeError("No es booleano")
   , evaluadores: yup.array(yup.string().required("Requerido")).min(1, "Ingrese al menos 1 evaluador")
@@ -115,7 +115,7 @@ const informe_tecnico = yup.object().shape({
     .min(1, "Minimo 1")
 });
 
-const libro = yup.object().shape({
+export const libro = yup.object().shape({
   aceptado: yup.boolean().typeError("No es booleano")
   , ciudad: yup.string().required("Requerido")
   , editorial: yup.string().required("Requerido")
@@ -124,7 +124,7 @@ const libro = yup.object().shape({
   , pais: yup.string().required("Requerido")
 });
 
-const memoria = yup.object().shape({
+export const memoria = yup.object().shape({
   ciudad: yup.string().required("Requerido")
   , con_estudiantes: yup.boolean().typeError("No es booleano")
   , congreso: yup.string().required("Requerido")
@@ -149,7 +149,7 @@ const memoria = yup.object().shape({
   , volumen: yup.string().nullable()
 });
 
-const partitura = yup.object().shape({
+export const partitura = yup.object().shape({
   categoria: yup.string().oneOf([
       "Ejecucion_CD_Nacional"
     , "Ejecucion_CD_Internacional"
@@ -167,7 +167,7 @@ const partitura = yup.object().shape({
   , nacional: yup.boolean().typeError("No es booleano")
 });
 
-const patente = yup.object().shape({
+export const patente = yup.object().shape({
   fecha_fin: yup.date().transform(parse_date).typeError("Requerido")
     // .min(yup.ref("fecha_inicio"), "La fecha final debe ser mayor que la inicial") // TODO:
   , fecha_inicio: yup.date().transform(parse_date).typeError("Requerido")
@@ -175,12 +175,12 @@ const patente = yup.object().shape({
   , pais: yup.string().required("Requerido")
 });
 
-const premio = yup.object().shape({
+export const premio = yup.object().shape({
   fecha: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().required("Requerido")
 });
 
-const premio_bienal = yup.object().shape({
+export const premio_bienal = yup.object().shape({
   categoria: yup.string().required("Requerido")
   , ciudad: yup.string().required("Requerido")
   , fecha: yup.date().transform(parse_date).typeError("Requerido")
@@ -191,7 +191,7 @@ const premio_bienal = yup.object().shape({
   , titulo_premio: yup.string().required("Requerido")
 });
 
-const proyecto_grado = yup.object().shape({
+export const proyecto_grado = yup.object().shape({
   coordinacion_academica: yup.string().required("Requerido")
   , fecha_defensa: yup.date().transform(parse_date).typeError("Requerido")
   , nivel_academico: yup.string().oneOf([
@@ -206,7 +206,7 @@ const proyecto_grado = yup.object().shape({
   , titulo_academico: yup.string().required("Requerido")
 });
 
-const proyecto_investigacion = yup.object().shape({
+export const proyecto_investigacion = yup.object().shape({
   fecha_inicio: yup.date().transform(parse_date).typeError("Requerido")
   , institucion: yup.string().required("Requerido")
   , meses_duracion: yup.number().required("Requerido")
@@ -223,7 +223,7 @@ const proyecto_investigacion = yup.object().shape({
     .min(1, "Minimo 1")
 });
 
-const recital = yup.object().shape({
+export const recital = yup.object().shape({
   ciudad: yup.string().required("Requerido")
   , fecha_evento: yup.date().transform(parse_date).typeError("Requerido")
   , financiado_por: yup.string().nullable()
@@ -232,7 +232,7 @@ const recital = yup.object().shape({
   , pais: yup.string().required("Requerido")
 });
 
-const autores_externos = yup.lazy(value => {
+export const autores_externos = yup.lazy(value => {
   if (value !== undefined) {
     return yup.array().ensure().when("autores_usb", {
       is: (autores_usb: any) => autores_usb.length === 0,
@@ -271,7 +271,7 @@ const autores_externos = yup.lazy(value => {
   return yup.mixed().notRequired();
 });
 
-const autores_usb = yup.lazy(value => {
+export const autores_usb = yup.lazy(value => {
   if (value !== undefined) {
     return yup.array().ensure().when("autores_externos", {
       is: [],
@@ -318,9 +318,9 @@ const autores_usb = yup.lazy(value => {
   return yup.mixed().notRequired();
 });
 
-const autores: [string, string] = ["autores_usb", "autores_externos"];
+export const autores: [string, string] = ["autores_usb", "autores_externos"];
 
-const groups = [
+export const groups = [
   '?','0','1', '2', '3', '4', '6', '8', '9', "10", "11", "12", "13", "14", "15", "16", "17",
   "19", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "33", "34",
   "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48",
@@ -328,7 +328,7 @@ const groups = [
   "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "76", "77",
   "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89"
 ];
-const actividades_grupos = yup.array().of((yup.object().shape({
+export const actividades_grupos = yup.array().of((yup.object().shape({
   old: yup.string().oneOf(groups, "Valor de grupo no pertenece a las opciones disponibles"),
   new: yup.string().oneOf(groups, "Valor de grupo no pertenece a las opciones disponibles")
 })));
