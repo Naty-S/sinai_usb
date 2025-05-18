@@ -27,6 +27,6 @@ export const requestSchema = yup.object().shape({
 
 export const validation = function ()/* : ObjectSchema<M> */ {
 
-  return requesSchema
+  return requestSchema
 };
 
