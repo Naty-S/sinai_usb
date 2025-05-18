@@ -13,14 +13,17 @@ export const testUsers = {
   },
   dep_chief: {
     email: 'jstella', // Departamento Ciencias de los Materiales
+    dep: 2,
     id: 426
   },
   dep_rep: {
     email: 'vcosta', // Departamento Ciencias de la Tierra
+    dep: 2,
     id: 98
   },
   coord_chief: {
     email: 'dcoronado', // Coordinación Ciencias Aplicadas e Ingeniería
+    coord: 1,
     id: 1080
   },
   groups_chief: {
@@ -29,6 +32,7 @@ export const testUsers = {
   },
   division_chief: {
     email: 'jvillota', // División de Ciencias Sociales y Humanidades
+    division: 3,
     id: 497
   },
   dean: {
@@ -36,6 +40,42 @@ export const testUsers = {
     id: 0
   },
 };
+
+// Rutas posibles accesibles desde el menú principal, como objeto clave:valor en snake_case
+export const routes = {
+  actividades_profesor: `/sinai/actividades/profesor/${testUsers.professor.id}`,
+  actividades_decano: "/sinai/actividades/decano/0",
+  resumen_actividades: "/sinai/actividades",
+  actividades_grupos: "/sinai/grupos/actividades",
+
+  consultas_publicas: "/sinai/consultas/actividades",
+
+  bra_profesor: "/sinai/BRA/profesor",
+
+  solicitar_s1_novel: "/sinai/s1_novel/solicitud",
+  solicitar_prepraii: "/sinai/prepraii/solicitud",
+
+  evaluar_s1_novel: "/sinai/s1_novel/evaluar",
+  evaluar_prepraii: "/sinai/prepraii/evaluar",
+  validar_nuevos_profesores: "/sinai/validaciones/nuevos_profesores",
+
+  actividades_grupo: "/sinai/actividades/grupo/2",
+  actividades_coordinacion: `/sinai/actividades/coordinacion/${testUsers.coord_chief.coord}`,
+  actividades_departamento_chief: `/sinai/actividades/departamento/${testUsers.dep_chief.dep}`,
+  actividades_departamento_rep: `/sinai/actividades/departamento/${testUsers.dep_rep.dep}`,
+  actividades_division: `/sinai/actividades/division/${testUsers.division_chief.division}`,
+
+  grupos_investigacion: "/sinai/grupos",
+
+  perfil: "/sinai/perfil",
+
+  historico_prepraii: "/sinai/prepraii",
+  pagos_prepraii: "/sinai/prepraii/pagos",
+
+  modificar_mesa_tecnica: "/sinai/mesa_tecnica",
+  modificar_coordinadores: "/sinai/coordinadores"
+};
+
 
 /**
  * Inicia sesión en la aplicación como un usuario con un rol específico.
