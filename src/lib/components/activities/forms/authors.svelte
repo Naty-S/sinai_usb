@@ -118,7 +118,7 @@
   {/if}
 
   <!-- Autores USB -->
-  <div class="field">
+  <div id="usb_authors" class="field">
     <div class="ui dividing small header">USB</div>
 
     {#each autores_usb as author, i}
@@ -222,7 +222,7 @@
   </div>
   
   <!-- Autores Externos -->
-  <div class="field">
+  <div id="out_authors" class="field">
     <div class="ui dividing small header">Externos</div>
 
     {#each autores_externos as author, i}
