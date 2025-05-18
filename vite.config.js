@@ -27,7 +27,7 @@ const config = {
 		port: 3000
 	},
 	test: {
-		include: ['src/tests/(.+\.)?(test|spec)\.[jt]s'], // Patrón para encontrar archivos de prueba
+		include: ['src/**/*\.(test|spec)\.[jt]s'], // Patrón para encontrar archivos de prueba
 		globals: true, // Permite usar `expect` y otras funciones de Vitest globalmente
 		environment: 'jsdom', // Simula un entorno de navegador para las pruebas DOM
 	},
