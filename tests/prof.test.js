@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker'; // Para generar datos de prueba únicos
 
-import { loginAs, testUsers } from './helpers.js';
+import { loginAs, routes, testUsers } from './helpers.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,17 +19,24 @@ test.describe('Rol: Profesor', () => {
     await loginAs(page, 'professor'); // Loguea como profesor antes de cada prueba en este bloque
   });
 
-  /* test('P-1. Login exitoso y visualización del layout de profesor', async ({ page }) => {
-  	await page.goto(`/sinai/actividades/profesor/${testUsers.professor.id}`);
+  test.afterEach(async ({ page }) => {
+    // Código para limpiar después de cada test
+    // Ejemplo: cerrar sesión, borrar cookies, limpiar datos locales, etc.
+    await page.context().clearCookies();
+    await page.evaluate(() => localStorage.clear());
+  });
+
+  test('P-1. Login exitoso y visualización del layout de profesor', async ({ page }) => {
+  	await page.goto(routes.actividades_profesor);
   	const menuButton = page.locator('nav').getByText(/Menu/i);
   	await expect(menuButton).toBeVisible();
   	await menuButton.click();
   	await expect(page.getByRole('button', { name: 'Salir' })).toBeVisible();
   	// Verificar que NO se vea el enlace "Ver Profesores" si el profesor no es decano/coord.
   	await expect(page.getByRole('link', { name: 'Ver Profesores' })).not.toBeVisible();
-  }); */
+  });
 
-  /* test('P-2. Iniciar flujo de "Nueva Solicitud S1 Novel" y ver formulario', async ({ page }) => {
+  test('P-2. Iniciar flujo de "Nueva Solicitud S1 Novel" y ver formulario', async ({ page }) => {
     await page.goto('/sinai/s1_novel/solicitud');
 
     await expect(page.getByRole('heading', { name: 'Solicitar S1 Novel' })).toBeVisible();
@@ -39,20 +46,20 @@ test.describe('Rol: Profesor', () => {
     // Verificar que campos clave del formulario S1 Novel sean visibles
     await page.getByText('Obervaciones').waitFor({ state: 'attached' });
     await expect(page.getByText('Obervaciones')).toBeVisible();
-    await expect(page.getByText('Soportes')).toBeVisible();
+    await expect(page.getByText('Soportes', {exact: true})).toBeVisible();
     await expect(page.getByText('Archivo de especificación del Proyecto')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Solicitar' })).toBeVisible();
-  }); */
+  });
 
-  /* test('SP-P-2.1. (Sad Path) Intentar enviar Solicitud S1 Novel con campos requeridos vacíos', async ({ page }) => {
+  test('SP-P-2.1. (Sad Path) Intentar enviar Solicitud S1 Novel con campos requeridos vacíos', async ({ page }) => {
     await page.goto('/sinai/s1_novel/solicitud');
     await page.getByRole('button', { name: 'Nueva solicitud' }).click();
     await page.getByText('Obervaciones').waitFor({ state: 'attached' });
     await page.getByRole('button', { name: 'Solicitar' }).click();
     await expect(page.locator('.field.error', { hasText: 'Requerido' })).toBeVisible();
-  }); */
+  });
 
-  /* test('P-3. Modificar información en "Datos Personales" del Perfil', async ({ page }) => {
+  test('P-3. Modificar información en "Datos Personales" del Perfil', async ({ page }) => {
     await page.goto('/sinai/perfil');
     await expect(page.getByRole('heading', { name: 'Datos Personales' })).toBeVisible();
 
@@ -70,9 +77,9 @@ test.describe('Rol: Profesor', () => {
 
     // Verificar que el cambio persista después de la recarga
     await expect(page.getByRole('textbox', { name: 'Apellido, Nombre' })).toHaveValue(nuevoPerfil);
-  }); */
+  });
 
-  /* test('P-4. Crear un "Artículo en Revista" (actividad) con autores', async ({ page }) => {
+  test('P-4. Crear un "Artículo en Revista" (actividad) con autores', async ({ page }) => {
     await page.goto('/sinai/actividades/crear/articulo_revista');
 
     const titulo = faker.commerce.productName();
@@ -104,9 +111,9 @@ test.describe('Rol: Profesor', () => {
     await expect(page.getByText(titulo)).toBeVisible();
 
     // deleteTestArticle(page)
-  }); */
+  });
 
-  /* test('SP-P-4.1. (Sad Path) Intentar crear "Artículo en Revista" sin título ni revista', async ({ page }) => {
+  test('SP-P-4.1. (Sad Path) Intentar crear "Artículo en Revista" sin título ni revista', async ({ page }) => {
     await page.goto('/sinai/actividades/crear/articulo_revista');
 
     // No llenar Título ni Nombre de la Revista
@@ -120,37 +127,33 @@ test.describe('Rol: Profesor', () => {
 
     await expect(page.getByText('Título del Artículo Requerido')).toBeVisible();
     await expect(page.getByText('Nombre de la Revista Arbitrada Requerido')).toBeVisible();
-  }); */
+  });
 
-  // test('P-5. Modificar una actividad existente (Título de Artículo en Revista)', async ({ page }) => {
-  //   // ASUNCIÓN: Existe una actividad de tipo "Artículo en Revista" creada por el usuario logueado.
-  //   // Necesitarías ir a la lista de actividades del profesor, encontrar una y hacer clic en modificar.
-  //   // La ruta sería algo como /sinai/actividades/modificar/articulo_revista/[id_de_la_actividad]
+  test('P-5. Modificar una actividad existente (la útima agregada)', async ({ page }) => {
 
-  //   // Simulación: Navegar directamente si conocemos el ID o encontrarla en la lista.
-  //   // await page.goto('/sinai/actividades/profesor/mi_id_profesor'); // Ir a la lista de actividades
-  //   // await page.locator('.activity-row', { hasText: 'Título del Artículo a Modificar' })
-  //   //           .getByRole('button', { name: 'Modificar' }).click();
-  //   // Por simplicidad, asumimos que ya estamos en la página de modificación:
-  //   await page.goto('/sinai/actividades/modificar/articulo_revista/51308');
+    await page.goto(routes.actividades_profesor);
+    await page.getByRole('button', { name: 'Modificar' }).click();
+    await page.waitForSelector('div.back-to-top', { state: 'visible' });
+    const actividadRow = page.locator('div.item').last();
+    await page.getByRole('link', { name: 'Modificar' }).last().click();
 
-  //   const titulo = page.locator('div.field:has-text("Título del Artículo") >> input');
-  //   const tituloOriginal = await titulo.inputValue();
-  //   const nuevoTitulo = `Pruebas - ${tituloOriginal}`;
+    const titulo = page.locator('div.field:has-text("Título") >> input').first();
+    const tituloOriginal = await titulo.inputValue();
+    const nuevoTitulo = `Pruebas - ${tituloOriginal}`;
 
-  //   await titulo.fill(nuevoTitulo);
+    await titulo.fill(nuevoTitulo);
 
-  //   await page.getByRole('button', { name: 'Modificar' }).click();
+    await page.getByRole('button', { name: 'Modificar' }).click();
 
-  //   // Verificar mensaje de éxito y redirección
-  //   await page.waitForURL(`/sinai/actividades/profesor/${testUsers.professor.id}?modificada=true`);
-  //   await expect(page.getByText('Actividad modificada con éxito')).toBeVisible();
+    // Verificar mensaje de éxito y redirección
+    await page.waitForURL(`${routes.actividades_profesor}?modificada=true`);
+    await expect(page.getByText('Actividad modificada con éxito')).toBeVisible();
 
-  //   // Verificar que en la lista el título esté actualizado.
-  //   await expect(page.getByText(nuevoTitulo)).toBeVisible();
-  // });
+    // Verificar que en la lista el título esté actualizado.
+    await expect(page.getByText(nuevoTitulo)).toBeVisible();
+  });
 
-  /* test('P-6. Añadir y eliminar dinámicamente autores en formulario de actividad (Artículo en Revista)', async ({ page }) => {
+  test('P-6. Añadir y eliminar dinámicamente autores en formulario de actividad (Artículo en Revista)', async ({ page }) => {
 
     await page.goto('/sinai/actividades/crear/articulo_revista');
 
@@ -158,7 +161,7 @@ test.describe('Rol: Profesor', () => {
     await page.getByRole('button', { name: 'Agregar Profesor' }).first().click();
     await page.getByRole('button', { name: 'Agregar Estudiante' }).first().click();
 
-    // Verificar que hay 2 autores USB (contando los inputs de nombre o los botones de eliminar)
+    // Verificar que hay 3 autores USB (contando los inputs de nombre o los botones de eliminar)
     expect(await page.locator('button[id^="DelUSB-"]').count()).toBe(3);
 
     // Eliminar el último autor USB (el estudiante)
@@ -168,50 +171,55 @@ test.describe('Rol: Profesor', () => {
     // Sección Autores Externos
     await page.getByRole('button', { name: 'Agregar Profesor' }).last().click();
     expect(await page.locator('button[id^="DelExterno-"]').count()).toBe(1);
-  }); */
+  });
 
-  // test('P-7. Subir un archivo en "Solicitar S1 Novel" (proyecto y soportes)', async ({ page }) => {
-  //   await page.goto('/sinai/s1_novel/solicitud');
-  //   await page.getByRole('button', { name: 'Nueva solicitud' }).click(); // Mostrar formulario
+  test('P-7. Subir un archivo en "Solicitar S1 Novel" (proyecto y soportes)', async ({ page }) => {
+    await page.goto('/sinai/s1_novel/solicitud');
+    await page.getByRole('button', { name: 'Nueva solicitud' }).click(); // Mostrar formulario
 
-  //   const filesDir = path.join(__dirname, 'files');
-  //   const filePathProyecto = path.join(filesDir, 'proyecto_s1_novel.pdf'); // Crear archivo dummy
-  //   const filePathSoporte1 = path.join(filesDir, 'soporte1.pdf');
+    const filesDir = path.join(__dirname, 'files');
+    const filePathProyecto = path.join(filesDir, 'proyecto_s1_novel.pdf'); // Crear archivo dummy
+    const filePathSoporte1 = path.join(filesDir, 'soporte1.pdf');
 
     // Asegurarse de que el directorio de descargas exista
-    // if (!fs.existsSync(filesDir)) {
-    //   fs.mkdirSync(filesDir, { recursive: true });
-    // }
+    if (!fs.existsSync(filesDir)) {
+      fs.mkdirSync(filesDir, { recursive: true });
+    }
 
-  //   // Crear archivos dummy si no existen para la prueba
-  //   fs.writeFileSync(filePathProyecto, 'Contenido del proyecto de prueba');
-  //   fs.writeFileSync(filePathSoporte1, 'Contenido del soporte de prueba');
+    // Crear archivos dummy si no existen para la prueba
+    fs.writeFileSync(filePathProyecto, 'Contenido del proyecto de prueba');
+    fs.writeFileSync(filePathSoporte1, 'Contenido del soporte de prueba');
 
-  //   await page.locator('div.field:has-text("Archivo de especificación del Proyecto") >> input').setInputFiles(filePathProyecto);
+    await page.locator('div.field:has-text("Archivo de especificación del Proyecto") >> input').setInputFiles(filePathProyecto);
 
-  //   // La sección de soportes (backup_files.svelte) es dinámica
-  //   await page.getByRole('button', { name: 'Agregar' }).click();
-  //   await page.locator('input[name="soportes\\[0\\]"]').first().setInputFiles(filePathSoporte1);
+    // La sección de soportes (backup_files.svelte) es dinámica
+    await page.getByRole('button', { name: 'Agregar' }).click();
+    await page.locator('input[name="soportes\\[0\\]"]').first().setInputFiles(filePathSoporte1);
 
-  //   // Verificar que no aparezcan errores luego de adjuntar
-  //   await expect(page.locator('.field.error')).not.toBeVisible();
-  // });
+    // Verificar que no aparezcan errores luego de adjuntar
+    await expect(page.locator('.field.error')).not.toBeVisible();
+    await page.getByRole('button', { name: 'Solicitar' }).click();
+    await expect(page.getByText('Solicitud exitosa!!!')).toBeVisible();
+    await page.getByRole('button', { name: 'Ok' }).click();
+  });
 
-  /* test('P-8. Eliminar una actividad creada por el usuario (con modal)', async ({ page }) => {
+  test('P-8. Eliminar una actividad creada por el usuario (con modal)', async ({ page }) => {
     // ASUNCIÓN: El usuario logueado ha creado una actividad que puede eliminar.
     // 1. Crear una actividad (o asegurarse que exista una para eliminar)
     // ... (pasos para crear una actividad simple, ej. "Premio") ...
-    // await page.goto('/sinai/actividades/crear/premio');
-    // const tituloPremio = `Premio a Eliminar ${Date.now()}`;
-    const tituloPremio = /Premio a Eliminar 1747426325701/;
-    // await page.locator('div.field:has-text("Título del Premio") >> input').fill(tituloPremio);
-    // await page.locator('div.field:has-text("Institución que otorga") >> input').fill('Institución de Pruebas');
-    // await page.getByRole('button', { name: 'Crear' }).click();
-    // await page.waitForURL(/\/sinai\/actividades\/profesor/); // Esperar redirección a la lista
+    await page.goto('/sinai/actividades/crear/premio');
+    const tituloPremio = `Premio a Eliminar ${Date.now()}`;
+    await page.locator('div.field:has-text("Título del Premio") >> input').fill(tituloPremio);
+    await page.locator('div.field:has-text("Institución que otorga") >> input').fill('Institución de Pruebas');
+    await page.getByRole('button', { name: 'Crear' }).click();
+    await page.waitForURL(/\/sinai\/actividades\/profesor/); // Esperar redirección a la lista
+    await page.getByRole('button', { name: 'Cancelar' }).click(); // Cerrar modal de ingresar otra actividad
+    await page.waitForURL(/\/sinai\/actividades\/profesor/); // Esperar redirección a la lista
+
 
     // 2. Encontrar la actividad en la lista y hacer clic en Eliminar
     await page.getByRole('button', { name: 'Modificar' }).click();
-    await page.locator('div.back-to-top').toBeVisible();
+    await page.waitForSelector('div.back-to-top', { state: 'visible' });
     const actividadRow = page.locator('div.item', { hasText: tituloPremio });
     await actividadRow.getByRole('button', { name: 'Eliminar' }).click();
 
@@ -227,7 +235,7 @@ test.describe('Rol: Profesor', () => {
     await modalExito.getByRole('button', { name: 'Cerrar' }).click();
 
     await expect(page.locator('div.item.content', { hasText: tituloPremio })).not.toBeVisible();
-  }); */
+  });
 
   /* test('P-9. Solicitar PREPRAII y verificar la solicitud en el listado', async ({ page }) => {
   	await page.goto('/sinai/prepraii/solicitud');
@@ -261,25 +269,22 @@ test.describe('Rol: Profesor', () => {
     }
   }); */
 
-  /* test('P-10. Visualizar información en página BRA del profesor', async ({ page }) => {
-    // ASUNCIÓN: Existe un profesor con datos BRA y el usuario logueado puede verlo.
-    // La ruta es /sinai/BRA/profesor (index.svelte), que usa components/bra/header.svelte
-    await page.goto('/sinai/BRA/profesor'); // Asumiendo que carga el BRA del profesor logueado o uno por defecto
+  test('P-10. Visualizar información en página BRA del profesor', async ({ page }) => {
+    await page.goto(routes.bra_profesor);
 
     await expect(page.getByRole('heading', { name: 'Sistema de Información de Actividades de Investigación - SINAI' })).toBeVisible();
     await expect(page.getByText('Vista: Bono BRA')).toBeVisible();
 
     // Verificar campos del header.svelte de BRA
-    await expect(page.locator('div', { hasText: /Profesor:/ })).not.toBeEmpty();
-    await expect(page.locator('div', { hasText: /Cédula:/ })).not.toBeEmpty();
-    await expect(page.locator('div', { hasText: /Categoría:/ })).not.toBeEmpty();
-    await expect(page.locator('div', { hasText: /Departamento:/ })).not.toBeEmpty();
-    await expect(page.locator('div', { hasText: /Período:/ })).not.toBeEmpty();
-
-  }); */
+    await expect(page.locator('div.column', { hasText: /Profesor:/ }).last()).not.toBeEmpty();
+    await expect(page.locator('div.column', { hasText: /Cédula:/ }).last()).not.toBeEmpty();
+    await expect(page.locator('div.column', { hasText: /Categoría:/ }).last()).not.toBeEmpty();
+    await expect(page.locator('div.column', { hasText: /Departamento:/ }).last()).not.toBeEmpty();
+    await expect(page.locator('div.column', { hasText: /Período:/ }).last()).not.toBeEmpty();
+  });
 
   test('P-11. Adición y eliminación dinámica de "Líneas de Investigación" en Perfil', async ({ page }) => {
-    await page.goto('/sinai/perfil');
+    await page.goto(routes.perfil);
     await expect(page.getByRole('heading', { name: 'Datos Personales' })).toBeVisible();
 
     const lineasSection = page.locator('#research_lines');
@@ -298,12 +303,43 @@ test.describe('Rol: Profesor', () => {
     await lineasSection.locator('input[type="text"]').last().fill('Estudios de Calidad de Software');
 
     expect(await lineasSection.locator('input[type="text"]').count()).toBe(2);
-    await expect(lineasSection.locator('input[name="profile\\.lineas_investigacion\\[0\\]"]')).toBeVisible();
+    await expect(lineasSection.locator('input[name="profile\\.lineas_investigacion\\[0\\]"]')).toHaveValue('Investigación en Pruebas Automatizadas');
+    await expect(lineasSection.locator('input[name="profile\\.lineas_investigacion\\[1\\]"]')).toHaveValue('Estudios de Calidad de Software');
 
     // Eliminar la primera línea
     await lineasSection.getByRole('button', { name: 'Elminar' }).first().click();
     expect(await lineasSection.locator('input[type="text"]').count()).toBe(1);
-    await expect(lineasSection.locator('input[value="Investigación en Pruebas Automatizadas"]')).not.toBeVisible();
-    await expect(lineasSection.locator('input[value="Estudios de Calidad de Software"]')).toBeVisible();
+    await expect(lineasSection.locator('input[name="profile\\.lineas_investigacion\\[0\\]"]')).not.toHaveValue('Investigación en Pruebas Automatizadas');
+    await expect(lineasSection.locator('input[name="profile\\.lineas_investigacion\\[0\\]"]')).toHaveValue('Estudios de Calidad de Software');
+  });
+
+  test('P-12. Ver/Descargar un archivo adjunto (proyecto o soporte) en "Solicitud S1 Novel"', async ({ page }) => {
+    // ASUNCIÓN: Usuario logueado y existe una solicitud S1 Novel con archivos adjuntos.
+    await page.goto(routes.solicitar_s1_novel);
+    await expect(page.getByRole('heading', { name: 'Solicitudes Realizadas' })).toBeVisible();
+
+    // Expandir la primera solicitud que tenga un enlace de proyecto
+    const primeraSolicitudConProyecto = page.locator('section[id^="s1_novel_request_"]').first();
+    if (!await primeraSolicitudConProyecto.isVisible()) {
+      console.warn('No hay solicitudes S1 Novel con proyectos para probar descarga.');
+      return;
+    }
+    await primeraSolicitudConProyecto.locator('.uk-accordion-title').click(); // Expandir
+
+    const linkProyecto = primeraSolicitudConProyecto.locator('.content a:has-text("Ver/Descargar")').first();
+
+    // Escuchar el evento 'download' ANTES de hacer clic en el enlace
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      linkProyecto.click(),
+    ]);
+
+    // Verificar que se inició una descarga
+    expect(download).toBeTruthy();
+    // const filePath = path.join(__dirname, 'downloads', download.suggestedFilename());
+    // await download.saveAs(filePath);
+    // expect(fs.existsSync(filePath)).toBeTruthy(); // Verificar que el archivo se guardó
+    // Para E2E, a menudo basta con saber que el evento de descarga ocurrió y el nombre sugerido es correcto.
+    expect(download.suggestedFilename()).toMatch(/\.pdf/i);
   });
 });
