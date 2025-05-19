@@ -272,7 +272,7 @@ test.describe('Funcionalidad General de UI/UX (Usuario Autenticado)', () => {
 		await page.getByLabel('Profesor', { exact: true }).check();
 		await page.locator('select').selectOption({ label: 'Cardinale, Yudith' });
 		await page.getByRole('button', { name: 'Buscar' }).click();
-		await page.waitForSelector('#resume_table', { timeout: 10000 }); // Esperar que los resultados cargue
+		await page.waitForSelector('#resume_table', { state: 'visible' }); // Esperar que los resultados cargue
 
 		const paginationControls = page.locator('#pagination');
 		const siguienteButton = paginationControls.getByRole('button', { name: 'Siguiente' }).first();
