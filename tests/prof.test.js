@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker'; // Para generar datos de prueba únicos
 
-import { loginAs, routes, testUsers } from './helpers.js';
+import { loginAs, routes, testUsers } from './helpers/frontend.js';
 
 
 const __filename = fileURLToPath(import.meta.url);

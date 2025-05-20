@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker'; // Para generar datos de prueba únicos
 
-import { loginAs, routes, deleteTestUser } from './helpers.js';
+import { loginAs, routes, deleteTestUser } from './helpers/frontend.js';
 import { groups } from "$lib/utils/forms/activities/validation.ts";
 
 
