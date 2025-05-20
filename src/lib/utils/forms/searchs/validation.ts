@@ -9,8 +9,8 @@ export const searchSchema = yup.object().shape({
     "Valor del tipo de búsqueda no pertenece a las opciones disponibles"
   ),
   search: yup.string().required("Requerido"),
-  date_start: yup.date().transform(parse_date).typeError("Requerido"),
-  date_end: yup.date().transform(parse_date).typeError("Requerido"),
+  date_start: yup.date().transform(parse_date).required("Requerido"),
+  date_end: yup.date().transform(parse_date).required("Requerido"),
   articulo_revista: yup.boolean().strict().typeError("No es booleano"),
   capitulo_libro: yup.boolean().strict().typeError("No es booleano"),
   composicion: yup.boolean().strict().typeError("No es booleano"),

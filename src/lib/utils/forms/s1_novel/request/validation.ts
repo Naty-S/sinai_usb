@@ -15,7 +15,7 @@ const is_pdf = function (value: any) {
 
 export const requestSchema = yup.object().shape({
     comentario: yup.string()
-  , fecha_solicitud: yup.date().transform(parse_date).typeError("Requerido")
+  , fecha_solicitud: yup.date().transform(parse_date).required("Requerido")
   , observaciones_evaluador: yup.string()
   , observaciones_profesor: yup.string().required("Por favor ingrese alguna observación")
   , proyecto: yup.mixed().required("Requerido")
