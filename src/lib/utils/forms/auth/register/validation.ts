@@ -1,103 +1,103 @@
 import * as yup from "yup";
 
 
-export const validation = function () {
+// Regular expressions validation
+// acentos = À-ÿ
+// ñ = \u00f1
+// Ñ = \u00d1
+const name = /^([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*$/;
+const cedula = /^\d{8}$/;
+const perfil = /^([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*, ([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*$/;
+const url = /^(?:https?:\/\/)?[\w\-]+(?:\.[\w\-]+)+(?:[\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?$/;
 
-  // Regular expressions validation
-  // acentos = À-ÿ
-  // ñ = \u00f1
-  // Ñ = \u00d1
-  const name = /^([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*$/;
-  const cedula = /^\d{8}$/;
-  const perfil = /^([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*, ([A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)([\s]*[A-ZÀ-ÿ\u00d1][a-zÀ-ÿ\u00f1]+)*$/;
-  const url = /^(?:https?:\/\/)?[\w\-]+(?:\.[\w\-]+)+(?:[\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?$/;
-  
-  const deps_ids = Array.from({ length: 30 }, (_, i) => (i + 2).toString());
-  
-  // pei years from 1997 until current year
-  const years_count = new Date().getFullYear() - 1996;
-  const pei_years = Array.from({ length: years_count }, (_, i) => (i + 1997).toString());
+const deps_ids = Array.from({ length: 30 }, (_, i) => (i + 2).toString());
 
-  return yup.object().shape({
-    professor: yup.object().shape({
-      nombre1: yup.string().required("Requerido").matches(name, "Formato inválido"),
-      nombre2: yup.lazy(value => !value ? yup.string().nullable() :
-        yup.string().matches(name, "Formato inválido")
-      ),
-      apellido1: yup.string().required("Requerido").matches(name, "Formato inválido"),
-      apellido2: yup.lazy(value => !value ? yup.string().nullable() :
-        yup.string().matches(name, "Formato inválido")
-      ),
-      cedula: yup.string().required("Requerido").matches(cedula, "Formato inválido"),
-      correo: yup.string().required("Requerido").matches(/^[a-z]+@usb.ve$/, "Formato inválido"),
-      sexo: yup.string().oneOf(['F', 'M'], "Valor del sexo no pertenece a las opciones disponibles"),
-      categoria: yup.string().oneOf(
-        ["Agregado", "Asistente", "Asociado", "Instructor", "Titular"],
-        "Valor de la categoría no pertenece a las opciones disponibles"
-      ),
-      condicion: yup.string().oneOf(
-        ["Contratado", "Ordinario", "Jubilado"],
-        "Valor de la condición no pertenece a las opciones disponibles"
-      ),
-      dedicacion: yup.string().oneOf(
-        ["Convencional", "Exclusiva", "Integral"],
-        "Valor del tipo de dedicación no pertenece a las opciones disponibles"
-      ),
-      diploma_tipo: yup.string().oneOf(
-        ["Lic_", "Ph_D_", "Doctor", "Magister", "Ing_"],
-        "Valor del tipo de diploma no pertenece a las opciones disponibles"
-      ),
-      diploma_universidad: yup.string().required("Requerido"),
-      departamento: yup.string().oneOf(
-        deps_ids, "Valor de departamento no pertenece a las opciones disponibles"
-      ),
-      perfil: yup.string().required("Requerido").matches(perfil, "Formato inválido: Apellido, Nombre"),
-      url: yup.lazy(value => !value ? yup.string().nullable() : 
-        yup.string().when("url", {
-          is: null,
-          then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
-        })
-      )
-      , orcid_id: yup.string().nullable()
-      , orcid_profile: yup.lazy(value => !value ? yup.string().nullable() :
-        yup.string().when("orcid_profile", {
-          is: null,
-          then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
-        })
-      )
-      , google_schoolar_id: yup.string().nullable()
-      , google_schoolar_profile: yup.lazy(value => !value ? yup.string().nullable() :
-        yup.string().when("google_schoolar_profile", {
-          is: null,
-          then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
-        })
-      )
-      , research_gate_id: yup.string().nullable()
-      , research_gate_profile: yup.lazy(value => !value ? yup.string().nullable() :
-        yup.string().when("research_gate_profile", {
-          is: null,
-          then: yup.string().nullable(),
-          otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
-        })
-      )
-    }),
-    pei: yup.object().shape({
-      anio: yup.lazy(value => !value ? yup.string().nullable() : yup.string().when("anio", {
+// pei years from 1997 until current year
+const years_count = new Date().getFullYear() - 1996;
+const pei_years = Array.from({ length: years_count }, (_, i) => (i + 1997).toString());
+
+
+export const professorRegistrationSchema = yup.object().shape({
+  professor: yup.object().shape({
+    nombre1: yup.string().required("Requerido").matches(name, "Formato inválido"),
+    nombre2: yup.lazy(value => !value ? yup.string().nullable() :
+      yup.string().matches(name, "Formato inválido")
+    ),
+    apellido1: yup.string().required("Requerido").matches(name, "Formato inválido"),
+    apellido2: yup.lazy(value => !value ? yup.string().nullable() :
+      yup.string().matches(name, "Formato inválido")
+    ),
+    cedula: yup.string().required("Requerido").matches(cedula, "Formato inválido"),
+    correo: yup.string().required("Requerido").matches(/^[a-z]+@usb.ve$/, "Formato inválido"),
+    sexo: yup.string().oneOf(['F', 'M'], "Valor del sexo no pertenece a las opciones disponibles"),
+    categoria: yup.string().oneOf(
+      ["Agregado", "Asistente", "Asociado", "Instructor", "Titular"],
+      "Valor de la categoría no pertenece a las opciones disponibles"
+    ),
+    condicion: yup.string().oneOf(
+      ["Contratado", "Ordinario", "Jubilado"],
+      "Valor de la condición no pertenece a las opciones disponibles"
+    ),
+    dedicacion: yup.string().oneOf(
+      ["Convencional", "Exclusiva", "Integral"],
+      "Valor del tipo de dedicación no pertenece a las opciones disponibles"
+    ),
+    diploma_tipo: yup.string().oneOf(
+      ["Lic_", "Ph_D_", "Doctor", "Magister", "Ing_"],
+      "Valor del tipo de diploma no pertenece a las opciones disponibles"
+    ),
+    diploma_universidad: yup.string().required("Requerido"),
+    departamento: yup.string().oneOf(
+      deps_ids, "Valor de departamento no pertenece a las opciones disponibles"
+    ),
+    perfil: yup.string().required("Requerido").matches(perfil, "Formato inválido: Apellido, Nombre"),
+    url: yup.lazy(value => !value ? yup.string().nullable() :
+      yup.string().when("url", {
         is: null,
         then: yup.string().nullable(),
-        otherwise: yup.string().oneOf(pei_years, "Ingrese un año entre 1997 y el actual"),
-      })),
-      nivel: yup.lazy(value => !value ? yup.string().nullable() : yup.string().when("nivel",{
+        otherwise: yup.string().matches(url, "Formato inválido. http://www.example.com")
+      })
+    )
+    , orcid_id: yup.string().nullable()
+    , orcid_profile: yup.lazy(value => !value ? yup.string().nullable() :
+      yup.string().when("orcid_profile", {
         is: null,
         then: yup.string().nullable(),
-        otherwise: yup.string().oneOf(
-          ["A", "B", "C"], "Valor del nivel no pertenece a las opciones disponibles"
-        ),
-      })),
-      numero: yup.string().nullable(),
-    })
-  });
-};
+        otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
+      })
+    )
+    , google_schoolar_id: yup.string().nullable()
+    , google_schoolar_profile: yup.lazy(value => !value ? yup.string().nullable() :
+      yup.string().when("google_schoolar_profile", {
+        is: null,
+        then: yup.string().nullable(),
+        otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
+      })
+    )
+    , research_gate_id: yup.string().nullable()
+    , research_gate_profile: yup.lazy(value => !value ? yup.string().nullable() :
+      yup.string().when("research_gate_profile", {
+        is: null,
+        then: yup.string().nullable(),
+        otherwise: yup.string().matches(url, "Formato inválido. http://example.com")
+      })
+    )
+  }),
+  pei: yup.object().shape({
+    anio: yup.lazy(value => !value ? yup.string().nullable() : yup.string().when("anio", {
+      is: null,
+      then: yup.string().nullable(),
+      otherwise: yup.string().oneOf(pei_years, "Ingrese un año entre 1997 y el actual"),
+    })),
+    nivel: yup.lazy(value => !value ? yup.string().nullable() : yup.string().when("nivel", {
+      is: null,
+      then: yup.string().nullable(),
+      otherwise: yup.string().oneOf(
+        ["A", "B", "C"], "Valor del nivel no pertenece a las opciones disponibles"
+      ),
+    })),
+    numero: yup.string().nullable(),
+  })
+});
+
+export const validation = function () { return professorRegistrationSchema };

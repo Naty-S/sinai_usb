@@ -230,6 +230,8 @@
   setContext(key, { form, errors, handleChange, isSubmitting });
 </script>
 
+<h2>Consulta de Actividades</h2>
+
 <form class="ui large form" on:submit|preventDefault={show_search} on:reset={handleReset}>
   <div class="field fields">
     <label for="search_type">

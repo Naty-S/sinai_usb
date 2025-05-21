@@ -19,7 +19,17 @@ COPY package.json ./
 
 
 ## Install dependencies
-RUN apt-get update -y && apt-get install -y openssl
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+  openssl \
+  libgtk-3-0 \
+  libgbm1 \
+  libnotify-dev \
+  libnss3 \
+  libx11-xcb1 \
+  libxtst6 \
+  xauth \
+  xvfb \
+  libasound2
 RUN npm i
 RUN npm fund
 

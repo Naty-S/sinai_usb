@@ -7,3 +7,6 @@ node_modules
 .env.*
 !.env.example
 !.env.template
+tests/files
+test-results
+package-*

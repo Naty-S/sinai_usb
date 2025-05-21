@@ -118,7 +118,7 @@
   {/if}
 
   <!-- Autores USB -->
-  <div class="field">
+  <div id="usb_authors" class="field">
     <div class="ui dividing small header">USB</div>
 
     {#each autores_usb as author, i}
@@ -175,7 +175,7 @@
           />
         {/if}
 
-        <button type="button" class="ui red button" on:click={() => remove_author_usb(i)}>
+        <button id={`DelUSB-${i}`} type="button" class="ui red button" on:click={() => remove_author_usb(i)}>
           Elminar
         </button>
       </div>
@@ -222,7 +222,7 @@
   </div>
   
   <!-- Autores Externos -->
-  <div class="field">
+  <div id="out_authors" class="field">
     <div class="ui dividing small header">Externos</div>
 
     {#each autores_externos as author, i}
@@ -297,7 +297,7 @@
           />
         {/if}
 
-        <button type="button" class="ui red button" on:click={() => remove_author_out(i)}>
+        <button id={`DelExterno-${i}`} type="button" class="ui red button" on:click={() => remove_author_out(i)}>
           Elminar
         </button>
       </div>
