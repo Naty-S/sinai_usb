@@ -167,7 +167,7 @@
         
         <!-- TODO: #81 -->
         
-        {#if !student_usb(i)}
+        {#if !student_usb(i) && kind !== 'proyecto_investigacion'}
           <Input
             type="checkbox"
             label="Tutor"
@@ -291,7 +291,7 @@
             class="three wide field"
           />  
         {/if}              
-        {#if !student_out(i)}
+        {#if !student_out(i) && kind !== 'proyecto_investigacion'}
           <Input
             type="checkbox"
             label="Tutor"
