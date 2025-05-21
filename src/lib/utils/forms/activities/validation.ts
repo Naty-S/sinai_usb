@@ -217,10 +217,7 @@ export const proyecto_investigacion = yup.object().shape({
     ["$ (USD)", "Bs."],
     "Valor del tipo de moneda no pertenece a las opciones disponibles"
   )
-  , monto: yup.number().required("Requerido")
-    .positive("Ingrese número positivo")
-    .integer("Ingrese número entero")
-    .min(1, "Minimo 1")
+  , monto: yup.number().required("Requerido").min(0, "Ingrese número positivo")
 });
 
 export const recital = yup.object().shape({

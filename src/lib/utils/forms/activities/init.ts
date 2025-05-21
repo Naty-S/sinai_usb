@@ -325,7 +325,7 @@ export const init = function (kind: kinds, user?: User, data?: Activity): activi
           , institucion: info?.institucion || "Fonacit"
           , meses_duracion: info?.meses_duracion || 1
           , moneda: info?.moneda || "Bs."
-          , monto: info?.monto || '1'
+          , monto: info?.monto || '0'
         }
       };
 

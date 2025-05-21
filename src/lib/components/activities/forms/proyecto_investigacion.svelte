@@ -62,7 +62,7 @@
       name="proyecto_investigacion.fecha_inicio"
       bind:value={$form.proyecto_investigacion.fecha_inicio}
       error={$errors.proyecto_investigacion.fecha_inicio}
-      class="five wide required field"
+      class="four wide required field"
     />
     <Input
       type="number"
@@ -70,15 +70,15 @@
       name="proyecto_investigacion.meses_duracion"
       bind:value={$form.proyecto_investigacion.meses_duracion}
       error={$errors.proyecto_investigacion.meses_duracion}
-      class="five wide field"
+      class="four wide field"
     />
     <Input
       type="number"
-      label="Monto Financiado"
+      label="Monto Financiado (Decimales separados con punto, 1000.00)"
       name="proyecto_investigacion.monto"
       bind:value={$form.proyecto_investigacion.monto}
       error={$errors.proyecto_investigacion.monto}
-      class="five wide field"
+      class="six wide field"
     />
     <!-- TODO: #13 -->
     <Select
@@ -87,7 +87,7 @@
       bind:value={$form.proyecto_investigacion.moneda}
       error={$errors.proyecto_investigacion.moneda}
       options={[{ val: "Bs.", name: "Bs."}, ({ val: "$ (USD)", name: "$ (USD)" })]}
-      class="three wide field"
+      class="two wide field"
     />
   </div>
 </div>
