@@ -78,6 +78,15 @@ update: ## updates changes for production
 # 	- $(ENV) $(COMPOSE_DEV) $(SH_CMD)
 
 
+# exec-dev:
+# 	- @echo "Executing command in container - v$(APP_VERSION) (dev)"
+# 	- $(ENV) $(COMPOSE_DEV) exec
+
+
+install-tests-dev:
+	- $(COMPOSE_DEV) exec sinai-dev npx playwright install --with-deps
+
+
 clean: ## Clean cache for updates (clean-dev available)
 	- @echo "Cleaning cache"
 	- $(CLEAN_BUILDER) && $(CLEAN_IMGS) && $(CLEAN_VOLUMES) && docker image rm sinai
