@@ -83,7 +83,7 @@ export const tesis_grado_nivel_academico_enum = [
     "Doctorado"
   , "Maestria"
   , "Especializacion"
-  , "Postgrado"
+  // , "Postgrado"
   , "Licenciatura"
   , "Ingenieria"
   , "Pasantia_Larga"
