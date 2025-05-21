@@ -26,7 +26,7 @@ export const kinds = [
   , "patente"
   , "premio"
   , "premio_bienal"
-  , "proyecto_grado"
+  , "tesis_grado"
   , "proyecto_investigacion"
   , "recital"
 ];
@@ -60,12 +60,12 @@ export const detailed_kinds = [
   , "Trabajos Reconocidos o Premiados En Bienales, Salones, Concursos o Exposiciones"
   , "Tutoría de Tesis Doctorales"
   , "Tutoría de Trabajos de Grado (Maestrías)"
-  , "Tutoría de Proyectos de Grado (Especializaciones)"
-  , "Proyectos de Grado (Postgrados)"
-  , "Tutoría de Proyectos de Grado (Licenciaturas)"
-  , "Tutoría de Proyectos de Grado (Ingenierías)"
-  , "Proyectos de Grado (Pasantías Largas)"
-  , "Proyectos de Grado Dirigidos"
+  , "Tutoría de Tesis de Grado (Especializaciones)"
+  , "Tesis de Grado (Postgrados)"
+  , "Tutoría de Tesis de Grado (Licenciaturas)"
+  , "Tutoría de Tesis de Grado (Ingenierías)"
+  , "Tesis de Grado (Pasantías Largas)"
+  , "Tesis de Grado Dirigidos"
   , "Proyectos de IYD (Vigentes)"
   , "Proyectos de IYD"
   , "Recitales o Conciertos Arbitrados"
@@ -79,7 +79,7 @@ export const profesor_categoria_enum = [
   , "Titular"
 ];
 
-export const proyecto_grado_nivel_academico_enum = [
+export const tesis_grado_nivel_academico_enum = [
     "Doctorado"
   , "Maestria"
   , "Especializacion"

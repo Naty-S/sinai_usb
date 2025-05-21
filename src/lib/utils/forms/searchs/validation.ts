@@ -24,7 +24,7 @@ export const searchSchema = yup.object().shape({
   patente: yup.boolean().strict().typeError("No es booleano"),
   premio: yup.boolean().strict().typeError("No es booleano"),
   premio_bienal: yup.boolean().strict().typeError("No es booleano"),
-  proyecto_grado: yup.boolean().strict().typeError("No es booleano"),
+  tesis_grado: yup.boolean().strict().typeError("No es booleano"),
   proyecto_investigacion: yup.boolean().strict().typeError("No es booleano"),
   recital: yup.boolean().strict().typeError("No es booleano")
 });

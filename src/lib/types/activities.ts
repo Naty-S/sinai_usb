@@ -17,7 +17,7 @@ import type {
   patente,
   premio,
   premio_bienal,
-  proyecto_grado,
+  tesis_grado,
   proyecto_investigacion,
   recital
 } from "@prisma/client";
@@ -60,7 +60,7 @@ export type Actividad = actividad & {
   , patente: patente | null
   , premio: premio | null
   , premio_bienal: premio_bienal | null
-  , proyecto_grado: proyecto_grado | null
+  , tesis_grado: tesis_grado | null
   , proyecto_investigacion: proyecto_investigacion | null
   , recital: recital | null
 };
@@ -82,7 +82,7 @@ export type ActivityKind
   | patente
   | premio
   | premio_bienal
-  | proyecto_grado
+  | tesis_grado
   | proyecto_investigacion
   | recital
   | undefined // This means there's no kind data. This shouldn't happen, but it does.

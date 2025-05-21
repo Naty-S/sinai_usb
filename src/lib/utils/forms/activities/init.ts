@@ -15,7 +15,7 @@ import type {
   patente,
   premio,
   premio_bienal,
-  proyecto_grado,
+  tesis_grado,
   proyecto_investigacion,
   recital,
 } from "@prisma/client";
@@ -300,12 +300,12 @@ export const init = function (kind: kinds, user?: User, data?: Activity): activi
 
       return premio_bienal;
 
-    case "proyecto_grado":
-      info = data?.kind_data as proyecto_grado;
+    case "tesis_grado":
+      info = data?.kind_data as tesis_grado;
 
-      const proyecto_grado: actividad_form<"proyecto_grado"> = {
+      const tesis_grado: actividad_form<"tesis_grado"> = {
         ...act
-        , proyecto_grado: {
+        , tesis_grado: {
             coordinacion_academica: info?.coordinacion_academica || ''
           , fecha_defensa: init_date(info?.fecha_defensa)
           , nivel_academico: info?.nivel_academico || "Doctorado"
@@ -313,7 +313,7 @@ export const init = function (kind: kinds, user?: User, data?: Activity): activi
         }
       };
 
-      return proyecto_grado;
+      return tesis_grado;
 
     case "proyecto_investigacion":
       info = data?.kind_data as proyecto_investigacion;

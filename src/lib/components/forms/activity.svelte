@@ -16,7 +16,7 @@
   import Patente from "$lib/components/activities/forms/patente.svelte";
   import Premio from "$lib/components/activities/forms/premio.svelte";
   import PremioBienal from "$lib/components/activities/forms/premio_bienal.svelte";
-  import ProyectoGrado from "$lib/components/activities/forms/proyecto_grado.svelte";
+  import TesisGrado from "$lib/components/activities/forms/tesis_grado.svelte";
   import ProyectoInvestigacion from "$lib/components/activities/forms/proyecto_investigacion.svelte";
   import Recital from "$lib/components/activities/forms/recital.svelte";
   
@@ -61,8 +61,8 @@
     <Premio />
   {:else if activity === "premio_bienal"}
     <PremioBienal />
-  {:else if activity === "proyecto_grado"}
-    <ProyectoGrado />
+  {:else if activity === "tesis_grado"}
+    <TesisGrado />
   {:else if activity === "proyecto_investigacion"}
     <ProyectoInvestigacion />
   {:else if activity === "recital"}

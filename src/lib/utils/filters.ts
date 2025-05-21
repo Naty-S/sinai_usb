@@ -40,7 +40,7 @@ export const filter_activities = function (
       case "informe_tecnico":
       case "patente":
       case "proyecto_investigacion": return "fecha_inicio";
-      case "proyecto_grado": return "fecha_defensa";
+      case "tesis_grado": return "fecha_defensa";
       case "recital": return "fecha_evento";
       default: return "fecha_creacion"
     };

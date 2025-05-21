@@ -31,7 +31,7 @@
           patente: true,
           premio: true,
           premio_bienal: true,
-          proyecto_grado: true,
+          tesis_grado: true,
           proyecto_investigacion: true,
           recital: true
         })
@@ -119,7 +119,7 @@
       patente: true,
       premio: true,
       premio_bienal: true,
-      proyecto_grado: true,
+      tesis_grado: true,
       proyecto_investigacion: true,
       recital: true
     };
@@ -161,7 +161,7 @@
       patente: true,
       premio: true,
       premio_bienal: true,
-      proyecto_grado: true,
+      tesis_grado: true,
       proyecto_investigacion: true,
       recital: true
     };

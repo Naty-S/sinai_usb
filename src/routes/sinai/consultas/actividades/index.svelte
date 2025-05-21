@@ -121,7 +121,7 @@
     $form.patente = true;
     $form.premio = true;
     $form.premio_bienal = true;
-    $form.proyecto_grado = true;
+    $form.tesis_grado = true;
     $form.proyecto_investigacion = true;
     $form.recital = true;
   };
@@ -156,7 +156,7 @@
       $form.patente = false,
       $form.premio = false,
       $form.premio_bienal = false,
-      $form.proyecto_grado = false,
+      $form.tesis_grado = false,
       $form.proyecto_investigacion = false,
       $form.recital = false
     }

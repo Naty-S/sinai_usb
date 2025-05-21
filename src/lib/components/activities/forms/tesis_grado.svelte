@@ -12,7 +12,7 @@
   
   import Input from "$lib/components/forms/input.svelte";
   import Select from "$lib/components/forms/select.svelte";
-  import { proyecto_grado_nivel_academico_enum } from "$lib/constants";
+  import { tesis_grado_nivel_academico_enum } from "$lib/constants";
 
   const param = $page.params.activity;
   const kind = param as kinds;
@@ -20,10 +20,10 @@
 </script>
 
 <h2 class="uk-text-center">
-  PROYECTOS DE GRADO DIRIGIDOS
+  TESIS DE GRADO DIRIGIDOS
 </h2>
 
-<div class="grouped fields" name="proyecto_grado form">
+<div class="grouped fields" name="tesis_grado form">
   <Input
     label="Título del Proyecto"
     name="actividad.titulo"
@@ -34,26 +34,26 @@
   <div class="two required fields">
     <Input
       label="Título Académico al que se optó"
-      name="proyecto_grado.titulo_academico"
-      bind:value={$form.proyecto_grado.titulo_academico}
-      error={$errors.proyecto_grado.titulo_academico}
+      name="tesis_grado.titulo_academico"
+      bind:value={$form.tesis_grado.titulo_academico}
+      error={$errors.tesis_grado.titulo_academico}
       class="eight wide field"
     />
     <Input
       label="Coordinación Académica"
-      name="proyecto_grado.coordinacion_academica"
-      bind:value={$form.proyecto_grado.coordinacion_academica}
-      error={$errors.proyecto_grado.coordinacion_academica}
+      name="tesis_grado.coordinacion_academica"
+      bind:value={$form.tesis_grado.coordinacion_academica}
+      error={$errors.tesis_grado.coordinacion_academica}
       class="eight wide field"
     />
   </div>
   <div class="two fields">
     <Select
       label="Tipo de Tutoría"
-      name="proyecto_grado.nivel_academico"
-      bind:value={$form.proyecto_grado.nivel_academico}
-      error={$errors.proyecto_grado.nivel_academico}
-      options={proyecto_grado_nivel_academico_enum.map(nivel => ({
+      name="tesis_grado.nivel_academico"
+      bind:value={$form.tesis_grado.nivel_academico}
+      error={$errors.tesis_grado.nivel_academico}
+      options={tesis_grado_nivel_academico_enum.map(nivel => ({
         val: nivel,
         name: nivel === "Pasantia_Larga" ? "Pasantia Larga (Lic. ó Ing.)" : nivel
       }))}
@@ -62,9 +62,9 @@
     <Input
       type="date"
       label="Fecha de la Defensa"
-      name="proyecto_grado.fecha_defensa"
-      bind:value={$form.proyecto_grado.fecha_defensa}
-      error={$errors.proyecto_grado.fecha_defensa}
+      name="tesis_grado.fecha_defensa"
+      bind:value={$form.tesis_grado.fecha_defensa}
+      error={$errors.tesis_grado.fecha_defensa}
       class="eight wide field"
     />
   </div>

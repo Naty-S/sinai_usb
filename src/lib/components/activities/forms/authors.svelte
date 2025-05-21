@@ -155,7 +155,7 @@
             <!-- disabled={professors.includes($session.user?.professor?.profile ?? '')} -->
         {/if}
         
-        {#if kind === 'memoria' || kind === 'proyecto_grado' || kind === 'evento'}
+        {#if kind === 'memoria' || kind === 'tesis_grado' || kind === 'evento'}
           <Input
             type="checkbox"
             label="Ponente"
@@ -282,7 +282,7 @@
       </div>
       
       <div class="three inline fields">
-        {#if kind === 'memoria' || kind === 'proyecto_grado' || kind === 'evento'}
+        {#if kind === 'memoria' || kind === 'tesis_grado' || kind === 'evento'}
           <Input
             type="checkbox"
             label="Ponente"

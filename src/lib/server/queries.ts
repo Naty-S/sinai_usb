@@ -23,7 +23,7 @@ const include = {
   patente: true,
   premio: true,
   premio_bienal: true,
-  proyecto_grado: true,
+  tesis_grado: true,
   proyecto_investigacion: true,
   recital: true
 };
@@ -103,7 +103,7 @@ export const query_user_activity_kind = async function (
     case "informe_tecnico":
     case "patente":
     case "proyecto_investigacion": fecha = "fecha_inicio"; break;
-    case "proyecto_grado": fecha = "fecha_defensa"; break;
+    case "tesis_grado": fecha = "fecha_defensa"; break;
     case "recital": fecha = "fecha_evento"; break;
     default: break;
   };
@@ -141,7 +141,7 @@ export const query_entity_activity_kind = async function (
     case "informe_tecnico":
     case "patente":
     case "proyecto_investigacion": fecha = "fecha_inicio"; break;
-    case "proyecto_grado": fecha = "fecha_defensa"; break;
+    case "tesis_grado": fecha = "fecha_defensa"; break;
     case "recital": fecha = "fecha_evento"; break;
     default: break;
   };

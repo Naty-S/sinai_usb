@@ -191,7 +191,7 @@ export const premio_bienal = yup.object().shape({
   , titulo_premio: yup.string().required("Requerido")
 });
 
-export const proyecto_grado = yup.object().shape({
+export const tesis_grado = yup.object().shape({
   coordinacion_academica: yup.string().required("Requerido")
   , fecha_defensa: yup.date().transform(parse_date).required("Requerido")
   , nivel_academico: yup.string().oneOf([
@@ -453,10 +453,10 @@ export const validation = function (kind: kinds) {
         , actividades_grupos
       }, [autores]);
 
-    case "proyecto_grado":
+    case "tesis_grado":
       return yup.object().shape({
         actividad
-        , proyecto_grado
+        , tesis_grado
         , autores_externos
         , autores_usb
         , actividades_grupos

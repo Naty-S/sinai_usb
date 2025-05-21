@@ -2,7 +2,7 @@
 CREATE TYPE "articulo_revista_estado_enum" AS ENUM ('Aceptado en Vias de Publicacion', 'Publicado');
 
 -- CreateEnum
-CREATE TYPE "autor_tipo_actividad_enum" AS ENUM ('articulo_revista', 'capitulo_libro', 'composicion', 'evento', 'exposicion', 'grabacion', 'informe_tecnico', 'libro', 'memoria', 'partitura', 'patente', 'premio', 'premio_bienal', 'proyecto_investigacion', 'proyecto_grado', 'recital');
+CREATE TYPE "autor_tipo_actividad_enum" AS ENUM ('articulo_revista', 'capitulo_libro', 'composicion', 'evento', 'exposicion', 'grabacion', 'informe_tecnico', 'libro', 'memoria', 'partitura', 'patente', 'premio', 'premio_bienal', 'proyecto_investigacion', 'tesis_grado', 'recital');
 
 -- CreateEnum
 CREATE TYPE "composicion_categoria_enum" AS ENUM ('Composicion', 'Arreglo', 'Ejecucion');
@@ -65,7 +65,7 @@ CREATE TYPE "profesor_diploma_tipo_enum" AS ENUM ('Lic.', 'Ph.D.', 'Doctor', 'Ma
 CREATE TYPE "profesor_sexo_enum" AS ENUM ('F', 'M');
 
 -- CreateEnum
-CREATE TYPE "proyecto_grado_nivel_academico_enum" AS ENUM ('Doctorado', 'Maestria', 'Especializacion', 'Postgrado', 'Licencitura', 'Ingenieria', 'Pasantia Larga');
+CREATE TYPE "tesis_grado_nivel_academico_enum" AS ENUM ('Doctorado', 'Maestria', 'Especializacion', 'Postgrado', 'Licencitura', 'Ingenieria', 'Pasantia Larga');
 
 -- CreateTable
 CREATE TABLE "usuario" (
@@ -655,14 +655,14 @@ CREATE TABLE "premio_bienal" (
 );
 
 -- CreateTable
-CREATE TABLE "proyecto_grado" (
+CREATE TABLE "tesis_grado" (
     "actividad" INTEGER NOT NULL,
     "coordinacion_academica" TEXT NOT NULL,
     "fecha_defensa" DATE NOT NULL,
-    "nivel_academico" "proyecto_grado_nivel_academico_enum" NOT NULL,
+    "nivel_academico" "tesis_grado_nivel_academico_enum" NOT NULL,
     "titulo_academico" TEXT NOT NULL,
 
-    CONSTRAINT "proyecto_grado_pkey" PRIMARY KEY ("actividad")
+    CONSTRAINT "tesis_grado_pkey" PRIMARY KEY ("actividad")
 );
 
 -- CreateTable
@@ -987,7 +987,7 @@ ALTER TABLE "premio" ADD CONSTRAINT "premio_actividad_fkey" FOREIGN KEY ("activi
 ALTER TABLE "premio_bienal" ADD CONSTRAINT "premio_bienal_actividad_fkey" FOREIGN KEY ("actividad") REFERENCES "actividad"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "proyecto_grado" ADD CONSTRAINT "proyecto_grado_actividad_fkey" FOREIGN KEY ("actividad") REFERENCES "actividad"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "tesis_grado" ADD CONSTRAINT "tesis_grado_actividad_fkey" FOREIGN KEY ("actividad") REFERENCES "actividad"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "proyecto_investigacion" ADD CONSTRAINT "proyecto_investigacion_actividad_fkey" FOREIGN KEY ("actividad") REFERENCES "actividad"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -25,7 +25,7 @@ const sort_by_date = function (acts: Activity[]): Activity[] {
         case "informe_tecnico":
         case "patente":
         case "proyecto_investigacion": date_a = a.kind_data.fecha_inicio; break;
-        case "proyecto_grado": date_a = a.kind_data.fecha_defensa; break;
+        case "tesis_grado": date_a = a.kind_data.fecha_defensa; break;
         case "recital": date_a = a.kind_data.fecha_evento; break;
         default: date_a = a.kind_data.fecha; break;
       };
@@ -39,7 +39,7 @@ const sort_by_date = function (acts: Activity[]): Activity[] {
         case "informe_tecnico":
         case "patente":
         case "proyecto_investigacion": date_b = b.kind_data.fecha_inicio; break;
-        case "proyecto_grado": date_b = b.kind_data.fecha_defensa; break;
+        case "tesis_grado": date_b = b.kind_data.fecha_defensa; break;
         case "recital": date_b = b.kind_data.fecha_evento; break;
         default: date_b = b.kind_data.fecha; break;
       };
@@ -84,7 +84,7 @@ export const group_by = function (
             case "informe_tecnico":
             case "patente":
             case "proyecto_investigacion": date = act.kind_data.fecha_inicio; break;
-            case "proyecto_grado": date = act.kind_data.fecha_defensa; break;
+            case "tesis_grado": date = act.kind_data.fecha_defensa; break;
             case "recital": date = act.kind_data.fecha_evento; break;
             default: date = act.kind_data.fecha; break;
           };

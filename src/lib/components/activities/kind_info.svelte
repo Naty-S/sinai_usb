@@ -151,7 +151,7 @@
     <span class="uk-text-emphasis">Organizado por:</span> {activity.organizado_por || ''}.
     <span class="uk-text-emphasis">Financiado por:</span> {activity.financiado_por || ''}.
 
-  {:else if kind === "proyecto_grado"}
+  {:else if kind === "tesis_grado"}
 
     <span class="uk-text-emphasis">Título Académico:</span> {activity.titulo_academico}.
     <span class="uk-text-emphasis">Coordinación Académica:</span> {activity.coordinacion_academica}.
