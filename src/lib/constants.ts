@@ -79,15 +79,15 @@ export const profesor_categoria_enum = [
   , "Titular"
 ];
 
-export const tesis_grado_nivel_academico_enum = [
-    "Doctorado"
-  , "Maestria"
-  , "Especializacion"
-  // , "Postgrado"
-  , "Licenciatura"
-  , "Ingenieria"
-  , "Pasantia_Larga"
-];
+export const tesis_grado_nivel_academico_enum = {
+    Doctorado: "Doctorado"
+  , Maestria: "Maestria"
+  , Especializacion: "Especializacion"
+  // , Postgrado: "Postgrado"
+  , Licenciatura: "Tesis de Grado (Licenciatura)"
+  , Ingenieria: "Tesis de Grado (Ingenieria)"
+  , Pasantia_Larga: "Pasantia Larga (Lic. ó Ing.)"
+};
 
 export const partitura_categoria_enum = [
     "Ejecucion_CD_Nacional"

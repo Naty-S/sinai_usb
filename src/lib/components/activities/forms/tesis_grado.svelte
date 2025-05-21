@@ -53,9 +53,9 @@
       name="tesis_grado.nivel_academico"
       bind:value={$form.tesis_grado.nivel_academico}
       error={$errors.tesis_grado.nivel_academico}
-      options={tesis_grado_nivel_academico_enum.map(nivel => ({
+      options={Object.entries(tesis_grado_nivel_academico_enum).map(([nivel, name]) => ({
         val: nivel,
-        name: nivel === "Pasantia_Larga" ? "Pasantia Larga (Lic. ó Ing.)" : nivel
+        name: name
       }))}
       class="eight wide field"
     />
