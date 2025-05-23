@@ -48,6 +48,10 @@
             !p.activo && professor?.coord_chief?.departamentos.map(d => d.id).includes(p.departamento)
           );
         };
+
+        if (new_professors.length === 0) {
+          user?.pending_professors = false;
+        };
       } else {
         const { message, code } = await res.json();
         action.info = message;

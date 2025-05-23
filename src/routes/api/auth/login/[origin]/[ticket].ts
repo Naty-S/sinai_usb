@@ -93,6 +93,13 @@ export const GET: RequestHandler = async function ({ params, request }) {
           , departamentos: professor.coordinacion.departamentos
         } : undefined
         ;
+      
+      if (professor.coordinacion) {
+        const pending_professors = await prisma.profesor.findFirst({
+          where: { activo: { equals: false }, departamento: { in: professor.coordinacion.departamentos.map(d => d.id) } }
+        });
+        user.pending_professors = pending_professors !== null;
+      };
 
       user.professor = {
           id: professor.id
