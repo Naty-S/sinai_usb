@@ -4,7 +4,6 @@ import type { Activities } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
 import { stringify } from "zipson/lib";
-import _ from "lodash";
 
 import { handle_error, prisma } from "$api/_api";
 
@@ -59,9 +58,9 @@ export const GET: RequestHandler = async function ({ params }) {
         where: { departamento: { in: coordination.departamentos.map(d => d.id) } }
       });
 
-      const professor_activities = _.uniqWith((await Promise.all(
+      const professor_activities = (await Promise.all(
         professors.map(p => (query_professor_activities(p.id, p.correo)))
-      )).flat(), _.isEqual);
+      )).flat();
 
       activities = (await Promise.all(professor_activities.map(async a => {
         const log = await query_activity_last_log(a.id);
@@ -130,19 +129,11 @@ export const POST: RequestHandler = async function ({ params, request }) {
       )).flat();
 
       activities = (await Promise.all(
-        groups_activities.reduce((acc: Promise<Activity[]>[], a) => {
-          acc.push((async () => {
-            const log = await query_activity_last_log(a.id);
-            const actividad = format_activity(a, log, data);
-            // Solo agrega si kind_name es distinto de "FILTER"
-            if (actividad.kind_name !== "FILTER") {
-              return [actividad]; // Wrap in an array to ensure consistent type
-            }
-            return []; // Return an empty array instead of null
-          })());
-          return acc;
-        }, [])
-      )).flat();
+        groups_activities.map(async a => {
+          const log = await query_activity_last_log(a.id);
+          return format_activity(a, log, data);
+        })
+      )).flat().filter(a => a.kind_name != "FILTER");
       // console.log("INVALID ACTIVITIES:", activities.filter(a => a.kind_name == "ACTIVIDAD INVÁLIDA").map(a => a.id))
 
     } else {
@@ -152,20 +143,16 @@ export const POST: RequestHandler = async function ({ params, request }) {
         where: { departamento: { in: coordination.departamentos.map(d => d.id) } }
       });
 
-      const professor_activities = _.uniqWith((await Promise.all(
+      const professor_activities = (await Promise.all(
         professors.map(p => (query_professor_activities(p.id, p.correo, data)))
-      )).flat(), _.isEqual);
+      )).flat();
 
-      
-      activities = [];
-      for (const a of professor_activities) {
-        const log = await query_activity_last_log(a.id);
-        const actividad = format_activity(a, log, data);
-        // Solo agrega si kind_name es distinto de "FILTER"
-        if (actividad.kind_name !== "FILTER") {
-          activities.push(actividad);
-        }
-      }
+      activities = (await Promise.all(
+        professor_activities.map(async a => {
+          const log = await query_activity_last_log(a.id);
+          return format_activity(a, log, data);
+        })
+      )).flat().filter(a => a.kind_name != "FILTER");
       // console.log("INVALID ACTIVITIES:", activities.filter(a => a.kind_name == "ACTIVIDAD INVÁLIDA").map(a => a.id))
     };
 
@@ -180,7 +167,7 @@ export const POST: RequestHandler = async function ({ params, request }) {
     };
 
     status = 200;
-    body = stringify(owner_activities, {detectUtcTimestamps: true});
+    body = stringify(owner_activities);
 
   } catch (error: any) {
     const message = await handle_error(error);
