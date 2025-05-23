@@ -8,6 +8,8 @@
 
   import { onMount } from "svelte";
   
+	import { prepraii_convocatoria } from "@prisma/client";
+
   import * as api from "$lib/api";
 
   import { format_date } from "$lib/utils/formatting";
@@ -56,23 +58,21 @@
   };
 
   onMount(async () => {
-    const res = await api.get("/api/prepraii");
+    const res = await api.get("/api/prepraii/actual");
   
     if (res.ok) {
-      const prepraii: Prepraii[] = await res.json();
-      const _actual = prepraii.find(p => p.activo); // si se cierra no se vuelve a abrir
-      // const _actual = prepraii.pop(); // para re-activar la ultima
+      const prepraii: prepraii_convocatoria = await res.json();
 
-      if (_actual) {
+      if (prepraii) {
 
         actual = true;
-        inicio = format_date(_actual.inicio, "yyyy-MM-dd");
-        fin = format_date(_actual.fin, "yyyy-MM-dd");
-        activo = _actual.activo;
-        prepraii_id = _actual.id;
-        monto_tipo1 = _actual.monto_tipo1;
-        monto_tipo2 = _actual.monto_tipo2;
-    };
+        inicio = format_date(prepraii.inicio, "yyyy-MM-dd");
+        fin = format_date(prepraii.fin, "yyyy-MM-dd");
+        activo = prepraii.activo;
+        prepraii_id = prepraii.id;
+        monto_tipo1 = prepraii.monto_tipo1;
+        monto_tipo2 = prepraii.monto_tipo2;
+      };
 
     } else {
       const { message, code } = await res.json();
