@@ -66,7 +66,7 @@
   let show_prepraii_form = false;
   let show_authors = false;
   let prepraii_confirm = false;
-  let actual = true;
+  let actual = false;
   let articles: Activity[] = [];
   let action = { info: '', code: '' };
 
@@ -88,12 +88,10 @@
 
       if (prepraii) {
 
-        actual = true;
+        actual =  prepraii.inicio <= new Date() && prepraii.fin >= new Date();
         articles = activities.activities.filter(a => 
           (a.kind_name == "articulo_revista") && a.kind_data?.estado === "Publicado"
         );
-      } else {
-        actual = false;
       };
     } else {
       const { message, code } = await acts.json();
