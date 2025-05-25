@@ -67,7 +67,7 @@ export const group_by = function (
   detailed: boolean = true
 ): KindActivities {
 
-  return acts.reduce((acc: KindActivities, act: Activity, i) => {
+  return acts.reduce((acc: KindActivities, act: Activity) => {
     
     let key: any;
 
