@@ -35,6 +35,7 @@
     headers={["Actividad"].concat(activities_by_year.map(a => a.prop))}
     resume_kinds_counts={activities_count}
     row_total
+    col_total
   />
 
   <div class="ui divider" />
