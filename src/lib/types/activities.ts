@@ -35,7 +35,7 @@ export type Activity = actividad & {
   kind_name: string,
   kind_data: ActivityKind,
   groups: Group[],
-  log: ActivityLog | null
+  log?: ActivityLog | null
 };
 
 /**
@@ -47,22 +47,22 @@ export type Actividad = actividad & {
   , actividades_grupos: {
       Grupo: { id: number, nombre: string }
     }[]
-  , articulo_revista: articulo_revista | null
-  , capitulo_libro: capitulo_libro | null
-  , composicion: composicion | null
-  , evento: evento | null
-  , exposicion: exposicion | null
-  , grabacion: grabacion | null
-  , informe_tecnico: informe_tecnico | null
-  , libro: libro | null
-  , memoria: memoria | null
-  , partitura: partitura | null
-  , patente: patente | null
-  , premio: premio | null
-  , premio_bienal: premio_bienal | null
-  , tesis_grado: tesis_grado | null
-  , proyecto_investigacion: proyecto_investigacion | null
-  , recital: recital | null
+  , articulo_revista?: articulo_revista | null
+  , capitulo_libro?: capitulo_libro | null
+  , composicion?: composicion | null
+  , evento?: evento | null
+  , exposicion?: exposicion | null
+  , grabacion?: grabacion | null
+  , informe_tecnico?: informe_tecnico | null
+  , libro?: libro | null
+  , memoria?: memoria | null
+  , partitura?: partitura | null
+  , patente?: patente | null
+  , premio?: premio | null
+  , premio_bienal?: premio_bienal | null
+  , tesis_grado?: tesis_grado | null
+  , proyecto_investigacion?: proyecto_investigacion | null
+  , recital?: recital | null
 };
 
 /**

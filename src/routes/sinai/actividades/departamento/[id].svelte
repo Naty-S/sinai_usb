@@ -18,26 +18,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
-        body: JSON.stringify({
-          date_start: new Date(`01-01-${current_year-10}`),
-          date_end: new Date(`01-01-${current_year}`),
-          articulo_revista: true,
-          capitulo_libro: true,
-          composicion: true,
-          evento: true,
-          exposicion: true,
-          grabacion: true,
-          informe_tecnico: true,
-          libro: true,
-          memoria: true,
-          partitura: true,
-          patente: true,
-          premio: true,
-          premio_bienal: true,
-          tesis_grado: true,
-          proyecto_investigacion: true,
-          recital: true
-        })
+        body: JSON.stringify(filters(new Date(`01-01-${current_year-10}`), new Date()))
       });
       const res2 = await fetch("/api/professors");
      
@@ -74,6 +55,7 @@
   import * as api from "$lib/api";
 
 	import { department_rank_activities } from "$lib/utils/formatting";
+	import { filters } from "$lib/utils/filters";
 
 	import Loader from "$lib/components/loader.svelte";
   import Modal from "$lib/components/modals/modal.svelte";
@@ -99,27 +81,7 @@
     date_end.setFullYear(date_end.getFullYear() - years);
     
     searching = true;
-    const filters = {
-      date_start,
-      date_end,
-      articulo_revista: true,
-      capitulo_libro: true,
-      composicion: true,
-      evento: true,
-      exposicion: true,
-      grabacion: true,
-      informe_tecnico: true,
-      libro: true,
-      memoria: true,
-      partitura: true,
-      patente: true,
-      premio: true,
-      premio_bienal: true,
-      tesis_grado: true,
-      proyecto_investigacion: true,
-      recital: true
-    };
-    const res = await api.post(`/api/activities/department/${$page.params.id}`, filters);
+    const res = await api.post(`/api/activities/department/${$page.params.id}`, filters(date_start, date_end));
     
     if (res.ok) {
       const activitys = await res.json();
@@ -141,27 +103,7 @@
     date_end.setFullYear(date_end.getFullYear() + years);
     
     searching = true;
-    const filters = {
-      date_start,
-      date_end,
-      articulo_revista: true,
-      capitulo_libro: true,
-      composicion: true,
-      evento: true,
-      exposicion: true,
-      grabacion: true,
-      informe_tecnico: true,
-      libro: true,
-      memoria: true,
-      partitura: true,
-      patente: true,
-      premio: true,
-      premio_bienal: true,
-      tesis_grado: true,
-      proyecto_investigacion: true,
-      recital: true
-    };
-    const res = await api.post(`/api/activities/department/${$page.params.id}`, filters);
+    const res = await api.post(`/api/activities/department/${$page.params.id}`, filters(date_start, date_end));
     
     if (res.ok) {
       const activitys = await res.json();

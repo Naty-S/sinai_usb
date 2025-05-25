@@ -1,4 +1,5 @@
 import type { ActivityLog } from "$lib/interfaces/logs";
+import type { ActivitiesFilters } from "$lib/interfaces/activities";
 import type { Actividad } from "$lib/types/activities";
 
 import { prisma } from "$api/_api";
@@ -10,34 +11,19 @@ const include = {
   actividades_grupos: { select: { Grupo: { select: { id: true, nombre: true } } } },
   autores_usb: true,
   autores_externos: true,
-  articulo_revista: true,
-  capitulo_libro: true,
-  composicion: true,
-  evento: true,
-  exposicion: true,
-  grabacion: true,
-  informe_tecnico: true,
-  libro: true,
-  memoria: true,
-  partitura: true,
-  patente: true,
-  premio: true,
-  premio_bienal: true,
-  tesis_grado: true,
-  proyecto_investigacion: true,
-  recital: true
 };
 
+const includeKind = (kind: string) => ({ ...include, [kind]: true });
 
 /**
  * 
- * @param email 
+ * @param usbid 
  * @returns 
  */
-export const query_user = async function (email: string) {
+export const query_user = async function (usbid: string) {
 
   const user = await prisma.usuario.findUnique({
-    where: { login: email + "@usb.ve"},
+    where: { login: usbid + "@usb.ve"},
     include: {
       administrador: true,
       profesor: {
@@ -70,31 +56,51 @@ export const query_user = async function (email: string) {
 };
 
 /**
+ * Get activity for modify
  * 
  * @param id - 
  * @returns 
  */
 export const query_activity = async function (id: number): Promise<Actividad> {
 
-  const user_activities = await prisma.actividad.findUniqueOrThrow({
+  const activity = await prisma.actividad.findUniqueOrThrow({
     where: { id: id },
-    include
+    include: {
+      ...include,
+      articulo_revista: true,
+      capitulo_libro: true,
+      composicion: true,
+      evento: true,
+      exposicion: true,
+      grabacion: true,
+      informe_tecnico: true,
+      libro: true,
+      memoria: true,
+      partitura: true,
+      patente: true,
+      premio: true,
+      premio_bienal: true,
+      tesis_grado: true,
+      proyecto_investigacion: true,
+      recital: true
+    }
   });
 
-  return user_activities;
+  return activity;
 };
 
 /**
+ * Kind activities between date range for user(s)
  * 
  * @param kind 
- * @param email 
- * @param date 
+ * @param emails 
+ * @param date_range 
  * @returns 
  */
-export const query_user_activity_kind = async function (
+const query_users_activities_kind = async function (
   kind: string,
-  email: string,
-  date: any
+  emails: string[],
+  date_range: { gte: Date, lte: Date } | {} = {}
 ): Promise<Actividad[]> {
 
   let fecha = "fecha";
@@ -110,10 +116,10 @@ export const query_user_activity_kind = async function (
 
   const activity = await prisma.actividad.findMany({
     where: {
-      creada_por: email,
-      [kind]: { [fecha]: date }
+      creada_por: { in: emails },
+      [kind]: { [fecha]: date_range }
     },
-    include,
+    include: includeKind(kind),
     orderBy: { id: "desc" }
   });
 
@@ -121,19 +127,38 @@ export const query_user_activity_kind = async function (
 }
 
 /**
- * 
- * @param kind 
- * @param id 
- * @param date 
- * @param professor_activities 
+ * Dean & Professors
+ * @param emails - 
  * @returns 
  */
-export const query_entity_activity_kind = async function (
+export const query_users_activities = async function (
+  emails: string[],
+  filters?: ActivitiesFilters
+): Promise<Actividad[]> {
+
+  const filter_kinds = filters ? kinds.filter(kind => filters[kind as keyof ActivitiesFilters]) : kinds;
+  const users_activities = (await Promise.all(
+    filter_kinds.map(k => query_users_activities_kind(k, emails, filters?.date_range)
+  ))).flat();
+
+  return users_activities;
+};
+
+/**
+ * Professors & groups
+ * 
+ * @param kind 
+ * @param ids 
+ * @param date_range 
+ * @param professors_activities 
+ * @returns 
+ */
+const query_entities_activities_kind = async function (
   kind: string,
-  id: number,
-  date: any,
-  professor_activities?: Actividad[]
-): Promise<{ Actividad: Actividad }[] | { actividades_grupos: { Actividad: Actividad }[] }[]> {
+  ids: number[],
+  date_range: { gte: Date, lte: Date } | {} = {},
+  professors_activities?: number[]
+): Promise<Actividad[]> {
 
   let fecha = "fecha";
   switch (kind) {
@@ -146,103 +171,100 @@ export const query_entity_activity_kind = async function (
     default: break;
   };
 
-  let activity: { Actividad: Actividad }[] | { actividades_grupos: { Actividad: Actividad }[] }[] = [];
+  let activity: Actividad[] = [];
 
-  if (professor_activities) { // authors
+  if (professors_activities) { // authors
 
-    activity = await prisma.autor_usb.findMany({
-      select: { Actividad: { include } },
+    const authors_activities = (await prisma.autor_usb.findMany({
+      select: { Actividad: { include: includeKind(kind) } },
       where: {
-        profesor_id: id,
-        actividad: { notIn: professor_activities.map(a => a.id) },
-        Actividad: { [kind]: { [fecha]: date } }
+      profesor_id: { in: ids },
+      actividad: { notIn: professors_activities },
+      Actividad: { [kind]: { [fecha]: date_range } }
       },
       orderBy: { actividad: "asc" }
-    });
+    })).map(a => a.Actividad);
+
+    const unique_activities = new Map(
+      authors_activities
+      .filter(a => !professors_activities.includes(a.id))
+      .map(a => [a.id, a])
+    );
+
+    activity = Array.from(unique_activities.values());
+    
   } else { // groups
 
-    activity = await prisma.grupo_investigacion.findMany({
+    activity = (await prisma.grupo_investigacion.findMany({
       select: {
         actividades_grupos: {
-          select: { Actividad: { include } },
-          where: { Actividad: { [kind]: { [fecha]: date } } }
+          select: { Actividad: { include: includeKind(kind) } },
+          where: { Actividad: { [kind]: { [fecha]: date_range } } }
         }
       },
-      where: { id: id }
-    });
+      where: { id: { in: ids } }
+    })).flatMap(a => a.actividades_grupos).map(a => a.Actividad);
   }
 
   return activity;
 }
 
 /**
- * 
- * @param email - 
+ * Created by professors & as authors
+ * @param ids - 
+ * @param emails - 
  * @returns 
  */
-export const query_user_activities = async function (email: string, filters?: any): Promise<Actividad[]> {
-
-  const date = filters ? { gte: filters.date_start, lte: filters.date_end } : {};
-
-  const user_activities = (await Promise.all(
-    kinds.map(k => query_user_activity_kind(k, email, date))
-  )).flat();
-
-  return user_activities;
-};
-
-/**
- * 
- * @param id - 
- * @param email - 
- * @returns 
- */
-export const query_professor_activities = async function (id: number, email: string, filters?: any)
-: Promise<Actividad[]> {
+export const query_professors_activities = async function (
+  ids: number[],
+  emails: string[],
+  filters?: ActivitiesFilters
+): Promise<Actividad[]> {
 
   // Find professor's activities
-  const professor_activities = await query_user_activities(email, filters);
+  const professors_activities = await query_users_activities(emails, filters);
 
-  let activities = professor_activities;
+  let activities = professors_activities;
 
   // Find professor's activities where is author
-  const date = filters ? { gte: filters.date_start, lte: filters.date_end } : {};
-
-  const author_activities: { Actividad: Actividad }[] = (await Promise.all(
-    kinds.map(k => query_entity_activity_kind(k, id, date, professor_activities))
-  )).flat();
-
-  activities = professor_activities.concat(author_activities.map(a => a.Actividad));
+  const filter_kinds = filters ? kinds.filter(kind => filters[kind as keyof ActivitiesFilters]) : kinds;
+  const authors_activities = (await Promise.all(filter_kinds.map(k => 
+    query_entities_activities_kind(k, ids, filters?.date_range, professors_activities.map(a => a.id))
+  ))).flat();
+  
+  activities = professors_activities.concat(authors_activities);
 
   return activities;
 };
 
 /**
  * 
- * @param id - 
+ * @param ids - 
  * @returns 
  */
-export const query_group_activities = async function (id: number, filters?: any): Promise<Actividad[]> {
+export const query_groups_activities = async function (
+  ids: number[],
+  filters?: ActivitiesFilters
+): Promise<Actividad[]> {
   
-  const date = filters ? { gte: filters.date_start, lte: filters.date_end } : {};
-
-  const group: { actividades_grupos: { Actividad: Actividad }[] }[] = (await Promise.all(
-    kinds.map(k => query_entity_activity_kind(k, id, date))
+  const filter_kinds = filters ? kinds.filter(kind => filters[kind as keyof ActivitiesFilters]) : kinds;
+  const group = (await Promise.all(
+    filter_kinds.map(k => query_entities_activities_kind(k, ids, filters?.date_range))
   )).flat();
 
-  return group.flatMap(a => a.actividades_grupos).map(a => a.Actividad);
+  return group;
 };
 
 
 /**
- * Query activity last modification log info
+ * Query activities last modification logs info
  * 
- * @param id - Activity id to get last log
+ * @param ids - Activities ids to get last logs
  * @returns 
  */
-export const query_activity_last_log = async function (id: number): Promise<ActivityLog | null> {
+export const query_recent_activites_logs = async function (ids: number[]): Promise<ActivityLog[] | null> {
   
-  const last_log = await prisma.log_operacion_actividad.findFirst({
+  const logs = await prisma.log_operacion_actividad.findMany({
     select: {
       id: true,
       actividad: true,
@@ -255,9 +277,9 @@ export const query_activity_last_log = async function (id: number): Promise<Acti
       fecha: true,
       hora: true
     },
-    where: { actividad: id, operacion: "Modificacion" },
+    where: { actividad: { in: ids }, operacion: "Modificacion" },
     orderBy: { id: "desc" }
   });
 
-  return last_log;
+  return logs;
 };

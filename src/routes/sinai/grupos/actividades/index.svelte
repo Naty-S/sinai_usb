@@ -31,7 +31,6 @@
   };
 </script>
 <script lang="ts">
-  import type { PropActivities } from "$lib/interfaces/activities";
   import type { Activities } from "$lib/interfaces/activities";
   import type { Activity } from "$lib/types/activities";
   
@@ -52,7 +51,7 @@
   let start_pagination = 0;
   let end_pagination = pagination_size;
   let filtered_activities = activities;
-  let paginated_activities = paginate(activities, pagination_size);
+  let paginated_activities = paginate(activities, pagination_size, true, "groups");
   let page_activities = paginated_activities[current_page-1];
 
   let kind = '';

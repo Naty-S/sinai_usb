@@ -1,11 +1,12 @@
 import type { RequestHandler } from "@sveltejs/kit";
 
 import type { Activities } from "$lib/interfaces/activities";
-import type { Activity } from "$lib/types/activities";
+
+import _ from "lodash";
 
 import { handle_error, prisma } from "$api/_api";
 
-import { query_professor_activities, query_activity_last_log } from "$lib/server/queries";
+import { query_professors_activities, query_recent_activites_logs } from "$lib/server/queries";
 import { format_activity } from "$lib/utils/formatting";
 
 
@@ -23,11 +24,11 @@ export const GET: RequestHandler = async function({ params }) {
 
   try {
     const professor = await prisma.profesor.findUniqueOrThrow({ where: {id: _id} });
-    const professor_activities = await query_professor_activities(professor.id, professor.correo);
-    const activities: Activity[] = (await Promise.all(professor_activities.map(async a => {
-      const logs = await query_activity_last_log(a.id);
-      return format_activity(a, logs);
-    }))).flat();
+    const professor_activities = await query_professors_activities([professor.id], [professor.correo]);
+    const logs = await query_recent_activites_logs(professor_activities.map(a => a.id));
+    const activities_logs = _.groupBy(logs, 'actividad');
+    const activities = professor_activities.map(a => format_activity(a, activities_logs[a.id]?.[0]));
+    // console.log("INVALID ACTIVITIES:", activities.filter(a => a.kind_name == "ACTIVIDAD INVÁLIDA").map(a => a.id))
 
     const owner_activities: Activities = {
       owner: {
@@ -64,20 +65,17 @@ export const GET: RequestHandler = async function({ params }) {
 export const POST: RequestHandler = async function({ params, request }) {
 
   const _id = Number(params.id);
-  const data = await request.json();
+  const filters = await request.json();
   
   let status = 500;
   let body = {};
 
   try {
     const professor = await prisma.profesor.findUniqueOrThrow({ where: {id: _id} });
-    const professor_activities = await query_professor_activities(professor.id, professor.correo, data);
-    const activities: Activity[] = (await Promise.all(
-      professor_activities.map(async a => {
-        const log = await query_activity_last_log(a.id);
-        return format_activity(a, log, data);
-      })
-    )).flat().filter(a => a.kind_name != "FILTER");
+    const professor_activities = await query_professors_activities([professor.id], [professor.correo], filters);
+    const logs = await query_recent_activites_logs(professor_activities.map(a => a.id));
+    const activities_logs = _.groupBy(logs, 'actividad');
+    const activities = professor_activities.map(a => format_activity(a, activities_logs[a.id]?.[0]));
     // console.log("INVALID ACTIVITIES:", activities.filter(a => a.kind_name == "ACTIVIDAD INVÁLIDA").map(a => a.id))
 
     const owner_activities: Activities = {

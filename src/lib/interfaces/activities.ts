@@ -74,3 +74,24 @@ export interface Ranks {
     coordinations: Coordination[]
   ; divisions: Division[]
 };
+
+
+export interface ActivitiesFilters {
+    date_range: { gte: any; lte: any }
+  ; articulo_revista: boolean
+  ; capitulo_libro: boolean
+  ; composicion: boolean
+  ; evento: boolean
+  ; exposicion: boolean
+  ; grabacion: boolean
+  ; informe_tecnico: boolean
+  ; libro: boolean
+  ; memoria: boolean
+  ; partitura: boolean
+  ; patente: boolean
+  ; premio: boolean
+  ; premio_bienal: boolean
+  ; tesis_grado: boolean
+  ; proyecto_investigacion: boolean
+  ; recital: boolean
+};

@@ -1,3 +1,4 @@
+import type { ActivitiesFilters } from "$lib/interfaces/activities";
 import type { Activity } from "$lib/types/activities";
 
 import { format_date } from "./formatting";
@@ -74,4 +75,36 @@ export const filter_activities = function (
   };
 
   return aa;
+};
+
+
+/**
+ * Generates an `ActivitiesFilters` object with a specified date range and predefined activity types.
+ * This function is used to pass filters to the API for querying the database,
+ * filtering all activity types by the date range.
+ *
+ * @param start - The start date of the filter range.
+ * @param end - The end date of the filter range.
+ * @returns An `ActivitiesFilters` object containing the date range and activity type filters.
+ */
+export const filters = function (start: Date, end: Date): ActivitiesFilters {
+  return {
+    date_range: { gte: start, lte: end },
+    articulo_revista: true,
+    capitulo_libro: true,
+    composicion: true,
+    evento: true,
+    exposicion: true,
+    grabacion: true,
+    informe_tecnico: true,
+    libro: true,
+    memoria: true,
+    partitura: true,
+    patente: true,
+    premio: true,
+    premio_bienal: true,
+    tesis_grado: true,
+    proyecto_investigacion: true,
+    recital: true
+  }
 };
