@@ -179,7 +179,7 @@ const patente = yup.object().shape({
     // .min(yup.ref("fecha_inicio"), "La fecha final debe ser mayor que la inicial") // TODO:
   , fecha_inicio: yup.date().transform(parse_date).required("Requerido").test(
     "is-less",
-    'La fecha inicial debe ser menor que la fecha final',
+    'La fecha final debe ser menor que la fecha final',
     function (value) {
       const { fecha_fin } = this.parent;
       return !fecha_fin || !value || new Date(value) < new Date(fecha_fin);
