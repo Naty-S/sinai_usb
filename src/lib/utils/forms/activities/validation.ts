@@ -167,13 +167,13 @@ export const partitura = yup.object().shape({
   , nacional: yup.boolean().strict().typeError("No es booleano")
 });
 
-const patente = yup.object().shape({
+export const patente = yup.object().shape({
   fecha_fin: yup.date().transform(parse_date).required("Requerido").test(
     'is-greater',
     'La fecha final debe ser mayor que la fecha inicial',
     function (value) {
       const { fecha_inicio } = this.parent;
-      return !fecha_inicio || !value || new Date(value) > new Date(fecha_inicio);
+      return !fecha_inicio || !value || new Date(value) >= new Date(fecha_inicio);
     }
   )
     // .min(yup.ref("fecha_inicio"), "La fecha final debe ser mayor que la inicial") // TODO:
@@ -182,7 +182,7 @@ const patente = yup.object().shape({
     'La fecha final debe ser menor que la fecha final',
     function (value) {
       const { fecha_fin } = this.parent;
-      return !fecha_fin || !value || new Date(value) < new Date(fecha_fin);
+      return !fecha_fin || !value || new Date(value) <= new Date(fecha_fin);
     }
   )
   , numero: yup.string().required("Requerido")
