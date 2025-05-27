@@ -11,10 +11,30 @@ export const submit = function () {
 
     const date_start = format_date(parse_date('', data.date_start), "yyyy-MM-dd").split('-');
     const date_end = format_date(parse_date('', data.date_end), "yyyy-MM-dd").split('-');
-    data.date_start = new Date(Number(date_start[0]), Number(date_start[1])-1, Number(date_start[2]));
-    data.date_end = new Date(Number(date_end[0]), Number(date_end[1])-1, Number(date_end[2]));
+    const filters = {
+      date_range: {
+        gte: new Date(Number(date_start[0]), Number(date_start[1]) - 1, Number(date_start[2])),
+        lte: new Date(Number(date_end[0]), Number(date_end[1]) - 1, Number(date_end[2]))
+      },
+      articulo_revista: data.articulo_revista,
+      capitulo_libro: data.capitulo_libro,
+      composicion: data.composicion,
+      evento: data.evento,
+      exposicion: data.exposicion,
+      grabacion: data.grabacion,
+      informe_tecnico: data.informe_tecnico,
+      libro: data.libro,
+      memoria: data.memoria,
+      partitura: data.partitura,
+      patente: data.patente,
+      premio: data.premio,
+      premio_bienal: data.premio_bienal,
+      tesis_grado: data.tesis_grado,
+      proyecto_investigacion: data.proyecto_investigacion,
+      recital: data.recital
+    };
 
-    const res = await api.post(`/api/activities/${data.search_type}/${data.search}`, data);
+    const res = await api.post(`/api/activities/${data.search_type}/${data.search}`, filters);
 
     if (res.ok) {
 

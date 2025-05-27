@@ -4,7 +4,7 @@ import type {
   evento,
   libro,
   patente,
-  proyecto_grado,
+  tesis_grado,
   proyecto_investigacion,
 } from "@prisma/client";
 
@@ -113,17 +113,17 @@ export const map_to_detailed_kind = function (kind: string, act: ActivityKind): 
       case "premio_bienal":
         return "Trabajos Reconocidos o Premiados En Bienales, Salones, Concursos o Exposiciones";
   
-      case "proyecto_grado":
-        const _proyecto_grado = act as proyecto_grado;
+      case "tesis_grado":
+        const _tesis_grado = act as tesis_grado;
 
-        switch (_proyecto_grado.nivel_academico) {
+        switch (_tesis_grado.nivel_academico) {
           case "Doctorado": return "Tutoría de Tesis Doctorales";
           case "Maestria": return "Tutoría de Trabajos de Grado (Maestrías)";
-          case "Especializacion": return "Tutoría de Proyectos de Grado (Especializaciones)";
-          case "Postgrado": return "Proyectos de Grado (Postgrados)";
-          case "Licenciatura": return "Tutoría de Proyectos de Grado (Licenciaturas)";
-          case "Ingenieria": return "Tutoría de Proyectos de Grado (Ingenierías)";
-          default: return "Proyectos de Grado (Pasantías Largas)";
+          case "Especializacion": return "Tutoría de Tesis de Grado (Especializaciones)";
+          case "Postgrado": return "Tesis de Grado (Postgrados)";
+          case "Licenciatura": return "Tutoría de Tesis de Grado (Licenciaturas)";
+          case "Ingenieria": return "Tutoría de Tesis de Grado (Ingenierías)";
+          default: return "Tesis de Grado (Pasantías Largas)";
         };
   
       case "proyecto_investigacion":

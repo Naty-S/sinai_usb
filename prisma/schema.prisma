@@ -36,7 +36,7 @@ enum autor_tipo_actividad_enum {
   premio
   premio_bienal
   proyecto_investigacion
-  proyecto_grado
+  tesis_grado
   recital
 }
 
@@ -184,7 +184,7 @@ enum profesor_sexo_enum {
   M
 }
 
-enum proyecto_grado_nivel_academico_enum {
+enum tesis_grado_nivel_academico_enum {
   Doctorado
   Maestria
   Especializacion
@@ -645,7 +645,7 @@ model actividad {
   patente                patente?
   premio                 premio?
   premio_bienal          premio_bienal?
-  proyecto_grado         proyecto_grado?
+  tesis_grado            tesis_grado?
   proyecto_investigacion proyecto_investigacion?
   recital                recital?
   prepraii               prepraii_solicitud[]
@@ -937,12 +937,12 @@ model premio_bienal {
   Actividad actividad @relation(fields: [actividad], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
-// Proyectos de grado dirigidos
-model proyecto_grado {
+// Tesis (Proyectos) de grado dirigidos
+model tesis_grado {
   actividad              Int                                 @id
   coordinacion_academica String
   fecha_defensa          DateTime                            @db.Date
-  nivel_academico        proyecto_grado_nivel_academico_enum
+  nivel_academico        tesis_grado_nivel_academico_enum
   titulo_academico       String // Titulo Académico al que se optó
 
   // Postgres relations

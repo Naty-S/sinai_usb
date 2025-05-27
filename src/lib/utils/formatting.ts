@@ -79,21 +79,16 @@ export const format_date = function (date: Date | string | null, format: string 
  * @param filters - filter kind info
  * @returns Activity data with kind data, groups, and logs
  */
-export const format_activity = function (actividad: Actividad, log?: ActivityLog | null, filters?: any)
-: Activity {
+export const format_activity = function (actividad: Actividad, log?: ActivityLog | null): Activity {
 
-  const filter_kinds = filters ? kinds.filter(kind => filters[kind]) : kinds;
   const activity_kind = Object.entries(actividad).filter(([key, value]) => value && kinds.includes(key))[0];
 
   let kind_name = "ACTIVIDAD INVÁLIDA";
   let kind_data;
 
   if (activity_kind) {
-    
     kind_name = activity_kind[0];
     kind_data = activity_kind[1] as ActivityKind;
-
-    if (!filter_kinds.includes(kind_name)) kind_name = "FILTER";
   }
 
   const groups: Group[] = actividad.actividades_grupos.map((g: any) => ({

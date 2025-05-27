@@ -18,7 +18,7 @@ import type {
   patente,
   premio,
   premio_bienal,
-  proyecto_grado,
+  tesis_grado,
   proyecto_investigacion,
   recital,
 } from "@prisma/client";
@@ -46,7 +46,7 @@ export type kinds
   | "patente"
   | "premio"
   | "premio_bienal"
-  | "proyecto_grado"
+  | "tesis_grado"
   | "proyecto_investigacion"
   | "recital"
 ;
@@ -65,7 +65,7 @@ type partitura_form = Omit<partitura, "actividad">;
 type patente_form = Omit<patente, "actividad">;
 type premio_form = Omit<premio, "actividad">;
 type premio_bienal_form = Omit<premio_bienal, "actividad">;
-type proyecto_grado_form = Omit<proyecto_grado, "actividad">;
+type tesis_grado_form = Omit<tesis_grado, "actividad">;
 type proyecto_investigacion_form = Omit<proyecto_investigacion, "actividad">;
 type recital_form = Omit<recital, "actividad">;
 
@@ -84,7 +84,7 @@ type actividades_form = {
   , patente: patente_form
   , premio: premio_form
   , premio_bienal: premio_bienal_form
-  , proyecto_grado: proyecto_grado_form
+  , tesis_grado: tesis_grado_form
   , proyecto_investigacion: proyecto_investigacion_form
   , recital: recital_form
 };
@@ -186,5 +186,5 @@ export type activity_form_ctx<kind extends kinds> = {
   form: Writable<actividad_form<kind>>,
   errors: Writable<actividad_form<kind>>,
   handleChange: (event: Event) => any,
-  isSubmitting: Writable<boolean>
+  isSubmitting: Writable<boolean>,
 };

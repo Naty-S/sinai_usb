@@ -167,10 +167,24 @@ export const partitura = yup.object().shape({
   , nacional: yup.boolean().strict().typeError("No es booleano")
 });
 
-export const patente = yup.object().shape({
-  fecha_fin: yup.date().transform(parse_date).required("Requerido")
+const patente = yup.object().shape({
+  fecha_fin: yup.date().transform(parse_date).required("Requerido").test(
+    'is-greater',
+    'La fecha final debe ser mayor que la fecha inicial',
+    function (value) {
+      const { fecha_inicio } = this.parent;
+      return !fecha_inicio || !value || new Date(value) > new Date(fecha_inicio);
+    }
+  )
     // .min(yup.ref("fecha_inicio"), "La fecha final debe ser mayor que la inicial") // TODO:
-  , fecha_inicio: yup.date().transform(parse_date).required("Requerido")
+  , fecha_inicio: yup.date().transform(parse_date).required("Requerido").test(
+    "is-less",
+    'La fecha final debe ser menor que la fecha final',
+    function (value) {
+      const { fecha_fin } = this.parent;
+      return !fecha_fin || !value || new Date(value) < new Date(fecha_fin);
+    }
+  )
   , numero: yup.string().required("Requerido")
   , pais: yup.string().required("Requerido")
 });
@@ -191,7 +205,7 @@ export const premio_bienal = yup.object().shape({
   , titulo_premio: yup.string().required("Requerido")
 });
 
-export const proyecto_grado = yup.object().shape({
+export const tesis_grado = yup.object().shape({
   coordinacion_academica: yup.string().required("Requerido")
   , fecha_defensa: yup.date().transform(parse_date).required("Requerido")
   , nivel_academico: yup.string().oneOf([
@@ -217,10 +231,7 @@ export const proyecto_investigacion = yup.object().shape({
     ["$ (USD)", "Bs."],
     "Valor del tipo de moneda no pertenece a las opciones disponibles"
   )
-  , monto: yup.number().required("Requerido")
-    .positive("Ingrese número positivo")
-    .integer("Ingrese número entero")
-    .min(1, "Minimo 1")
+  , monto: yup.number().required("Requerido").min(0, "Ingrese número positivo")
 });
 
 export const recital = yup.object().shape({
@@ -453,10 +464,10 @@ export const validation = function (kind: kinds) {
         , actividades_grupos
       }, [autores]);
 
-    case "proyecto_grado":
+    case "tesis_grado":
       return yup.object().shape({
         actividad
-        , proyecto_grado
+        , tesis_grado
         , autores_externos
         , autores_usb
         , actividades_grupos

@@ -70,7 +70,7 @@
 
       if (professor.coord_chief.id === 4) {
         views.push({ href: "/sinai/grupos", click: void_click, name: "Grupos de Investigación" });
-        activities.push({ href: "/sinai/grupos/actividades", click: void_click, name: "Grupos" });
+        // activities.push({ href: "/sinai/grupos/actividades", click: void_click, name: "Grupos" });
       };
       
     } else if (professor.division_chief) {
@@ -92,7 +92,7 @@
     activities.push(
       {href: "/sinai/actividades", click: void_click, name: "Resumen de Actividades"},
     );
-    activities.push({ href: "/sinai/grupos/actividades", click: void_click, name: "Grupos" });
+    // activities.push({ href: "/sinai/grupos/actividades", click: void_click, name: "Grupos" });
 
     views.push({ href: "/sinai/grupos", click: void_click, name: "Grupos de Investigación" });
 

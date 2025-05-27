@@ -105,8 +105,6 @@
   $: err_code = $page.url.searchParams.get("code");
   $: editable = $page.params.entity !== "grupo" || $session.user?.dean !== undefined;
 
-  $: console.log($page.url.pathname)
-
   const show_prev = function () {
 
     current_page -= 1;

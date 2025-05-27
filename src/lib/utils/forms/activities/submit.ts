@@ -44,9 +44,9 @@ export const submit = function (kind: kinds, user: User, update: boolean = false
         data.patente.fecha_fin = new Date(date[0], date[1] - 1, date[2]);
         break;
 
-      case "proyecto_grado":
-        date = data.proyecto_grado.fecha_defensa.split('-');
-        data.proyecto_grado.fecha_defensa = new Date(date[0], date[1] - 1, date[2]);
+      case "tesis_grado":
+        date = data.tesis_grado.fecha_defensa.split('-');
+        data.tesis_grado.fecha_defensa = new Date(date[0], date[1] - 1, date[2]);
         break;
 
       case "proyecto_investigacion":

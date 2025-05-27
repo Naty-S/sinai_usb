@@ -155,17 +155,19 @@
             <!-- disabled={professors.includes($session.user?.professor?.profile ?? '')} -->
         {/if}
         
-        <Input
-          type="checkbox"
-          label="Ponente"
-          name="autores_usb[{i}].es_ponente"
-          bind:value={$form.autores_usb[i].es_ponente}
-          class="three wide field"
-        />
+        {#if kind === 'memoria' || kind === 'tesis_grado' || kind === 'evento'}
+          <Input
+            type="checkbox"
+            label="Ponente"
+            name="autores_usb[{i}].es_ponente"
+            bind:value={$form.autores_usb[i].es_ponente}
+            class="three wide field"
+          />
+        {/if}
         
         <!-- TODO: #81 -->
         
-        {#if !student_usb(i)}
+        {#if !student_usb(i) && kind !== 'proyecto_investigacion'}
           <Input
             type="checkbox"
             label="Tutor"
@@ -277,17 +279,19 @@
           error={$errors.autores_externos[i]?.correo}
           class="field"
         />
-        </div>
+      </div>
       
       <div class="three inline fields">
-        <Input
-          type="checkbox"
-          label="Ponente"
-          name="autores_externos[{i}].es_ponente"
-          bind:value={$form.autores_externos[i].es_ponente}
-          class="three wide field"
-        />                
-        {#if !student_out(i)}
+        {#if kind === 'memoria' || kind === 'tesis_grado' || kind === 'evento'}
+          <Input
+            type="checkbox"
+            label="Ponente"
+            name="autores_externos[{i}].es_ponente"
+            bind:value={$form.autores_externos[i].es_ponente}
+            class="three wide field"
+          />  
+        {/if}              
+        {#if !student_out(i) && kind !== 'proyecto_investigacion'}
           <Input
             type="checkbox"
             label="Tutor"

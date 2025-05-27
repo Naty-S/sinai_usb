@@ -58,8 +58,8 @@
   <li><a href="/sinai/actividades/crear/premio_bienal" on:click={close} >
     Trabajos Reconocidos o Premiados en Bienales, Salones, Concursos o Exposiciones
   </a></li>
-  <li><a href="/sinai/actividades/crear/proyecto_grado" on:click={close} >
-    Proyectos de Grado Dirigidos
+  <li><a href="/sinai/actividades/crear/tesis_grado" on:click={close} >
+    Tesis de Grado Dirigidos
   </a></li>
   <li><a href="/sinai/actividades/crear/proyecto_investigacion" on:click={close} >
     Proyectos de Investigación y Desarrollo

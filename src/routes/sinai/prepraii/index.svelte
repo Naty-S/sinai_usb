@@ -45,7 +45,7 @@
 
   export let prepraii: Prepraii[];
 
-  const actual = prepraii.find(p => p.activo);
+  const actual = prepraii.find(p => p.activo && p.inicio <= new Date() && p.fin >= new Date());
 
   let reasign = false;
   let prepraiiR: PrepraiiRequest;
@@ -135,9 +135,9 @@
 <h3>Convocatorias Anteriores</h3>
 
 <div class="ui middle aligned divided list">
-  {#each prepraii.filter(p => !p.activo) as p}
+  {#each prepraii.filter(p => !(p.activo && p.inicio <= new Date() && p.fin >= new Date())) as p}
     <h4>
-      Solicitudes: {format_date(p.inicio)} - {format_date(p.fin)}
+      Solicitudes: {format_date(p.inicio, "long-day")} - {format_date(p.fin, "long-day")}
     </h4>
     {#each p.solicitudes as s}          
       <div class="item">

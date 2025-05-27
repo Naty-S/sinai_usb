@@ -87,11 +87,11 @@ Criterios de aceptación:
    14. Tesis de Grado  
        1. Tutoría de Tesis Doctorales  
        2. Tutoría de Trabajos de Grado (Maestrías)  
-       3. Tutoría de Proyectos de Grado (Especializaciones)  
-       4. Proyectos de Grado (Postgrados)  
-       5. Tutoría de Proyectos de Grado (Licenciaturas)  
-       6. Tutoría de Proyectos de Grado (Ingenierías)  
-       7. Proyectos de Grado (Pasantías Largas)  
+       3. Tutoría de Tesis de Grado (Especializaciones)  
+       4. Tesis de Grado (Postgrados)  
+       5. Tutoría de Tesis de Grado (Licenciaturas)  
+       6. Tutoría de Tesis de Grado (Ingenierías)  
+       7. Tesis de Grado (Pasantías Largas)  
    15. Proyecto de investigación  
        1. Proyectos de IYD (Vigentes)  
        2. Proyectos de IYD  
@@ -226,7 +226,7 @@ Criterios de aceptación:
        5. Institución organizadora  
        6. Quién lo financia  
        7. País y Ciudad  
-   14. Proyectos de Grado Dirigidos  
+   14. Tesis de Grado Dirigidos  
        1. Coordinación académica  
        2. Fecha defensa  
        3. Título Académico al que se optó  

@@ -217,14 +217,14 @@ test.describe('Flujos de Autenticación y Acceso Público', () => {
 		// Llenar campos del filtro
 		await page.locator('input[name="date_start"]').fill('2013-01-01');
 		await page.locator('input[name="date_end"]').fill('2025-12-31');
-		await page.locator('input[name="proyecto_grado"]').check();
+		await page.locator('input[name="tesis_grado"]').check();
 
 		await form.getByRole('button', { name: 'Buscar' }).click();
 
 		// Verificar que el resumen de actividades (resume_rank.svelte) se muestre para el departamento
 		await expect(page.getByText(/Resumen de Actividades del Departamento/i)).toBeVisible();
 		await expect(page.getByText(/Revistas/i).first()).toBeVisible();
-		await expect(page.getByText(/Proyectos de Grado/i).first()).toBeVisible();
+		await expect(page.getByText(/Tesis de Grado/i).first()).toBeVisible();
 
 
 		// Aquí una aserción más específica sería verificar que una actividad conocida dentro del rango aparezca.
