@@ -16,7 +16,7 @@ describe('libro activity schema (libro) validations', () => {
     await expect(libro.isValid({ ...baseData })).resolves.toBe(true);
   });
 
-  it('should fail if titulo is not boolean', async () => {
+  it('should fail if aceptado is not boolean', async () => {
     const dataTrue = { ...baseData, aceptado: 'no bool' };
     await expect(libro.isValid(dataTrue)).resolves.toBe(false);
   });
